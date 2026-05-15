@@ -92,69 +92,109 @@
                     <strong>Filosofia Kaique:</strong> "MENOS É MAIS" — Encaminhar para atendente após pré-atendimento gera comprometimento. Foco em automação de fluxos, não em scripts complexos.
                 </p>
 
-                <h3 class="section-title">🎯 3 Pilares Principais</h3>
+                <h3 class="section-title">🎯 3 Pilares Principais — Clínica SST</h3>
 
                 <div class="script-box">
-                    <div class="script-title">Pilar 1️⃣: Fluxo de Adesão SST Card</div>
-                    <div style="font-size: 0.9em; color: #1987c3; font-weight: 600; margin-bottom: 15px;">GATILHO: Lead clica em "Quero o SST Card"</div>
-                    <div class="script-content"><strong>OPÇÃO A: Já tem WhatsApp ativo</strong>
-→ D+0 (imediato): "Oi [Nome]! Bem-vindo ao SST Card 🎉"
-→ D+1: Confirmação de dados (nome, celular, profissão)
-→ D+2: Apresentação dos 3 planos (Individual/Família 4-5/Família 10)
-→ D+3: Pergunta qualificação — "Qual plano te interessa mais?"
-   ├─ SIM → Encaminha para KARINE (atendente)
-   ├─ DÚVIDA → Responde tópicos (preços, cobertura, ativação)
-   └─ NÃO RESPONDE → D+5: Último contato automático
+                    <div class="script-title">Pilar 1️⃣: Fluxo de Agendamento de Consulta</div>
+                    <div style="font-size: 0.9em; color: #1987c3; font-weight: 600; margin-bottom: 15px;">GATILHO: Lead liga ou envia WhatsApp pedindo consulta</div>
+                    <div class="script-content"><strong>RECEPÇÃO — Script de Agendamento</strong>
+→ D+0 (imediato na chamada/msg):
+   "Oi [Nome]! Bem-vindo à Clínica SST 👋"
+   "Qual especialidade você procura? (Clínico | Cardiologista | Dermatologista | etc)"
 
-<strong>OPÇÃO B: Sem WhatsApp / Frio</strong>
-→ D+0: SMS "Seu SST Card foi aprovado 🎉. Clique: [link]"
-→ D+1: WhatsApp iniciado
-→ Segue fluxo OPÇÃO A</div>
+→ Qualificação rápida (1 min):
+   ├─ "Primeira vez aqui?"
+   ├─ "Tem alguma queixa ou é consulta de rotina?"
+   ├─ "Qual seu convênio?" (ou vai particular)
+
+→ Agendamento:
+   "Temos horários: [seg 14h] [ter 09h] [qua 16h]"
+   Confirmar: data, hora, celular para lembretes
+
+→ Confirmação de dados:
+   "Ótimo! Sua consulta é [DIA] às [HORA] com Dr(a) [NOME]
+   Vamos enviar um lembrete 24h antes!"
+
+→ BLOQUEADOR: Se sem convênio → "Valores: 1ª consulta R$150 | Retorno R$120. Confirma?"
+
+<strong>D-1 (dia antes):</strong>
+→ 15h: "Olá [Nome]! Lembrete: sua consulta é AMANHÃ às [HORA] ✅
+   Endereço: [RUA] | Leve documento + convênio (se tiver)"
+
+<strong>D+0 (dia da consulta):</strong>
+→ 09h (se consulta matutina): SMS "Confirmamos sua presença hoje às [HORA]?"
+→ Se não confirma → Ligar 30 min antes</div>
 
                 <div class="script-box">
-                    <div class="script-title">Pilar 2️⃣: Fluxo de Conversão Laboratório (Aline)</div>
-                    <div style="font-size: 0.9em; color: #1987c3; font-weight: 600; margin-bottom: 15px;">GATILHO: Prospect orça exames e diz "deixa eu pensar"</div>
-                    <div class="script-content"><strong>FLUXO: Qualificação → Automação → Aline</strong>
-→ D+0: Envio do orçamento + "Qualquer dúvida, me liga?"
-→ D+1: Mensagem automática — "Recebeu o orçamento?"
-   └─ SIM → "Qual sua maior dúvida?"
-      ├─ Preço → Automação responde (parcelamento, convênio)
-      ├─ Procedimento → Automação responde (tempo, preparação)
-      └─ Falta convênio → Encaminha ALINE (alta conversão)
+                    <div class="script-title">Pilar 2️⃣: Fluxo de Orçamento + Conversão Laboratório</div>
+                    <div style="font-size: 0.9em; color: #1987c3; font-weight: 600; margin-bottom: 15px;">GATILHO: Médico prescreve exames na consulta OU lead liga pedindo orçamento lab</div>
+                    <div class="script-content"><strong>RECEPÇÃO/LAB — Fluxo de Orçamento</strong>
+→ D+0 (logo após consulta ou ligação):
+   "Dra pediu exames? Vou fazer o orçamento para você"
+   Perguntar: "Qual seu convênio ou vai particular?"
 
-→ D+3: "Quer que eu reserve sua data?"
-   ├─ SIM → Agenda em [DATA/HORA]
-   ├─ NÃO → Oferece alternativa (próxima semana)
-   └─ SEM RESPOSTA → D+5: Último toque + desconto pequeno
+→ Qualificação do prospect:
+   ├─ "Com pressa ou pode fazer próxima semana?"
+   ├─ "Já fez exame aqui antes?"
+   ├─ "Sabe qual o procedimento?" (explicar se preventivo/diagnóstico)
 
-→ D+7: Se converteu → Confirmação de preparo
-      Se não → Aline liga para "ver se ficou alguma dúvida"</div>
+→ Apresentação clara:
+   📋 "Seus exames: [EXAME 1] + [EXAME 2]
+   💰 Valor: R$[XXX] (tabela convênio) ou R$[YYY] particular
+   ⏱️ Resultado em: [2-3] dias úteis
+   📅 Disponibilidade: [seg] [qua] [sex] (horários)"
+
+→ Fechamento:
+   "Qual dia você prefere?" → Se SIM → Agenda imediata
+   Se DÚVIDA → Aline liga para esclarecimento
+   Se NÃO RESPONDE → enviar orçamento por WhatsApp + D+2 follow-up
+
+<strong>D+1 (se não agendou):</strong>
+→ "Recebeu o orçamento? Alguma dúvida sobre os exames?"
+   ├─ Custo alto? → Oferece parcelamento (3x sem juros)
+   ├─ Procedimento desconhecido? → Explica prep + tempo + resultado
+   └─ Sem resposta → D+3: Último toque com ligação de Aline
+
+<strong>D+7 (após resultado):</strong>
+→ "Seus exames saíram! 📄 Vem retirar o resultado ou envio por WhatsApp?"
+→ Oferecer agendamento nova consulta (interpretação de exame)</div>
                 </div>
 
                 <div class="script-box">
-                    <div class="script-title">Pilar 3️⃣: Fluxo de Confirmação/Reativação SST Card</div>
-                    <div style="font-size: 0.9em; color: #1987c3; font-weight: 600; margin-bottom: 15px;">GATILHO: Membro ativo do SST Card (confirmação) | Cancelado (reativação)</div>
-                    <div class="script-content"><strong>SUBFLUXO A: Confirmação (Membros Ativos)</strong>
-→ D-1 (antes da consulta): "Olá [Nome]! Sua consulta é amanhã às [HORA] ✅"
-   └─ Sem resposta? → D-0 08h: SMS "Confirma presença?"
+                    <div class="script-title">Pilar 3️⃣: Fluxo de Retenção — Pós-Consulta + Follow-up</div>
+                    <div style="font-size: 0.9em; color: #1987c3; font-weight: 600; margin-bottom: 15px;">GATILHO: Paciente saiu da consulta OU finalizou lab</div>
+                    <div class="script-content"><strong>PÓS-CONSULTA (Mesma dia ou D+1):</strong>
+→ 2h após saída:
+   "Como foi sua consulta com Dr(a) [NOME]?
+   Deixe sua avaliação: ⭐⭐⭐⭐⭐"
+   (NPS rápido — se ⭐⭐⭐ inferior = avisar gerente)
 
-→ D+0 (dia da consulta): Lembretes via WhatsApp (09h, 11h)
+→ D+2:
+   "Estava tudo ok com a prescrição? Precisar de ajuda para marcar lab ou retirada de receita?"
 
-→ D+1 (pós-visita): NPS rápido — "Como foi sua experiência?" (⭐⭐⭐⭐⭐)
+→ D+7:
+   "Tudo bem? Seus exames saíram?
+   Agende sua consulta de retorno: [agenda]"
 
-→ D+7: Follow-up — "Necessário acompanhamento?" → Se SIM, agenda nova
+<strong>PÓS-LABORATÓRIO:</strong>
+→ D+0 (resultado pronto):
+   "Seus exames estão prontos! 📄
+   Retira pessoalmente ou envio por WhatsApp?"
 
-<strong>SUBFLUXO B: Reativação (Membros Cancelados)</strong>
-→ Trigger: Membro cancela
+→ D+2 (após retirada):
+   "Recebeu tudo certo? Precisar de ajuda para agendar retorno com médico?"
 
-→ D+1: "Tudo bem? Podemos ajudar com algo?" (entender motivo)
-   ├─ Caro → Oferece plano menor
-   ├─ Não usa → Oferece acesso ao app
-   └─ Mudança de endereço → Oferece filiais próximas
+→ D+15 (check-in):
+   "Como você está? Alguma dúvida sobre os resultados?"
+   ├─ Quer agendar retorno? → [Agenda]
+   ├─ Precisa novo exame? → Oferece orçamento
+   └─ Sem resposta → Biblioteca de self-care (dicas + artigos)
 
-→ D+5: "Que tal voltarmos? Enviamos seu histórico de benefícios"
+<strong>REATIVAÇÃO (para pacientes inativos 3+ meses):</strong>
+→ "Oi [Nome]! Faz tempo que não te vemos 👋
+   Tudo bem? Quer agendar sua próxima consulta de rotina?"
 
-→ D+10: Última chance — "20% OFF para reativar esta semana"</div>
+→ Oferecer pacote de prevenção ou check-up (desconto se agendarem esta semana)</div>
                 </div>
             </div>
         </div>
