@@ -43,11 +43,11 @@
         </div>
 
         <div class="tabs">
-            <button class="tab-button active" onclick="switchTab('dashboard')">Dashboard</button>
-            <button class="tab-button" onclick="switchTab('playbook')">Playbook</button>
-            <button class="tab-button" onclick="switchTab('notion')">Notion</button>
-            <button class="tab-button" onclick="switchTab('timeline')">Timeline</button>
-            <button class="tab-button" onclick="switchTab('faq')">FAQ</button>
+            <button class="tab-button active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-button" data-tab="playbook">Playbook</button>
+            <button class="tab-button" data-tab="notion">Notion</button>
+            <button class="tab-button" data-tab="timeline">Timeline</button>
+            <button class="tab-button" data-tab="faq">FAQ</button>
         </div>
 
         <div id="dashboard" class="tab-content active">
@@ -278,23 +278,30 @@
     </div>
 
     <script>
-        function switchTab(tabName) {
-            // Remove active de todas as abas
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
+        // Inicializar tabs
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabName = this.getAttribute('data-tab');
+
+                    // Remove active de todas as abas e botões
+                    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                    document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+
+                    // Adiciona active na aba selecionada
+                    const tab = document.getElementById(tabName);
+                    if (tab) {
+                        tab.classList.add('active');
+                    }
+
+                    // Adiciona active no botão
+                    this.classList.add('active');
+                });
             });
-            // Remove active de todos os botões
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            // Adiciona active na aba selecionada
-            const selectedTab = document.getElementById(tabName);
-            if (selectedTab) {
-                selectedTab.classList.add('active');
-            }
-            // Adiciona active no botão clicado
-            event.currentTarget.classList.add('active');
-        }
+        });
 
         function copyScript(btn) {
             const text = btn.parentElement.querySelector('.script-content').innerText;
