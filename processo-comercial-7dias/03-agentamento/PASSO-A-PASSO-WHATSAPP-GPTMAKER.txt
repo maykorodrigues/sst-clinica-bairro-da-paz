@@ -1,0 +1,209 @@
+═══════════════════════════════════════════════════════════════════════════════
+  PASSO-A-PASSO WHATSAPP GPTMAKER — SIGA AGORA! ⚡
+═══════════════════════════════════════════════════════════════════════════════
+
+📍 VOCÊ ESTÁ AQUI (no modal):
+
+    ┌─────────────────────────────────────────────────┐
+    │  Criar canal Whatsapp Meta                      │
+    │                                                 │
+    │  Nome do Canal:                                 │
+    │  [________________]                             │
+    │                                                 │
+    │  Agente (Opcional):                             │
+    │  [Sem agente (resposta humana)] ▼              │
+    │                                                 │
+    │  [Criar novo canal]  [Cancelar]                │
+    └─────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════
+  PASSO 1️⃣  — Preencher "Nome do Canal" (30 seg)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Clicar no campo "Nome do Canal"
+2. Apagar o que estiver lá
+3. COPIAR E COLAR ISTO:
+
+   ┌───────────────────────────────────┐
+   │ SST Card — Leads Raquel           │
+   └───────────────────────────────────┘
+
+4. ✅ Pronto!
+
+═══════════════════════════════════════════════════════════════════════════════
+  PASSO 2️⃣  — Selecionar Agente (30 seg)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Clicar no dropdown "Agente"
+2. Deixar COMO ESTÁ:
+
+   ✅ Sem agente (resposta humana)
+
+3. ✅ Pronto!
+
+═══════════════════════════════════════════════════════════════════════════════
+  PASSO 3️⃣  — Criar o Canal (1 min)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Clicar no botão ROXO: [Criar novo canal]
+
+2. Esperar... (30s — processando)
+
+3. Vai aparecer:
+
+   ┌────────────────────────────────────────┐
+   │ Conectando com Meta Business...        │
+   │                                        │
+   │ [Fazer login com Meta]                │
+   └────────────────────────────────────────┘
+
+4. ✅ Pronto! Passar pro próximo passo
+
+═══════════════════════════════════════════════════════════════════════════════
+  PASSO 4️⃣  — Autorizar Meta (2 min)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Clicar [Fazer login com Meta]
+
+2. Você vai para página: login.facebook.com
+   - Logar com EMAIL: (confirme com Rogério)
+   - SENHA: (confirme com Rogério)
+
+3. Vai pedir permissões:
+   ✅ Gerenciar seus negócios
+   ✅ Acesso ao WhatsApp Business
+   ✅ Enviar e receber mensagens
+
+4. Clicar [Autorizar]  ou  [Permitir]
+
+5. Volta pro GPTMaker automaticamente
+
+6. Você vai ver:
+
+   ┌────────────────────────────────────┐
+   │ ✅ Canal Criado!                   │
+   │                                    │
+   │ Número: +55 71 XXXX-XXXX          │
+   │ Status: 🟢 Ativo                  │
+   └────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════
+  PASSO 5️⃣  — Copiar Link do Canal (1 min)
+═══════════════════════════════════════════════════════════════════════════════
+
+Procure na tela um botão ou link que diz:
+
+   📋 Copiar link do canal
+   ou
+   🔗 Link WhatsApp
+   ou
+   📲 Compartilhar canal
+
+Clicar e copiar. Você vai pegar algo assim:
+
+┌──────────────────────────────────────────────────────┐
+│ https://wa.me/5571XXXXXXXXX?text=SST%20Card         │
+└──────────────────────────────────────────────────────┘
+
+⚠️  IMPORTANTE: GUARDAR ESTE LINK!
+
+═══════════════════════════════════════════════════════════════════════════════
+  PASSO 6️⃣  — Voltar para Meta Suite (editar posts)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Voltar aba: Meta Business Suite
+   (aba aberta anterior)
+
+2. Abrir PRIMEIRO POST (segunda-feira)
+
+3. Encontrar o CTA (call-to-action):
+
+   ANTES:
+   "Tá interessado? Envia ZAP pra gente →"
+
+4. EDITAR e adicionar o link:
+
+   DEPOIS:
+   "Tá interessado? Envia ZAP pra gente →
+   https://wa.me/5571XXXXXXXXX?text=SST%20Card"
+
+5. SALVAR / ATUALIZAR
+
+6. Repetir para os outros 4 posts (terça, quarta, quinta, sexta)
+
+═══════════════════════════════════════════════════════════════════════════════
+  PASSO 7️⃣  — Resposta Automática (2 min)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Voltar pro GPTMaker
+
+2. Procurar: "Configurações" ou "⚙️ Settings"
+
+3. Encontrar: "Mensagem de boas-vindas" ou "Auto-reply"
+
+4. COPIAR E COLAR ISTO:
+
+┌──────────────────────────────────────────────────────┐
+│ Oi! 👋 Bem-vindo ao SST Card!                        │
+│                                                      │
+│ Que bom que você se interessou! 💚                  │
+│ Sou a Raquel da equipe SST.                         │
+│                                                      │
+│ Pra você conhecer melhor:                           │
+│ ✅ R$1,20/dia (R$34,90/mês)                         │
+│ ✅ Acesso 24h (sem fila)                            │
+│ ✅ Clínicas perto de você                           │
+│                                                      │
+│ Qual informação você quer?                          │
+│ 1️⃣ Benefícios                                        │
+│ 2️⃣ Clínicas próximas                                 │
+│ 3️⃣ Começar agora                                     │
+│                                                      │
+│ Aguardo sua resposta! 🎯                            │
+└──────────────────────────────────────────────────────┘
+
+5. SALVAR
+
+═══════════════════════════════════════════════════════════════════════════════
+  ✅ PRONTO! VOCÊ FEZ TUDO!
+═══════════════════════════════════════════════════════════════════════════════
+
+Agora quando alguém clicar no CTA dos posts:
+
+  Post (segunda) → Clica em "ZAP"
+        ↓
+  Abre WhatsApp → Conecta com canal SST Card
+        ↓
+  Recebe mensagem: "Oi! Bem-vindo ao SST Card"
+        ↓
+  LEAD CAPTURADO! ✅
+
+═══════════════════════════════════════════════════════════════════════════════
+  ❓ DÚVIDAS RÁPIDAS
+═══════════════════════════════════════════════════════════════════════════════
+
+P: Qual email usar para logar no Meta?
+R: O do Rogério (dono da SST Card)
+
+P: Se errar no nome do canal, pode mudar?
+R: Sim, depois no GPTMaker você edita
+
+P: Qual é o número de Raquel ou Karine que vai receber?
+R: O número que Rogério conectou na Meta
+
+P: As mensagens chegam onde?
+R: No GPTMaker (aplicação aberta) + no WhatsApp do número conectado
+
+═══════════════════════════════════════════════════════════════════════════════
+  🎯 PRÓXIMOS PASSOS
+═══════════════════════════════════════════════════════════════════════════════
+
+Depois que terminar:
+  1. Agendar os 5 posts (segunda a sexta) — já feito?
+  2. Raquel fica com GPTMaker aberto durante a semana
+  3. Preencher tabela de rastreamento (quantos leads cada post gerou)
+  4. Reunião 07/05 para revisar resultados
+
+═══════════════════════════════════════════════════════════════════════════════
+  MAYKO: Se tiver erro, chame para resolver. Raquel: você consegue! 💪
+═══════════════════════════════════════════════════════════════════════════════

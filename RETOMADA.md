@@ -277,23 +277,25 @@ Estrutura criada dentro de **"Processos Comerciais B2C Clube SST CARD/ CARD"**:
 
 ---
 
-## Matinal MADIP — 15/05/2026
+## Matinal MADIP — 15/05/2026 ✅ CRIADA
 
-**D+1 Campanha Perdão Dívida | Sexta-feira | 08h00–08h15**
+**D+1 Campanha Perdão Dívida | Sexta-feira | 08h00–08h15 | Status: PRONTO PARA EXECUTAR**
 
-| Documento | Conteúdo | Status |
-|-----------|----------|--------|
-| `processo-comercial-7dias/01-matinais/15-05-2026/roteiro-matinal-15-05-2026.md` | Roteiro 15min: abertura + resultado ontem + foco cada pessoa + bloqueador + GO/NO-GO | 🟢 Pronto |
-| `processo-comercial-7dias/01-matinais/15-05-2026/script-perdao-divida-karine-15-05.md` | Script Karine: 90s falado + 3 msgs WhatsApp + 8 objeções + fechamento urgência | 🟢 Pronto |
-| `processo-comercial-7dias/01-matinais/15-05-2026/cartao-bolso-equipe-15-05.md` | Cartão A5 (imprimir): frase âncora + metas dia + pipeline visual | 🟢 Pronto |
-| `processo-comercial-7dias/01-matinais/15-05-2026/template-relatorio-12h-15h-15-05.md` | Templates vazios: parcial 12h (4 linhas) + final 15h (6 linhas + consolidado) | 🟢 Pronto |
-| `processo-comercial-7dias/01-matinais/15-05-2026/checklist-arquiteta-16-05.md` | Checklist Rogério para visita arquiteta 16/05 14h: documentos, equipamento, durante, após, medições | 🟢 Pronto |
+| Documento | Conteúdo | Criado | Status |
+|-----------|----------|--------|--------|
+| `processo-comercial-7dias/01-matinais/15-05-2026/roteiro-matinal-15-05-2026.md` | Roteiro 15min: abertura + resultado ontem + foco cada pessoa + bloqueador + GO/NO-GO | 15/05 08h33 | ✅ Pronto |
+| `processo-comercial-7dias/01-matinais/15-05-2026/script-perdao-divida-karine-15-05.md` | Script Karine: 90s falado + 8 objeções + WhatsApp + fechamento urgência | 15/05 08h34 | ✅ Pronto |
+| `processo-comercial-7dias/01-matinais/15-05-2026/cartao-bolso-equipe-15-05.md` | Cartão A5 (imprimir): frase âncora + metas dia + pipeline visual | 15/05 08h34 | ✅ Pronto |
+| `processo-comercial-7dias/01-matinais/15-05-2026/template-relatorio-12h-15h-15-05.md` | Templates vazios: parcial 12h (4 linhas) + final 15h (6 linhas + consolidado) | 15/05 08h34 | ✅ Pronto |
+| `processo-comercial-7dias/01-matinais/15-05-2026/checklist-arquiteta-16-05.md` | Checklist Rogério para visita arquiteta 16/05 14h: documentos, equipamento, cronograma | 15/05 08h34 | ✅ Pronto |
 
-**Metas do dia:**
+**Metas do dia (15/05):**
 - **Karine:** 15 contatos + 3 fechamentos Prata R$39,90 (≥20% conversão)
 - **Lucas:** 50 contatos ativação + finalizar auditoria 27 cancelados + verificar Boom
 - **Raquel:** 5 criativos Meta Suite + 100 conversas WhatsApp + 10 leads para Karine em 5min
 - **Rogério:** Confirmar 100% checklist para visita arquiteta
+
+**Próxima execução:** 08h00 (Mayko: imprimir cartão A5, ter scripts abertos)**
 
 **Gate decision (23/05):**
 - ≥20 adesões + ≥20 reativações → contrato advisory + Bairro da Paz GO

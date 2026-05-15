@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RMA — SST Clínica Bairro da Paz | Maio/2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .presentation-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .slide {
+            display: none;
+            padding: 60px;
+            flex: 1;
+            overflow-y: auto;
+            animation: fadeIn 0.5s;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* SLIDE 1 - CAPA */
+        .slide-capa {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .slide-capa h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .slide-capa .subtitle {
+            font-size: 1.8em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .slide-capa .period {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .slide-capa .footer {
+            margin-top: 80px;
+            font-size: 1em;
+            opacity: 0.85;
+        }
+
+        /* SLIDE 2 - RESUMO EXECUTIVO */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .kpi-card .value {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .kpi-card .label {
+            font-size: 0.9em;
+            opacity: 0.95;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .kpi-card .status {
+            margin-top: 10px;
+            font-size: 1.5em;
+        }
+
+        .status.verde { color: #4caf50; }
+        .status.amarelo { color: #ffc107; }
+        .status.vermelho { color: #f44336; }
+
+        /* TABELAS */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .metric-positive {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        .metric-warning {
+            color: #ffc107;
+            font-weight: 600;
+        }
+
+        .metric-negative {
+            color: #f44336;
+            font-weight: 600;
+        }
+
+        /* GRÁFICOS SIMPLES */
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #eee;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50 0%, #45a049 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .progress-fill.warning {
+            background: linear-gradient(90deg, #ffc107 0%, #ff9800 100%);
+        }
+
+        .progress-fill.danger {
+            background: linear-gradient(90deg, #f44336 0%, #e53935 100%);
+        }
+
+        /* SEÇÕES */
+        h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 20px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .insight-box {
+            background: #e8f5e9;
+            padding: 20px;
+            border-left: 4px solid #4caf50;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .insight-box strong {
+            color: #2e7d32;
+        }
+
+        .risk-box {
+            background: #ffebee;
+            padding: 20px;
+            border-left: 4px solid #f44336;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .risk-box strong {
+            color: #c62828;
+        }
+
+        /* CONTROLES */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        /* AÇÕES */
+        .action-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .action-list li {
+            padding: 12px;
+            margin: 8px 0;
+            background: #f0f0f0;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+
+        .action-list .alta { border-left-color: #f44336; }
+        .action-list .media { border-left-color: #ffc107; }
+        .action-list .baixa { border-left-color: #4caf50; }
+
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 12px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+
+        .checklist-item.checked {
+            background: #e8f5e9;
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        /* RODAPÉ */
+        .slide-footer {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .slide-footer span {
+            margin-left: 10px;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 40px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .slide-capa h1 {
+                font-size: 2.5em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.85em;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-container">
+    <div class="slide-container">
+        <!-- SLIDE 1: CAPA -->
+        <div class="slide slide-capa active">
+            <h1>RMA</h1>
+            <div class="subtitle">Relatório Mensal de Avaliação</div>
+            <div class="subtitle">SST Clínica — Bairro da Paz</div>
+            <div class="period">Período: 01–12 de Maio/2026</div>
+            <div class="footer">
+                <p><strong>Prepared by:</strong> Mayko Rodrigues (Consultor)</p>
+                <p><strong>Sponsor:</strong> Rogério Ferreira (Diretor)</p>
+                <p style="margin-top: 20px; opacity: 0.7;">Status: Semana 1 de implementação</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: RESUMO EXECUTIVO -->
+        <div class="slide">
+            <h2>Resumo Executivo</h2>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="label">Cartões Vendidos</div>
+                    <div class="value">3</div>
+                    <div class="label">Meta: 20 (Mês 1)</div>
+                    <div class="status amarelo">●</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Ativações</div>
+                    <div class="value">4</div>
+                    <div class="label">Meta: 20 (Mês 1)</div>
+                    <div class="status verde">●</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Receita do Dia</div>
+                    <div class="value">R$ 195</div>
+                    <div class="label">+ R$ 90 promessas</div>
+                    <div class="status verde">●</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Taxa Conversão</div>
+                    <div class="value">21%</div>
+                    <div class="label">Acima da projeção</div>
+                    <div class="status verde">●</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">NPS (Inicial)</div>
+                    <div class="value">—</div>
+                    <div class="label">Será coletado após 7 dias</div>
+                    <div class="status amarelo">●</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="label">Status Geral</div>
+                    <div class="value">🟢</div>
+                    <div class="label">Em subida — Week 1 positivo</div>
+                </div>
+            </div>
+
+            <h3>Decisão Solicitada</h3>
+            <div class="highlight">
+                <p><strong>Questão principal:</strong> Continuar a operação com a equipe atual e intensificar prospecção nas próximas 2 semanas?</p>
+                <p style="margin-top: 10px;"><strong>Resposta esperada:</strong> GO / NO-GO até 13/05</p>
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 2 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: DASHBOARD KPIs -->
+        <div class="slide">
+            <h2>KPIs Dashboard (Semana 1)</h2>
+
+            <h3>Semana 05–11 de Maio</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Meta Semana</th>
+                        <th>Realizado</th>
+                        <th>% Meta</th>
+                        <th>Trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Leads Qualificados (Raquel)</strong></td>
+                        <td>35+</td>
+                        <td class="metric-warning">4</td>
+                        <td>11%</td>
+                        <td>📈</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cartões Vendidos (Karine)</strong></td>
+                        <td>21+</td>
+                        <td class="metric-warning">3</td>
+                        <td>14%</td>
+                        <td>📈</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ativações (Lucas)</strong></td>
+                        <td>21+</td>
+                        <td class="metric-positive">4</td>
+                        <td>19%</td>
+                        <td>📈</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Receita Total</strong></td>
+                        <td>R$ 630+</td>
+                        <td class="metric-warning">R$ 195</td>
+                        <td>31%</td>
+                        <td>📈</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Taxa Conversão Média</strong></td>
+                        <td>&gt; 15%</td>
+                        <td class="metric-positive">21%</td>
+                        <td>140%</td>
+                        <td>✅</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Análise</h3>
+            <div class="insight-box">
+                <strong>Ponto Forte:</strong> Taxa de conversão de 21% está acima da meta — indica que a qualificação inicial está gerando leads de qualidade, não volume vazio.
+            </div>
+
+            <div class="risk-box">
+                <strong>Atenção:</strong> Volume de qualificação inicial está 11% da meta. Bloqueador: Medina sem acesso (aguardando senha de Michael).
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 3 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: FUNIL DE VENDAS -->
+        <div class="slide">
+            <h2>Funil de Vendas</h2>
+
+            <h3>Semana 1 (05/05/2026)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Etapa</th>
+                        <th>Contatos</th>
+                        <th>Taxa ↓</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Leads (Prospecção)</strong></td>
+                        <td>28</td>
+                        <td>—</td>
+                        <td>Abordagens manuais + redes sociais</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Respondidos</strong></td>
+                        <td>12</td>
+                        <td>43%</td>
+                        <td>Taxa resposta inicial ✅</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Qualificados</strong></td>
+                        <td>4</td>
+                        <td>33%</td>
+                        <td>Passados para Karine converter</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cartões Ativados</strong></td>
+                        <td>3</td>
+                        <td>75%</td>
+                        <td><span class="metric-positive">Conversão acima da meta</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Visualização do Funil</h3>
+            <div class="chart-container">
+                <p><strong>Leads (28)</strong></p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%;">100%</div>
+                </div>
+
+                <p style="margin-top: 20px;"><strong>Respondidos (12 de 28)</strong></p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 43%;">43%</div>
+                </div>
+
+                <p style="margin-top: 20px;"><strong>Qualificados (4 de 12)</strong></p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 33%;">33%</div>
+                </div>
+
+                <p style="margin-top: 20px;"><strong>Cartões (3 de 4)</strong></p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%; background: linear-gradient(90deg, #4caf50 0%, #45a049 100%);">75% ✅</div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 4 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: RECEITA -->
+        <div class="slide">
+            <h2>Receita Mensal</h2>
+
+            <h3>Faturamento Período: 01–12 Maio/2026</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Dias Operacionais</th>
+                        <th>Realizado</th>
+                        <th>Projeção Mês</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cartões Individuais (R$ 34,90)</strong></td>
+                        <td>1 dia</td>
+                        <td class="metric-positive">R$ 69,80</td>
+                        <td>R$ 697,80</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cartões Família (R$ 79,90)</strong></td>
+                        <td>1 dia</td>
+                        <td class="metric-positive">R$ 79,90</td>
+                        <td>R$ 799,00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cartões Empresariais</strong></td>
+                        <td>1 dia</td>
+                        <td>R$ 0,00</td>
+                        <td>R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cobrança/Recuperações</strong></td>
+                        <td>1 dia</td>
+                        <td>R$ 45,00</td>
+                        <td>R$ 450,00</td>
+                    </tr>
+                    <tr style="background: #fff3cd;">
+                        <td><strong>TOTAL REALIZADO</strong></td>
+                        <td>1 dia</td>
+                        <td class="metric-warning"><strong>R$ 194,70</strong></td>
+                        <td><strong>R$ 1.946,80</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Análise de Receita</h3>
+            <div class="insight-box">
+                <strong>Tendência:</strong> Com apenas 1 dia operacional, receita está em ritmo de R$ 1.947/mês — abaixo do break-even (R$ 26.000/mês com 430 membros). Necessário escalar para ≥20 adesões/semana.
+            </div>
+
+            <h3>Receita em Perspectiva</h3>
+            <div class="chart-container">
+                <p><strong>vs. Break-even (430 membros = R$ 26.000/mês)</strong></p>
+                <div class="progress-bar">
+                    <div class="progress-fill danger" style="width: 7%;">7% (R$ 1.947)</div>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Necessário: 13x crescimento para break-even</p>
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 5 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: ANÁLISE DE ORIGEM -->
+        <div class="slide">
+            <h2>Análise de Origem dos Leads</h2>
+
+            <h3>Frentes de Captação (Semana 1)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Origem</th>
+                        <th>Leads</th>
+                        <th>Convertidos</th>
+                        <th>Taxa Conv.</th>
+                        <th>CAC (est.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Prospecção Manual</strong></td>
+                        <td>28</td>
+                        <td>3</td>
+                        <td class="metric-positive">11%</td>
+                        <td>R$ 60</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Redes Sociais</strong></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tenex (Legado)</strong></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Laboratório (MADIP/Aline)</strong></td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Recomendação: Ativar Frentes Frias</h3>
+            <div class="insight-box">
+                <strong>Oportunidade:</strong> 761 contas Tenex em atraso + MADIP (Aline) ainda não operante. Ativar essas frentes pode triplicar o volume de leads sem custo adicional.
+            </div>
+
+            <h3>CAC vs. LTV Projection</h3>
+            <div class="chart-container">
+                <table>
+                    <tr>
+                        <td><strong>CAC Atual:</strong> R$ 60/cartão</td>
+                        <td><strong>LTV (est.):</strong> R$ 420/ano (12 × R$ 35)</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Razão LTV/CAC = 7:1 ✅ (Saudável)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 6 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: COHORT DE RETENÇÃO -->
+        <div class="slide">
+            <h2>Cohort de Retenção</h2>
+
+            <h3>Análise de Retenção por Coorte (Inicial)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Coorte</th>
+                        <th>Ativados</th>
+                        <th>Dia 1</th>
+                        <th>Dia 2</th>
+                        <th>Dia 3</th>
+                        <th>Dia 5</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>05/05 (Lançamento)</strong></td>
+                        <td>4</td>
+                        <td class="metric-positive">100%</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"><em>Nota: Base muito pequena. Métricas de retenção fiáveis após 100+ ativações.</em></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Uso Imediato (KPI Importante!)</h3>
+            <div class="insight-box">
+                <strong>Resultado:</strong> 75% dos 4 ativados já usaram serviço no Dia 1 (3 de 4 utilizaram telemedicina). Indica alto value recognition e baixo friction no onboarding.
+            </div>
+
+            <h3>Inativos Identificados</h3>
+            <div class="risk-box">
+                <strong>Oportunidade de Reativação:</strong> 9 pessoas que pagaram em abril mas não usaram serviço. Potencial de R$ 270+ em receita recorrente se 50% forem reativadas.
+            </div>
+
+            <div class="chart-container">
+                <p><strong>Status de 4 Ativados (Dia 1):</strong></p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%;">75% usando serviço</div>
+                </div>
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 7 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: CHURN E CANCELAMENTOS -->
+        <div class="slide">
+            <h2>Análise de Churn</h2>
+
+            <h3>Taxa de Cancelamento (Semana 1)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor</th>
+                        <th>Observação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cancelamentos</strong></td>
+                        <td class="metric-positive">0</td>
+                        <td>Nenhum cancelamento em 1 dia</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Taxa Churn</strong></td>
+                        <td>—</td>
+                        <td>Será calculada após 30 dias</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Motivos Previos (Tenex)</strong></td>
+                        <td>—</td>
+                        <td>Investigação em andamento com Karine</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Ações de Retenção Ativa</h3>
+            <ul class="action-list">
+                <li class="alta"><strong>[ALTA]</strong> Iniciar cadência de reativação com 9 inativos de Tenex (Lucas — até 08/05)</li>
+                <li class="alta"><strong>[ALTA]</strong> Criar NPS survey para coletar feedback (Mayko — até 15/05)</li>
+                <li class="media"><strong>[MÉDIA]</strong> Mapear razões de cancelamento histórico (Karine — até 20/05)</li>
+                <li class="baixa"><strong>[BAIXA]</strong> Preparar plano de win-back para churn futuro</li>
+            </ul>
+
+            <div class="insight-box">
+                <strong>Status:</strong> Sem sinais de churn ainda. Foco deve ser em consolidar os 4 clientes ativos e preparar campanhas de reativação proativas.
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 8 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: ATIVIDADES DA EQUIPE -->
+        <div class="slide">
+            <h2>Atividades da Equipe (Semana 1)</h2>
+
+            <h3>Performance por Pessoa</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pessoa</th>
+                        <th>Função</th>
+                        <th>Resultado</th>
+                        <th>Meta</th>
+                        <th>% Realizado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Raquel</strong></td>
+                        <td>Prospecção</td>
+                        <td>4 qualificados</td>
+                        <td>35+ (semana)</td>
+                        <td class="metric-warning">11%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Karine</strong></td>
+                        <td>Comercial/Cobrança</td>
+                        <td>3 vendas</td>
+                        <td>21+ (semana)</td>
+                        <td class="metric-warning">14%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lucas</strong></td>
+                        <td>Sucesso do Cliente</td>
+                        <td>4 ativações</td>
+                        <td>21+ (semana)</td>
+                        <td class="metric-warning">19%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Destaques</h3>
+            <div class="insight-box">
+                <strong>Karine (21% conversão):</strong> Superou expectativa na taxa de conversão, indicando que a qualificação de Raquel está gerando leads de qualidade.
+            </div>
+
+            <div class="insight-box">
+                <strong>Lucas (75% uso imediato):</strong> 3 de 4 ativados usando serviço no mesmo dia — onboarding claro e demanda real validada.
+            </div>
+
+            <div class="risk-box">
+                <strong>Raquel (11% da meta):</strong> Bloqueio crítico: Medina sem acesso (aguardando senha). Espera-se 3–4x volume após ativar Medina.
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 9 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: NPS / SATISFAÇÃO -->
+        <div class="slide">
+            <h2>NPS & Satisfação</h2>
+
+            <h3>Status Atual</h3>
+            <div class="highlight">
+                <p>Período operacional: 1 dia apenas (05/05)</p>
+                <p>NPS será coletado: 12/05 em diante (após 7 dias de uso)</p>
+                <p>Qualitativo: Feedback inicial positivo — 75% usando serviço Dia 1</p>
+            </div>
+
+            <h3>Protocolo de Coleta (Próximas 2 Semanas)</h3>
+            <ul class="action-list">
+                <li class="alta"><strong>[ALTA]</strong> Enviar NPS survey para 4 clientes ativados (12/05 — Lucas)</li>
+                <li class="alta"><strong>[ALTA]</strong> Coletar motivos de não-uso (9 inativos) — Karine</li>
+                <li class="media"><strong>[MÉDIA]</strong> Entrevistar 3 clientes sobre experiência — Mayko</li>
+            </ul>
+
+            <h3>Expectativa de Meta</h3>
+            <div class="chart-container">
+                <p><strong>Meta NPS (30 dias):</strong> &gt; 8/10</p>
+                <p style="font-size: 0.9em; color: #666;">Baseline: Sem dados ainda. Será revisto após primeira coleta.</p>
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 10 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: BENCHMARKING -->
+        <div class="slide">
+            <h2>Benchmarking vs. Metas</h2>
+
+            <h3>Comparativo: Meta Mês vs. Realizado (Data 12/05)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Meta Mês</th>
+                        <th>Realizado</th>
+                        <th>Acumulado</th>
+                        <th>% Meta</th>
+                        <th>Trend</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cartões Ativados</strong></td>
+                        <td>80+</td>
+                        <td class="metric-warning">3</td>
+                        <td>3</td>
+                        <td class="metric-warning">4%</td>
+                        <td>📈</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reativações (Tenex)</strong></td>
+                        <td>20+</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0%</td>
+                        <td>⏳</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ticket Médio</strong></td>
+                        <td>R$ 65</td>
+                        <td class="metric-positive">R$ 65</td>
+                        <td>R$ 65</td>
+                        <td class="metric-positive">100%</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Receita Mensal</strong></td>
+                        <td>R$ 5.200</td>
+                        <td class="metric-warning">R$ 195</td>
+                        <td>R$ 195</td>
+                        <td class="metric-warning">4%</td>
+                        <td>📈</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NPS</strong></td>
+                        <td>&gt; 8</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>⏳</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Taxa Conversão</strong></td>
+                        <td>&gt; 15%</td>
+                        <td class="metric-positive">21%</td>
+                        <td>21%</td>
+                        <td class="metric-positive">140%</td>
+                        <td>✅</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Análise de Desempenho</h3>
+            <div class="insight-box">
+                <strong>No Alvo:</strong> Taxa de conversão está 40% acima da meta. Ticket médio está correto.
+            </div>
+
+            <div class="risk-box">
+                <strong>Abaixo da Meta:</strong> Volume de ativações está apenas 4% da meta. Necessário 20–30 cartões/semana nas próximas 3 semanas.
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 11 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: RISCOS E BLOQUEADORES -->
+        <div class="slide">
+            <h2>Riscos & Bloqueadores</h2>
+
+            <h3>Bloqueadores Críticos (Semana 1)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bloqueador</th>
+                        <th>Dono</th>
+                        <th>Prazo</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Medina sem acesso (senha)</strong></td>
+                        <td>Michael</td>
+                        <td>06/05 08h30</td>
+                        <td class="metric-negative">⏳ Crítico</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Michele sem resposta (3 tentativas)</strong></td>
+                        <td>Karine</td>
+                        <td>06/05 10h</td>
+                        <td class="metric-warning">⏳ Aberto</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Boom com lag (12h-13h)</strong></td>
+                        <td>TI/Lucas</td>
+                        <td>Monitorar</td>
+                        <td class="metric-warning">⏳ Monitorando</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Riscos Estratégicos</h3>
+            <div class="risk-box">
+                <strong>Risco 1 — Escalabilidade de Equipe:</strong> Karine é gargalo central (comercial + inadimplência). Sem coordenador de vendas, risca de sobrecarga em 2–3 semanas.
+                <br/><br/>
+                <strong>Mitigação:</strong> Contratar coordinator de vendas ANTES de atingir 50 contatos/dia (prazo: até 20/05).
+            </div>
+
+            <div class="risk-box">
+                <strong>Risco 2 — Frentes Frias Inativas:</strong> MADIP (Aline) e Tenex (761 contas) ainda não operantes. Sem essas frentes, volume máximo é 5–10 cartões/semana (longe dos 20+ meta).
+                <br/><br/>
+                <strong>Mitigação:</strong> Ativar Medina (semana de 06/05) + Aline (até 08/05) + script Tenex (até 13/05).
+            </div>
+
+            <div class="risk-box">
+                <strong>Risco 3 — Lucas Afastado por Saúde:</strong> CS é crítico para ativação. Se Lucas sair, reativações caem a zero.
+                <br/><br/>
+                <strong>Mitigação:</strong> Treinar substituto (Raquel ou temp) nas próximas 2 semanas.
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 12 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: INSIGHTS & APRENDIZADOS -->
+        <div class="slide">
+            <h2>Insights & Aprendizados</h2>
+
+            <h3>O Que Aprendemos Nesta Semana</h3>
+            <div class="insight-box">
+                <strong>1. Qualificação Funciona:</strong> Raquel selecionando 4 leads levou a 75% de conversão (3 cartões). Validação clara: qualidade &gt; quantidade.
+            </div>
+
+            <div class="insight-box">
+                <strong>2. Valor Percebido é Alto:</strong> 75% dos clientes ativados usaram telemedicina no Dia 1. Indica que o produto resolve dor real e onboarding é claro.
+            </div>
+
+            <div class="insight-box">
+                <strong>3. Ticket Médio Correto:</strong> Mix de R$ 34,90 (individual) + R$ 79,90 (família) gerou ticket de R$ 65 — em linha com projeção.
+            </div>
+
+            <div class="insight-box">
+                <strong>4. Medina é Gargalo de Volume:</strong> 1 dia sem Medina gerou apenas 28 contatos. Com Medina + IA, Raquel consegue 100+ leads/dia.
+            </div>
+
+            <div class="insight-box">
+                <strong>5. Reativação é Oportunidade Rápida:</strong> 9 inativos de Tenex representam R$ 270+ em 7 dias se bem executado. ROI mais rápido que captação.
+            </div>
+
+            <h3>Tática Que Funcionou</h3>
+            <ul class="action-list">
+                <li class="alta">✅ Script 3-toques de Karine (Abordagem → Demo → Fechamento)</li>
+                <li class="alta">✅ Onboarding automático de Lucas (boas-vindas em <1h, clara chamada p/ ação)</li>
+                <li class="alta">✅ Qualificação dupla (Raquel filtra, Karine converte)</li>
+            </ul>
+
+            <h3>O Que Não Funcionou</h3>
+            <ul class="action-list">
+                <li class="baixa">❌ Prospecção manual sem Medina (muito lenta: 28 contatos em 7h)</li>
+                <li class="baixa">❌ Redes sociais (2 posts geraram 0 leads — calendário editorial ainda em setup)</li>
+            </ul>
+
+            <div class="slide-footer">
+                <span>Slide 13 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: PLANO DE AÇÃO -->
+        <div class="slide">
+            <h2>Plano de Ação — Próximas 2 Semanas</h2>
+
+            <h3>Ações Críticas (13–19 Maio)</h3>
+            <ul class="action-list">
+                <li class="alta">
+                    <strong>[ALTA — Mayko]</strong> Garantir senha Medina + treinar Raquel para IA
+                    <br/><small>Prazo: 06/05 | Impacto: +3–4x leads/dia</small>
+                </li>
+                <li class="alta">
+                    <strong>[ALTA — Karine]</strong> Fechar Lilian (demo saiu bem) + Resgatar Michele com oferta especial
+                    <br/><small>Prazo: 06/05 | Impacto: +2 cartões confirmados</small>
+                </li>
+                <li class="alta">
+                    <strong>[ALTA — Lucas]</strong> Iniciar cadência de reativação dos 9 inativos (WhatsApp + follow-up)
+                    <br/><small>Prazo: 06–13/05 | Impacto: +5–9 ativações potencial</small>
+                </li>
+                <li class="alta">
+                    <strong>[ALTA — Mayko]</strong> Ativar Aline (MADIP) — novo workflow n8n, dashboard, comissão
+                    <br/><small>Prazo: 08/05 | Impacto: Nova frente de +10–15 leads/dia</small>
+                </li>
+                <li class="alta">
+                    <strong>[ALTA — Mayko]</strong> Script perdão dívida Tenex + aprovação Rogério
+                    <br/><small>Prazo: 13/05 | Impacto: 761 contas potencial para reativação</small>
+                </li>
+            </ul>
+
+            <h3>Ações de Suporte (13–19 Maio)</h3>
+            <ul class="action-list">
+                <li class="media">
+                    <strong>[MÉDIA — Raquel]</strong> Calendário editorial Instagram/Facebook agendado (5 posts seg–sex)
+                    <br/><small>Prazo: 07/05 | Impacto: Validar se redes geram leads</small>
+                </li>
+                <li class="media">
+                    <strong>[MÉDIA — Mayko]</strong> NPS survey criado e enviado para 4 clientes ativados
+                    <br/><small>Prazo: 12/05 | Impacto: Validar satisfação, iterar onboarding</small>
+                </li>
+                <li class="baixa">
+                    <strong>[BAIXA — Karine]</strong> Buscar números alternativos para 5 clientes sem celular
+                    <br/><small>Prazo: 15/05 | Impacto: +5 contatos possíveis</small>
+                </li>
+            </ul>
+
+            <div class="slide-footer">
+                <span>Slide 14 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: DECISÕES SOLICITADAS -->
+        <div class="slide">
+            <h2>Decisões Solicitadas</h2>
+
+            <h3>GO / NO-GO Gate Decision (Limite: 23 Maio)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cenário</th>
+                        <th>Trigger</th>
+                        <th>Decisão</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: #e8f5e9;">
+                        <td><strong>GO — Expansão</strong></td>
+                        <td>≥20 adesões + ≥20 reativações + Medina ativo + Aline operante</td>
+                        <td>Contratar Coordenador Vendas + Budget Publicidade (R$ 2k/mês) + iniciar Bairro da Paz Fase 2</td>
+                    </tr>
+                    <tr style="background: #fff3cd;">
+                        <td><strong>CONTINUE — Ajustes</strong></td>
+                        <td>10–19 adesões OU 10–19 reativações</td>
+                        <td>Estender 15 dias + Focar em 1 frente (Tenex) + Revisar scripts Karine</td>
+                    </tr>
+                    <tr style="background: #ffebee;">
+                        <td><strong>NO-GO — Diagnóstico</strong></td>
+                        <td>&lt;10 adesões E &lt;10 reativações</td>
+                        <td>Parar operação + Diagnóstico detalhado + Reunião com Rogério (redefinir positioning)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Aprovações Imediatas (até 15/05)</h3>
+            <div class="highlight">
+                <p><strong>❓ Pergunta 1:</strong> Aprovar contratação de Coordenador de Vendas? (R$ 2k/mês + benefícios)</p>
+                <p style="margin-top: 5px;"><strong>Resposta esperada:</strong> SIM / NÃO / DEPENDE</p>
+                <br/>
+                <p><strong>❓ Pergunta 2:</strong> Aumentar budget de publicidade de R$ 0 para R$ 2k/mês?</p>
+                <p style="margin-top: 5px;"><strong>Resposta esperada:</strong> SIM / NÃO / PARCIALMENTE (quanto?)</p>
+                <br/>
+                <p><strong>❓ Pergunta 3:</strong> Ativar frente Tenex com script perdão dívida 50% desconto?</p>
+                <p style="margin-top: 5px;"><strong>Resposta esperada:</strong> SIM / NÃO / DEPENDE (quanto % máximo?)</p>
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 15 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 16: CHECKLIST EXECUTIVO -->
+        <div class="slide">
+            <h2>Checklist Executivo — Rogério</h2>
+
+            <h3>Para Tomar Decisão Hoje</h3>
+            <div class="checklist">
+                <label class="checklist-item">
+                    <input type="checkbox">
+                    <strong>Leu este RMA completamente?</strong>
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox">
+                    <strong>Entendeu os 3 números-chave?</strong> (3 cartões, 4 ativações, 21% conversão)
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox">
+                    <strong>Revisou os bloqueadores críticos?</strong> (Medina, Michele, Boom)
+                </label>
+                <label class="checklist-item">
+                    <input type="checkbox">
+                    <strong>Validou o plano de ação próximas 2 semanas?</strong>
+                </label>
+            </div>
+
+            <h3>Decisões Finais (Marque UM)</h3>
+            <div class="checklist">
+                <label class="checklist-item">
+                    <input type="radio" name="decision">
+                    <strong>✅ GO — Continuar + Intensificar</strong> (Acredito no plano, aprovando investimentos)
+                </label>
+                <label class="checklist-item">
+                    <input type="radio" name="decision">
+                    <strong>⏳ CONTINUE 15 DIAS — Ajustes Necessários</strong> (Bom início, mas preciso ver mais dados)
+                </label>
+                <label class="checklist-item">
+                    <input type="radio" name="decision">
+                    <strong>❌ NO-GO — Parar + Redirecionar</strong> (Não está funcionando, redesenhar estratégia)
+                </label>
+            </div>
+
+            <h3>Assinatura Digital</h3>
+            <div class="highlight">
+                <p><strong>Rogério Ferreira (Sponsor)</strong></p>
+                <p style="margin-top: 10px;">Data: _____________</p>
+                <p>Decisão: _____________________</p>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">Escaneie ou assine digitalmente este documento após decisão.</p>
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 16 de 17</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 17: APÊNDICE — DADOS DETALHADOS -->
+        <div class="slide">
+            <h2>Apêndice: Dados Detalhados</h2>
+
+            <h3>Tabela Consolidada Semana 1 (05/05)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Abordagens Raquel</td>
+                        <td>28</td>
+                    </tr>
+                    <tr>
+                        <td>Respondidos</td>
+                        <td>12 (43%)</td>
+                    </tr>
+                    <tr>
+                        <td>Qualificados Raquel</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Contatos Karine</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td>Cartões Vendidos Karine</td>
+                        <td>3 (21% conversão)</td>
+                    </tr>
+                    <tr>
+                        <td>Receita Direta</td>
+                        <td>R$ 149,70</td>
+                    </tr>
+                    <tr>
+                        <td>Cobrança/Recuperações</td>
+                        <td>R$ 45,00</td>
+                    </tr>
+                    <tr>
+                        <td>Total Receita</td>
+                        <td>R$ 194,70</td>
+                    </tr>
+                    <tr>
+                        <td>Ativações Lucas</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>Usando Serviço Dia 1</td>
+                        <td>3 (75%)</td>
+                    </tr>
+                    <tr>
+                        <td>Inativos Identificados</td>
+                        <td>9 (potencial reativação)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Próximas Atualizações</h3>
+            <div class="insight-box">
+                <p>Este RMA será atualizado:</p>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li><strong>19/05:</strong> Fim semana 2 — ativação Medina + Aline</li>
+                    <li><strong>26/05:</strong> Fim semana 3 — ativação Tenex, primeiros reativados</li>
+                    <li><strong>31/05:</strong> RMA Final Maio — decisão GO/NO-GO</li>
+                </ul>
+            </div>
+
+            <div class="slide-footer">
+                <span>Slide 17 de 17</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- CONTROLES DE NAVEGAÇÃO -->
+<div class="slide-counter" id="counter">Slide 1 de 17</div>
+
+<div class="controls">
+    <button onclick="previousSlide()" id="prevBtn">← Anterior</button>
+    <button onclick="nextSlide()" id="nextBtn">Próximo →</button>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function showSlide(n) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (n + totalSlides) % totalSlides;
+        slides[currentSlide].classList.add('active');
+
+        document.getElementById('counter').textContent = `Slide ${currentSlide + 1} de ${totalSlides}`;
+        document.getElementById('prevBtn').disabled = currentSlide === 0;
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    function previousSlide() {
+        showSlide(currentSlide - 1);
+    }
+
+    // Navegação por teclado
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') nextSlide();
+        if (e.key === 'ArrowLeft') previousSlide();
+    });
+
+    // Checklist interativo
+    document.querySelectorAll('.checklist-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const checkbox = this.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('checked');
+            }
+        });
+    });
+
+    // Inicializar
+    showSlide(0);
+</script>
+
+</body>
+</html>

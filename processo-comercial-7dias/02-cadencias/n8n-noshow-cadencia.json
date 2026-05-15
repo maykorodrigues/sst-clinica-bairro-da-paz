@@ -1,0 +1,489 @@
+{
+  "name": "SST No-Show Lab — Cadência Automática",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1-6"
+            }
+          ]
+        }
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000001",
+      "name": "Cron 9h Seg-Sab",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [120, 300]
+    },
+    {
+      "parameters": {
+        "operation": "readAllRows",
+        "documentId": {
+          "value": "={{ $env.SST_SHEETS_ID }}",
+          "__rl": true,
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "No-Show Lab",
+          "__rl": true,
+          "mode": "name"
+        },
+        "options": {
+          "headerRow": 1
+        }
+      },
+      "id": "a1b2c3d4-0002-0002-0002-000000000002",
+      "name": "Ler No-Show Lab",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [340, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "SUBSTITUIR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets SST"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const hoje = new Date();\nhoje.setHours(0, 0, 0, 0);\n\nconst elegíveis = [];\n\nfor (const item of $input.all()) {\n  const d = item.json;\n\n  // Ignorar se não for no-show, se não puder contatar ou se já encerrado\n  if (d.status !== 'noshow') continue;\n  if (String(d.nao_contatar).toUpperCase() === 'TRUE') continue;\n  if (d.fase_cadencia === 'encerrado') continue;\n  if (!d.data_noshow) continue;\n\n  // Calcular dias desde o no-show\n  const partes = String(d.data_noshow).split('-');\n  const dataNs = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));\n  dataNs.setHours(0, 0, 0, 0);\n  const dias = Math.floor((hoje - dataNs) / (1000 * 60 * 60 * 24));\n\n  const fase = String(d.fase_cadencia || '');\n  let faseNova = null;\n\n  if (dias >= 1  && fase === '')    faseNova = 'D1';\n  else if (dias >= 3  && fase === 'D1') faseNova = 'D3';\n  else if (dias >= 7  && fase === 'D3') faseNova = 'D7';\n  else if (dias >= 14 && fase === 'D7') faseNova = 'D14';\n\n  if (!faseNova) continue;\n\n  // Formatar data de hoje para log\n  const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];\n  const logData = String(hoje.getDate()).padStart(2,'0') + meses[hoje.getMonth()];\n\n  elegíveis.push({\n    json: {\n      ...d,\n      fase_nova: faseNova,\n      dias_desde_noshow: dias,\n      log_novo: faseNova + '_enviado_' + logData,\n      data_hoje: hoje.toISOString().split('T')[0]\n    }\n  });\n}\n\nreturn elegíveis;"
+      },
+      "id": "a1b2c3d4-0003-0003-0003-000000000003",
+      "name": "Filtrar e Calcular Fase",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [560, 300]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "a1b2c3d4-0004-0004-0004-000000000004",
+      "name": "Processar Um Por Um",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [780, 300]
+    },
+    {
+      "parameters": {
+        "mode": "rules",
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.fase_nova }}",
+                    "rightValue": "D1",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "D1"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.fase_nova }}",
+                    "rightValue": "D3",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "D3"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.fase_nova }}",
+                    "rightValue": "D7",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "D7"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.fase_nova }}",
+                    "rightValue": "D14",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "D14"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0005-0005-0005-000000000005",
+      "name": "Fase da Cadência",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d1-msg",
+              "name": "mensagem",
+              "value": "=Oi {{ $json.nome_paciente }}! Tudo bem? 😊\n\nSou a Aline, da SST Clínica.\n\nVi que você tinha um *{{ $json.exame_solicitado }}* agendado aqui mas acabou não conseguindo vir.\n\nSem problema — acontece! Queria só saber se tá tudo bem e se posso te ajudar a reagendar.\n\nTem um horário que funciona melhor pra você? 🗓️",
+              "type": "string"
+            },
+            {
+              "id": "d1-fase",
+              "name": "fase_nova",
+              "value": "D1",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "a1b2c3d4-0006-0006-0006-000000000006",
+      "name": "Mensagem D1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1220, 80]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d3-msg",
+              "name": "mensagem",
+              "value": "=Oi {{ $json.nome_paciente }}! Aqui é a Aline, SST Clínica. 🙂\n\nSó passando para lembrar: você tinha um *{{ $json.exame_solicitado }}* agendado aqui com a gente.\n\nEsse exame é importante — atrasar pode deixar sem o diagnóstico que você precisa.\n\nA gente consegue te encaixar ainda essa semana. Qual horário funciona: *manhã ou tarde*?\n\nQualquer dúvida, me chama. 💪",
+              "type": "string"
+            },
+            {
+              "id": "d3-fase",
+              "name": "fase_nova",
+              "value": "D3",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "a1b2c3d4-0007-0007-0007-000000000007",
+      "name": "Mensagem D3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1220, 260]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d7-msg",
+              "name": "mensagem",
+              "value": "={{ $json.nome_paciente }}, boa tarde!\n\nAqui é a Aline, da SST Clínica.\n\nFaz uma semana que você tinha agendado o *{{ $json.exame_solicitado }}* e ainda não conseguiu vir. Quero te ajudar a resolver isso. 🙏\n\nTenho uma condição especial para você reagendar ainda essa semana:\n✅ Atendimento prioritário (sem fila)\n✅ Parcela no cartão se precisar\n\nÉ só me mandar um *\"quero reagendar\"* que eu resolvo agora. 😊",
+              "type": "string"
+            },
+            {
+              "id": "d7-fase",
+              "name": "fase_nova",
+              "value": "D7",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "a1b2c3d4-0008-0008-0008-000000000008",
+      "name": "Mensagem D7",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1220, 440]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID_ALINE }}",
+        "text": "=🔔 *No-Show D+14 — Ligação Necessária*\n\n👤 Paciente: *{{ $json.nome_paciente }}*\n🔬 Exame: {{ $json.exame_solicitado }}\n💰 Orçamento: R$ {{ $json.valor_orcamento }}\n📅 Agendou em: {{ $json.data_agendamento }}\n📱 WhatsApp: {{ $json.whatsapp }}\n\n⚠️ Não respondeu às mensagens automáticas.\n\n👉 *Ação: Fazer ligação pessoal hoje (13h–16h)*",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "a1b2c3d4-0009-0009-0009-000000000009",
+      "name": "Alerta D14 Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1220, 620],
+      "credentials": {
+        "telegramApi": {
+          "id": "SUBSTITUIR_TELEGRAM_CREDENTIAL_ID",
+          "name": "Telegram SST Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resume": "timeInterval",
+        "unit": "seconds",
+        "amount": 90
+      },
+      "id": "a1b2c3d4-0010-0010-0010-000000000010",
+      "name": "Aguardar 90s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1440, 260],
+      "webhookId": "wait-noshow-rate-limit"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE_LAB }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.EVOLUTION_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.whatsapp }}\",\n  \"text\": \"{{ $json.mensagem }}\",\n  \"delay\": 1200\n}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false
+            }
+          }
+        }
+      },
+      "id": "a1b2c3d4-0011-0011-0011-000000000011",
+      "name": "Enviar WhatsApp Evolution",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1660, 260]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "value": "={{ $env.SST_SHEETS_ID }}",
+          "__rl": true,
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "No-Show Lab",
+          "__rl": true,
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fase_cadencia": "={{ $json.fase_nova }}",
+            "data_ultimo_contato": "={{ $json.data_hoje }}",
+            "log_disparo": "={{ $json.log_novo }}"
+          },
+          "matchingColumns": ["row_number"],
+          "schema": [
+            { "id": "fase_cadencia", "displayName": "fase_cadencia", "required": false, "defaultMatch": false, "canBeUsedToMatch": true, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "data_ultimo_contato", "displayName": "data_ultimo_contato", "required": false, "defaultMatch": false, "canBeUsedToMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "log_disparo", "displayName": "log_disparo", "required": false, "defaultMatch": false, "canBeUsedToMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "row_number", "displayName": "row_number", "required": false, "defaultMatch": true, "canBeUsedToMatch": true, "display": true, "type": "number", "readOnly": false, "removed": false }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0012-0012-0012-000000000012",
+      "name": "Atualizar Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [1880, 260],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "SUBSTITUIR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets SST"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID_ALINE }}",
+        "text": "=📤 Mensagem *{{ $json.fase_nova }}* enviada!\n\n👤 {{ $json.nome_paciente }}\n🔬 {{ $json.exame_solicitado }}\n💰 R$ {{ $json.valor_orcamento }}\n📱 {{ $json.whatsapp }}\n\n⚡ Se responder, aparece no WhatsApp — trate em até 2h!",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "a1b2c3d4-0013-0013-0013-000000000013",
+      "name": "Notificar Aline Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [2100, 260],
+      "credentials": {
+        "telegramApi": {
+          "id": "SUBSTITUIR_TELEGRAM_CREDENTIAL_ID",
+          "name": "Telegram SST Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "value": "={{ $env.SST_SHEETS_ID }}",
+          "__rl": true,
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "No-Show Lab",
+          "__rl": true,
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fase_cadencia": "D14",
+            "data_ultimo_contato": "={{ $json.data_hoje }}",
+            "log_disparo": "={{ $json.log_novo }}"
+          },
+          "matchingColumns": ["row_number"],
+          "schema": [
+            { "id": "fase_cadencia", "displayName": "fase_cadencia", "required": false, "defaultMatch": false, "canBeUsedToMatch": true, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "data_ultimo_contato", "displayName": "data_ultimo_contato", "required": false, "defaultMatch": false, "canBeUsedToMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "log_disparo", "displayName": "log_disparo", "required": false, "defaultMatch": false, "canBeUsedToMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "row_number", "displayName": "row_number", "required": false, "defaultMatch": true, "canBeUsedToMatch": true, "display": true, "type": "number", "readOnly": false, "removed": false }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0014-0014-0014-000000000014",
+      "name": "Atualizar Sheets D14",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [1440, 620],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "SUBSTITUIR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets SST"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cron 9h Seg-Sab": {
+      "main": [
+        [{ "node": "Ler No-Show Lab", "type": "main", "index": 0 }]
+      ]
+    },
+    "Ler No-Show Lab": {
+      "main": [
+        [{ "node": "Filtrar e Calcular Fase", "type": "main", "index": 0 }]
+      ]
+    },
+    "Filtrar e Calcular Fase": {
+      "main": [
+        [{ "node": "Processar Um Por Um", "type": "main", "index": 0 }]
+      ]
+    },
+    "Processar Um Por Um": {
+      "main": [
+        [{ "node": "Fase da Cadência", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Fase da Cadência": {
+      "main": [
+        [{ "node": "Mensagem D1", "type": "main", "index": 0 }],
+        [{ "node": "Mensagem D3", "type": "main", "index": 0 }],
+        [{ "node": "Mensagem D7", "type": "main", "index": 0 }],
+        [{ "node": "Alerta D14 Telegram", "type": "main", "index": 0 }]
+      ]
+    },
+    "Mensagem D1": {
+      "main": [
+        [{ "node": "Aguardar 90s", "type": "main", "index": 0 }]
+      ]
+    },
+    "Mensagem D3": {
+      "main": [
+        [{ "node": "Aguardar 90s", "type": "main", "index": 0 }]
+      ]
+    },
+    "Mensagem D7": {
+      "main": [
+        [{ "node": "Aguardar 90s", "type": "main", "index": 0 }]
+      ]
+    },
+    "Alerta D14 Telegram": {
+      "main": [
+        [{ "node": "Atualizar Sheets D14", "type": "main", "index": 0 }]
+      ]
+    },
+    "Aguardar 90s": {
+      "main": [
+        [{ "node": "Enviar WhatsApp Evolution", "type": "main", "index": 0 }]
+      ]
+    },
+    "Enviar WhatsApp Evolution": {
+      "main": [
+        [{ "node": "Atualizar Sheets", "type": "main", "index": 0 }]
+      ]
+    },
+    "Atualizar Sheets": {
+      "main": [
+        [{ "node": "Notificar Aline Telegram", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
+  },
+  "id": "sst-noshow-cadencia-v1",
+  "tags": [
+    { "name": "sst", "createdAt": "2026-05-06" },
+    { "name": "laboratorio", "createdAt": "2026-05-06" },
+    { "name": "noshow", "createdAt": "2026-05-06" }
+  ]
+}

@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SST Card — Minha Clínica, Meu Negócio | Bairro da Paz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep:   #0b3526;
+    --green-dark:   #144d38;
+    --green-mid:    #1a6b4a;
+    --green-vivid:  #25a865;
+    --green-bright: #2fd87e;
+    --gold:         #e8b84b;
+    --gold-light:   #f5d47a;
+    --cream:        #f7f3ec;
+    --white:        #ffffff;
+    --grey-light:   #e8ede9;
+    --grey-mid:     #8ba898;
+    --text-dark:    #0b2318;
+    --red-alert:    #e05c4b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--green-deep);
+    color: var(--white);
+  }
+
+  /* ─── DECK ─────────────────────────────────── */
+  #deck {
+    width: 100vw; height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(60px);
+    transition: opacity .55s cubic-bezier(.4,0,.2,1),
+                transform .55s cubic-bezier(.4,0,.2,1);
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(0);
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+
+  /* ─── NAVIGATION ────────────────────────────── */
+  #nav {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+    background: rgba(11,53,38,.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 50px;
+    padding: 10px 24px;
+  }
+  .nav-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,.3);
+    background: transparent;
+    color: var(--white);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+  }
+  .nav-btn:hover { background: var(--green-vivid); border-color: var(--green-vivid); }
+  .nav-btn:disabled { opacity: .3; cursor: not-allowed; }
+  #slide-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--grey-mid);
+    letter-spacing: .08em;
+    min-width: 64px;
+    text-align: center;
+  }
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green-vivid), var(--gold));
+    transition: width .4s ease;
+    z-index: 200;
+    border-radius: 0 3px 3px 0;
+  }
+
+  /* ─── SLIDE NUMBER BADGE ─────────────────────── */
+  .slide-num-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .12em;
+    color: var(--green-bright);
+    opacity: .6;
+    padding: 32px 48px 0;
+    text-transform: uppercase;
+  }
+
+  /* ─── TYPOGRAPHY HELPERS ─────────────────────── */
+  .display { font-family: 'Playfair Display', serif; }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(37,168,101,.18);
+    color: var(--green-bright);
+    border: 1px solid rgba(37,168,101,.3);
+  }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 1 — CAPA
+  ═══════════════════════════════════════════════ */
+  #slide-1 {
+    background: var(--green-deep);
+    background-image:
+      radial-gradient(ellipse 80% 60% at 70% 50%, rgba(37,168,101,.18) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(232,184,75,.08) 0%, transparent 50%);
+    justify-content: center;
+    padding: 0 10%;
+    overflow: hidden;
+  }
+  #slide-1::before {
+    content: '';
+    position: absolute;
+    right: -80px; top: -80px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(37,168,101,.12);
+    pointer-events: none;
+  }
+  #slide-1::after {
+    content: '';
+    position: absolute;
+    right: -30px; top: -30px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    border: 1px solid rgba(37,168,101,.08);
+    pointer-events: none;
+  }
+  .s1-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp .6s .2s forwards;
+  }
+  .s1-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 900;
+    line-height: 1.0;
+    color: var(--white);
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeUp .6s .35s forwards;
+  }
+  .s1-title span { color: var(--gold); font-style: italic; }
+  .s1-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.8vw, 52px);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--green-bright);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp .6s .5s forwards;
+  }
+  .s1-meta {
+    display: flex; gap: 32px; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp .6s .65s forwards;
+  }
+  .s1-meta-item {
+    font-size: 13px;
+    color: var(--grey-mid);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .s1-meta-item span { color: var(--white); font-weight: 500; }
+  .s1-big-num {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(120px, 20vw, 260px);
+    font-weight: 900;
+    color: rgba(37,168,101,.07);
+    pointer-events: none;
+    line-height: 1;
+    user-select: none;
+  }
+  .s1-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,184,75,.12);
+    border: 1px solid rgba(232,184,75,.25);
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 12px;
+    color: var(--gold-light);
+    font-weight: 500;
+    margin-top: 32px;
+    opacity: 0;
+    animation: fadeUp .6s .8s forwards;
+  }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 2 — A OPORTUNIDADE
+  ═══════════════════════════════════════════════ */
+  #slide-2 {
+    background: var(--green-dark);
+    background-image: radial-gradient(ellipse 60% 60% at 100% 0%, rgba(37,168,101,.15) 0%, transparent 60%);
+  }
+  .slide-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 10% 100px;
+  }
+  .slide-header {
+    margin-bottom: 40px;
+  }
+  .slide-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4.5vw, 58px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--white);
+    margin-top: 10px;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .stat-card .num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 900;
+    color: var(--green-bright);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-card .label {
+    font-size: 13px;
+    color: var(--grey-mid);
+    font-weight: 400;
+    line-height: 1.4;
+  }
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .pain-card {
+    background: rgba(224,92,75,.08);
+    border: 1px solid rgba(224,92,75,.2);
+    border-radius: 12px;
+    padding: 24px 20px;
+  }
+  .pain-card .pain-icon { font-size: 28px; margin-bottom: 12px; }
+  .pain-card .pain-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #f4a99a;
+    margin-bottom: 6px;
+  }
+  .pain-card .pain-desc { font-size: 13px; color: var(--grey-mid); line-height: 1.5; }
+  .highlight-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.2vw, 26px);
+    font-style: italic;
+    color: var(--gold);
+    text-align: center;
+    padding: 20px 40px;
+    border-top: 1px solid rgba(232,184,75,.2);
+    border-bottom: 1px solid rgba(232,184,75,.2);
+    margin: 24px 0;
+    line-height: 1.4;
+  }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 3 — O PRODUTO
+  ═══════════════════════════════════════════════ */
+  #slide-3 {
+    background: var(--green-deep);
+    background-image: radial-gradient(ellipse 50% 70% at 0% 50%, rgba(37,168,101,.12) 0%, transparent 60%);
+  }
+  .plan-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .plan-card {
+    border-radius: 18px;
+    padding: 32px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .plan-card.individual { background: rgba(37,168,101,.12); border: 1px solid rgba(37,168,101,.25); }
+  .plan-card.familia    { background: rgba(37,168,101,.2);  border: 2px solid var(--green-vivid); }
+  .plan-card.empresarial{ background: rgba(232,184,75,.1);  border: 1px solid rgba(232,184,75,.3); }
+  .plan-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .plan-card.individual .plan-badge { background: rgba(37,168,101,.2); color: var(--green-bright); }
+  .plan-card.familia    .plan-badge { background: var(--green-vivid); color: var(--white); }
+  .plan-card.empresarial .plan-badge { background: rgba(232,184,75,.2); color: var(--gold); }
+  .plan-card.familia .popular-tag {
+    position: absolute; top: 16px; right: 16px;
+    background: var(--green-vivid);
+    color: var(--white);
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .plan-name { font-size: 15px; font-weight: 600; color: var(--grey-light); margin-bottom: 12px; }
+  .plan-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px; font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .plan-card.individual .plan-price { color: var(--green-bright); }
+  .plan-card.familia    .plan-price { color: var(--white); }
+  .plan-card.empresarial .plan-price { color: var(--gold); }
+  .plan-daily { font-size: 12px; color: var(--grey-mid); margin-bottom: 20px; }
+  .plan-features { list-style: none; font-size: 13px; color: var(--grey-light); line-height: 1.8; }
+  .plan-features li::before { content: '✓  '; color: var(--green-bright); font-weight: 700; }
+  .economy-banner {
+    background: linear-gradient(135deg, rgba(232,184,75,.15), rgba(232,184,75,.05));
+    border: 1px solid rgba(232,184,75,.25);
+    border-radius: 12px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .economy-banner .eco-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px; font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .economy-banner .eco-text { font-size: 14px; color: var(--grey-light); line-height: 1.5; }
+  .economy-banner .eco-text strong { color: var(--white); }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 4 — MODELO DE NEGÓCIO
+  ═══════════════════════════════════════════════ */
+  #slide-4 {
+    background: var(--green-mid);
+    background-image: radial-gradient(ellipse 60% 40% at 50% 100%, rgba(11,53,38,.5) 0%, transparent 60%);
+  }
+  .model-comparison {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    align-items: start;
+    margin: 20px 0;
+  }
+  .model-box {
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .model-box.original {
+    background: rgba(0,0,0,.2);
+    border: 1px solid rgba(255,255,255,.1);
+    opacity: .7;
+  }
+  .model-box.adapted {
+    background: rgba(37,168,101,.2);
+    border: 2px solid var(--green-bright);
+  }
+  .model-box h4 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--green-bright);
+    margin-bottom: 16px;
+  }
+  .model-box.original h4 { color: var(--grey-mid); }
+  .model-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    font-size: 13px;
+  }
+  .model-row:last-child { border-bottom: none; }
+  .model-row .mkey { color: var(--grey-mid); }
+  .model-row .mval { font-weight: 600; color: var(--white); }
+  .arrow-center {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; padding-top: 40px;
+    font-size: 28px; color: var(--gold);
+  }
+  .arrow-center span { font-size: 11px; font-weight: 700; letter-spacing: .1em; color: var(--gold); text-transform: uppercase; }
+  .equity-flow {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 20px;
+    background: rgba(0,0,0,.15);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .equity-item {
+    flex: 1;
+    text-align: center;
+    border-radius: 10px;
+    padding: 16px 12px;
+    border: 1px solid rgba(255,255,255,.12);
+  }
+  .equity-item .e-pct {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 900;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .equity-item .e-name { font-size: 12px; color: var(--grey-mid); }
+  .equity-item.highlight { background: rgba(37,168,101,.2); border-color: var(--green-vivid); }
+  .equity-item.highlight .e-pct { color: var(--green-bright); }
+  .equity-sep { color: var(--grey-mid); font-size: 20px; }
+  .philosophy-block {
+    background: rgba(232,184,75,.1);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(15px, 1.6vw, 19px);
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 5 — EQUIPE
+  ═══════════════════════════════════════════════ */
+  #slide-5 {
+    background: var(--green-deep);
+    background-image: radial-gradient(ellipse 50% 50% at 100% 0%, rgba(232,184,75,.08) 0%, transparent 50%);
+  }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .team-card {
+    border-radius: 18px;
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .team-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .team-card.role-1 { background: rgba(37,168,101,.12); border: 1px solid rgba(37,168,101,.2); }
+  .team-card.role-1::before { background: var(--green-vivid); }
+  .team-card.role-2 { background: rgba(232,184,75,.08); border: 1px solid rgba(232,184,75,.2); }
+  .team-card.role-2::before { background: var(--gold); }
+  .team-card.role-3 { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); }
+  .team-card.role-3::before { background: var(--grey-mid); }
+  .team-role-icon { font-size: 36px; }
+  .team-role-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .team-card.role-1 .team-role-title { color: var(--green-bright); }
+  .team-card.role-2 .team-role-title { color: var(--gold); }
+  .team-card.role-3 .team-role-title { color: var(--grey-mid); }
+  .team-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--white);
+  }
+  .team-desc { font-size: 13px; color: var(--grey-mid); line-height: 1.6; }
+  .team-equity {
+    margin-top: auto;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .team-equity .e-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 900;
+  }
+  .team-card.role-1 .e-val { color: var(--green-bright); }
+  .team-card.role-2 .e-val { color: var(--gold); }
+  .team-card.role-3 .e-val { color: var(--grey-mid); }
+  .team-equity .e-label { font-size: 12px; color: var(--grey-mid); }
+  .team-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .kpi-mini {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .kpi-mini .kv { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--green-bright); }
+  .kpi-mini .kl { font-size: 11px; color: var(--grey-mid); margin-top: 4px; line-height: 1.3; }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 6 — FINANCIAMENTO
+  ═══════════════════════════════════════════════ */
+  #slide-6 {
+    background: var(--green-dark);
+    background-image: radial-gradient(ellipse 40% 60% at 0% 100%, rgba(37,168,101,.1) 0%, transparent 55%);
+  }
+  .finance-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 20px 0;
+  }
+  .finance-block {
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .finance-block.total-block {
+    grid-column: 1/-1;
+    background: linear-gradient(135deg, rgba(37,168,101,.2), rgba(37,168,101,.08));
+    border: 2px solid rgba(37,168,101,.3);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .finance-block.inv-1 { background: rgba(37,168,101,.1); border: 1px solid rgba(37,168,101,.2); }
+  .finance-block.inv-2 { background: rgba(232,184,75,.08); border: 1px solid rgba(232,184,75,.2); }
+  .finance-block.mkt   { grid-column: 1/-1; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); }
+  .fb-label { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; }
+  .finance-block.inv-1 .fb-label { color: var(--green-bright); }
+  .finance-block.inv-2 .fb-label { color: var(--gold); }
+  .finance-block.mkt   .fb-label { color: var(--grey-mid); }
+  .fb-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px; font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .finance-block.inv-1 .fb-amount { color: var(--green-bright); }
+  .finance-block.inv-2 .fb-amount { color: var(--gold); }
+  .finance-block.mkt   .fb-amount { color: var(--white); }
+  .fb-note { font-size: 13px; color: var(--grey-mid); line-height: 1.5; }
+  .total-big {
+    font-family: 'Playfair Display', serif;
+    font-size: 62px; font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+  }
+  .total-label-block { }
+  .total-label-block .tl { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 6px; }
+  .total-label-block .ts { font-size: 14px; color: var(--grey-light); }
+  .timeline-grace {
+    display: flex; gap: 0;
+    background: rgba(0,0,0,.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 16px;
+    height: 40px;
+  }
+  .grace-block {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600;
+  }
+  .grace-block.carencia { width: 20%; background: rgba(232,184,75,.2); color: var(--gold); border-right: 2px solid rgba(232,184,75,.3); }
+  .grace-block.pagamento { flex: 1; background: rgba(37,168,101,.15); color: var(--green-bright); }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 7 — CUSTO FIXO
+  ═══════════════════════════════════════════════ */
+  #slide-7 {
+    background: var(--green-deep);
+  }
+  .cost-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 28px;
+    margin: 20px 0;
+    align-items: start;
+  }
+  .cost-table-wrap { }
+  .cost-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    font-size: 14px;
+  }
+  .cost-row.total-row {
+    border-top: 2px solid var(--green-vivid);
+    border-bottom: none;
+    padding-top: 14px;
+    margin-top: 4px;
+  }
+  .cost-row .c-name { color: var(--grey-light); }
+  .cost-row .c-val { font-weight: 600; color: var(--white); font-variant-numeric: tabular-nums; }
+  .cost-row.total-row .c-name { font-weight: 700; color: var(--white); }
+  .cost-row.total-row .c-val { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--green-bright); }
+  .cost-bar-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .cost-bar-item { }
+  .cost-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--grey-mid); margin-bottom: 5px; }
+  .cost-bar-track {
+    height: 8px;
+    background: rgba(255,255,255,.08);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .cost-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--green-vivid), var(--green-bright));
+    transition: width .8s ease;
+  }
+  .cost-summary-box {
+    background: rgba(37,168,101,.12);
+    border: 1px solid rgba(37,168,101,.25);
+    border-radius: 14px;
+    padding: 24px;
+    margin-top: 16px;
+  }
+  .cost-summary-box .cs-title { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 12px; }
+  .cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .cs-item .cs-val { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--white); }
+  .cs-item .cs-label { font-size: 12px; color: var(--grey-mid); margin-top: 2px; }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 8 — PROJEÇÃO FINANCEIRA
+  ═══════════════════════════════════════════════ */
+  #slide-8 {
+    background: var(--green-dark);
+    background-image: radial-gradient(ellipse 50% 50% at 100% 100%, rgba(37,168,101,.12) 0%, transparent 55%);
+  }
+  .proj-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 28px;
+    margin: 20px 0;
+    align-items: start;
+  }
+  .ramp-table { }
+  .ramp-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    font-size: 13px;
+    align-items: center;
+  }
+  .ramp-row.header { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--grey-mid); padding-bottom: 8px; }
+  .ramp-row.breakeven { background: rgba(37,168,101,.15); border-radius: 8px; padding: 10px 12px; margin: 4px -12px; border-bottom: none; }
+  .ramp-row .r-mes { font-weight: 700; color: var(--white); }
+  .ramp-row .r-mem { color: var(--white); font-weight: 600; }
+  .ramp-row .r-receita { color: var(--green-bright); font-weight: 600; }
+  .ramp-row .r-resultado { font-weight: 600; }
+  .ramp-row .r-resultado.deficit { color: #f4a99a; }
+  .ramp-row .r-resultado.breakeven-val { color: var(--gold); }
+  .ramp-row .r-resultado.profit { color: var(--green-bright); }
+  .ramp-row.breakeven .r-mes { color: var(--gold); }
+  .chart-area { }
+  .chart-title { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 16px; }
+  .bar-chart {
+    display: flex;
+    gap: 10px;
+    height: 160px;
+    align-items: flex-end;
+  }
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .bar-fill {
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    background: linear-gradient(180deg, var(--green-bright), var(--green-vivid));
+    transition: height 1s ease;
+    position: relative;
+  }
+  .bar-fill.be { background: linear-gradient(180deg, var(--gold-light), var(--gold)); }
+  .bar-fill.profit { background: linear-gradient(180deg, #6effa0, var(--green-bright)); }
+  .bar-label { font-size: 11px; color: var(--grey-mid); }
+  .bar-val { font-size: 11px; color: var(--white); font-weight: 600; margin-bottom: 4px; }
+  .cac-box {
+    background: rgba(232,184,75,.1);
+    border: 1px solid rgba(232,184,75,.25);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+    display: flex; gap: 20px; align-items: center;
+  }
+  .cac-item { text-align: center; flex: 1; }
+  .cac-item .cac-val { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--gold); }
+  .cac-item .cac-label { font-size: 12px; color: var(--grey-mid); margin-top: 4px; }
+  .cac-sep { width: 1px; background: rgba(255,255,255,.1); align-self: stretch; }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 9 — CRONOGRAMA
+  ═══════════════════════════════════════════════ */
+  #slide-9 {
+    background: var(--green-deep);
+    background-image: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(37,168,101,.12) 0%, transparent 55%);
+  }
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    margin: 28px 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 5%;
+    right: 5%;
+    height: 2px;
+    background: rgba(255,255,255,.1);
+    z-index: 0;
+  }
+  .timeline-week { position: relative; z-index: 1; text-align: center; padding: 0 8px; }
+  .week-dot {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    border: 2px solid;
+  }
+  .timeline-week:nth-child(1) .week-dot { background: rgba(232,184,75,.2); border-color: var(--gold); color: var(--gold); }
+  .timeline-week:nth-child(2) .week-dot { background: rgba(37,168,101,.2); border-color: var(--green-vivid); color: var(--green-bright); }
+  .timeline-week:nth-child(3) .week-dot { background: rgba(37,168,101,.15); border-color: var(--green-vivid); color: var(--green-bright); }
+  .timeline-week:nth-child(4) .week-dot { background: rgba(37,168,101,.25); border-color: var(--green-bright); color: var(--white); }
+  .week-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+  .week-items { list-style: none; font-size: 12px; color: var(--grey-mid); line-height: 1.8; text-align: left; }
+  .week-items li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+  .week-items li::before { content: '→ '; color: var(--green-bright); font-weight: 700; }
+  .week-meta { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 8px; }
+  .week-goal {
+    margin-top: 16px;
+    background: rgba(37,168,101,.15);
+    border: 1px solid rgba(37,168,101,.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-bright);
+    text-align: center;
+  }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 10 — ESTRATÉGIA GUERRILHA
+  ═══════════════════════════════════════════════ */
+  #slide-10 {
+    background: var(--green-mid);
+    background-image: radial-gradient(ellipse 70% 50% at 100% 50%, rgba(0,0,0,.2) 0%, transparent 60%);
+  }
+  .guerrilla-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin: 24px 0;
+  }
+  .g-card {
+    background: rgba(0,0,0,.15);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 14px;
+    padding: 22px 16px;
+    text-align: center;
+    position: relative;
+  }
+  .g-card::before {
+    content: attr(data-num);
+    position: absolute; top: 12px; left: 14px;
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 900;
+    color: rgba(255,255,255,.06);
+    line-height: 1;
+  }
+  .g-icon { font-size: 32px; margin-bottom: 12px; }
+  .g-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 8px; line-height: 1.3; }
+  .g-desc { font-size: 11px; color: var(--grey-mid); line-height: 1.5; }
+  .g-commission {
+    margin-top: 10px;
+    background: rgba(37,168,101,.2);
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green-bright);
+  }
+  .guerrilla-cta {
+    background: rgba(232,184,75,.1);
+    border: 1px solid rgba(232,184,75,.2);
+    border-radius: 12px;
+    padding: 18px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .guerrilla-cta .gc-text { font-size: 14px; color: var(--grey-light); }
+  .guerrilla-cta .gc-text strong { color: var(--white); }
+  .guerrilla-cta .gc-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px; font-weight: 900; color: var(--gold);
+  }
+  .guerrilla-cta .gc-label { font-size: 12px; color: var(--grey-mid); text-align: right; }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 11 — INVESTIDORES
+  ═══════════════════════════════════════════════ */
+  #slide-11 {
+    background: var(--green-deep);
+    background-image:
+      radial-gradient(ellipse 50% 60% at 0% 50%, rgba(232,184,75,.06) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 40% at 100% 100%, rgba(37,168,101,.1) 0%, transparent 50%);
+  }
+  .investor-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin: 20px 0;
+  }
+  .investor-pitch {
+    background: linear-gradient(135deg, rgba(232,184,75,.12), rgba(232,184,75,.04));
+    border: 1px solid rgba(232,184,75,.25);
+    border-radius: 18px;
+    padding: 32px 28px;
+  }
+  .ip-title { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+  .ip-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700;
+    color: var(--white);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .ip-points { list-style: none; font-size: 13px; color: var(--grey-light); line-height: 2; }
+  .ip-points li::before { content: '◆ '; color: var(--gold); }
+  .investor-profile {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 18px;
+    padding: 32px 28px;
+  }
+  .ipr-title { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 16px; }
+  .ipr-item {
+    display: flex; align-items: start; gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    font-size: 13px; color: var(--grey-light);
+  }
+  .ipr-item:last-child { border-bottom: none; }
+  .ipr-icon { font-size: 20px; margin-top: 2px; }
+  .investor-stats {
+    grid-column: 1/-1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .inv-stat {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .inv-stat .is-val { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: var(--gold); line-height: 1; }
+  .inv-stat .is-label { font-size: 12px; color: var(--grey-mid); margin-top: 6px; line-height: 1.3; }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 12 — KPI / QIA
+  ═══════════════════════════════════════════════ */
+  #slide-12 {
+    background: var(--green-dark);
+    background-image: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(37,168,101,.08) 0%, transparent 65%);
+  }
+  .qia-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin: 20px 0;
+  }
+  .qia-explainer {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .qia-explainer h4 { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 16px; }
+  .qia-def {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-style: italic; color: var(--white);
+    margin-bottom: 20px; line-height: 1.4;
+  }
+  .qia-formula {
+    background: rgba(37,168,101,.1);
+    border: 1px solid rgba(37,168,101,.2);
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--green-bright);
+  }
+  .milestones { display: flex; flex-direction: column; gap: 16px; }
+  .milestone-item {
+    display: flex; align-items: center; gap: 20px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    padding: 16px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .milestone-item::before {
+    content: '';
+    position: absolute; top: 0; left: 0; bottom: 0;
+    width: 3px;
+  }
+  .milestone-item.m1::before { background: var(--grey-mid); }
+  .milestone-item.m2::before { background: var(--green-vivid); }
+  .milestone-item.m3::before { background: var(--gold); }
+  .milestone-item.m4::before { background: #6effa0; }
+  .ms-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px; font-weight: 900;
+    line-height: 1; white-space: nowrap;
+    min-width: 110px;
+  }
+  .milestone-item.m1 .ms-val { color: var(--grey-mid); }
+  .milestone-item.m2 .ms-val { color: var(--green-bright); }
+  .milestone-item.m3 .ms-val { color: var(--gold); }
+  .milestone-item.m4 .ms-val { color: #6effa0; }
+  .ms-text .ms-title { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+  .ms-text .ms-desc { font-size: 12px; color: var(--grey-mid); }
+  .expansion-box {
+    grid-column: 1/-1;
+    background: linear-gradient(135deg, rgba(37,168,101,.15), rgba(232,184,75,.08));
+    border: 1px solid rgba(232,184,75,.2);
+    border-radius: 14px;
+    padding: 20px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .expansion-box .exp-text .exp-title { font-size: 13px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .expansion-box .exp-text .exp-desc { font-size: 13px; color: var(--grey-light); }
+  .exp-cities { display: flex; gap: 10px; flex-wrap: wrap; }
+  .exp-city {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px; color: var(--white);
+  }
+
+  /* ═══════════════════════════════════════════════
+     SLIDE 13 — CALL TO ACTION
+  ═══════════════════════════════════════════════ */
+  #slide-13 {
+    background: var(--green-deep);
+    background-image:
+      radial-gradient(ellipse 70% 60% at 50% 50%, rgba(37,168,101,.15) 0%, transparent 65%),
+      radial-gradient(ellipse 30% 30% at 90% 10%, rgba(232,184,75,.1) 0%, transparent 50%);
+    justify-content: center;
+  }
+  .cta-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 10% 100px;
+  }
+  .cta-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .cta-headline em { color: var(--gold); font-style: italic; }
+  .cta-sub { font-size: 16px; color: var(--grey-mid); margin-bottom: 32px; }
+  .checklist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .check-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    padding: 18px 20px;
+    transition: all .2s;
+    cursor: pointer;
+  }
+  .check-item:hover { background: rgba(37,168,101,.12); border-color: rgba(37,168,101,.25); }
+  .check-item.done { background: rgba(37,168,101,.12); border-color: rgba(37,168,101,.25); }
+  .check-box {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    border: 2px solid var(--green-vivid);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all .2s;
+    font-size: 14px;
+  }
+  .check-item.done .check-box { background: var(--green-vivid); border-color: var(--green-vivid); }
+  .check-text .ct-title { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+  .check-text .ct-deadline { font-size: 12px; color: var(--grey-mid); }
+  .cta-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(135deg, rgba(232,184,75,.12), rgba(232,184,75,.04));
+    border: 1px solid rgba(232,184,75,.25);
+    border-radius: 14px;
+    padding: 24px 32px;
+  }
+  .cta-footer .cf-left .cf-label { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .cta-footer .cf-left .cf-text { font-size: 14px; color: var(--grey-light); }
+  .cta-footer .cf-right {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px; font-weight: 900; color: var(--gold);
+    line-height: 1;
+    text-align: right;
+  }
+  .cta-footer .cf-right small { display: block; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 400; color: var(--grey-mid); }
+
+  /* ─── ANIMATIONS ─────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .slide.active .animate-in {
+    animation: fadeUp .5s ease forwards;
+    opacity: 0;
+  }
+  .slide.active .d1 { animation-delay: .05s; }
+  .slide.active .d2 { animation-delay: .15s; }
+  .slide.active .d3 { animation-delay: .25s; }
+  .slide.active .d4 { animation-delay: .35s; }
+  .slide.active .d5 { animation-delay: .45s; }
+  .slide.active .d6 { animation-delay: .55s; }
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+
+<div id="deck">
+
+  <!-- ═══ SLIDE 1 — CAPA ═══ -->
+  <div class="slide active" id="slide-1">
+    <div class="s1-big-num">SST</div>
+    <p class="s1-eyebrow">SST Card · Salvador / BA · 2026</p>
+    <h1 class="s1-title">Minha <span>Clínica,</span><br>Meu Negócio.</h1>
+    <h2 class="s1-subtitle">2ª Filial — Bairro da Paz</h2>
+    <div class="s1-meta">
+      <div class="s1-meta-item">📍 <span>Bairro da Paz, Salvador/BA</span></div>
+      <div class="s1-meta-item">👤 <span>Rogério Ferreira · Mayko Rodrigues</span></div>
+      <div class="s1-meta-item">📅 <span>Lançamento: Maio/2026</span></div>
+    </div>
+    <div class="s1-badge">
+      ✦ Modelo adaptado do Projeto Minha Franquia, Meu Negócio — Cartão de TODOS RT 48/2018
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 2 — OPORTUNIDADE ═══ -->
+  <div class="slide" id="slide-2">
+    <div class="slide-num-badge">02 / 13 · A Oportunidade</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">Mercado</span>
+        <h2 class="slide-title">O Bairro da Paz precisa<br>de saúde de verdade.</h2>
+      </div>
+      <p class="highlight-quote animate-in d2">"Quem vai levar saúde de verdade para o Bairro da Paz?"</p>
+      <div class="stat-grid animate-in d3">
+        <div class="stat-card">
+          <div class="num">21k</div>
+          <div class="label">Habitantes no Bairro da Paz</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">30–60</div>
+          <div class="label">Dias de espera por consulta no SUS</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">R$95</div>
+          <div class="label">Consulta clínica sem cartão</div>
+        </div>
+      </div>
+      <div class="pain-grid animate-in d4">
+        <div class="pain-card">
+          <div class="pain-icon">🏥</div>
+          <div class="pain-title">Fila no SUS</div>
+          <div class="pain-desc">1 a 2 meses de espera para consultas básicas. Sem agilidade, sem dignidade.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">💸</div>
+          <div class="pain-title">Consulta cara</div>
+          <div class="pain-desc">R$95–150 por consulta avulsa. Renda média de R$1.200–2.100. Não cabe no bolso.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">🚫</div>
+          <div class="pain-title">Sem plano acessível</div>
+          <div class="pain-desc">Planos convencionais a R$400+/mês. Inacessível para trabalhadores informais.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 3 — PRODUTO ═══ -->
+  <div class="slide" id="slide-3">
+    <div class="slide-num-badge">03 / 13 · O Produto</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">SST Card</span>
+        <h2 class="slide-title">O plano de saúde que o<br>Bairro da Paz sempre precisou.</h2>
+      </div>
+      <div class="plan-grid animate-in d2">
+        <div class="plan-card individual">
+          <span class="plan-badge">Individual</span>
+          <div class="plan-name">1 titular</div>
+          <div class="plan-price">R$34,90</div>
+          <div class="plan-daily">R$1,16 / dia</div>
+          <ul class="plan-features">
+            <li>Consultas com desconto 60–65%</li>
+            <li>Exames de sangue</li>
+            <li>Acesso rápido sem filas</li>
+          </ul>
+        </div>
+        <div class="plan-card familia">
+          <span class="popular-tag">⭐ Mais Vendido</span>
+          <span class="plan-badge">Família</span>
+          <div class="plan-name">Até 4 pessoas</div>
+          <div class="plan-price">R$79,90</div>
+          <div class="plan-daily">R$0,66 / pessoa / dia</div>
+          <ul class="plan-features">
+            <li>Toda família coberta</li>
+            <li>Pediatria inclusa</li>
+            <li>Ginecologia inclusa</li>
+          </ul>
+        </div>
+        <div class="plan-card empresarial">
+          <span class="plan-badge">Empresarial</span>
+          <div class="plan-name">Até 10 colaboradores</div>
+          <div class="plan-price">R$199,90</div>
+          <div class="plan-daily">R$20 / pessoa / mês</div>
+          <ul class="plan-features">
+            <li>MEIs e comércios locais</li>
+            <li>Mototaxistas</li>
+            <li>Salões e mercadinhos</li>
+          </ul>
+        </div>
+      </div>
+      <div class="economy-banner animate-in d3">
+        <div class="eco-num">67%</div>
+        <div class="eco-text">
+          <strong>Economia comprovada</strong> vs. consulta avulsa.<br>
+          Família que usa o cartão economiza em média <strong>R$329/ano</strong>. O argumento não é só financeiro — é de <strong>tempo e dignidade</strong>.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 4 — MODELO DE NEGÓCIO ═══ -->
+  <div class="slide" id="slide-4">
+    <div class="slide-num-badge">04 / 13 · Modelo de Negócio</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">RT 48 Adaptado</span>
+        <h2 class="slide-title">Transformar Trabalhadores<br>em Empresários.</h2>
+      </div>
+      <p class="philosophy-block animate-in d2">"A base é a Administração Solidária — suprir necessidades e ter o lucro como consequência."</p>
+      <div class="model-comparison animate-in d3">
+        <div class="model-box original">
+          <h4>Modelo Original — Cartão de TODOS</h4>
+          <div class="model-row"><span class="mkey">Investimento</span><span class="mval">R$ 500.000</span></div>
+          <div class="model-row"><span class="mkey">Prazo</span><span class="mval">48 meses</span></div>
+          <div class="model-row"><span class="mkey">Meta QIA</span><span class="mval">4.800 em 24 meses</span></div>
+          <div class="model-row"><span class="mkey">Carência</span><span class="mval">6 meses (1% a.m.)</span></div>
+          <div class="model-row"><span class="mkey">Parcelas</span><span class="mval">48 × R$13.167</span></div>
+        </div>
+        <div class="arrow-center">
+          <div>→</div>
+          <span>Adaptado</span>
+        </div>
+        <div class="model-box adapted">
+          <h4>Modelo SST — Bairro da Paz</h4>
+          <div class="model-row"><span class="mkey">Investimento</span><span class="mval">R$ 95–100k</span></div>
+          <div class="model-row"><span class="mkey">Prazo break-even</span><span class="mval">4 meses</span></div>
+          <div class="model-row"><span class="mkey">Meta QIA</span><span class="mval">430 em 4 meses</span></div>
+          <div class="model-row"><span class="mkey">Sociedade plena</span><span class="mval">24 meses (4.800 QIAs)</span></div>
+          <div class="model-row"><span class="mkey">Retorno</span><span class="mval">+R$18k/mês no Mês 6</span></div>
+        </div>
+      </div>
+      <div class="equity-flow animate-in d4">
+        <div class="equity-item highlight">
+          <div class="e-pct">40%</div>
+          <div class="e-name">Gestor do Cartão<br><small style="color:var(--green-bright)">Rogério</small></div>
+        </div>
+        <div class="equity-sep">+</div>
+        <div class="equity-item">
+          <div class="e-pct" style="color:var(--gold)">35%</div>
+          <div class="e-name">Franqueadora<br><small>TODOS / SST</small></div>
+        </div>
+        <div class="equity-sep">+</div>
+        <div class="equity-item">
+          <div class="e-pct" style="color:var(--grey-mid)">25%</div>
+          <div class="e-name">Franquia<br>Financiadora</div>
+        </div>
+        <div class="equity-sep">=</div>
+        <div class="equity-item" style="background:rgba(37,168,101,.08);">
+          <div class="e-pct" style="color:var(--white)">20%</div>
+          <div class="e-name">Ger. Clínica<br><small>Lucro líquido</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 5 — EQUIPE ═══ -->
+  <div class="slide" id="slide-5">
+    <div class="slide-num-badge">05 / 13 · Estrutura da Equipe</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">Time</span>
+        <h2 class="slide-title">As 3 peças que fazem<br>o motor girar.</h2>
+      </div>
+      <div class="team-grid animate-in d2">
+        <div class="team-card role-1">
+          <div class="team-role-icon">🏆</div>
+          <div class="team-role-title">Gerente do Cartão</div>
+          <div class="team-name">Rogério Ferreira</div>
+          <div class="team-desc">Estratégia, gestão geral, pitch de investidores e tomada de decisão. A cabeça do projeto.</div>
+          <div class="team-equity">
+            <div class="e-val">40%</div>
+            <div class="e-label">equity após meta<br>de 4.800 QIAs</div>
+          </div>
+        </div>
+        <div class="team-card role-2">
+          <div class="team-role-icon">🎯</div>
+          <div class="team-role-title">Coordenador de Vendas</div>
+          <div class="team-name">A Contratar</div>
+          <div class="team-desc">O vendedor que vai bombar o bairro. Presencial no campo, gestão de embaixadores, B2C e B2B. Contratar ANTES de assinar o aluguel.</div>
+          <div class="team-equity">
+            <div class="e-val" style="color:var(--gold)">Sócio</div>
+            <div class="e-label">potencial se bater<br>as metas</div>
+          </div>
+        </div>
+        <div class="team-card role-3">
+          <div class="team-role-icon">🩺</div>
+          <div class="team-role-title">Gerente da Clínica</div>
+          <div class="team-name">A Definir</div>
+          <div class="team-desc">Operação clínica, protocolos, equipe médica e conformidade sanitária. Alguém que já bateu resultados.</div>
+          <div class="team-equity">
+            <div class="e-val">20%</div>
+            <div class="e-label">do lucro líquido<br>da clínica</div>
+          </div>
+        </div>
+      </div>
+      <div class="team-kpi-row animate-in d3">
+        <div class="kpi-mini"><div class="kv">2</div><div class="kl">plantonistas médicos 6h/dia</div></div>
+        <div class="kpi-mini"><div class="kv">2</div><div class="kl">recepção + administrativo</div></div>
+        <div class="kpi-mini"><div class="kv">3</div><div class="kl">embaixadores comunitários</div></div>
+        <div class="kpi-mini"><div class="kv">1</div><div class="kl">técnico de enfermagem</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 6 — FINANCIAMENTO ═══ -->
+  <div class="slide" id="slide-6">
+    <div class="slide-num-badge">06 / 13 · Financiamento</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">Capital</span>
+        <h2 class="slide-title">Dois investidores, um objetivo:<br>abrir com força.</h2>
+      </div>
+      <div class="finance-layout animate-in d2">
+        <div class="finance-block total-block">
+          <div class="total-label-block">
+            <div class="tl">Investimento Total</div>
+            <div class="ts">Estrutura completa para operar 3 meses até break-even</div>
+          </div>
+          <div class="total-big">R$95–100k</div>
+        </div>
+        <div class="finance-block inv-1">
+          <div class="fb-label">Investidor 1 · Capital de Giro</div>
+          <div class="fb-amount">R$50.000</div>
+          <div class="fb-note">Cobre operação dos 3 primeiros meses deficitários. Já confirmado. Empréstimo com retorno acordado.</div>
+        </div>
+        <div class="finance-block inv-2">
+          <div class="fb-label">Investidor 2 · Estrutura da Clínica</div>
+          <div class="fb-amount">R$40–50k</div>
+          <div class="fb-note">Reforma, equipamentos, adaptações do espaço. Parceiro já identificado por Rogério (Gilberto Nálpe).</div>
+        </div>
+        <div class="finance-block mkt">
+          <div class="fb-label">Marketing — Mês 1</div>
+          <div class="fb-amount">R$4.150</div>
+          <div class="fb-note">Panfletos · Faixas · Carro de som · Comissões de embaixadores · Impulsionamento digital</div>
+        </div>
+      </div>
+      <div class="timeline-grace animate-in d3">
+        <div class="grace-block carencia">6 meses carência · só juros</div>
+        <div class="grace-block pagamento">A partir do Mês 4 (break-even) → amortização do principal</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 7 — CUSTO FIXO ═══ -->
+  <div class="slide" id="slide-7">
+    <div class="slide-num-badge">07 / 13 · Custo Fixo Mensal</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">Financeiro</span>
+        <h2 class="slide-title">R$26.000/mês para<br>operar a máquina.</h2>
+      </div>
+      <div class="cost-layout animate-in d2">
+        <div class="cost-table-wrap">
+          <div class="cost-row"><span class="c-name">🏠 Aluguel (~80m²)</span><span class="c-val">R$ 4.000</span></div>
+          <div class="cost-row"><span class="c-name">👨‍⚕️ Equipe médica (2 plantonistas, 6h/dia)</span><span class="c-val">R$ 10.500</span></div>
+          <div class="cost-row"><span class="c-name">👩‍💼 Recepção + Administrativo (2)</span><span class="c-val">R$ 4.500</span></div>
+          <div class="cost-row"><span class="c-name">🩺 Técnico de enfermagem / coleta</span><span class="c-val">R$ 2.500</span></div>
+          <div class="cost-row"><span class="c-name">💡 Água, luz, internet, telefone</span><span class="c-val">R$ 1.200</span></div>
+          <div class="cost-row"><span class="c-name">💊 Insumos e material de consumo</span><span class="c-val">R$ 1.500</span></div>
+          <div class="cost-row"><span class="c-name">📣 Marketing operacional</span><span class="c-val">R$ 1.000</span></div>
+          <div class="cost-row"><span class="c-name">📋 Contador + taxas</span><span class="c-val">R$ 800</span></div>
+          <div class="cost-row total-row"><span class="c-name">TOTAL CUSTO FIXO MENSAL</span><span class="c-val">R$ 26.000</span></div>
+        </div>
+        <div>
+          <div class="cost-bar-wrap">
+            <div class="cost-bar-item">
+              <div class="cost-bar-label"><span>Equipe médica</span><span>40%</span></div>
+              <div class="cost-bar-track"><div class="cost-bar-fill" style="width:40%"></div></div>
+            </div>
+            <div class="cost-bar-item">
+              <div class="cost-bar-label"><span>Recepção + Admin</span><span>17%</span></div>
+              <div class="cost-bar-track"><div class="cost-bar-fill" style="width:17%"></div></div>
+            </div>
+            <div class="cost-bar-item">
+              <div class="cost-bar-label"><span>Aluguel</span><span>15%</span></div>
+              <div class="cost-bar-track"><div class="cost-bar-fill" style="width:15%"></div></div>
+            </div>
+            <div class="cost-bar-item">
+              <div class="cost-bar-label"><span>Técnico enfermagem</span><span>10%</span></div>
+              <div class="cost-bar-track"><div class="cost-bar-fill" style="width:10%"></div></div>
+            </div>
+            <div class="cost-bar-item">
+              <div class="cost-bar-label"><span>Insumos</span><span>6%</span></div>
+              <div class="cost-bar-track"><div class="cost-bar-fill" style="width:6%"></div></div>
+            </div>
+            <div class="cost-bar-item">
+              <div class="cost-bar-label"><span>Utilities</span><span>5%</span></div>
+              <div class="cost-bar-track"><div class="cost-bar-fill" style="width:5%"></div></div>
+            </div>
+            <div class="cost-bar-item">
+              <div class="cost-bar-label"><span>Marketing + Contador</span><span>7%</span></div>
+              <div class="cost-bar-track"><div class="cost-bar-fill" style="width:7%"></div></div>
+            </div>
+          </div>
+          <div class="cost-summary-box">
+            <div class="cs-title">Referência estratégica</div>
+            <div class="cs-grid">
+              <div class="cs-item"><div class="cs-val">430</div><div class="cs-label">membros para break-even</div></div>
+              <div class="cs-item"><div class="cs-val">R$61</div><div class="cs-label">receita por membro/mês</div></div>
+              <div class="cs-item"><div class="cs-val">Mês 4</div><div class="cs-label">break-even operacional</div></div>
+              <div class="cs-item"><div class="cs-val">R$26k</div><div class="cs-label">custo fixo total</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 8 — PROJEÇÃO ═══ -->
+  <div class="slide" id="slide-8">
+    <div class="slide-num-badge">08 / 13 · Projeção Financeira</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">Projeção</span>
+        <h2 class="slide-title">Break-even no Mês 4.<br>Lucro consistente no Mês 6.</h2>
+      </div>
+      <div class="proj-layout animate-in d2">
+        <div class="ramp-table">
+          <div class="ramp-row header">
+            <span>Mês</span><span>Membros</span><span>Receita</span><span>Resultado</span>
+          </div>
+          <div class="ramp-row">
+            <span class="r-mes">1</span><span class="r-mem">80</span><span class="r-receita">R$6.580</span><span class="r-resultado deficit">−R$19.420</span>
+          </div>
+          <div class="ramp-row">
+            <span class="r-mes">2</span><span class="r-mem">180</span><span class="r-receita">R$14.580</span><span class="r-resultado deficit">−R$11.420</span>
+          </div>
+          <div class="ramp-row">
+            <span class="r-mes">3</span><span class="r-mem">300</span><span class="r-receita">R$23.550</span><span class="r-resultado deficit">−R$2.450</span>
+          </div>
+          <div class="ramp-row breakeven">
+            <span class="r-mes">4 ⭐</span><span class="r-mem">430</span><span class="r-receita">R$31.930</span><span class="r-resultado breakeven-val">≈ Zero</span>
+          </div>
+          <div class="ramp-row">
+            <span class="r-mes">6</span><span class="r-mem">600</span><span class="r-receita">R$44.200</span><span class="r-resultado profit">+R$18.200</span>
+          </div>
+          <div class="ramp-row">
+            <span class="r-mes">12</span><span class="r-mem">900</span><span class="r-receita">R$64.400</span><span class="r-resultado profit">+R$38.400</span>
+          </div>
+        </div>
+        <div class="chart-area">
+          <div class="chart-title">Crescimento de Membros</div>
+          <div class="bar-chart">
+            <div class="bar-col">
+              <div class="bar-val">80</div>
+              <div class="bar-fill" style="height:8.9%"></div>
+              <div class="bar-label">M1</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-val">180</div>
+              <div class="bar-fill" style="height:20%"></div>
+              <div class="bar-label">M2</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-val">300</div>
+              <div class="bar-fill" style="height:33.3%"></div>
+              <div class="bar-label">M3</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-val">430</div>
+              <div class="bar-fill be" style="height:47.8%"></div>
+              <div class="bar-label">M4 ⭐</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-val">600</div>
+              <div class="bar-fill profit" style="height:66.7%"></div>
+              <div class="bar-label">M6</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar-val">900</div>
+              <div class="bar-fill profit" style="height:100%"></div>
+              <div class="bar-label">M12</div>
+            </div>
+          </div>
+          <div class="cac-box">
+            <div class="cac-item">
+              <div class="cac-val">R$46</div>
+              <div class="cac-label">CAC Mês 1</div>
+            </div>
+            <div class="cac-sep"></div>
+            <div class="cac-item">
+              <div class="cac-val">R$20</div>
+              <div class="cac-label">CAC a partir do Mês 3</div>
+            </div>
+            <div class="cac-sep"></div>
+            <div class="cac-item">
+              <div class="cac-val">R$61</div>
+              <div class="cac-label">Receita/membro/mês</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 9 — CRONOGRAMA ═══ -->
+  <div class="slide" id="slide-9">
+    <div class="slide-num-badge">09 / 13 · Cronograma</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">30 Dias</span>
+        <h2 class="slide-title">O plano começa<br>antes de abrir a porta.</h2>
+      </div>
+      <div class="timeline animate-in d2">
+        <div class="timeline-week">
+          <div class="week-dot">0</div>
+          <div class="week-meta">Agora · Esta semana</div>
+          <div class="week-title">Pré-operação</div>
+          <ul class="week-items">
+            <li>Contratar Coordenador de Vendas Bairro da Paz</li>
+            <li>Confirmar R$50k Investidor 1</li>
+            <li>Identificar imóvel e negociar aluguel</li>
+            <li>Agendar reunião com Gilberto Nálpe</li>
+          </ul>
+        </div>
+        <div class="timeline-week">
+          <div class="week-dot">1</div>
+          <div class="week-meta">Semana 1</div>
+          <div class="week-title">Estruturação</div>
+          <ul class="week-items">
+            <li>Assinar contrato de aluguel (até dia 20)</li>
+            <li>Contratar arquiteta para reforma</li>
+            <li>Abrir CNPJ clínica</li>
+            <li>Iniciar processos: Bombeiro, Vigilância Sanitária</li>
+            <li>Contratar médico/enfermeiro</li>
+          </ul>
+        </div>
+        <div class="timeline-week">
+          <div class="week-dot">2</div>
+          <div class="week-meta">Semana 2</div>
+          <div class="week-title">Vendas começam</div>
+          <ul class="week-items">
+            <li>Coordenador inicia vendas no bairro</li>
+            <li>Telemedicina ativa (sala separada)</li>
+            <li>Recrutar 3 embaixadores locais</li>
+            <li>Imprimir 2.000 panfletos</li>
+            <li>Confeccionar 3 faixas</li>
+          </ul>
+        </div>
+        <div class="timeline-week">
+          <div class="week-dot">3</div>
+          <div class="week-meta">Semana 3–4</div>
+          <div class="week-title">Inauguração</div>
+          <ul class="week-items">
+            <li>Carro de som (manhã e tarde)</li>
+            <li>Ação na feira (aferição de pressão gratuita)</li>
+            <li>Domingo da Saúde (igrejas parceiras)</li>
+            <li>Live WhatsApp/Instagram com médico</li>
+          </ul>
+          <div class="week-goal">🎯 Meta: 30 cartões na Semana 1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 10 — GUERRILHA ═══ -->
+  <div class="slide" id="slide-10">
+    <div class="slide-num-badge">10 / 13 · Estratégia de Guerrilha</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">Aquisição</span>
+        <h2 class="slide-title">5 frentes para dominar<br>o Bairro da Paz.</h2>
+      </div>
+      <div class="guerrilla-grid animate-in d2">
+        <div class="g-card" data-num="1">
+          <div class="g-icon">🤝</div>
+          <div class="g-title">Embaixadores Locais</div>
+          <div class="g-desc">Moradores do bairro, comunicativos, presentes em grupos de WhatsApp. Vendem de igual para igual.</div>
+          <div class="g-commission">R$15 individual · R$30 família</div>
+        </div>
+        <div class="g-card" data-num="2">
+          <div class="g-icon">📢</div>
+          <div class="g-title">Carro de Som + Panfletagem</div>
+          <div class="g-desc">4 rodadas nos 5 pontos de maior fluxo: feira, terminal, mercadinho, escola, entrada do bairro.</div>
+          <div class="g-commission">2.000 panfletos · 3 faixas</div>
+        </div>
+        <div class="g-card" data-num="3">
+          <div class="g-icon">⛪</div>
+          <div class="g-title">Parcerias com Igrejas</div>
+          <div class="g-desc">"Domingo da Saúde" — aferição de pressão e glicemia gratuitas após o culto. Conversão presencial.</div>
+          <div class="g-commission">15 cadastros por ação</div>
+        </div>
+        <div class="g-card" data-num="4">
+          <div class="g-icon">🛵</div>
+          <div class="g-title">Plano Empresarial</div>
+          <div class="g-desc">Mototaxistas, salões, mercadinhos. 10 pessoas = R$199,90/mês. Um contrato, impacto coletivo.</div>
+          <div class="g-commission">R$20/pessoa/mês</div>
+        </div>
+        <div class="g-card" data-num="5">
+          <div class="g-icon">📱</div>
+          <div class="g-title">Digital + WhatsApp</div>
+          <div class="g-desc">Tráfego pago Instagram/Facebook + funil WhatsApp Business. Panfleto → QR Code → conversa → venda.</div>
+          <div class="g-commission">R$300 impulsionamento</div>
+        </div>
+      </div>
+      <div class="guerrilla-cta animate-in d3">
+        <div class="gc-text">
+          <strong>Meta Mês 1:</strong> 80 membros ativos com CAC médio de R$46<br>
+          A partir do Mês 3: <strong>CAC cai para ~R$20</strong> com boca a boca orgânico
+        </div>
+        <div>
+          <div class="gc-num">80</div>
+          <div class="gc-label">membros no Mês 1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 11 — FINANCIAMENTO PRÓPRIO + EXPANSÃO ═══ -->
+  <div class="slide" id="slide-11">
+    <div class="slide-num-badge">11 / 13 · Estrutura de Capital</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">Capital</span>
+        <h2 class="slide-title">Bairro da Paz: capital próprio.<br>Expansão: investidores.</h2>
+      </div>
+      <div class="investor-layout animate-in d2">
+        <div class="investor-pitch">
+          <div class="ip-title">Esta Unidade — Financiamento Próprio</div>
+          <div class="ip-headline">"Para essa unidade,<br>a gente não precisa<br>do capital externo."<br><small style="font-size:14px;color:var(--grey-mid);font-family:'DM Sans',sans-serif;font-style:normal">— Rogério Ferreira</small></div>
+          <ul class="ip-points">
+            <li><strong style="color:var(--white)">R$50k — Investidor 1:</strong> empréstimo para capital de giro (já confirmado)</li>
+            <li><strong style="color:var(--white)">R$40–50k — Parceiro Rogério:</strong> estrutura e reforma da clínica</li>
+            <li>Zero diluição de equity nesta unidade</li>
+            <li>Rogério mantém controle total do projeto piloto</li>
+            <li>Bairro da Paz é a vitrine para atrair investidores nas próximas unidades</li>
+          </ul>
+        </div>
+        <div class="investor-profile">
+          <div class="ipr-title">Próximas Unidades — Investidores Potenciais</div>
+          <div class="ipr-item"><span class="ipr-icon">🏦</span><span><strong style="color:var(--white)">Gilberto Nálpe</strong> — visionário, já quis entrar antes, aguarda case de sucesso</span></div>
+          <div class="ipr-item"><span class="ipr-icon">🩻</span><span><strong style="color:var(--white)">Ressonância / Off-Town</strong> — parceiros com equipamentos completos; entram com estrutura, SST entra com cartão e gestão</span></div>
+          <div class="ipr-item"><span class="ipr-icon">🏙️</span><span><strong style="color:var(--white)">Grandes centros de Salvador</strong> — parceria de referenciamento para Santa Amaro e interior</span></div>
+          <div class="ipr-item"><span class="ipr-icon">📊</span><span>Modelo: investidor entra com capital, Rogério com operação — retorno via dividendos</span></div>
+        </div>
+        <div class="investor-stats">
+          <div class="inv-stat"><div class="is-val">R$100k</div><div class="is-label">Capital total Bairro da Paz<br>(Rogério + 1 parceiro)</div></div>
+          <div class="inv-stat"><div class="is-val">0%</div><div class="is-label">Equity cedido nesta unidade</div></div>
+          <div class="inv-stat"><div class="is-val">Mês 4</div><div class="is-label">Break-even → números reais para mostrar investidores</div></div>
+          <div class="inv-stat"><div class="is-val">Santa<br>Amaro</div><div class="is-label">1ª expansão com capital externo</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 12 — KPI / QIA ═══ -->
+  <div class="slide" id="slide-12">
+    <div class="slide-num-badge">12 / 13 · KPI Principal</div>
+    <div class="slide-inner">
+      <div class="slide-header animate-in d1">
+        <span class="tag">Métricas</span>
+        <h2 class="slide-title">QIA: o único número<br>que importa.</h2>
+      </div>
+      <div class="qia-layout animate-in d2">
+        <div class="qia-explainer">
+          <h4>O que é QIA?</h4>
+          <div class="qia-def">"Quantidade de Itens Arrecadados" — membros que efetivamente pagaram no mês."</div>
+          <p style="font-size:13px;color:var(--grey-mid);margin-bottom:16px;line-height:1.6">Não é número de cadastrados. Não é número de assinantes. É quem pagou. É o coração da operação.</p>
+          <div class="qia-formula">
+            QIA = Membros pagantes no mês<br>
+            Break-even = 430 QIAs<br>
+            Sociedade plena = 4.800 QIAs em 24m
+          </div>
+        </div>
+        <div class="milestones">
+          <div class="milestone-item m1">
+            <div class="ms-val">430</div>
+            <div class="ms-text">
+              <div class="ms-title">Break-even operacional</div>
+              <div class="ms-desc">Mês 4 — operação se paga, zero déficit</div>
+            </div>
+          </div>
+          <div class="milestone-item m2">
+            <div class="ms-val">548</div>
+            <div class="ms-text">
+              <div class="ms-title">Meta Mês 6</div>
+              <div class="ms-desc">+R$18.200/mês de lucro consistente</div>
+            </div>
+          </div>
+          <div class="milestone-item m3">
+            <div class="ms-val">900</div>
+            <div class="ms-text">
+              <div class="ms-title">Meta Mês 12</div>
+              <div class="ms-desc">+R$38.400/mês — filial consolidada</div>
+            </div>
+          </div>
+          <div class="milestone-item m4">
+            <div class="ms-val">4.800</div>
+            <div class="ms-text">
+              <div class="ms-title">Sociedade plena — 24 meses</div>
+              <div class="ms-desc">40% equity para Rogério · Expansão liberada</div>
+            </div>
+          </div>
+        </div>
+        <div class="expansion-box">
+          <div class="exp-text">
+            <div class="exp-title">🚀 Gatilho de Expansão Regional</div>
+            <div class="exp-desc">Ao atingir 4.800 QIAs no Bairro da Paz → Modelo replicado nas cidades do interior</div>
+          </div>
+          <div class="exp-cities">
+            <div class="exp-city">Santa Amaro</div>
+            <div class="exp-city">Cidades do Interior BA</div>
+            <div class="exp-city">+ 92 unidades potenciais</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 13 — CTA ═══ -->
+  <div class="slide" id="slide-13">
+    <div class="cta-inner">
+      <div class="slide-num-badge animate-in d1">13 / 13 · Próximos Passos</div>
+      <div style="margin-top:20px">
+        <h2 class="cta-headline animate-in d2">A janela está aberta.<br><em>É hora de entrar.</em></h2>
+        <p class="cta-sub animate-in d3">Esta semana define se o Bairro da Paz vai ter saúde de verdade.</p>
+      </div>
+      <div class="checklist-grid animate-in d4">
+        <div class="check-item" onclick="this.classList.toggle('done'); this.querySelector('.check-box').textContent = this.classList.contains('done') ? '✓' : ''">
+          <div class="check-box"></div>
+          <div class="check-text">
+            <div class="ct-title">Contratar Coordenador de Vendas</div>
+            <div class="ct-deadline">Antes de assinar o aluguel · Esta semana</div>
+          </div>
+        </div>
+        <div class="check-item" onclick="this.classList.toggle('done'); this.querySelector('.check-box').textContent = this.classList.contains('done') ? '✓' : ''">
+          <div class="check-box"></div>
+          <div class="check-text">
+            <div class="ct-title">Assinar contrato de aluguel</div>
+            <div class="ct-deadline">Até dia 20 de Maio/2026</div>
+          </div>
+        </div>
+        <div class="check-item" onclick="this.classList.toggle('done'); this.querySelector('.check-box').textContent = this.classList.contains('done') ? '✓' : ''">
+          <div class="check-box"></div>
+          <div class="check-text">
+            <div class="ct-title">Confirmar R$50k — Investidor 1</div>
+            <div class="ct-deadline">Capital de giro operacional · Esta semana</div>
+          </div>
+        </div>
+        <div class="check-item" onclick="this.classList.toggle('done'); this.querySelector('.check-box').textContent = this.classList.contains('done') ? '✓' : ''">
+          <div class="check-box"></div>
+          <div class="check-text">
+            <div class="ct-title">Reunião com Gilberto Nálpe</div>
+            <div class="ct-deadline">Investidor 2 — estrutura clínica</div>
+          </div>
+        </div>
+        <div class="check-item" onclick="this.classList.toggle('done'); this.querySelector('.check-box').textContent = this.classList.contains('done') ? '✓' : ''">
+          <div class="check-box"></div>
+          <div class="check-text">
+            <div class="ct-title">Iniciar vendas SST Card no bairro</div>
+            <div class="ct-deadline">Coordenador vende ANTES da clínica abrir</div>
+          </div>
+        </div>
+        <div class="check-item" onclick="this.classList.toggle('done'); this.querySelector('.check-box').textContent = this.classList.contains('done') ? '✓' : ''">
+          <div class="check-box"></div>
+          <div class="check-text">
+            <div class="ct-title">Agendar pitch para investidores locais</div>
+            <div class="ct-deadline">Comunidade empresarial do Bairro da Paz</div>
+          </div>
+        </div>
+      </div>
+      <div class="cta-footer animate-in d5">
+        <div class="cf-left">
+          <div class="cf-label">Meta do Sprint</div>
+          <div class="cf-text">
+            ≥ 20 adesões + ≥ 20 reativações até 23/05<br>
+            → <strong style="color:var(--white)">Contrato de Advisory + Abertura do Bairro da Paz</strong>
+          </div>
+        </div>
+        <div class="cf-right">
+          430<small>membros até o Mês 4</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- ─── NAVIGATION ─── -->
+<div id="nav">
+  <button class="nav-btn" id="btn-prev" disabled>←</button>
+  <span id="slide-counter">1 / 13</span>
+  <button class="nav-btn" id="btn-next">→</button>
+</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const counter = document.getElementById('slide-counter');
+  const progressBar = document.getElementById('progress-bar');
+  let current = 0;
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= slides.length) return;
+    slides[current].classList.remove('active');
+    slides[current].classList.add('exit');
+    setTimeout(() => slides[current].classList.remove('exit'), 600);
+    current = idx;
+    slides[current].classList.add('active');
+    counter.textContent = `${current + 1} / ${slides.length}`;
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current === slides.length - 1;
+    progressBar.style.width = `${((current + 1) / slides.length) * 100}%`;
+  }
+
+  btnPrev.addEventListener('click', () => goTo(current - 1));
+  btnNext.addEventListener('click', () => goTo(current + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') goTo(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                     goTo(current - 1);
+  });
+
+  // Touch / swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) dx < 0 ? goTo(current + 1) : goTo(current - 1);
+  });
+
+  // Init progress bar
+  progressBar.style.width = `${(1 / slides.length) * 100}%`;
+</script>
+</body>
+</html>

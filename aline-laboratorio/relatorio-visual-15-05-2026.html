@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico MADIP — 15/05/2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            page-break-after: always;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px solid #1987c3;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #1987c3;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .date-info {
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: white;
+            background: #1987c3;
+            padding: 10px 15px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .card.abril {
+            border-left: 5px solid #27ae60;
+        }
+
+        .card.maio {
+            border-left: 5px solid #e74c3c;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1987c3;
+            margin-bottom: 15px;
+        }
+
+        .metric {
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1987c3;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .status-good {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-bad {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th {
+            background: #1987c3;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+            font-size: 13px;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .highlight {
+            background: #fffacd;
+            font-weight: bold;
+        }
+
+        .critical {
+            background: #ffe6e6;
+            color: #c41e3a;
+            font-weight: bold;
+        }
+
+        .positive {
+            background: #e6ffe6;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .action-section {
+            background: #f0f8ff;
+            border-left: 4px solid #1987c3;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .action-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1987c3;
+            margin-bottom: 10px;
+        }
+
+        .action-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .action-list li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .action-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .goal-box {
+            background: linear-gradient(135deg, #1987c3 0%, #0d5fa3 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .goal-box h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .goal-box p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .mantra {
+            font-size: 20px;
+            font-weight: bold;
+            font-style: italic;
+            margin-top: 10px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+            padding-top: 15px;
+        }
+
+        .timeline {
+            margin-bottom: 30px;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .timeline-date {
+            background: #1987c3;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            min-width: 90px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .timeline-content {
+            padding-top: 8px;
+            flex: 1;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .live-doc-banner {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .live-doc-banner strong {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .notion-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .notion-link-btn {
+            display: inline-block;
+            background: #1987c3;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            transition: background 0.3s;
+            text-align: center;
+        }
+
+        .notion-link-btn:hover {
+            background: #0d5fa3;
+        }
+
+        @media print {
+            .live-doc-banner {
+                background: #f0f0f0;
+                color: #333;
+                border: 2px dashed #999;
+            }
+
+            .notion-links {
+                display: none;
+            }
+
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 DIAGNÓSTICO MADIP</h1>
+            <p class="subtitle">Laboratório MADIP — Situação Atual e Plano de Ação</p>
+            <p class="date-info">Sessão: 15/05/2026 | Período: 01–14 de Maio (D+9 pós-kickoff)</p>
+        </header>
+
+        <!-- DOCUMENTO VIVO - CONEXÃO NOTION -->
+        <div class="live-doc-banner">
+            <strong>✨ Este é um DOCUMENTO VIVO conectado ao Notion</strong>
+            <p>Os números aqui refletem a situação de 15/05 às 11h. Para dados atualizados em tempo real e para preencher checklist de ações, consulte os dashboards abaixo:</p>
+            <div class="notion-links">
+                <a href="https://www.notion.so/f812b96574d24819abe2b18fd3dd8b13" target="_blank" class="notion-link-btn">📊 Central de Conversão</a>
+                <a href="https://www.notion.so/870db449e1434f0caea41067bf568442" target="_blank" class="notion-link-btn">🔄 Pipeline Clientes</a>
+                <a href="https://www.notion.so/0f15384694d64aea9a0a4faa59d346c9" target="_blank" class="notion-link-btn">📋 Central de Matinais</a>
+                <a href="https://www.notion.so/49563656f93941e29468c7876c9356db" target="_blank" class="notion-link-btn">📅 Rastreamento Cadências</a>
+            </div>
+        </div>
+
+        <!-- COMPARATIVO VISUAL -->
+        <h2>📈 ONDE ESTÁVAMOS vs ONDE ESTAMOS</h2>
+
+        <div class="comparison-grid">
+            <div class="card abril">
+                <div class="card-title">15 ABRIL (Baseline)</div>
+                <div class="metric">
+                    <span class="metric-label">Conversão Quantidade</span>
+                    <span class="metric-value">48,20% <span class="status-badge status-good">✓</span></span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Conversão Valor</span>
+                    <span class="metric-value">38,37% <span class="status-badge status-good">✓</span></span>
+                </div>
+                <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+                <div class="metric">
+                    <span class="metric-label">Aline</span>
+                    <span class="metric-value">53,03%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Ilana (PICO)</span>
+                    <span class="metric-value">64,95%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Débora</span>
+                    <span class="metric-value">15,25%</span>
+                </div>
+            </div>
+
+            <div class="card maio">
+                <div class="card-title">15 MAIO (Hoje - D+9)</div>
+                <div class="metric">
+                    <span class="metric-label">Conversão Quantidade</span>
+                    <span class="metric-value">41,51% <span class="status-badge status-warning">⚠</span></span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Conversão Valor</span>
+                    <span class="metric-value">31,73% <span class="status-badge status-bad">✗</span></span>
+                </div>
+                <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+                <div class="metric">
+                    <span class="metric-label">Aline ⭐</span>
+                    <span class="metric-value">49,00%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Ilana</span>
+                    <span class="metric-value">37,13%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Débora ❌</span>
+                    <span class="metric-value">10,42%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANÁLISE POR ATENDENTE -->
+        <h2>🎯 QUEM ESTÁ LEVANDO E QUEM ESTÁ BLOQUEANDO</h2>
+        <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+            💡 <strong>Clique no nome de cada atendente abaixo</strong> para ver histórico de ligações, orçamentos e feedback detalhado na Central de Conversão:
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Atendente</th>
+                    <th>Status</th>
+                    <th>Conversão %</th>
+                    <th>Tempo Médio</th>
+                    <th>Situação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="https://www.notion.so/f812b96574d24819abe2b18fd3dd8b13" target="_blank" style="color: #27ae60; text-decoration: underline; font-weight: bold;">Aline Souza</a></td>
+                    <td>⭐ ALAVANCA</td>
+                    <td class="positive">49,00% (valor)</td>
+                    <td>14:27 min</td>
+                    <td>Crescimento exponencial S1→S2: <strong>+20,53pp</strong> — Método FUNCIONA ✓</td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.notion.so/f812b96574d24819abe2b18fd3dd8b13" target="_blank" style="color: #333; text-decoration: underline;">Ilana Macedo</a></td>
+                    <td>✓ ESTÁVEL</td>
+                    <td>56,00% (qtd)</td>
+                    <td>5:57 min</td>
+                    <td>Queda em valor, mas mantém volume — Replicável com estagiária</td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.notion.so/f812b96574d24819abe2b18fd3dd8b13" target="_blank" style="color: #c41e3a; text-decoration: underline; font-weight: bold;">Débora Silva</a></td>
+                    <td>❌ CRÍTICO</td>
+                    <td class="critical">10,42% (valor)</td>
+                    <td>79:24 min</td>
+                    <td>Ligações longas SEM FECHAMENTO — Não aplica script Aline — RETREINO HOJE</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- DIAGNÓSTICO -->
+        <h2>🔍 O QUE DESCOBRIMOS</h2>
+
+        <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+            <strong style="color: #856404;">Conversão geral caiu -6,69pp = CHOQUE TRANSIÇÃO MADIP (esperado)</strong>
+            <p style="margin-top: 10px; color: #856404; font-size: 13px;">Implementar novo método causa queda temporária. Mas a aceleração de Aline (S1→S2) comprova que o método funciona.</p>
+        </div>
+
+        <div style="background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+            <strong style="color: #155724;">🚀 Aline é a alavanca do programa</strong>
+            <p style="margin-top: 10px; color: #155724; font-size: 13px;">De 34,19% (S1) para 54,72% (S2) em 1 semana. Método de qualificação dela FUNCIONA. Precisa de estagiária para replicar.</p>
+        </div>
+
+        <div style="background: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+            <strong style="color: #721c24;">❌ Débora é o bloqueador crítico</strong>
+            <p style="margin-top: 10px; color: #721c24; font-size: 13px;">Está orçando, não fechando. Ligações de 79:24 min sem conversão = não está aplicando script de Aline. Precisa retreino HOJE (16/05).</p>
+        </div>
+
+        <!-- AÇÕES IMEDIATAS -->
+        <h2>✅ 11 AÇÕES IMEDIATAS — O QUE VAMOS FAZER</h2>
+        <p style="font-size: 12px; color: #666; margin-bottom: 15px;">
+            📌 <strong>Acompanhe o progresso de cada ação no Notion:</strong>
+            <a href="https://www.notion.so/0f15384694d64aea9a0a4faa59d346c9" target="_blank" style="color: #1987c3; text-decoration: underline;">Central de Matinais Diárias</a>
+            (atualizar checklist diário) e
+            <a href="https://www.notion.so/870db449e1434f0caea41067bf568442" target="_blank" style="color: #1987c3; text-decoration: underline;">Pipeline Clientes</a>
+            (status de cadências automáticas).
+        </p>
+
+        <div class="action-section">
+            <div class="action-title">CONTRATAÇÃO URGENTE</div>
+            <ul class="action-list">
+                <li><strong>Aline:</strong> Buscar indicações estagiária → contato setor recrutamento <strong>(ESTA SEMANA)</strong></li>
+                <li><strong>Maicon:</strong> Agendar reunião Irlana (RH) próxima semana</li>
+            </ul>
+        </div>
+
+        <div class="action-section">
+            <div class="action-title">DADOS & ANÁLISES</div>
+            <ul class="action-list">
+                <li><strong>Aline:</strong> Entregar curva ABC produtos (venda + margem) próxima reunião</li>
+                <li><strong>Aline:</strong> Solicitar financeira: margens por produto + pesquisa concorrência</li>
+                <li><strong>Aline:</strong> Enviar lista clientes convertidos para Maicon</li>
+                <li><strong>Aline:</strong> Enviar lista completa orçamentos com telefones (convertidos + não-convertidos)</li>
+            </ul>
+        </div>
+
+        <div class="action-section">
+            <div class="action-title">CADÊNCIA FOLLOW-UP (Automática)</div>
+            <ul class="action-list">
+                <li><strong>Débora + Ilana:</strong> Configurar disparos WhatsApp automático (D+1, D+2, D+4, D+5, D+7)</li>
+                <li><strong>Aline:</strong> Agendar 30 min com Débora para setup sistema mensagens</li>
+                <li><strong>Raquel:</strong> Providenciar 2 chips API não-oficial WhatsApp</li>
+            </ul>
+        </div>
+
+        <div class="action-section">
+            <div class="action-title">ROTINA & ACCOUNTABILITY DIÁRIA</div>
+            <ul class="action-list">
+                <li><strong>Aline:</strong> Garantir almoço APÓS 13h | Trabalho 100% dedicado 13h–16h (intocável)</li>
+                <li><strong>Aline:</strong> "Cantadas" diárias no grupo (números + orçamentos fechados)</li>
+                <li><strong>Aline:</strong> Vespertina obrigatória 16h para revisar números do dia</li>
+            </ul>
+        </div>
+
+        <!-- META E MANTRA -->
+        <div class="goal-box">
+            <h3>🎯 NOSSA META DAQUI A 7 DIAS</h3>
+            <p><strong>Voltar para 40% de conversão (22/05/2026)</strong></p>
+            <p>Se Aline + Ilana mantêm + Débora treina + cadência automática funciona = atingimos.</p>
+            <div class="mantra">"Todo dia é dia de 38%, todo dia é dia de melhorar 1% a mais"</div>
+        </div>
+
+        <!-- TIMELINE -->
+        <h2>📅 PRÓXIMOS PASSOS</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-date">16/05 (amanhã)</div>
+                <div class="timeline-content">
+                    <strong>Retreino Débora:</strong> 30 minutos com Aline para aprender script de qualificação + fechamento
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">16–22/05</div>
+                <div class="timeline-content">
+                    <strong>Essa semana:</strong> Aline busca indicações estagiária | Débora+Ilana preparam cadência WhatsApp | Aline entrega dados ABC
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">22/05 (próxima reunião)</div>
+                <div class="timeline-content">
+                    <strong>Validação D+16:</strong> Conversão atingiu 40%? | Estagiária contratada? | Cadência ativa? | Dados recebidos?
+                </div>
+            </div>
+        </div>
+
+        <!-- LIÇÃO -->
+        <h2>💡 LIÇÃO PARA TODA EQUIPE</h2>
+
+        <div style="background: #f0f8ff; border-left: 4px solid #1987c3; padding: 20px; border-radius: 4px;">
+            <p style="font-size: 14px; line-height: 1.6; color: #333;">
+                <strong>Liderança não é mandar, é servir.</strong><br><br>
+                "O maior entre vós é o que mais serve" (Mateus 23:11)<br><br>
+                <strong>Aline é a líder da operação.</strong> Ela não espera que a RH resolva. Ela vai buscar a estagiária. Ela não espera que alguém avise Débora. Ela vai treinar. Ela não espera que alguém organize os dados. Ela vai recolher.<br><br>
+                <strong>Quem mais precisa deve fazer mais para resolver o problema.</strong><br><br>
+                E quando Ilana e Débora convertem, quem recebe reconhecimento? Elas. Aline trabalha nos bastidores.
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>Diagnóstico MADIP — Laboratório | Sessão 15/05/2026 às 10h00</p>
+            <p>Próxima reunião: 22/05/2026 às 10h00</p>
+            <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+            <p style="font-size: 11px; color: #999; margin-top: 15px;">
+                <strong>✅ DOCUMENTO VIVO ATIVADO:</strong><br>
+                Este HTML agora está conectado às 4 bases de dados do Notion:<br><br>
+
+                🔗 <strong>Links ativos:</strong><br>
+                • 📊 Central de Conversão → para ver dados de Aline, Ilana e Débora<br>
+                • 🔄 Pipeline Clientes → para rastrear status de orçamentos e conversões<br>
+                • 📋 Central de Matinais → para checklist diário de ações<br>
+                • 📅 Rastreamento Cadências → para acompanhar cadência automática (D+1, D+2, D+4, D+5, D+7)<br><br>
+
+                <strong>Como usar:</strong><br>
+                1. Abra este HTML em um navegador (Firefox, Chrome, Safari)<br>
+                2. Clique nos botões verdes ou azuis para abrir cada base no Notion<br>
+                3. Para PDF: Ctrl+P → Salvar como PDF (links ficarão clicáveis se abrir PDF no navegador)<br>
+                4. Compartilhe com a equipe para acompanhamento em tempo real<br><br>
+
+                Os dados do Notion sempre estarão atualizados — este HTML é apenas a visão visual inicial. A equipe consulta o Notion via botões para dados live e para registrar progressos diários.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

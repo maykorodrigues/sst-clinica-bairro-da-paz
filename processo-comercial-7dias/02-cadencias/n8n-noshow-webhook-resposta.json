@@ -1,0 +1,248 @@
+{
+  "name": "SST No-Show Lab — Webhook Resposta Paciente",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-noshow-resposta",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson",
+        "options": {}
+      },
+      "id": "b1b2c3d4-0001-0001-0001-100000000001",
+      "name": "Webhook Evolution Resposta",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [120, 300],
+      "webhookId": "sst-noshow-resposta"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrair número do remetente dependendo do formato da Evolution API\nconst body = $input.first().json;\n\nlet numeroRemetente = '';\n\n// Evolution API v2 — formato típico de webhook\nif (body.data && body.data.key && body.data.key.remoteJid) {\n  numeroRemetente = body.data.key.remoteJid.replace('@s.whatsapp.net', '').replace('@c.us', '');\n} else if (body.from) {\n  numeroRemetente = String(body.from).replace('@s.whatsapp.net', '').replace('@c.us', '');\n} else if (body.key && body.key.remoteJid) {\n  numeroRemetente = body.key.remoteJid.replace('@s.whatsapp.net', '').replace('@c.us', '');\n}\n\n// Limpar número (manter apenas dígitos)\nnumeroRemetente = numeroRemetente.replace(/\\D/g, '');\n\nif (!numeroRemetente) {\n  return [{ json: { encontrado: false, motivo: 'numero_nao_identificado' } }];\n}\n\nreturn [{\n  json: {\n    numero_remetente: numeroRemetente,\n    mensagem_recebida: body?.data?.message?.conversation || body?.message || '',\n    raw: body\n  }\n}];"
+      },
+      "id": "b1b2c3d4-0002-0002-0002-100000000002",
+      "name": "Extrair Número Remetente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [340, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.numero_remetente }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b1b2c3d4-0003-0003-0003-100000000003",
+      "name": "Tem Número?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [560, 300]
+    },
+    {
+      "parameters": {
+        "operation": "readAllRows",
+        "documentId": {
+          "value": "={{ $env.SST_SHEETS_ID }}",
+          "__rl": true,
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "No-Show Lab",
+          "__rl": true,
+          "mode": "name"
+        },
+        "options": {
+          "headerRow": 1
+        }
+      },
+      "id": "b1b2c3d4-0004-0004-0004-100000000004",
+      "name": "Ler Sheets (buscar paciente)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [780, 180],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "SUBSTITUIR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets SST"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const numeroRemetente = $('Extrair Número Remetente').first().json.numero_remetente;\nconst mensagem = $('Extrair Número Remetente').first().json.mensagem_recebida;\nconst todasLinhas = $input.all();\n\n// Buscar paciente pelo número de WhatsApp\nconst paciente = todasLinhas.find(item => {\n  const wp = String(item.json.whatsapp || '').replace(/\\D/g, '');\n  return wp === numeroRemetente;\n});\n\nif (!paciente) {\n  return [{ json: { encontrado: false, motivo: 'paciente_nao_encontrado', numero: numeroRemetente } }];\n}\n\n// Não processar se já encerrado ou convertido\nif (paciente.json.fase_cadencia === 'encerrado' ||\n    paciente.json.status === 'convertido' ||\n    paciente.json.status === 'reagendado') {\n  return [{ json: { encontrado: false, motivo: 'cadencia_ja_encerrada', nome: paciente.json.nome_paciente } }];\n}\n\nconst hoje = new Date().toISOString().split('T')[0];\n\nreturn [{\n  json: {\n    encontrado: true,\n    row_number: paciente.json.row_number,\n    nome_paciente: paciente.json.nome_paciente,\n    whatsapp: paciente.json.whatsapp,\n    exame_solicitado: paciente.json.exame_solicitado,\n    valor_orcamento: paciente.json.valor_orcamento,\n    data_agendamento: paciente.json.data_agendamento,\n    fase_cadencia: paciente.json.fase_cadencia,\n    mensagem_recebida: mensagem,\n    data_hoje: hoje\n  }\n}];"
+      },
+      "id": "b1b2c3d4-0005-0005-0005-100000000005",
+      "name": "Identificar Paciente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 180]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.encontrado }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b1b2c3d4-0006-0006-0006-100000000006",
+      "name": "Paciente Encontrado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1220, 180]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "value": "={{ $env.SST_SHEETS_ID }}",
+          "__rl": true,
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "No-Show Lab",
+          "__rl": true,
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "respondeu": "TRUE",
+            "data_ultimo_contato": "={{ $json.data_hoje }}",
+            "log_disparo": "=respondeu_{{ $json.data_hoje }}",
+            "fase_cadencia": "encerrado"
+          },
+          "matchingColumns": ["row_number"],
+          "schema": [
+            { "id": "respondeu", "displayName": "respondeu", "required": false, "defaultMatch": false, "canBeUsedToMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "data_ultimo_contato", "displayName": "data_ultimo_contato", "required": false, "defaultMatch": false, "canBeUsedToMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "log_disparo", "displayName": "log_disparo", "required": false, "defaultMatch": false, "canBeUsedToMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "fase_cadencia", "displayName": "fase_cadencia", "required": false, "defaultMatch": false, "canBeUsedToMatch": false, "display": true, "type": "string", "readOnly": false, "removed": false },
+            { "id": "row_number", "displayName": "row_number", "required": false, "defaultMatch": true, "canBeUsedToMatch": true, "display": true, "type": "number", "readOnly": false, "removed": false }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1b2c3d4-0007-0007-0007-100000000007",
+      "name": "Parar Cadência (respondeu=TRUE)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [1440, 80],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "SUBSTITUIR_GOOGLE_SHEETS_CREDENTIAL_ID",
+          "name": "Google Sheets SST"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_CHAT_ID_ALINE }}",
+        "text": "=🔥 *Paciente Respondeu — Fechar Agora!*\n\n👤 *{{ $json.nome_paciente }}*\n🔬 {{ $json.exame_solicitado }}\n💰 R$ {{ $json.valor_orcamento }}\n📱 {{ $json.whatsapp }}\n\n💬 Mensagem: _\"{{ $json.mensagem_recebida }}\"_\n\n👉 *Abre o WhatsApp e fecha o reagendamento agora!* ⚡",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "b1b2c3d4-0008-0008-0008-100000000008",
+      "name": "Alertar Aline — Paciente Respondeu",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [1660, 80],
+      "credentials": {
+        "telegramApi": {
+          "id": "SUBSTITUIR_TELEGRAM_CREDENTIAL_ID",
+          "name": "Telegram SST Bot"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "b1b2c3d4-0009-0009-0009-100000000009",
+      "name": "Ignorar (não é paciente no-show)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1440, 320]
+    },
+    {
+      "parameters": {},
+      "id": "b1b2c3d4-0010-0010-0010-100000000010",
+      "name": "Ignorar (sem número)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [780, 420]
+    }
+  ],
+  "connections": {
+    "Webhook Evolution Resposta": {
+      "main": [
+        [{ "node": "Extrair Número Remetente", "type": "main", "index": 0 }]
+      ]
+    },
+    "Extrair Número Remetente": {
+      "main": [
+        [{ "node": "Tem Número?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Tem Número?": {
+      "main": [
+        [{ "node": "Ler Sheets (buscar paciente)", "type": "main", "index": 0 }],
+        [{ "node": "Ignorar (sem número)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Ler Sheets (buscar paciente)": {
+      "main": [
+        [{ "node": "Identificar Paciente", "type": "main", "index": 0 }]
+      ]
+    },
+    "Identificar Paciente": {
+      "main": [
+        [{ "node": "Paciente Encontrado?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Paciente Encontrado?": {
+      "main": [
+        [{ "node": "Parar Cadência (respondeu=TRUE)", "type": "main", "index": 0 }],
+        [{ "node": "Ignorar (não é paciente no-show)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Parar Cadência (respondeu=TRUE)": {
+      "main": [
+        [{ "node": "Alertar Aline — Paciente Respondeu", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "versionId": "1",
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": ""
+  },
+  "id": "sst-noshow-webhook-v1",
+  "tags": [
+    { "name": "sst", "createdAt": "2026-05-06" },
+    { "name": "laboratorio", "createdAt": "2026-05-06" },
+    { "name": "noshow", "createdAt": "2026-05-06" }
+  ]
+}

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrato de Advisory - SST Clínica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            background-color: #fff;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            background: white;
+        }
+
+        /* Cabeçalho */
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #1a5490;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
+
+        .logo-section {
+            margin-bottom: 15px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a5490;
+            letter-spacing: 1px;
+        }
+
+        .logo-subtitle {
+            font-size: 12px;
+            color: #0d9488;
+            font-weight: 600;
+            margin-top: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .contract-info {
+            margin-top: 15px;
+        }
+
+        .contract-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a5490;
+            margin-bottom: 8px;
+        }
+
+        .contract-details {
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Conteúdo */
+        .content {
+            margin-bottom: 40px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #1a5490;
+            padding: 10px 15px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .subsection {
+            margin-bottom: 15px;
+            padding-left: 15px;
+        }
+
+        .subsection-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #1a5490;
+            margin-bottom: 8px;
+        }
+
+        .subsection-content {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        ul {
+            margin-left: 20px;
+            font-size: 12px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        strong {
+            color: #1a5490;
+        }
+
+        /* Partes */
+        .parties {
+            background-color: #f5f9fc;
+            padding: 15px;
+            border-left: 4px solid #0d9488;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+
+        .party-title {
+            font-weight: bold;
+            color: #1a5490;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .party-details {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .party-details p {
+            margin-bottom: 4px;
+        }
+
+        /* Tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 12px;
+        }
+
+        th {
+            background-color: #1a5490;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid #0d4a7a;
+        }
+
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            color: #555;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Assinaturas */
+        .signatures {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            page-break-inside: avoid;
+        }
+
+        .signature-block {
+            flex: 1;
+            text-align: center;
+        }
+
+        .signature-space {
+            border-top: 1px solid #333;
+            height: 50px;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .signature-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #1a5490;
+            margin-bottom: 3px;
+        }
+
+        .signature-title {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .signature-date {
+            font-size: 11px;
+            color: #999;
+            margin-top: 15px;
+        }
+
+        /* Rodapé */
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            font-size: 10px;
+            color: #999;
+        }
+
+        /* Utilitários */
+        .highlight {
+            background-color: #fffbea;
+            padding: 12px;
+            border-left: 3px solid #0d9488;
+            margin: 12px 0;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .break {
+            page-break-after: always;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                padding: 20px 25px;
+                max-width: 100%;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- CABEÇALHO -->
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-text">🏥 CONSULTORIA CLÍNICA LUCRATIVA IA</div>
+                <div class="logo-subtitle">Advisory em Saúde e Receita Recorrente</div>
+            </div>
+            <div class="contract-info">
+                <div class="contract-title">CONTRATO DE PRESTAÇÃO DE SERVIÇO — ADVISORY COMERCIAL</div>
+                <div class="contract-details">
+                    <span><strong>Contrato:</strong> 01/2026</span>
+                    <span><strong>Data:</strong> 28 de abril de 2026</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTEÚDO -->
+        <div class="content">
+            <!-- SEÇÃO: PARTES -->
+            <div class="section">
+                <div class="section-title">1. Partes Contratantes</div>
+
+                <div class="parties">
+                    <div class="party-title">CONTRATANTE (Cliente)</div>
+                    <div class="party-details">
+                        <p><strong>Nome:</strong> Rogério Ferreira (ROGERIO DOS SANTOS FERREIRA)</p>
+                        <p><strong>CPF:</strong> 123.456.789-01</p>
+                        <p><strong>Razão Social:</strong> SST – CLINICA DE SAUDE LTDA</p>
+                        <p><strong>CNPJ:</strong> 17.741.426/0001-07</p>
+                        <p><strong>Telefone:</strong> (71) 99386-8641</p>
+                        <p><strong>Email:</strong> rogeriorsf15@gmail.com</p>
+                        <p><strong>Sede:</strong> Rua B, 113 / Lote 18, Encanto das Árvores, CEP 43700-000 — Bairro da Paz, Salvador/BA</p>
+                    </div>
+                </div>
+
+                <div class="parties">
+                    <div class="party-title">CONTRATADA (Advisor)</div>
+                    <div class="party-details">
+                        <p><strong>Nome:</strong> Mayko Rodrigues da Conceição</p>
+                        <p><strong>CPF:</strong> 325.655.928-09</p>
+                        <p><strong>Profissão:</strong> Consultor Comercial / Advisor em Saúde</p>
+                        <p><strong>Email:</strong> maykorodrigues@gmail.com</p>
+                        <p><strong>Telefone:</strong> (11) 99200-78167</p>
+                        <p><strong>Empresa:</strong> Consultoria Clínica Lucrativa IA</p>
+                        <p><strong>CNPJ:</strong> 37.648.678/0001-95</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEÇÃO: OBJETO -->
+            <div class="section">
+                <div class="section-title">2. Objeto do Contrato</div>
+
+                <div class="subsection">
+                    <div class="subsection-content">
+                        Prestação de serviço de <strong>consultoria estratégica e operacional (Advisory)</strong> para:
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">2.1 SST Card</div>
+                    <div class="subsection-content">
+                        Estrutura comercial, processos de venda, treinamento de equipe, implementação de ferramentas de IA, cadência de reativação e gestão de receita recorrente.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">2.2 SST Clínica</div>
+                    <div class="subsection-content">
+                        Aumento de conversão do laboratório, estruturação de processos, gestão do incremento de receita (Simões Filho e Bairro da Paz).
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">2.3 Escopo Incluso</div>
+                    <ul>
+                        <li>Reuniões estratégicas quinzenais e acompanhamento de metas</li>
+                        <li>Implementação de processos comerciais documentados</li>
+                        <li>Treinamento da equipe (Karine, Raquel, Rosana e demais colaboradores)</li>
+                        <li>Suporte via IA com "cérebro centralizado" para cada membro da equipe</li>
+                        <li>Definição de KPIs e acompanhamento mensal de resultados</li>
+                        <li>Sprints mensais de otimização de receita e conversão</li>
+                        <li>Orientação na estruturação da filial Bairro da Paz</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SEÇÃO: DURAÇÃO -->
+            <div class="section">
+                <div class="section-title">3. Duração e Vigência</div>
+
+                <div class="subsection">
+                    <ul>
+                        <li><strong>Início:</strong> 01 de maio de 2026</li>
+                        <li><strong>Duração:</strong> 6 (seis) meses</li>
+                        <li><strong>Renovação:</strong> Automática por períodos sucessivos de 6 meses, salvo aviso prévio de 30 dias</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SEÇÃO: REMUNERAÇÃO -->
+            <div class="section">
+                <div class="section-title">4. Remuneração</div>
+
+                <div class="subsection">
+                    <div class="subsection-title">4.1 Estrutura de Remuneração</div>
+                    <div class="subsection-content">
+                        A remuneração será composta de três componentes:
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">A. Fixo Mensal</div>
+                    <ul>
+                        <li><strong>Valor:</strong> R$ 3.800,00 (três mil e oitocentos reais)</li>
+                        <li><strong>Frequência:</strong> Mensal</li>
+                        <li><strong>Vencimento:</strong> Até o último dia útil do mês (dia 30 ou próximo)</li>
+                        <li><strong>Método:</strong> Cartão de crédito / PIX / Transferência Bancária</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">B. Comissão SST Card (Recorrente)</div>
+                    <ul>
+                        <li><strong>Percentual:</strong> 10% (dez por cento) de toda produção do SST Card</li>
+                        <li><strong>Base:</strong> Sobre cartões produzidos a partir de 01/05/2026</li>
+                        <li><strong>Exemplo:</strong> Se produz 10.500 cartões = R$ 1.050 (10% × 10.500)</li>
+                        <li><strong>Apuração:</strong> Mensal, até o 3º dia útil do mês subsequente</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">C. Comissão Clínica (Incremento)</div>
+                    <ul>
+                        <li><strong>Percentual:</strong> 5% (cinco por cento) do incremento de receita da SST Clínica</li>
+                        <li><strong>Base:</strong> Apenas crescimento acima da receita mensal atual (R$ 80.000–90.000/mês)</li>
+                        <li><strong>Exemplo:</strong> Se clínica salta de R$ 90.000 para R$ 100.000 = 5% de R$ 10.000 = R$ 500</li>
+                        <li><strong>Apuração:</strong> Mensal, até o 3º dia útil do mês subsequente</li>
+                    </ul>
+                </div>
+
+                <div class="highlight">
+                    <strong>📋 DADOS PARA ASAAS:</strong><br>
+                    Valor: R$ 3.800,00 | Intervalo: Mensal | Vencimento: Dia 30 de cada mês | Renovação: Automática | Descrição: "Advisory Comercial SST — Consultoria em vendas, processos, treinamento e KPIs. Comissões (10% Card + 5% incremento) separadas."
+                    <br><br>
+                    <strong>🔗 LINK DE PAGAMENTO:</strong><br>
+                    <a href="https://www.asaas.com/i/cuya8vnkb69jthyz" target="_blank" style="color: #1a5490; text-decoration: underline; font-weight: bold;">https://www.asaas.com/i/cuya8vnkb69jthyz</a>
+                </div>
+            </div>
+
+            <!-- SEÇÃO: OBRIGAÇÕES -->
+            <div class="section">
+                <div class="section-title">5. Obrigações</div>
+
+                <div class="subsection">
+                    <div class="subsection-title">5.1 Do CONTRATADO</div>
+                    <ul>
+                        <li>Prestar consultoria conforme escopo definido</li>
+                        <li>Realizar reuniões quinzenais ou conforme demanda</li>
+                        <li>Manter sigilo sobre informações operacionais e financeiras</li>
+                        <li>Implementar ferramentas de IA e processos</li>
+                        <li>Treinar a equipe comercial e operacional</li>
+                        <li>Fornecer acesso a templates, scripts e playbooks</li>
+                        <li>Respeitar a autonomia executiva final do CONTRATANTE</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <div class="subsection-title">5.2 Do CONTRATANTE</div>
+                    <ul>
+                        <li>Realizar pagamentos conforme cronograma</li>
+                        <li>Designar colaboradores para sessões e treinamentos</li>
+                        <li>Implementar processos e recomendações fornecidas</li>
+                        <li>Fornecer dados e informações para acompanhamento (KPIs, faturamento)</li>
+                        <li>Comunicar mudanças significativas no negócio</li>
+                        <li>Assegurar execução dos planejamentos acordados</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SEÇÃO: RESCISÃO -->
+            <div class="section">
+                <div class="section-title">6. Rescisão e Encerramento</div>
+
+                <div class="subsection">
+                    <ul>
+                        <li><strong>Aviso Prévio:</strong> 30 (trinta) dias por escrito (email/WhatsApp)</li>
+                        <li><strong>Sem Penalidades:</strong> A rescisão é sem multa contratual</li>
+                        <li><strong>Liquidação:</strong> Pagamento de atividades executadas e comissões geradas até o término</li>
+                        <li><strong>Antes de 3 meses:</strong> Análise de compensação de desempenho e receita gerada</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SEÇÃO: DISPOSIÇÕES FINAIS -->
+            <div class="section">
+                <div class="section-title">7. Disposições Finais</div>
+
+                <div class="subsection">
+                    <ul>
+                        <li><strong>Confidencialidade:</strong> Persiste por 2 (dois) anos após rescisão</li>
+                        <li><strong>Propriedade Intelectual:</strong> Documentos e processos são de propriedade compartilhada</li>
+                        <li><strong>Vínculo Empregatício:</strong> Nenhum — relação de prestação de serviços autônoma</li>
+                        <li><strong>Lei Aplicável:</strong> Leis da República Federativa do Brasil</li>
+                        <li><strong>Foro:</strong> Comarca de Salvador, Estado da Bahia</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ASSINATURAS -->
+            <div class="signatures">
+                <div class="signature-block">
+                    <div class="signature-name">CONTRATANTE</div>
+                    <div class="signature-title">SST CLÍNICA DE SAÚDE LTDA</div>
+                    <div class="signature-space"></div>
+                    <div class="signature-name">Rogério Ferreira</div>
+                    <div class="signature-date">Salvador/BA, ___/___/2026</div>
+                </div>
+
+                <div class="signature-block">
+                    <div class="signature-name">CONTRATADA</div>
+                    <div class="signature-title">CONSULTORIA CLÍNICA LUCRATIVA IA</div>
+                    <div class="signature-space"></div>
+                    <div class="signature-name">Mayko Rodrigues da Conceição</div>
+                    <div class="signature-date">Salvador/BA, ___/___/2026</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RODAPÉ -->
+        <div class="footer">
+            <p>Consultoria Clínica Lucrativa IA | CNPJ: 37.648.678/0001-95 | maykorodrigues@gmail.com | (11) 99200-78167</p>
+            <p style="margin-top: 8px; font-size: 11px; color: #0d9488; font-weight: bold;">
+                💳 Link de Pagamento: https://www.asaas.com/i/cuya8vnkb69jthyz
+            </p>
+            <p>Contrato 01/2026 — Gerado em 28 de abril de 2026</p>
+        </div>
+    </div>
+</body>
+</html>

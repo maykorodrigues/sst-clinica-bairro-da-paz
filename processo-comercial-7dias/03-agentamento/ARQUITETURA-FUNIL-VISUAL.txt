@@ -1,0 +1,283 @@
+═══════════════════════════════════════════════════════════════════════════════
+  ARQUITETURA DO FUNIL — Raquel + MÉDINA + Karine + Irlana
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 OBJETIVO SEMANAL:
+   R$ 450–600 em receita
+   = 3–4 clientes novos
+   = Modelo Predictable Revenue
+
+───────────────────────────────────────────────────────────────────────────────
+  PASSO 1: RAQUEL (Social Seller) — Instagram
+───────────────────────────────────────────────────────────────────────────────
+
+RAQUEL PUBLICA:
+
+   Seg 08h30 → Reel "Fila SUS"
+   Ter 12h   → Carrossel "Preço"
+   Qua 17h   → Story "Local"
+   Qui 08h30 → Reel "Depoimento"
+   Sex 20h   → Post "Urgência"
+
+CTA EM CADA POST:
+
+   "Tá interessado? Envia ZAP →"
+   [LINK: https://wa.me/5571XXXXXXXXX?text=SST%20Card]
+
+RESULTADO:
+
+   📊 ~15 leads/semana = Pessoas clicando no link WhatsApp
+
+───────────────────────────────────────────────────────────────────────────────
+  PASSO 2: MÉDINA (SDR-IA) — WhatsApp + GPTMaker
+───────────────────────────────────────────────────────────────────────────────
+
+MÉDINA RECEBE OS 15 LEADS:
+
+   ┌──────────────────────────────────────────┐
+   │ Lead chega: "Oi, quero saber mais"       │
+   │                                          │
+   │ MÉDINA responde (automático):            │
+   │ "Oi Paula! Qual consulta você precisa?" │
+   │                                          │
+   │ Paula: "Quero fazer check-up"            │
+   │                                          │
+   │ MÉDINA qualifica via SPIN:               │
+   │ • Situação: Check-up por quê?            │
+   │ • Problema: Qual dificuldade?            │
+   │ • Implicação: Se não resolver agora?     │
+   │ • Necessidade: Como ficaria?             │
+   │                                          │
+   │ Resultado: Pessoa QUALIFICADA ✅         │
+   │ MÉDINA agenda: "Terça às 9h com Irlana?" │
+   │                                          │
+   │ Paula responde: "SIM"                    │
+   │                                          │
+   │ MÉDINA: "Seu e-mail?"                    │
+   │ Paula: "paula@email.com"                 │
+   │                                          │
+   │ ✅ QUALIFICADO → Passa para KARINE       │
+   └──────────────────────────────────────────┘
+
+TAXA DE CONVERSÃO:
+
+   15 leads × 70% = ~10-11 QUALIFICADOS/semana
+
+───────────────────────────────────────────────────────────────────────────────
+  PASSO 3: KARINE (Closer/AE) — WhatsApp + Google Calendar
+───────────────────────────────────────────────────────────────────────────────
+
+KARINE RECEBE QUALIFICADOS:
+
+   ┌──────────────────────────────────────────┐
+   │ Notificação: "Novo lead: Paula Silva"    │
+   │                                          │
+   │ KARINE entra:                            │
+   │ "Oi Paula! Sou Karine da SST.            │
+   │  Médina me passou seu contato!           │
+   │                                          │
+   │  Confirmando: Terça às 9h com Irlana?"   │
+   │                                          │
+   │ Paula: "Sim, mas posso perguntar valor?" │
+   │                                          │
+   │ KARINE:                                  │
+   │ "Check-up: R$120 (Particular) OU         │
+   │           R$39,90/mês (SST Card)         │
+   │                                          │
+   │  Qual faz sentido para você?"            │
+   │                                          │
+   │ Paula: "SST Card parece bom"             │
+   │                                          │
+   │ KARINE:                                  │
+   │ "✅ Pronto! Terça às 9h com Irlana.      │
+   │   Você vai receber confirmação no email" │
+   │                                          │
+   │ AÇÃO KARINE:                             │
+   │ 1. Abre Google Calendar                  │
+   │ 2. Agenda: "Paula Silva - Check-up 9h"   │
+   │ 3. Nota: "SST Card + Check-up"           │
+   │ 4. Notifica Irlana no Telegram           │
+   │ 5. Envia link de confirmação para Paula  │
+   │                                          │
+   │ ✅ AGENDADO → Passa para IRLANA          │
+   └──────────────────────────────────────────┘
+
+TAXA DE CONVERSÃO:
+
+   10-11 qualificados × 60% = ~6-7 AGENDADOS/semana
+
+───────────────────────────────────────────────────────────────────────────────
+  PASSO 4: IRLANA (Consultora de Saúde/CSM) — Ligação 5 min + CRM
+───────────────────────────────────────────────────────────────────────────────
+
+IRLANA FAZ LIGAÇÃO:
+
+   ┌──────────────────────────────────────────┐
+   │ Terça 9h00 → Ligação com Paula           │
+   │                                          │
+   │ IRLANA:                                  │
+   │ "Oi Paula! Como você está?               │
+   │                                          │
+   │ [Listen 2 min]                           │
+   │                                          │
+   │ Entendi. Você tem colesterol alto?       │
+   │ [Listen]                                 │
+   │                                          │
+   │ Ótimo! Tenho solução perfeita:           │
+   │ • Check-up + ECG (R$150, agora)          │
+   │ • SST Card: R$39,90/mês                  │
+   │                                          │
+   │ Qual data funciona para você?"           │
+   │ Paula: "Quinta às 14h"                   │
+   │                                          │
+   │ IRLANA:                                  │
+   │ "✅ Confirmado! Quinta às 14h aqui.      │
+   │                                          │
+   │ Você vem ao consultório de Simões Filho  │
+   │ (Rua X, nº 100)                          │
+   │ Levar: Documento + Convênio (se tiver)   │
+   │                                          │
+   │ Qualquer dúvida: 71 3028-7061            │
+   │ Até quinta, Paula! 💚"                   │
+   │                                          │
+   │ AÇÃO IRLANA:                             │
+   │ 1. Abre Blingo (CRM)                     │
+   │ 2. Registra: Paula Silva / Check-up      │
+   │ 3. Quinta 14h / R$150                    │
+   │ 4. Origem: "Post Instagram Raquel"       │
+   │                                          │
+   │ ✅ CLIENTE AGENDADO!                     │
+   │ (Confirmação de presença = venda real)   │
+   └──────────────────────────────────────────┘
+
+TAXA DE CONVERSÃO:
+
+   6-7 agendados × 50% = ~3-4 CLIENTES/semana
+
+   3-4 × R$150 (check-up) = R$450–600/semana ✅
+
+───────────────────────────────────────────────────────────────────────────────
+  FLUXO RESUMIDO (1 Lead do Início ao Fim)
+───────────────────────────────────────────────────────────────────────────────
+
+SEG 09h00:
+   📱 Raquel publica post (Reel "Fila SUS")
+
+SEG 10h00–17h:
+   👤 Paula vê post → Clica "ZAP" → Abre WhatsApp
+
+SEG 14h00:
+   🤖 MÉDINA responde automático
+   👩 Paula qualificada via SPIN
+
+SEG 15h00:
+   💬 MÉDINA: "Quando você quer falar com Irlana?"
+   👩 Paula: "Terça às 9h"
+
+TER 08h00:
+   📅 KARINE: "Paula, confirmando 9h com Irlana?"
+   👩 Paula: "SIM"
+
+TER 09h00:
+   ☎️ IRLANA: Ligação com Paula (5 min)
+   👩 Paula: "Quero fazer check-up"
+
+TER 14h00:
+   ✍️ IRLANA registra no Blingo:
+      Paula Silva | Check-up | R$150 | Quinta 14h
+
+QUI 14h00:
+   🏥 PAULA VAI À CLÍNICA
+   💳 PAGA R$150 (ou inscreve no SST Card)
+   ✅ VENDA CONFIRMADA!
+
+───────────────────────────────────────────────────────────────────────────────
+  MÉTRICAS SEMANAIS (O QUE RASTREAR)
+───────────────────────────────────────────────────────────────────────────────
+
+SEGUNDA-FEIRA:
+   ✓ Raquel: Quantos posts publicados? (Meta: 1)
+   ✓ Raquel: Quantos leads chegaram? (Meta: 3-4 por post)
+
+TERÇA-QUARTA-QUINTA:
+   ✓ MÉDINA: Quantos qualificados hoje? (Meta: acumulado 10-11)
+   ✓ KARINE: Quantos agendados confirmados? (Meta: acumulado 6-7)
+   ✓ IRLANA: Quantos clientes agendaram presencialmente? (Meta: acumulado 3-4)
+
+SEXTA À NOITE (17h):
+   Compilar na tabela:
+
+   ┌────────────────┬───────┬────────┐
+   │ Métrica        │ Meta  │ Atual  │
+   ├────────────────┼───────┼────────┤
+   │ Leads brutos   │ 15    │ __     │
+   │ Qualificados   │ 10-11 │ __     │
+   │ Agendados      │ 6-7   │ __     │
+   │ Clientes       │ 3-4   │ __     │
+   │ Receita        │ R$450 │ R$ __  │
+   └────────────────┴───────┴────────┘
+
+───────────────────────────────────────────────────────────────────────────────
+  PAPÉIS & RESPONSABILIDADES
+───────────────────────────────────────────────────────────────────────────────
+
+RAQUEL (Social Seller):
+   ✓ Publica 5 posts/semana conforme calendário
+   ✓ CTAs com link WhatsApp correto
+   ✓ Rastreia: quantos leads cada post gerou
+   ✓ Nota qual tipo de post funcionou melhor
+
+MÉDINA (SDR-IA):
+   ✓ Responde leads de forma empática (max 3 linhas)
+   ✓ Qualifica via SPIN (dúvida → pergunta)
+   ✓ Agenda call com Irlana (até 7 dias)
+   ✓ Coleta e-mail + telefone
+   ✓ Passa qualificados para Karine
+
+KARINE (Closer/AE):
+   ✓ Confirma interesse com qualificados
+   ✓ Apresenta opções (Particular vs SST Card)
+   ✓ Agenda no Google Calendar (Google Meet opcional)
+   ✓ Notifica Irlana sobre agendamento
+   ✓ Envia confirmação para cliente
+   ✓ Rastreia: conversão de qualificado → agendado
+
+IRLANA (Consultora/CSM):
+   ✓ Faz ligação de 5 min de descoberta
+   ✓ Identifica necessidade exata
+   ✓ Vende procedimento + SST Card
+   ✓ Agenda consulta presencial no Blingo
+   ✓ Rastreia: conversão de agendado → cliente
+
+───────────────────────────────────────────────────────────────────────────────
+  FLUXO DE INFORMAÇÃO (Quem passa para quem)
+───────────────────────────────────────────────────────────────────────────────
+
+Raquel → Leads brutos (quantos + qual post)
+         ↓
+         MÉDINA
+
+MÉDINA → Leads qualificados (nome + telefone + necessidade + e-mail)
+         ↓
+         KARINE
+
+KARINE → Leads agendados (nome + horário + tipo serviço + SST Card info)
+         ↓
+         IRLANA
+
+IRLANA → Clientes confirmados (nome + CPF + tipo serviço + valor + data presencial)
+         ↓
+         Blingo (CRM) + Raquel (para rastreamento de leads)
+
+───────────────────────────────────────────────────────────────────────────────
+  🎯 META FINAL: RECEITA PREVISÍVEL
+───────────────────────────────────────────────────────────────────────────────
+
+Semana 1 (06–12 mai):   R$ 450–600  (3-4 clientes, teste)
+Semana 2 (13–19 mai):   R$ 600–900  (4-6 clientes, otimizado)
+Semana 3 (20–26 mai):   R$ 900–1.500 (6-10 clientes, escalado)
+Semana 4 (27–02 jun):   R$ 1.500–2.250 (10-15 clientes, máquina rodando)
+
+═══════════════════════════════════════════════════════════════════════════════
+  COMEÇA HOJE (06/05) — PRIMEIRA SEMANA DE TESTES
+═══════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_Notion_notion__notion-search",
+      "mcp__plugin_Notion_notion__notion-fetch",
+      "mcp__plugin_Notion_notion__notion-create-pages",
+      "Bash(mkdir -p \"/c/Users/mayko/meu-cerebro/01-projetos/consultoria-comercial/clientes/SST_Clinica_Bairro_da_Paz/processo-comercial-7dias/01-scripts\")",
+      "Bash(mkdir -p \"/c/Users/mayko/meu-cerebro/01-projetos/consultoria-comercial/clientes/SST_Clinica_Bairro_da_Paz/processo-comercial-7dias/02-cadencias\")",
+      "Bash(mkdir -p \"/c/Users/mayko/meu-cerebro/01-projetos/consultoria-comercial/clientes/SST_Clinica_Bairro_da_Paz/processo-comercial-7dias/03-agentamento\")",
+      "Bash(mkdir -p \"/c/Users/mayko/meu-cerebro/01-projetos/consultoria-comercial/clientes/SST_Clinica_Bairro_da_Paz/processo-comercial-7dias/04-dia-sst-saude\")",
+      "Bash(mkdir -p \"/c/Users/mayko/meu-cerebro/01-projetos/consultoria-comercial/clientes/SST_Clinica_Bairro_da_Paz/processo-comercial-7dias/05-bairro-da-paz\")",
+      "mcp__claude_ai_Google_Calendar__list_calendars",
+      "mcp__claude_ai_Google_Calendar__create_event",
+      "Bash(notebooklm use *)",
+      "Bash(notebooklm source *)",
+      "Bash(python -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(f'{s[\\\\\"id\\\\\"][:8]}... | {s[\\\\\"title\\\\\"][:50]} | {s[\\\\\"status\\\\\"]}'\\) for s in data.get\\('sources', data\\) if isinstance\\(s, dict\\)]\")",
+      "mcp__claude_ai_Gmail__gmail_create_draft",
+      "mcp__plugin_Notion_notion__notion-update-page",
+      "PowerShell(notebooklm source add \"Sessao Raquel Kailane SST Marketing 17/04/2026. Perfil: 20 anos, logistica, anchor casamento e casa propria, meta R$3000/mes. Processo: prospecta 20-30 pacientes particulares por dia no Blingo via WhatsApp manual, 3-5 interessados/dia, passa papel para Karine. WhatsApp compartilhado com Debora Call Center. Cadencia atual: 2 toques e abandona. Sem Meta Business Suite, sem IA, sem n8n. Problemas: WhatsApp compartilhado, sem cadencia estruturada, lidera mornos abandonados, sem calendario editorial, pipeline ainda e papel. Proximos passos: publicar post de prova social ate segunda 21/04, assistir aula de criativos com IA, salvar 5 prompts SST Card. Na sessao de segunda: Meta Business Suite ao vivo, cadencia 5 toques, resolver WhatsApp compartilhado, pipeline digital Raquel-Karine no Notion.\" 2>&1 | Select-Object -First 3)",
+      "mcp__plugin_Notion_notion__notion-create-database",
+      "WebFetch(domain:www.notion.so)",
+      "WebSearch",
+      "WebFetch(domain:www.igreenenergy.com.br)",
+      "Bash(gcloud calendar events create *)",
+      "mcp__claude_ai_Notion__notion-fetch",
+      "mcp__claude_ai_Notion__notion-update-page",
+      "mcp__claude_ai_Notion__notion-create-pages"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \".claude/skills/cerebro-ia-clinica-lucrativa/scripts/hook_audit_log.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}
