@@ -43,11 +43,11 @@
         </div>
 
         <div class="tabs">
-            <button class="tab-button active" onclick="switchTab('dashboard')">Dashboard</button>
-            <button class="tab-button" onclick="switchTab('playbook')">Playbook</button>
-            <button class="tab-button" onclick="switchTab('notion')">Notion</button>
-            <button class="tab-button" onclick="switchTab('timeline')">Timeline</button>
-            <button class="tab-button" onclick="switchTab('faq')">FAQ</button>
+            <button class="tab-button active" onclick="switchTab('dashboard', this)">Dashboard</button>
+            <button class="tab-button" onclick="switchTab('playbook', this)">Playbook</button>
+            <button class="tab-button" onclick="switchTab('notion', this)">Notion</button>
+            <button class="tab-button" onclick="switchTab('timeline', this)">Timeline</button>
+            <button class="tab-button" onclick="switchTab('faq', this)">FAQ</button>
         </div>
 
         <div id="dashboard" class="tab-content active">
@@ -278,11 +278,12 @@
     </div>
 
     <script>
-        function switchTab(name) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
-            document.getElementById(name).classList.add('active');
-            event.target.classList.add('active');
+        function switchTab(name, el) {
+            document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(e => e.classList.remove('active'));
+            const tab = document.getElementById(name);
+            if (tab) tab.classList.add('active');
+            if (el) el.classList.add('active');
         }
         function copyScript(btn) {
             const text = btn.parentElement.querySelector('.script-content').innerText;
