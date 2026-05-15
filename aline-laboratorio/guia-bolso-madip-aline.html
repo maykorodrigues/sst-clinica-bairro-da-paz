@@ -44,7 +44,7 @@
 
         <div class="tabs">
             <button class="tab-button active" onclick="switchTab('dashboard')">Dashboard</button>
-            <button class="tab-button" onclick="switchTab('scripts')">Scripts</button>
+            <button class="tab-button" onclick="switchTab('playbook')">Playbook</button>
             <button class="tab-button" onclick="switchTab('notion')">Notion</button>
             <button class="tab-button" onclick="switchTab('timeline')">Timeline</button>
             <button class="tab-button" onclick="switchTab('faq')">FAQ</button>
@@ -85,54 +85,76 @@
             </div>
         </div>
 
-        <div id="scripts" class="tab-content">
+        <div id="playbook" class="tab-content">
             <div class="content">
-                <h2 class="section-title">📝 5 Scripts Prontos</h2>
-                <div class="script-box">
-                    <div class="script-title">1️⃣ Abordagem (2 min)</div>
-                    <div class="script-content">Olá [Nome]! Tudo bem?
-Sou [Seu Nome] do MADIP. Confirmar se ainda precisa dos exames.
-Tenho horário hoje às [hora] ou amanhã. Qual funciona?</div>
-                    <button class="copy-button" onclick="copyScript(this)">📋 Copiar</button>
-                </div>
-                <div class="script-box">
-                    <div class="script-title">2️⃣ Qualificação (5-7 min)</div>
-                    <div class="script-content">1. Qual é o principal incômodo?
-2. Já fez exames para isso?
-3. Maior preocupação com resultado?
-4. Tem pressa ou pode esperar 5 dias?
-5. Qual seu orçamento disponível?</div>
-                    <button class="copy-button" onclick="copyScript(this)">📋 Copiar</button>
-                </div>
-                <div class="script-box">
-                    <div class="script-title">3️⃣ Apresentação & Fechamento (3-5 min)</div>
-                    <div class="script-content">Perfeito! No MADIP você tem:
-• Laudo em 24-48h
-• Resultado online + PDF
-• Desconto 15-20% múltiplos exames
+                <h2 class="section-title">🤖 Playbook de Disparos — SST Clínica (n8n)</h2>
+                <p style="color: #666; margin-bottom: 30px; line-height: 1.8;">
+                    <strong>Filosofia Kaique:</strong> "MENOS É MAIS" — Encaminhar para atendente após pré-atendimento gera comprometimento. Foco em automação de fluxos, não em scripts complexos.
+                </p>
 
-Para sua situação recomendo [especificar].
-Investimento: R$ [valor].
+                <h3 class="section-title">🎯 3 Pilares Principais</h3>
 
-Faz sentido?</div>
-                    <button class="copy-button" onclick="copyScript(this)">📋 Copiar</button>
-                </div>
                 <div class="script-box">
-                    <div class="script-title">4️⃣ Objeção (2 min)</div>
-                    <div class="script-content">"Caro" → "Se eu reduzir X, você faz?"
-"Pensar" → "Quanto tempo? Confirma amanhã?"
-"Concorrente" → "Diferencial nosso é [prazo]. Detalho?"
-"Sem tempo" → "Domingo de manhã ou semana que vem?"</div>
-                    <button class="copy-button" onclick="copyScript(this)">📋 Copiar</button>
-                </div>
+                    <div class="script-title">Pilar 1️⃣: Fluxo de Adesão SST Card</div>
+                    <div style="font-size: 0.9em; color: #1987c3; font-weight: 600; margin-bottom: 15px;">GATILHO: Lead clica em "Quero o SST Card"</div>
+                    <div class="script-content"><strong>OPÇÃO A: Já tem WhatsApp ativo</strong>
+→ D+0 (imediato): "Oi [Nome]! Bem-vindo ao SST Card 🎉"
+→ D+1: Confirmação de dados (nome, celular, profissão)
+→ D+2: Apresentação dos 3 planos (Individual/Família 4-5/Família 10)
+→ D+3: Pergunta qualificação — "Qual plano te interessa mais?"
+   ├─ SIM → Encaminha para KARINE (atendente)
+   ├─ DÚVIDA → Responde tópicos (preços, cobertura, ativação)
+   └─ NÃO RESPONDE → D+5: Último contato automático
+
+<strong>OPÇÃO B: Sem WhatsApp / Frio</strong>
+→ D+0: SMS "Seu SST Card foi aprovado 🎉. Clique: [link]"
+→ D+1: WhatsApp iniciado
+→ Segue fluxo OPÇÃO A</div>
+
                 <div class="script-box">
-                    <div class="script-title">5️⃣ Cadência WhatsApp (D+1→D+7)</div>
-                    <div class="script-content">D+1: "Oi! Recebeu as informações?"
-D+2: "Vai precisar fazer? Tenho slot amanhã."
-D+4: "Muita gente fazendo no MADIP agora!"
-D+5: "Ficou com dúvida? Posso esclarecer!"
-D+7: "Última chance: temos slot até amanhã."</div>
-                    <button class="copy-button" onclick="copyScript(this)">📋 Copiar</button>
+                    <div class="script-title">Pilar 2️⃣: Fluxo de Conversão Laboratório (Aline)</div>
+                    <div style="font-size: 0.9em; color: #1987c3; font-weight: 600; margin-bottom: 15px;">GATILHO: Prospect orça exames e diz "deixa eu pensar"</div>
+                    <div class="script-content"><strong>FLUXO: Qualificação → Automação → Aline</strong>
+→ D+0: Envio do orçamento + "Qualquer dúvida, me liga?"
+→ D+1: Mensagem automática — "Recebeu o orçamento?"
+   └─ SIM → "Qual sua maior dúvida?"
+      ├─ Preço → Automação responde (parcelamento, convênio)
+      ├─ Procedimento → Automação responde (tempo, preparação)
+      └─ Falta convênio → Encaminha ALINE (alta conversão)
+
+→ D+3: "Quer que eu reserve sua data?"
+   ├─ SIM → Agenda em [DATA/HORA]
+   ├─ NÃO → Oferece alternativa (próxima semana)
+   └─ SEM RESPOSTA → D+5: Último toque + desconto pequeno
+
+→ D+7: Se converteu → Confirmação de preparo
+      Se não → Aline liga para "ver se ficou alguma dúvida"</div>
+                </div>
+
+                <div class="script-box">
+                    <div class="script-title">Pilar 3️⃣: Fluxo de Confirmação/Reativação SST Card</div>
+                    <div style="font-size: 0.9em; color: #1987c3; font-weight: 600; margin-bottom: 15px;">GATILHO: Membro ativo do SST Card (confirmação) | Cancelado (reativação)</div>
+                    <div class="script-content"><strong>SUBFLUXO A: Confirmação (Membros Ativos)</strong>
+→ D-1 (antes da consulta): "Olá [Nome]! Sua consulta é amanhã às [HORA] ✅"
+   └─ Sem resposta? → D-0 08h: SMS "Confirma presença?"
+
+→ D+0 (dia da consulta): Lembretes via WhatsApp (09h, 11h)
+
+→ D+1 (pós-visita): NPS rápido — "Como foi sua experiência?" (⭐⭐⭐⭐⭐)
+
+→ D+7: Follow-up — "Necessário acompanhamento?" → Se SIM, agenda nova
+
+<strong>SUBFLUXO B: Reativação (Membros Cancelados)</strong>
+→ Trigger: Membro cancela
+
+→ D+1: "Tudo bem? Podemos ajudar com algo?" (entender motivo)
+   ├─ Caro → Oferece plano menor
+   ├─ Não usa → Oferece acesso ao app
+   └─ Mudança de endereço → Oferece filiais próximas
+
+→ D+5: "Que tal voltarmos? Enviamos seu histórico de benefícios"
+
+→ D+10: Última chance — "20% OFF para reativar esta semana"</div>
                 </div>
             </div>
         </div>
