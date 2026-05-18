@@ -1,11 +1,6 @@
 {
   "public": true,
-  "buildCommand": "echo 'Static files only'",
-  "devCommand": "npx http-server",
   "name": "playbook-sst-card",
-  "projectSettings": {
-    "framework": "Other"
-  },
   "rewrites": [
     {
       "source": "/",
