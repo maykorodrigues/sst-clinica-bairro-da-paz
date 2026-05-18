@@ -1,6 +1,7 @@
 {
   "public": true,
-  "name": "playbook-sst-card",
+  "buildCommand": "echo 'Static HTML — no build needed'",
+  "outputDirectory": ".",
   "rewrites": [
     {
       "source": "/",
