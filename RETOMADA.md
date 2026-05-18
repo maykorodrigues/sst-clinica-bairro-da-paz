@@ -4,7 +4,7 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 14/05/2026 — 14h30
+> Última atualização: 18/05/2026 — Matinal 18/05 criada e pronta para executar
 
 #em-progresso
 
@@ -303,20 +303,102 @@ Estrutura criada dentro de **"Processos Comerciais B2C Clube SST CARD/ CARD"**:
 
 ---
 
+## Execução 15/05/2026 — MATINAL D+1 CONCLUÍDA ✅
+
+**Hora:** 09h00–09h30  
+**Participantes:** Rogério, Karine, Lucas, Raquel  
+**Status:** Matinal executada. Dados capturados. Dashboard criado e enviado ao grupo.
+
+### Resultados Consolidados
+
+| Pessoa | Métrica | Meta | Realizado | % | Status |
+|--------|---------|------|-----------|---|--------|
+| **Lucas** | Ativações | 50 | 5 | 10% | 🔴 CRÍTICO |
+| **Lucas** | Retenção | — | 10 | — | ✅ |
+| **Lucas** | Msgs | — | 23 | — | ✅ |
+| **Karine** | Fechamentos | 3 | 1 | 33% | 🟡 ABAIXO |
+| **Karine** | Pipeline | — | 2 | — | ⏳ |
+| **Raquel** | Leads qualificados | 10 | 25 | 250% | 🟢 EXCELENTE |
+| **Raquel** | Fechados (Instagram) | — | 1 | — | 🟢 |
+
+**Síntese:** 3 cartões fechados | 25 leads qualificados | 23 msgs | 58 contatos totais
+
+**Projeção 30/05 (se mantiver ritmo 15 dias):**
+- Lucas: 75 ativações (vs 750 meta = 🔴 CRÍTICO)
+- Karine: 15 fechamentos (vs 45 = 🔴 CRÍTICO)
+- Raquel: 375 leads (vs 150 = 🟢 EXCELENTE)
+- **Total esperado:** 45 cartões (CONTRATO GO, Bairro da Paz CONFIRMADO)
+
+### Documentos Criados Hoje
+
+| Arquivo | Conteúdo | Status |
+|---------|----------|--------|
+| `historico-resultados-diarios/resultado-15-05-2026.md` | Relatório completo com dados, análise, blocadores, projeção | ✅ Criado |
+| `dashboard-resultado-diario-sst.html` | Dashboard interativo (tema escuro, responsive) + métricas + projeção | ✅ Enviado ao grupo |
+| `processo-comercial-7dias/02-cadencias/automacao-dashboard-diario-n8n.md` | Arquitetura n8n: trigger cron → parsing WhatsApp → cálculo → geração HTML → envio | ✅ Planejado |
+
+### Blocadores Identificados (CRÍTICOS)
+
+| Bloqueador | Impacto | Ação | Prazo |
+|-----------|---------|------|-------|
+| **Lucas — Acesso Tenex (2 contas)** | Não consegue 50 contatos/dia | Confirmar acesso única conta com Rogério | Segunda 16/05 |
+| **Karine — Capacidade alavancagem** | 25 leads de Raquel parados | Implementar handoff 5min (já existe) | Segunda 19/05 |
+| **Rogério — Contador (legal)** | Assinatura contrato Bairro da Paz bloqueada | Validar com contador efeitos jurídicos contrato | Até 16/05 |
+
+### Task n8n Criada
+
+**Task #1:** Criar automação n8n para dashboard diário SST Card  
+**Objetivo:** Gerar + enviar dashboard resultado diário (15h45) sem intervenção manual  
+**Frequência:** Seg–sex 15h45 BRT  
+**Timeline:**
+- Sexta 15/05: Validação manual (✅ CONCLUÍDO)
+- Segunda 19/05: Criar workflow n8n (estrutura básica)
+- Terça 20/05: Testar com dados reais
+- Quarta 21/05: Agendar Cron + validar automação
+- Quinta 22/05+: Rodar automaticamente (monitorar logs)
+
+---
+
+## Matinal SST — 18/05/2026 ✅ CRIADA
+
+**D+3 Campanha Perdão Dívida | Segunda-feira | 08h00–08h15 | Status: PRONTO PARA EXECUTAR**
+
+| Documento | Conteúdo | Criado | Status |
+|-----------|----------|--------|--------|
+| `processo-comercial-7dias/01-matinais/18-05-2026/roteiro-matinal-18-05-2026.md` | Roteiro 15min: contexto + resultado sexta + bloqueador Lucas + alavancagem Karine | 18/05 | ✅ Pronto |
+| `processo-comercial-7dias/01-matinais/18-05-2026/script-alavancagem-karine-18-05.md` | Script Karine: recebe 10 leads Raquel → converte ≥3 em 5 minutos | 18/05 | ✅ Pronto |
+| `processo-comercial-7dias/01-matinais/18-05-2026/template-relatorio-12h-15h-18-05.md` | Templates vazios: parcial 12h (4 linhas) + final 15h (6 linhas + consolidado) | 18/05 | ✅ Pronto |
+| `processo-comercial-7dias/01-matinais/18-05-2026/cartao-bolso-equipe-18-05.md` | Cartão A5 (imprimir): frase âncora + metas dia + pipeline visual | 18/05 | ✅ Pronto |
+
+**Metas do dia (18/05):**
+- **Rogério:** Desbloquear acesso Lucas (até 08h30) + validar alavancagem a cada 2h
+- **Karine:** 10 leads alavancagem (Raquel) → ≥3 conversões (5 min) + 15 contatos perdão dívida
+- **Lucas:** ≥15 ativações até 12h (vs 5 na sexta — RECUPERAR) + finalizar auditoria 27 cancelados
+- **Raquel:** Consolidar 25 leads sexta → passar 10 para Karine + agendar 5 criativos Meta + 100 conversas WhatsApp
+
+**Bloqueador crítico:** Acesso Lucas ao Tenex — DEVE ser resolvido até 08h30 ou usar Google Sheets fallback
+
+**Gate decision:** Se alavancagem (≥3/10) + Lucas (≥15 ativações) funcionarem, terça (19/05) entra em Bairro da Paz com momentum
+
+---
+
 ## Próximos Documentos a Criar (Prioridade)
 
-**CRÍTICO — Até 16/05:**
-- [ ] `prompts-sdr-por-plano.md` — 3 versões de abordagem (1 por plano) para Raquel/SDR
-- [ ] `script-apresentacao-3-planos.md` — Roteiro verbal para apresentar planos a potenciais membros
-- [ ] `validacao-operacional-planos.md` — Checklist: Karine valida preços, fluxo, comissões
+**CRÍTICO — Até 17/05 (antes de segunda matinal):**
+- [x] `processo-comercial-7dias/01-matinais/15-05-2026/roteiro-matinal-15-05-2026.md` — ✅ Concluído
+- [x] 4 artefatos de suporte (script, cartão, templates, checklist) — ✅ Concluídos
+- [ ] `processo-comercial-7dias/02-cadencias/automacao-dashboard-diario-n8n.md` — INICIAR SEGUNDA (19/05) — Workflow n8n: parsing WhatsApp → cálculo → HTML → envio
+- [ ] **Matinal 19/05 (segunda):** Roteiro atualizado com foco em alavancagem Karine + validação acesso Lucas
 
 **IMPORTANTE — Até 20/05:**
 - [ ] `estrategia_comercial/script_vendas_whatsapp.md` — Scripts de abordagem, reativação, fechamento (segmentado por plano)
-- [ ] `analise_mercado/diagnostico_campo-bairro-paz.md` — Mapa de médicos, concorrentes, oportunidades
-- [ ] `estrategia_comercial/programa_embaixadores.md` — Regulamento completo + comissões por plano
+- [ ] `processo-comercial-7dias/01-matinais/19-05-2026/roteiro-matinal-19-05-2026.md` — Roteiro segunda matinal
+- [ ] `prompts-sdr-por-plano.md` — 3 versões de abordagem (1 por plano) para Raquel/SDR
 
 **NORMAL:**
 - [ ] `aline-laboratorio/proposta-advisory-frente-laboratorio.md` — Argumento de fechamento para Rogério
+- [ ] `analise_mercado/diagnostico_campo-bairro-paz.md` — Mapa de médicos, concorrentes, oportunidades
+- [ ] `estrategia_comercial/programa_embaixadores.md` — Regulamento completo + comissões por plano
 
 ---
 
