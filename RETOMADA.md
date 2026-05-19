@@ -4,7 +4,7 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 18/05/2026 — Matinal 18/05 criada e pronta para executar
+> Última atualização: 19/05/2026 — Playbook v3.0 Assistente Operacional deployed + Matinal 19/05 criada
 
 #em-progresso
 
@@ -384,16 +384,20 @@ Estrutura criada dentro de **"Processos Comerciais B2C Clube SST CARD/ CARD"**:
 
 ## Próximos Documentos a Criar (Prioridade)
 
-**CRÍTICO — Até 17/05 (antes de segunda matinal):**
-- [x] `processo-comercial-7dias/01-matinais/15-05-2026/roteiro-matinal-15-05-2026.md` — ✅ Concluído
-- [x] 4 artefatos de suporte (script, cartão, templates, checklist) — ✅ Concluídos
-- [ ] `processo-comercial-7dias/02-cadencias/automacao-dashboard-diario-n8n.md` — INICIAR SEGUNDA (19/05) — Workflow n8n: parsing WhatsApp → cálculo → HTML → envio
-- [ ] **Matinal 19/05 (segunda):** Roteiro atualizado com foco em alavancagem Karine + validação acesso Lucas
+**✅ CONCLUÍDO — 19/05/2026:**
+- [x] `processo-comercial-7dias/playbook-sst-assistente-19-05.html` — ✅ v3.0 Assistente Operacional (ações rápidas + checklists personalizados + navegação)
+- [x] `processo-comercial-7dias/01-matinais/19-05-2026/resumo-executivo-matinal-19-05.md` — ✅ Ata matinal 19/05 (contexto + resultado 18/05 + novo foco + ações imediatas)
+- [x] Playbook deployed em Vercel: https://playbook.ssfcard.ia.br ✅
 
-**IMPORTANTE — Até 20/05:**
-- [ ] `estrategia_comercial/script_vendas_whatsapp.md` — Scripts de abordagem, reativação, fechamento (segmentado por plano)
-- [ ] `processo-comercial-7dias/01-matinais/19-05-2026/roteiro-matinal-19-05-2026.md` — Roteiro segunda matinal
-- [ ] `prompts-sdr-por-plano.md` — 3 versões de abordagem (1 por plano) para Raquel/SDR
+**CRÍTICO — Hoje (19/05) ou amanhã (20/05):**
+- [ ] `processo-comercial-7dias/02-cadencias/automacao-dashboard-diario-n8n.md` — Workflow n8n: parsing WhatsApp → cálculo → HTML → envio (iniciar segunda-feira próxima se matinal 19/05 confirmar padrão)
+- [ ] **n8n Automação Perdão Dívida** — Disparar campanhas WhatsApp em lote (50+ contatos/dia) a partir de 19/05
+- [ ] **Validação Tenex Access (Lucas)** — Confirmar se bloqueador persistiu ou foi resolvido
+
+**IMPORTANTE — Até 22/05:**
+- [ ] `estrategia_comercial/script_vendas_whatsapp.md` — Scripts segmentados por plano (Individual/Família 4–5/Família 10)
+- [ ] `prompts-sdr-por-plano.md` — 3 versões de abordagem para Raquel/SDR
+- [ ] **Resumo matinal 20/05** — Atualizar playbook com resultado real 19/05 + novo foco
 
 **NORMAL:**
 - [ ] `aline-laboratorio/proposta-advisory-frente-laboratorio.md` — Argumento de fechamento para Rogério
@@ -410,6 +414,70 @@ O cliente já tem outra filial operando em **Simões Filho/BA**, com:
 - Painel de controle: https://www.notion.so/337ad3c0037381b39091fb40594bbedc
 
 Ao sugerir ferramentas e processos para o Bairro da Paz, reutilizar a stack existente sempre que possível.
+
+---
+
+## Playbook Web v3.0 — Assistente Operacional ✅ DEPLOYED
+
+**Data de Criação:** 19/05/2026 — 09h00  
+**Status:** 🟢 Live em produção  
+**URL Pública:** https://playbook.ssfcard.ia.br/processo-comercial-7dias/playbook-sst-assistente-19-05.html
+
+### O que é
+
+Documento operacional web (HTML/CSS/JavaScript) que funciona como **assistente de execução diária** para a equipe. Substitui matinal em PDF e centraliza:
+- Ações imediatas com checkboxes persistentes
+- Resultados reais vs planejado (comparação D-1)
+- Novo foco operacional (Campanha Perdão de Dívida 761 Tenex)
+- Checklists personalizados por pessoa (Karine, Lucas, Raquel, Rogério)
+- Links diretos às Centrais de Comando (Notion)
+- Navegação fluida com table of contents
+
+### Funcionalidades
+
+| Feature | Detalhe |
+|---------|---------|
+| **⚡ Ações Rápidas** | Checkboxes top-level (crítica=vermelho, importante=laranja, info=azul) salvos em localStorage |
+| **🧭 Navegação** | Sidebar toggle com jump links para todas as seções + colapsa em mobile |
+| **👥 Checklists Personalizados** | Cada pessoa (Karine, Lucas, Raquel, Rogério) vê apenas suas tarefas do dia |
+| **📊 Resultado 18/05** | Tabela: Planejado vs Executado com status badges (✅/❌) |
+| **📢 Novo Foco** | Seção "Perdão de Dívida" com 761 Tenex, meta 20%, script modelo, timing |
+| **🔗 Notion Integration** | Banner destacado + footer com 4 Centrais de Comando funcionais |
+| **📄 Print Support** | Ctrl+P → salvar como PDF (otimizado para WhatsApp/impressão) |
+| **📱 Responsive** | Mobile-first: sidebar oculta em <768px, layout adaptado |
+
+### Como Usar
+
+1. **Abrir no navegador:** Copiar URL acima ou clicar no link no Whatsapp
+2. **Conferir Ações Rápidas:** Scroll para o topo, validar itens críticos
+3. **Personalizar:** Cada pessoa clica em "Meu Checklist do Dia" com seu nome
+4. **Marcar Progresso:** Clicar em checkboxes (salvam automaticamente)
+5. **Pular para seção:** Usar sidebar (clicável mesmo em mobile)
+6. **Salvar PDF:** Ctrl+P no navegador → "Salvar como PDF" → compartilhar
+
+### Design & Tecnologia
+
+- **Fonts:** IBM Plex Mono (body) + Syne (headings) — operacional, distinto
+- **Tema:** Dark mode com alto contraste
+- **Paleta:** Verde primário #2ECC71, azul accent #1987c3, vermelho crítico #FF4757, laranja warning #FFA502
+- **Estado:** localStorage para persistência (checkboxes sobrevivem reload)
+- **Responsividade:** Mobile-first, <768px sidebar desaparece
+- **Tamanho:** ~40KB (carrega <1s via CDN Vercel)
+
+### Documentos Relacionados
+
+| Arquivo | Conteúdo |
+|---------|----------|
+| `processo-comercial-7dias/playbook-sst-assistente-19-05.html` | **ARQUIVO PRINCIPAL** — abrir no navegador |
+| `processo-comercial-7dias/01-matinais/19-05-2026/resumo-executivo-matinal-19-05.md` | Markdown completo com ata matinal, decisões, próximas datas |
+
+### Próxima Atualização
+
+O playbook se atualiza via **git push → Vercel auto-deploy** (~30s):
+1. Editar dados diários em `playbook-sst-assistente-19-05.html`
+2. `git add` + `git commit` + `git push origin master`
+3. Vercel redeploya automaticamente
+4. URL fica sempre com versão mais recente
 
 ---
 
