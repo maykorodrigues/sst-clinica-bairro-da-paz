@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistente Operacional — SST Card 19/05/2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #2ECC71;
+            --color-accent: #1987c3;
+            --color-dark: #1a1a2e;
+            --color-darker: #0f0f1e;
+            --color-gray: #e0e0e0;
+            --color-danger: #FF4757;
+            --color-warning: #FFA502;
+            --color-success: #2ECC71;
+            --color-info: #1987c3;
+        }
+
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: linear-gradient(135deg, var(--color-darker) 0%, var(--color-dark) 100%);
+            color: var(--color-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* HEADER FIXO */
+        header {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(135deg, var(--color-darker) 0%, rgba(25, 135, 195, 0.08) 100%);
+            border-bottom: 3px solid var(--color-accent);
+            padding: 25px 20px;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .header-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            font-size: 0.85em;
+            color: var(--color-gray);
+            opacity: 0.8;
+        }
+
+        .header-badge {
+            background: var(--color-success);
+            color: var(--color-darker);
+            padding: 8px 14px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+        }
+
+        /* ÍNDICE FLUTUANTE (Sidebar) */
+        .sidebar-toc {
+            position: fixed;
+            right: 0;
+            top: 120px;
+            width: 240px;
+            max-height: 60vh;
+            background: rgba(15, 15, 30, 0.95);
+            border-left: 3px solid var(--color-accent);
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 90;
+            display: none;
+        }
+
+        .sidebar-toc.active {
+            display: block;
+        }
+
+        .toc-title {
+            font-size: 0.9em;
+            color: var(--color-primary);
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 8px 0;
+            color: var(--color-gray);
+            text-decoration: none;
+            font-size: 0.85em;
+            border-left: 2px solid transparent;
+            padding-left: 10px;
+            transition: all 0.2s;
+        }
+
+        .toc-link:hover {
+            color: var(--color-primary);
+            border-left-color: var(--color-primary);
+            padding-left: 14px;
+        }
+
+        /* TOGGLE SIDEBAR */
+        .toggle-toc {
+            background: var(--color-accent);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 40px 20px;
+        }
+
+        /* SEÇÕES */
+        section {
+            margin-bottom: 50px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 25px;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-left: 20px;
+            scroll-margin-top: 120px;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--color-primary), var(--color-accent));
+        }
+
+        /* AÇÕES RÁPIDAS */
+        .quick-actions {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.12) 0%, rgba(255, 165, 2, 0.08) 100%);
+            border: 2px solid var(--color-danger);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .quick-actions h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4em;
+            font-weight: 800;
+            color: var(--color-danger);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 12px;
+            background: rgba(30, 30, 50, 0.6);
+            border-radius: 6px;
+            border-left: 4px solid var(--color-gray);
+            transition: all 0.2s;
+        }
+
+        .action-item.critical {
+            border-left-color: var(--color-danger);
+            background: rgba(255, 71, 87, 0.1);
+        }
+
+        .action-item.warning {
+            border-left-color: var(--color-warning);
+            background: rgba(255, 165, 2, 0.1);
+        }
+
+        .action-item.info {
+            border-left-color: var(--color-info);
+            background: rgba(25, 135, 195, 0.08);
+        }
+
+        .action-item:hover {
+            transform: translateX(4px);
+            background: rgba(30, 30, 50, 0.9);
+        }
+
+        .action-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: var(--color-success);
+        }
+
+        .action-checkbox:checked + .action-text {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        .action-text {
+            flex: 1;
+            font-size: 0.95em;
+        }
+
+        .action-time {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--color-success);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .action-owner {
+            background: rgba(25, 135, 195, 0.2);
+            color: var(--color-info);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+
+        /* STATUS BADGES */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 10px;
+        }
+
+        .badge.urgent {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .badge.warning {
+            background: var(--color-warning);
+            color: var(--color-darker);
+        }
+
+        .badge.ok {
+            background: var(--color-success);
+            color: var(--color-darker);
+        }
+
+        .badge.info {
+            background: var(--color-info);
+            color: white;
+        }
+
+        /* BLOQUEADORES - URGENTE */
+        .blocker-section {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.15) 0%, rgba(15, 15, 30, 0.8) 100%);
+            border: 3px solid var(--color-danger);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 40px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blocker-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-danger), transparent);
+            animation: slideRight 2s ease-in-out infinite;
+        }
+
+        @keyframes slideRight {
+            0%, 100% { width: 0; }
+            50% { width: 100%; }
+        }
+
+        .blocker-title {
+            font-size: 1.3em;
+            font-weight: 800;
+            color: var(--color-danger);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .blocker-content {
+            background: rgba(30, 30, 50, 0.4);
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--color-danger);
+        }
+
+        .blocker-row {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        .blocker-label {
+            font-weight: 700;
+            color: var(--color-warning);
+        }
+
+        /* CHECKLISTS PERSONALIZADOS */
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .checklist-card {
+            background: linear-gradient(135deg, rgba(30, 30, 50, 0.8), rgba(40, 40, 60, 0.8));
+            border: 2px solid var(--color-gray);
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .checklist-card:hover {
+            border-color: var(--color-primary);
+            transform: translateY(-5px);
+        }
+
+        .checklist-header {
+            font-size: 1.2em;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--color-gray);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: rgba(15, 15, 30, 0.5);
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .checklist-item:hover {
+            background: rgba(15, 15, 30, 0.8);
+        }
+
+        .checklist-checkbox {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: var(--color-success);
+            flex-shrink: 0;
+        }
+
+        .checklist-text {
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .checklist-item input:checked + .checklist-text {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        /* TABELAS */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: rgba(30, 30, 50, 0.6);
+            border: 1px solid var(--color-gray);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            font-weight: 700;
+            color: var(--color-primary);
+            border-bottom: 2px solid var(--color-primary);
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(224, 224, 224, 0.1);
+        }
+
+        tr:hover {
+            background: rgba(46, 204, 113, 0.05);
+        }
+
+        /* NOTION LINK */
+        .notion-link-banner {
+            background: linear-gradient(135deg, rgba(25, 135, 195, 0.15) 0%, rgba(46, 204, 113, 0.1) 100%);
+            border: 2px solid var(--color-accent);
+            border-radius: 8px;
+            padding: 25px;
+            margin: 40px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .notion-link-text {
+            flex: 1;
+        }
+
+        .notion-link-text h3 {
+            color: var(--color-accent);
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .notion-link-text p {
+            font-size: 0.95em;
+            color: var(--color-gray);
+            opacity: 0.9;
+        }
+
+        .notion-btn {
+            background: var(--color-accent);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .notion-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(25, 135, 195, 0.3);
+        }
+
+        /* FOOTER */
+        footer {
+            background: linear-gradient(135deg, var(--color-darker), rgba(25, 135, 195, 0.05));
+            border-top: 3px solid var(--color-accent);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .footer-link {
+            background: rgba(30, 30, 50, 0.6);
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--color-accent);
+            font-weight: 700;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            border: 1px solid var(--color-accent);
+        }
+
+        .footer-link:hover {
+            background: var(--color-accent);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-text {
+            color: var(--color-gray);
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+
+        /* PRINT */
+        @media print {
+            header, .sidebar-toc, .toggle-toc {
+                display: none;
+            }
+            body {
+                background: white;
+                color: #333;
+            }
+            section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .sidebar-toc {
+                width: 200px;
+            }
+            .container {
+                padding: 25px 15px;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            .blocker-section {
+                padding: 20px;
+            }
+            .notion-link-banner {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER STICKY -->
+    <header>
+        <div class="header-content">
+            <div class="header-title">🎯 ASSISTENTE OPERACIONAL</div>
+            <div class="header-subtitle">SST Card — 19 de Maio 2026 | Sua agenda do dia</div>
+        </div>
+        <button class="toggle-toc">☰ ÍNDICE</button>
+        <div class="header-badge">HOJE</div>
+    </header>
+
+    <!-- SIDEBAR TOC -->
+    <div class="sidebar-toc" id="sidebarToc">
+        <div class="toc-title">📑 Navegação</div>
+        <a href="#acoes-rapidas" class="toc-link">⚡ Ações Rápidas</a>
+        <a href="#bloqueadores" class="toc-link">🚨 Bloqueadores</a>
+        <a href="#resultado-real" class="toc-link">📊 Resultado Real</a>
+        <a href="#novo-foco" class="toc-link">🔄 Novo Foco</a>
+        <a href="#meu-checklist" class="toc-link">🎯 Meu Checklist</a>
+        <a href="#metas" class="toc-link">📈 Metas</a>
+        <a href="#timeline" class="toc-link">⏱️ Timeline</a>
+        <a href="#centrais" class="toc-link">📚 Centrais</a>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <!-- AÇÕES RÁPIDAS -->
+        <section id="acoes-rapidas">
+            <h2>⚡ Ações Rápidas de Hoje</h2>
+            <div class="quick-actions">
+                <h3>🔴 CRÍTICAS</h3>
+                <div class="action-item critical">
+                    <input type="checkbox" class="action-checkbox" id="action1">
+                    <div class="action-text">Validar acesso Tenex (T0 — Lucas bloqueado ontem)</div>
+                    <span class="action-time">08h00</span>
+                    <span class="action-owner">Rogério</span>
+                </div>
+                <div class="action-item critical">
+                    <input type="checkbox" class="action-checkbox" id="action2">
+                    <div class="action-text">Se Tenex fora → ativar Google Sheets (fallback pronto)</div>
+                    <span class="action-time">08h15</span>
+                    <span class="action-owner">Lucas</span>
+                </div>
+
+                <h3 style="margin-top: 25px; color: var(--color-warning);">🟠 IMPORTANTES</h3>
+                <div class="action-item warning">
+                    <input type="checkbox" class="action-checkbox" id="action3">
+                    <div class="action-text">Aprovar messaging "Perdão de Dívida" (script ready)</div>
+                    <span class="action-time">09h00</span>
+                    <span class="action-owner">Rogério</span>
+                </div>
+                <div class="action-item warning">
+                    <input type="checkbox" class="action-checkbox" id="action4">
+                    <div class="action-text">n8n dispara campanhas WhatsApp (761 Tenex)</div>
+                    <span class="action-time">10h00</span>
+                    <span class="action-owner">Automação</span>
+                </div>
+                <div class="action-item warning">
+                    <input type="checkbox" class="action-checkbox" id="action5">
+                    <div class="action-text">Verificar status Raquel (saúde — capacidade reduzida)</div>
+                    <span class="action-time">08h30</span>
+                    <span class="action-owner">Rogério</span>
+                </div>
+
+                <h3 style="margin-top: 25px; color: var(--color-info);">🔵 INFORMAÇÕES</h3>
+                <div class="action-item info">
+                    <input type="checkbox" class="action-checkbox" id="action6">
+                    <div class="action-text">Check-in Lucas: progresso ativações vs 15 meta</div>
+                    <span class="action-time">10h00</span>
+                    <span class="action-owner">Rogério</span>
+                </div>
+                <div class="action-item info">
+                    <input type="checkbox" class="action-checkbox" id="action7">
+                    <div class="action-text">Check-in Karine: alavancagem perdão + conversões</div>
+                    <span class="action-time">12h00</span>
+                    <span class="action-owner">Rogério</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUEADORES URGENTES -->
+        <section id="bloqueadores">
+            <h2>🚨 Bloqueadores Críticos</h2>
+
+            <div class="blocker-section">
+                <div class="blocker-title">
+                    <span style="font-size: 1.4em;">🔴</span> TENEX ACCESS — PERSISTENTE (Lucas)
+                </div>
+                <div class="blocker-content">
+                    <div class="blocker-row">
+                        <div class="blocker-label">Status:</div>
+                        <div>Offline em 18/05 até 12h — impactou −8 ativações</div>
+                    </div>
+                    <div class="blocker-row">
+                        <div class="blocker-label">Ação T0:</div>
+                        <div>Rogério valida acesso pessoalmente (08h)</div>
+                    </div>
+                    <div class="blocker-row">
+                        <div class="blocker-label">Plano B:</div>
+                        <div>Google Sheets fallback (já testado, pronto para usar)</div>
+                    </div>
+                    <div class="blocker-row">
+                        <div class="blocker-label">Meta:</div>
+                        <div>Zero atraso no startup. Se bloqueado → ativar fallback imediatamente</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blocker-section" style="border-color: var(--color-warning); background: linear-gradient(135deg, rgba(255, 165, 2, 0.12) 0%, rgba(15, 15, 30, 0.8) 100%);">
+                <div class="blocker-title" style="color: var(--color-warning);">
+                    <span style="font-size: 1.4em;">🟡</span> RAQUEL — CAPACIDADE REDUZIDA (Saúde)
+                </div>
+                <div class="blocker-content">
+                    <div class="blocker-row">
+                        <div class="blocker-label">Situação:</div>
+                        <div>Hospitalizada em 18/05. Sem leads novos = Karine fica ociosa</div>
+                    </div>
+                    <div class="blocker-row">
+                        <div class="blocker-label">Ação T0:</div>
+                        <div>Verificar status hoje (08h30) — retorna ou não?</div>
+                    </div>
+                    <div class="blocker-row">
+                        <div class="blocker-label">Se não retorna:</div>
+                        <div>Rogério mobiliza leads alternativos OU passa reativação direto para Karine</div>
+                    </div>
+                    <div class="blocker-row">
+                        <div class="blocker-label">Meta:</div>
+                        <div>Manter Karine produtiva (perdão dívida + legado Tenex)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESUMO MATINAL NO NOTION -->
+        <div class="notion-link-banner">
+            <div class="notion-link-text">
+                <h3>📋 Resumo Completo da Matinal</h3>
+                <p>Ver análise detalhada, tabelas, próximas datas críticas e combinados</p>
+            </div>
+            <a href="https://www.notion.so/365ad3c00373816a8732e354f00550e4" class="notion-btn" target="_blank">
+                Abrir Notion ↗️
+            </a>
+        </div>
+
+        <!-- RESULTADO REAL 18/05 -->
+        <section id="resultado-real">
+            <h2>📊 Resultado Real — 18 de Maio</h2>
+            <p style="margin-bottom: 20px;">Planejado vs Executado — Use para validar gaps operacionais</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pessoa</th>
+                        <th>Meta</th>
+                        <th>Resultado</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Karine</strong> 💗</td>
+                        <td>≥5 Fechamentos</td>
+                        <td style="color: var(--color-success); font-weight: 700;">7–10 ✅</td>
+                        <td><span class="badge ok">EXCEDEU</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lucas</strong> 🛠️</td>
+                        <td>≥15 Ativações</td>
+                        <td style="color: var(--color-danger); font-weight: 700;">7 ❌</td>
+                        <td><span class="badge urgent">PERDEU (Tenex)</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Raquel</strong> 📣</td>
+                        <td>20 Leads</td>
+                        <td style="color: var(--color-danger); font-weight: 700;">0 ❌</td>
+                        <td><span class="badge urgent">HOSPITALIZADA</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rogério</strong> 💼</td>
+                        <td>4 Check-ins</td>
+                        <td style="color: var(--color-success); font-weight: 700;">✅ OK</td>
+                        <td><span class="badge ok">EXECUTADO</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="text-align: center; color: var(--color-success); font-weight: 700; margin-top: 20px; font-size: 1.1em;">
+                ✅ GO — 2 de 3 objetivos principais batidos
+            </p>
+        </section>
+
+        <!-- NOVO FOCO -->
+        <section id="novo-foco">
+            <h2>🔄 Novo Foco — Perdão de Dívida</h2>
+            <p style="margin-bottom: 25px; font-size: 1.05em;">Reorientação para <strong>reativação de clientes inativos</strong> (761 contas Tenex em atraso)</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                <div style="background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(26, 26, 46, 0.8)); padding: 20px; border-radius: 8px; border-left: 5px solid var(--color-primary);">
+                    <div style="font-size: 2.2em; font-weight: 800; margin-bottom: 10px;">761</div>
+                    <div style="font-weight: 700; margin-bottom: 5px;">Contas em Atraso</div>
+                    <div style="color: var(--color-gray); font-size: 0.9em;">Potencial: 20% reativação = R$6k/mês de ARR novo</div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(26, 26, 46, 0.8)); padding: 20px; border-radius: 8px; border-left: 5px solid #FF6B9D;">
+                    <div style="font-size: 2.2em; font-weight: 800; margin-bottom: 10px;">20%</div>
+                    <div style="font-weight: 700; margin-bottom: 5px;">Meta de Reativação</div>
+                    <div style="color: var(--color-gray); font-size: 0.9em;">152 contas em 15 dias</div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(159, 78, 221, 0.15), rgba(26, 26, 46, 0.8)); padding: 20px; border-radius: 8px; border-left: 5px solid #9D4EDD;">
+                    <div style="font-size: 2.2em; font-weight: 800; margin-bottom: 10px;">HOJE</div>
+                    <div style="font-weight: 700; margin-bottom: 5px;">Kickoff</div>
+                    <div style="color: var(--color-gray); font-size: 0.9em;">Messaging approved → n8n dispara WhatsApp</div>
+                </div>
+            </div>
+
+            <div style="background: rgba(30, 30, 50, 0.6); padding: 20px; border-radius: 8px; border: 1px solid var(--color-gray);">
+                <p style="margin-bottom: 15px; font-weight: 700;">📞 Script Modelo — Karine:</p>
+                <blockquote style="border-left: 3px solid var(--color-accent); padding-left: 20px; color: var(--color-gray); font-style: italic; margin-bottom: 15px;">
+                    "Oi [NOME]! Tudo bem? Aqui é a Karine da SST. Vi que você ficou um tempo sem usar o cartão. A gente tá com uma ação especial: se você voltar, a gente apaga seus atrasos. Você topa? Custa só R$34,90/mês."
+                </blockquote>
+                <p style="color: var(--color-primary); font-weight: 700;">→ Se aceita: enviar link reativação imediatamente via WhatsApp</p>
+            </div>
+        </section>
+
+        <!-- MEU CHECKLIST DO DIA -->
+        <section id="meu-checklist">
+            <h2>🎯 Meu Checklist do Dia</h2>
+            <p style="margin-bottom: 30px; font-size: 0.95em;">Selecione sua função para ver suas tarefas específicas</p>
+
+            <div class="checklist-grid">
+                <!-- KARINE -->
+                <div class="checklist-card">
+                    <div class="checklist-header">💗 KARINE</div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Estar pronta às 08h para alavancagem (5 min × 10 leads)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Executar 15 contatos "Perdão de Dívida" (novo foco)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Report parcial às 12h (quantas conversões?)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Meta final: ≥5 fechamentos (mantém taxa de 18/05)</span>
+                    </div>
+                </div>
+
+                <!-- LUCAS -->
+                <div class="checklist-card">
+                    <div class="checklist-header">🛠️ LUCAS</div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">URGENTE: Validar acesso Tenex (08h) — se fora, ativar Google Sheets</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Iniciar 50 contatos de ativação (desde 09h)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Meta até 12h: ≥15 ativações (recuperar de 18/05)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Responder check-ins Rogério (10h e 12h)</span>
+                    </div>
+                </div>
+
+                <!-- RAQUEL -->
+                <div class="checklist-card">
+                    <div class="checklist-header">📣 RAQUEL</div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Status saúde verificado com Rogério (08h30)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Se retornar: prioridade MAX em leads qualificados</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Se não retornar: continuar com plano de contingência</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Coordenar com Rogério para manter Karine com insumo</span>
+                    </div>
+                </div>
+
+                <!-- ROGÉRIO -->
+                <div class="checklist-card">
+                    <div class="checklist-header">👑 ROGÉRIO</div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Validar Tenex pessoalmente (08h00)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Verificar status Raquel (08h30)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Aprovar messaging "Perdão de Dívida" para n8n (09h)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Check-in Lucas (10h) + Karine (12h)</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" class="checklist-checkbox">
+                        <span class="checklist-text">Consolidar relatório 15h (GO/NO-GO)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TIMELINE -->
+        <section id="timeline">
+            <h2>⏱️ Cronograma do Dia</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Horário</th>
+                        <th>Ação</th>
+                        <th>Responsável</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>08h00</strong></td>
+                        <td>Validar Tenex (crítico) + Verificar Raquel</td>
+                        <td>Rogério</td>
+                    </tr>
+                    <tr>
+                        <td><strong>08h30</strong></td>
+                        <td>Ativar fallback se necessário</td>
+                        <td>Lucas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>09h00</strong></td>
+                        <td>Aprovar messaging Perdão Dívida</td>
+                        <td>Rogério</td>
+                    </tr>
+                    <tr>
+                        <td><strong>10h00</strong></td>
+                        <td>n8n dispara 1º lote WhatsApp + Check-in Lucas</td>
+                        <td>Automação + Rogério</td>
+                    </tr>
+                    <tr>
+                        <td><strong>12h00</strong></td>
+                        <td>Relatório parcial + Check-in Karine</td>
+                        <td>Todos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>15h00</strong></td>
+                        <td>Relatório final GO/NO-GO</td>
+                        <td>Rogério</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- METAS -->
+        <section id="metas">
+            <h2>📈 Metas Resumidas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Objetivo</th>
+                        <th>Meta 18/05</th>
+                        <th>Resultado</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Fechamentos (Karine)</strong></td>
+                        <td>≥5</td>
+                        <td>7–10</td>
+                        <td><span class="badge ok">✅ FEITO</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ativações (Lucas)</strong></td>
+                        <td>≥15</td>
+                        <td>7</td>
+                        <td><span class="badge urgent">❌ FALTARAM 8</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Leads Novos (Raquel)</strong></td>
+                        <td>20</td>
+                        <td>0</td>
+                        <td><span class="badge urgent">❌ HOSPITALIZADA</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Perdão Dívida (Novo)</strong></td>
+                        <td>Kickoff</td>
+                        <td>Em andamento</td>
+                        <td><span class="badge info">🟡 INICIANDO</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- CENTRAIS DE COMANDO -->
+        <section id="centrais">
+            <h2>📚 Centrais de Comando — Atualize Suas Bases</h2>
+            <p style="margin-bottom: 25px;">Acesse sua central para registrar execução e atualizar pipelines em tempo real</p>
+
+            <div class="footer-links">
+                <a href="https://www.notion.so/356ad3c00373810fbc95d815668f92c5" class="footer-link" target="_blank">
+                    🟠 Lucas — Central CS<br><small>Sucesso do Paciente</small>
+                </a>
+                <a href="https://www.notion.so/344ad3c0037381ef8b64f491adaff66a" class="footer-link" target="_blank">
+                    💗 Karine — Agentamento<br><small>& Pipeline</small>
+                </a>
+                <a href="https://www.notion.so/344ad3c0037381a79215e4eff17c49a3" class="footer-link" target="_blank">
+                    🔵 Raquel — Marketing<br><small>SST Card</small>
+                </a>
+                <a href="https://www.notion.so/344ad3c0037381b6bd13f5a9007e38d4" class="footer-link" target="_blank">
+                    👑 Rogério — Sponsor<br><small>& Advisory</small>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-text">
+            📅 <strong>Criado:</strong> 19 de Maio 2026 — 09h00 |
+            📧 <strong>Consultor:</strong> Mayko Rodrigues
+        </p>
+        <p class="footer-text" style="margin-top: 10px;">
+            💡 <strong>Versão:</strong> 3.0 Assistente | Checkboxes salvos automaticamente | Ctrl+P para PDF
+        </p>
+    </footer>
+
+    <script>
+        // Toggle sidebar
+        document.querySelector('.toggle-toc').addEventListener('click', () => {
+            document.getElementById('sidebarToc').classList.toggle('active');
+        });
+
+        // Salvar checkboxes em localStorage
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const id = checkbox.id || `checkbox-${Math.random()}`;
+            checkbox.id = id;
+
+            const savedState = localStorage.getItem(id);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            }
+
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(id, checkbox.checked);
+            });
+        });
+
+        // Fechar sidebar ao clicar em link
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebarToc').classList.remove('active');
+                }
+            });
+        });
+
+        // Print listener
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>
