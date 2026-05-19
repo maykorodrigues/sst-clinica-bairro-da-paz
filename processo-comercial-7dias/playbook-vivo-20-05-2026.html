@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playbook Vivo SST Card — Histórico com Abas</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #2ECC71;
+            --color-accent: #1987c3;
+            --color-dark: #1a1a2e;
+            --color-darker: #0f0f1e;
+            --color-gray: #e0e0e0;
+            --color-danger: #FF4757;
+            --color-warning: #FFA502;
+            --color-success: #2ECC71;
+        }
+
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background: linear-gradient(135deg, var(--color-darker) 0%, var(--color-dark) 100%);
+            color: var(--color-gray);
+            line-height: 1.6;
+        }
+
+        /* HEADER STICKY */
+        header {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(135deg, var(--color-darker) 0%, rgba(25, 135, 195, 0.08) 100%);
+            border-bottom: 3px solid var(--color-accent);
+            padding: 15px 20px;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .header-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-size: 0.85em;
+        }
+
+        .header-links a {
+            padding: 5px 10px;
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid var(--color-primary);
+            color: var(--color-primary);
+            text-decoration: none;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .header-links a:hover {
+            background: var(--color-primary);
+            color: var(--color-darker);
+        }
+
+        /* ABAS */
+        .tabs-container {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            padding: 10px 20px 0;
+            border-bottom: 2px solid rgba(46, 204, 113, 0.2);
+            scroll-behavior: smooth;
+        }
+
+        .tab-button {
+            padding: 8px 16px;
+            background: rgba(46, 204, 113, 0.05);
+            border: 2px solid rgba(46, 204, 113, 0.3);
+            color: var(--color-gray);
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-button:hover {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .tab-button.active {
+            background: var(--color-primary);
+            color: var(--color-darker);
+            border-color: var(--color-primary);
+        }
+
+        /* CONTEÚDO DAS ABAS */
+        .tabs-content {
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--color-accent);
+        }
+
+        .day-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .day-status {
+            font-size: 0.9em;
+            padding: 5px 10px;
+            background: rgba(255, 165, 2, 0.2);
+            border: 1px solid var(--color-warning);
+            color: var(--color-warning);
+            border-radius: 3px;
+        }
+
+        .day-status.completed {
+            background: rgba(46, 204, 113, 0.2);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        /* SEÇÕES DO DIA */
+        .section {
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(25, 135, 195, 0.05);
+            border-left: 4px solid var(--color-accent);
+            border-radius: 4px;
+        }
+
+        .section h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1em;
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-planejado {
+            border-left-color: var(--color-info);
+        }
+
+        .section-resultado {
+            border-left-color: var(--color-success);
+            background: rgba(46, 204, 113, 0.05);
+        }
+
+        .section-projecao {
+            border-left-color: var(--color-warning);
+            background: rgba(255, 165, 2, 0.05);
+        }
+
+        /* TABELAS */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(46, 204, 113, 0.2);
+        }
+
+        th {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        tr:hover {
+            background: rgba(25, 135, 195, 0.1);
+        }
+
+        /* CHECKBOXES */
+        .task-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .task-item {
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: rgba(46, 204, 113, 0.08);
+            border-left: 3px solid var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 3px;
+        }
+
+        .task-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--color-primary);
+        }
+
+        .task-item input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: rgba(224, 224, 224, 0.6);
+        }
+
+        .task-item label {
+            cursor: pointer;
+            flex: 1;
+            margin: 0;
+        }
+
+        /* FOOTER */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 2px solid var(--color-accent);
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.85em;
+            color: rgba(224, 224, 224, 0.8);
+        }
+
+        footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--color-primary);
+        }
+
+        footer a:hover {
+            color: var(--color-accent);
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .day-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .tabs-container {
+                padding: 10px 10px 0;
+            }
+
+            .tab-button {
+                padding: 6px 12px;
+                font-size: 0.85em;
+            }
+        }
+
+        /* PRINT */
+        @media print {
+            header, .tabs-container {
+                position: static;
+            }
+
+            .tab-button {
+                border: 1px solid var(--color-gray);
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <div class="header-title">📊 Playbook Vivo SST Card</div>
+            <div class="header-links">
+                <a href="https://www.notion.so/365ad3c00373816a8732e354f00550e4" target="_blank">📋 Resumo Completo</a>
+                <a href="https://www.notion.so/356ad3c00373810fbc95d815668f92c5" target="_blank">🛠️ Lucas — CS</a>
+                <a href="https://www.notion.so/344ad3c0037381ef8b64f491adaff66a" target="_blank">💗 Karine — Vendas</a>
+                <a href="https://www.notion.so/344ad3c0037381a79215e4eff17c49a3" target="_blank">📣 Raquel — Marketing</a>
+                <a href="https://www.notion.so/344ad3c0037381b6bd13f5a9007e38d4" target="_blank">👑 Rogério — Advisory</a>
+            </div>
+        </div>
+
+        <div class="tabs-container" id="tabsContainer">
+            <!-- Abas são adicionadas dinamicamente via JavaScript -->
+        </div>
+    </header>
+
+    <div class="tabs-content" id="tabsContent">
+        <!-- Conteúdo das abas vai aqui -->
+    </div>
+
+    <footer>
+        <p>🔄 <strong>Documento vivo atualizado via GitHub</strong> | Ctrl+P para PDF | Checkboxes salvos automaticamente</p>
+        <p style="margin-top: 10px;">Próxima atualização: ao final do dia (resultado real) + projeção dia seguinte</p>
+    </footer>
+
+    <script>
+        // Dados dos dias
+        const days = [
+            {
+                date: '18-05-2026',
+                label: '18/05 (seg)',
+                fullDate: '18 de Maio — Segunda-feira',
+                status: 'completed',
+
+                planejado: `
+                    <table>
+                        <tr>
+                            <th>Pessoa</th>
+                            <th>Meta</th>
+                            <th>O que fazer</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Rogério</strong></td>
+                            <td>Desbloquear acesso Lucas</td>
+                            <td>Validar alavancagem a cada 2h</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Karine</strong></td>
+                            <td>10 leads alavancagem</td>
+                            <td>Converter ≥3 em 5 min + 15 contatos perdão dívida</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lucas</strong></td>
+                            <td>≥15 ativações</td>
+                            <td>Recuperar de sexta + finalizar auditoria 27 cancelados</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Raquel</strong></td>
+                            <td>Consolidar leads</td>
+                            <td>Passar 10 para Karine + 5 criativos Meta + 100 conversas</td>
+                        </tr>
+                    </table>
+                    <h4>⚡ Ações Críticas</h4>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" id="18-acao1">
+                            <label for="18-acao1">Tenex Access — usar Google Sheets como fallback se necessário</label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="18-acao2">
+                            <label for="18-acao2">Alavancagem Karine — handoff 5 min cada ciclo</label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="18-acao3">
+                            <label for="18-acao3">Relatório 15h com resultado planejado vs executado</label>
+                        </li>
+                    </ul>
+                `,
+
+                resultado: `
+                    <table>
+                        <tr>
+                            <th>Pessoa</th>
+                            <th>Meta</th>
+                            <th>Realizado</th>
+                            <th>Status</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Karine</strong></td>
+                            <td>10 alavancagem</td>
+                            <td>7–10</td>
+                            <td style="color: #2ECC71;">✅ EXCEDEU</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lucas</strong></td>
+                            <td>≥15 ativações</td>
+                            <td>7</td>
+                            <td style="color: #FF4757;">❌ PERDEU (Tenex até 12h)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Raquel</strong></td>
+                            <td>10 leads</td>
+                            <td>0</td>
+                            <td style="color: #FF4757;">❌ CRÍTICO (hospitalizada)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rogério</strong></td>
+                            <td>4 check-ins</td>
+                            <td>4</td>
+                            <td style="color: #2ECC71;">✅ EXECUTADO</td>
+                        </tr>
+                    </table>
+                    <p style="margin-top: 15px;"><strong>GO/NO-GO:</strong> ✅ <strong>GO</strong> — 2 de 3 objetivos batidos</p>
+                    <p><strong>Insight:</strong> Alavancagem funcionou perfeitamente. Tenex bloqueador persistiu. Raquel hospitalizada impactou falta de insumo para Karine continuidade.</p>
+                `,
+
+                projecao: `
+                    <h4>🎯 Para Amanhã (19/05 — Terça)</h4>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" id="19-proj1">
+                            <label for="19-proj1">Validar acesso Tenex (08h) — crítico antes de matinal</label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="19-proj2">
+                            <label for="19-proj2">Rogério aprova messaging Perdão Dívida (09h)</label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="19-proj3">
+                            <label for="19-proj3">n8n dispara primeira lote WhatsApp 761 Tenex (10h)</label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="19-proj4">
+                            <label for="19-proj4">Verificar status Raquel (08h30) — retorna ou contingência</label>
+                        </li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Meta:</strong> ≥50 contatos Perdão Dívida iniciados | Tenex acesso 100% | Raquel operacional ou plano B ativo</p>
+                `
+            },
+            {
+                date: '19-05-2026',
+                label: '19/05 (ter)',
+                fullDate: '19 de Maio — Terça-feira',
+                status: 'in-progress',
+
+                planejado: `
+                    <table>
+                        <tr>
+                            <th>Pessoa</th>
+                            <th>Responsabilidade</th>
+                            <th>Meta</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Rogério</strong></td>
+                            <td>Validação Tenex + Aprovação messaging</td>
+                            <td>100% operacional até 09h</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Karine</strong></td>
+                            <td>Alavancagem + Perdão Dívida</td>
+                            <td>≥5 novos + ≥3 reativações</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lucas</strong></td>
+                            <td>Ativações + auditoria</td>
+                            <td>≥15 ativações | Finalizar 27 cancelados</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Raquel</strong></td>
+                            <td>Leads + contingência</td>
+                            <td>Status saúde + 20 leads se operacional</td>
+                        </tr>
+                    </table>
+                    <h4>⚡ Novo Foco: Campanha Perdão de Dívida</h4>
+                    <p><strong>Potencial:</strong> 761 contas Tenex em atraso | 20% reativação = R$6k/mês ARR</p>
+                    <p><strong>Script Karine:</strong> "Oi [NOME], vi que ficou um tempo sem usar. A gente tá com ação especial: se você voltar, a gente apaga seus atrasos. Você topa? Custa só R$34,90."</p>
+                    <p><strong>Timeline:</strong> Aprovar hoje (09h) → n8n dispara hoje (10h) → Meta: 50+ contatos/dia</p>
+                `,
+
+                resultado: `
+                    <p style="color: var(--color-warning); font-weight: 700;">⏳ Aguardando conclusão do dia — A preencher às 15h</p>
+                `,
+
+                projecao: `
+                    <h4>🎯 Para Amanhã (20/05 — Quarta)</h4>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" id="20-proj1">
+                            <label for="20-proj1">Revisar resultado Perdão Dívida — conversão % e volume contatos</label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="20-proj2">
+                            <label for="20-proj2">Escalar o que funcionou (replicar script vencedor)</label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="20-proj3">
+                            <label for="20-proj3">Preparar relatório parcial para gate decision (23/05)</label>
+                        </li>
+                    </ul>
+                `
+            },
+            {
+                date: '20-05-2026',
+                label: '20/05 (qua)',
+                fullDate: '20 de Maio — Quarta-feira',
+                status: 'pending',
+
+                planejado: `
+                    <table>
+                        <tr>
+                            <th>Pessoa</th>
+                            <th>Foco Principal</th>
+                            <th>Meta</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Rogério</strong></td>
+                            <td>Consolidar insights Perdão Dívida + contingência Raquel</td>
+                            <td>Validar ritmo conversão</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Karine</strong></td>
+                            <td>Replicar movimento vencedor</td>
+                            <td>Escalar volume com script validado</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lucas</strong></td>
+                            <td>Ativações contínuo + base limpa</td>
+                            <td>≥20 ativações (ritmo acelerado)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Raquel</strong></td>
+                            <td>Leads (ou plano B)</td>
+                            <td>≥25 leads se operacional</td>
+                        </tr>
+                    </table>
+                    <h4>📊 Checkpoint Diário</h4>
+                    <p>Status consolidado: adesões acumuladas vs meta (23/05 = 20 adesões mínimo)</p>
+                `,
+
+                resultado: `
+                    <p style="color: #FFA502; font-weight: 700;">⏳ A ser preenchido ao final do dia</p>
+                `,
+
+                projecao: `
+                    <h4>🎯 Para Amanhã (21/05 — Quinta)</h4>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <input type="checkbox" id="21-proj1">
+                            <label for="21-proj1">Consolidar métricas: adesões, reativações, churn detectado</label>
+                        </li>
+                        <li class="task-item">
+                            <input type="checkbox" id="21-proj2">
+                            <label for="21-proj2">Preparar briefing gate decision (23/05)</label>
+                        </li>
+                    </ul>
+                `
+            }
+        ];
+
+        // Renderizar abas
+        const tabsContainer = document.getElementById('tabsContainer');
+        const tabsContent = document.getElementById('tabsContent');
+
+        days.forEach((day, index) => {
+            // Criar botão da aba
+            const tabButton = document.createElement('button');
+            tabButton.className = 'tab-button' + (index === 0 ? ' active' : '');
+            tabButton.textContent = day.label;
+            tabButton.id = `tab-${day.date}`;
+            tabButton.addEventListener('click', () => switchTab(day.date));
+            tabsContainer.appendChild(tabButton);
+
+            // Criar conteúdo da aba
+            const tabPane = document.createElement('div');
+            tabPane.className = 'tab-pane' + (index === 0 ? ' active' : '');
+            tabPane.id = `pane-${day.date}`;
+
+            const statusClass = day.status === 'completed' ? 'completed' : '';
+            const statusText = day.status === 'completed' ? '✅ Concluído' : (day.status === 'in-progress' ? '🔄 Em Progresso' : '⏳ Planejado');
+
+            tabPane.innerHTML = `
+                <div class="day-header">
+                    <div class="day-title">${day.fullDate}</div>
+                    <div class="day-status ${statusClass}">${statusText}</div>
+                </div>
+
+                <div class="section section-planejado">
+                    <h3>📋 PLANEJADO</h3>
+                    ${day.planejado}
+                </div>
+
+                <div class="section section-resultado">
+                    <h3>📊 RESULTADO REAL</h3>
+                    ${day.resultado}
+                </div>
+
+                <div class="section section-projecao">
+                    <h3>🎯 PROJEÇÃO PRÓXIMOS DIAS</h3>
+                    ${day.projecao}
+                </div>
+            `;
+
+            tabsContent.appendChild(tabPane);
+        });
+
+        // Função para trocar abas
+        function switchTab(date) {
+            // Desativar todas as abas
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+            // Ativar aba selecionada
+            document.getElementById(`pane-${date}`).classList.add('active');
+            document.getElementById(`tab-${date}`).classList.add('active');
+
+            // Salvar em localStorage
+            localStorage.setItem('activeTab', date);
+
+            // Scroll para topo
+            window.scrollTo(0, 0);
+        }
+
+        // Restaurar aba ativa
+        const savedTab = localStorage.getItem('activeTab');
+        if (savedTab) {
+            switchTab(savedTab);
+        }
+
+        // Salvar checkboxes em localStorage
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            const savedState = localStorage.getItem(`checkbox-${checkbox.id}`);
+            if (savedState === 'true') {
+                checkbox.checked = true;
+            }
+
+            checkbox.addEventListener('change', () => {
+                localStorage.setItem(`checkbox-${checkbox.id}`, checkbox.checked);
+            });
+        });
+    </script>
+
+</body>
+</html>
