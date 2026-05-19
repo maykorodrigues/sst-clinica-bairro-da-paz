@@ -8,6 +8,14 @@ Consultoria comercial ativa para **Rogério Ferreira** (SST Clínica / SST Card)
 
 O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório em Markdown, espelhado no Notion e executado via WhatsApp + n8n.
 
+**Status do Projeto (19/05/2026):**
+- ✅ **Advisory assinado** em 01/05/2026 (contrato R$30k validado)
+- ✅ **Bairro da Paz** — contrato assinado, operação iniciando
+- 🎯 **Gate decision** — estendido para 30/05 (avaliar ARR/churn após reativação)
+- 🔄 **Novo foco operacional** — Campanha de Perdão de Dívida (761 contas Tenex em atraso)
+- 📊 **Playbook web** — publicado em https://playbook.ssfcard.ia.br (Vercel + Cloudflare)
+- 🔔 **Estrutura PJ** — 3 membros da equipe em transição (finalizando com HR na semana 23/05)
+
 **Leia sempre `RETOMADA.md` antes de agir** — é o "estado do projeto": decisões tomadas, documentos criados e próximos passos. Não repita o que já está lá.
 
 ## Mapa dos documentos
@@ -137,6 +145,48 @@ git push origin main
 - Números de KPI, metas, cancelamentos → busque `data` no HTML
 - Cores do tema → busque `#1987c3` (azul primário)
 - Slides/seções → modifique HTML mantendo estrutura
+
+---
+
+### Playbook Web — Deployment Vercel
+
+Localização: `processo-comercial-7dias/playbook-sst-18-05-2026.html`
+
+Documento operacional web (HTML/CSS/JavaScript) para distribuição diária da equipe via WhatsApp, com dados reais vs planejado, timelines, scripts e métricas.
+
+**Deployment:**
+- **URL Pública:** https://playbook.ssfcard.ia.br (via Vercel + Cloudflare)
+- **Repositório:** GitHub (espelhado em `.git`)
+- **CLI:** `vercel deploy --prod` (requer autenticação prévia: `vercel link`)
+
+**Arquivos principais:**
+- `playbook-sst-18-05-2026.html` — Playbook principal (atualizado diariamente com dados reais)
+- `vercel.json` — Configuração Vercel (buildCommand simples, outputDirectory raiz)
+- `.nojekyll` — Sinaliza para não processar como Jekyll (não é necessário em Vercel)
+
+**Quando editar:**
+- **Dados diários:** Seção "Resultado Real — DD/MM" com planejado vs executado
+- **Metas dinâmicas:** Atualize cards de Karine, Lucas, Raquel, Rogério conforme progresso
+- **Novo foco:** Adicione seções de campanhas (ex: Perdão de Dívida) após bloqueadores
+- **Footer:** Mantenha links Notion em `<a href="...">` atualizados para pipelines
+
+**Ciclo de atualização:**
+1. Após matinal diária (08h–09h), capturar resultados reais
+2. Editar `playbook-sst-18-05-2026.html` com comparação planejado vs executado
+3. Rodar `git commit` e `git push`
+4. Vercel redeploya automaticamente em <1 min
+5. Link em playbook.ssfcard.ia.br fica atualizado
+
+**Impressão para PDF:**
+- Ctrl+P no navegador → salvar como PDF
+- Layout otimizado para print (background branco, sem hover effects)
+- Ideal para distribuir no WhatsApp como "relatório do dia"
+
+**Próximas melhorias (roadmap):**
+- [ ] Integração com API Notion para dados em tempo real
+- [ ] Dashboard com gráficos dinâmicos (Chart.js)
+- [ ] WhatsApp integration automática (n8n webhook)
+- [ ] Versionamento de playbooks (arquivo por data)
 
 ---
 
