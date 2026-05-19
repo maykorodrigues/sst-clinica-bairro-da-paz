@@ -4,7 +4,7 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 19/05/2026 — Playbook v3.0 Assistente Operacional deployed + Matinal 19/05 criada
+> Última atualização: 19/05/2026 — Playbook Vivo com Abas (18/05–20/05) deployed + v3.0 Assistente + Matinal 19/05
 
 #em-progresso
 
@@ -388,6 +388,7 @@ Estrutura criada dentro de **"Processos Comerciais B2C Clube SST CARD/ CARD"**:
 - [x] `processo-comercial-7dias/playbook-sst-assistente-19-05.html` — ✅ v3.0 Assistente Operacional (ações rápidas + checklists personalizados + navegação)
 - [x] `processo-comercial-7dias/01-matinais/19-05-2026/resumo-executivo-matinal-19-05.md` — ✅ Ata matinal 19/05 (contexto + resultado 18/05 + novo foco + ações imediatas)
 - [x] Playbook deployed em Vercel: https://playbook.ssfcard.ia.br ✅
+- [x] `processo-comercial-7dias/playbook-vivo-20-05-2026.html` — ✅ Playbook Vivo com Abas (18/05–20/05) para histórico crescente de Planejado | Resultado | Projeção
 
 **CRÍTICO — Hoje (19/05) ou amanhã (20/05):**
 - [ ] `processo-comercial-7dias/02-cadencias/automacao-dashboard-diario-n8n.md` — Workflow n8n: parsing WhatsApp → cálculo → HTML → envio (iniciar segunda-feira próxima se matinal 19/05 confirmar padrão)
@@ -478,6 +479,127 @@ O playbook se atualiza via **git push → Vercel auto-deploy** (~30s):
 2. `git add` + `git commit` + `git push origin master`
 3. Vercel redeploya automaticamente
 4. URL fica sempre com versão mais recente
+
+---
+
+## Playbook Vivo com Abas por Data ✅ DEPLOYED
+
+**Data de Criação:** 19/05/2026 — 10h00  
+**Status:** 🟢 Live em produção  
+**URL Pública:** https://playbook.ssfcard.ia.br/processo-comercial-7dias/playbook-vivo-20-05-2026.html
+
+### O que é
+
+**Documento HTML vivo que cresce com o projeto** — mantém histórico de todos os dias com sistema de abas, permitindo que a equipe veja:
+- **Planejado** (o que foi definido para o dia)
+- **Resultado Real** (números/execução ao final do dia)
+- **Projeção Próximos Dias** (tarefas-chave que se repetem)
+
+Cada dia fica preservado como aba navegável. Quando novo dia chega, adiciona-se uma nova aba (18/05, 19/05, 20/05, 21/05, etc.) sem deletar o anterior.
+
+### Estrutura de Abas (Padrão)
+
+**Cada aba contém 3 seções:**
+
+| Seção | Conteúdo | Atualização |
+|-------|----------|------------|
+| **📋 PLANEJADO** | Metas do dia + tarefas por pessoa + ações críticas | Estático (criado no início do dia) |
+| **📊 RESULTADO REAL** | Tabela: Meta vs Realizado + status (✅/❌) + insights | **Preenchido às 15h** do dia |
+| **🎯 PROJEÇÃO PRÓXIMOS DIAS** | Checklist de tarefas-chave para dias seguintes | Automático (herda do dia anterior) |
+
+### Abas Criadas (v1.0)
+
+| Aba | Status | Conteúdo |
+|-----|--------|----------|
+| **18/05 (seg)** | ✅ Completo | Planejado + Resultado real preenchido |
+| **19/05 (ter)** | 🔄 Em Progresso | Planejado + Resultado será preenchido às 15h |
+| **20/05 (qua)** | ⏳ Planejado | Planejado + Resultado a preencher |
+
+### Funcionalidades
+
+| Feature | Como funciona |
+|---------|---|
+| **Abas Navegáveis** | Clique em 18/05, 19/05, 20/05 para trocar de dia |
+| **Checkboxes Persistentes** | Marca ✓ → localStorage → fecha aba → reabre → ✓ continua |
+| **Links Sempre Visíveis** | Header sticky com 5 links Notion (Resumo, Lucas, Karine, Raquel, Rogério) |
+| **Status Visual** | Badge mostra status do dia (✅ Concluído, 🔄 Em Progresso, ⏳ Planejado) |
+| **Print para PDF** | Ctrl+P → salvar como PDF com todas as abas |
+| **Responsive** | Funciona em mobile, desktop, tablet |
+
+### Workflow Diário de Atualização
+
+**Ao final de cada dia (15h):**
+
+1. **Editar arquivo HTML** no VS Code:
+   ```javascript
+   resultado: `
+       <table>
+           <tr>
+               <td><strong>Karine</strong></td>
+               <td>10 alavancagem</td>
+               <td>7</td>
+               <td style="color: #FF4757;">❌ ABAIXO</td>
+           </tr>
+       </table>
+       <p><strong>Insight:</strong> Bloqueador X impactou, projetamos Y para amanhã</p>
+   `
+   ```
+
+2. **Commit + Push:**
+   ```bash
+   git add processo-comercial-7dias/playbook-vivo-20-05-2026.html
+   git commit -m "Atualizar resultado 19/05 + projeção 20/05"
+   git push origin master
+   ```
+
+3. **Vercel redeploya** (<30s) — playbook.ssfcard.ia.br fica sempre atualizado
+
+4. **Compartilhar no WhatsApp:**
+   ```
+   Pessoal, resultado de hoje em playbook.ssfcard.ia.br
+   Confira aba 19/05 e preparem para amanhã (aba 20/05)
+   ```
+
+### Adicionando Novos Dias
+
+Quando `21/05` chegar, adicione novo objeto ao array `days` em JavaScript:
+
+```javascript
+{
+    date: '21-05-2026',
+    label: '21/05 (qui)',
+    fullDate: '21 de Maio — Quinta-feira',
+    status: 'pending',
+    planejado: `<!-- metas + tarefas -->`,
+    resultado: `<!-- a preencher às 15h -->`,
+    projecao: `<!-- checklist 22/05 -->`
+}
+```
+
+Commit + push → nova aba aparece automaticamente no playbook.ssfcard.ia.br
+
+### Vantagens deste Sistema
+
+✅ **Histórico preservado** — Cada dia fica acessível (não sobrescreve)  
+✅ **Documento vivo** — Atualiza conforme você preenche dados reais  
+✅ **Prático** — Links Notion sempre visíveis, checklist por pessoa  
+✅ **Simples manutenção** — Editar HTML + git push = pronto  
+✅ **Base para automação** — Enquanto n8n cresce, esse doc centraliza tudo  
+✅ **Auditoria** — Todos os dias com planejado vs executado fica registrado  
+
+### Arquivo Principal
+
+| Arquivo | Localização |
+|---------|------------|
+| `playbook-vivo-20-05-2026.html` | `processo-comercial-7dias/` |
+| URL ao vivo | https://playbook.ssfcard.ia.br/processo-comercial-7dias/playbook-vivo-20-05-2026.html |
+
+### Roadmap Futuro
+
+- [ ] **Integração n8n** — Disparar resultado automático via webhook (bot preenche tabela)
+- [ ] **Gráficos dinâmicos** — Chart.js para visualizar trend (Karine, Lucas, Raquel)
+- [ ] **Export CSV** — Baixar histórico de 7 dias para análise
+- [ ] **Notificação WhatsApp** — Bot envia "Aba 19/05 atualizada!" quando Mayko faz push
 
 ---
 
