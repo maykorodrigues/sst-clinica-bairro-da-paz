@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Candidatura — Closer SST Card · Bairro da Paz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --b1:#0c4a6e;--b2:#075985;--b3:#1987c3;--b4:#38bdf8;--b5:#bae6fd;--b6:#e0f2fe;--b7:#f0f9ff;
+  --bg:#f2efe6;--sur:#fff;--txt:#1a1a2e;--mut:#6b7280;--lgt:#9ca3af;
+  --err:#dc2626;--err-bg:#fef2f2;--warn:#b45309;--warn-bg:#fffbeb;--warn-bd:#fde68a;
+  --r:14px;--sh:0 4px 24px rgba(12,74,110,.10);
+  --fd:'Fraunces',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;
+}
+body{font-family:var(--fb);background:var(--bg);color:var(--txt);min-height:100vh;padding-bottom:60px}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(12,74,110,.04) 1px,transparent 0);background-size:24px 24px;pointer-events:none;z-index:0}
+
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:100;background:var(--b1)}
+.hdr-in{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 20px}
+.logo{font-family:var(--fd);font-size:20px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.logo span{color:var(--b4)}
+.bdg-ps{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:var(--b6);font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:4px 12px;border-radius:20px}
+
+/* PROGRESS */
+.prog-wrap{background:var(--b2);padding:14px 20px 16px}
+.prog-in{max-width:680px;margin:0 auto}
+.prog-lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
+.prog-steps{display:flex;align-items:center}
+.ps-item{display:flex;align-items:center;flex:1}
+.ps-item:last-child{flex:0}
+.ps-dot{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);transition:all .3s;flex-shrink:0;background:var(--b2)}
+.ps-dot.done{background:var(--b3);border-color:var(--b3);color:#fff}
+.ps-dot.active{background:#fff;border-color:#fff;color:var(--b1);box-shadow:0 0 0 4px rgba(255,255,255,.2)}
+.ps-line{flex:1;height:2px;background:rgba(255,255,255,.15);transition:background .3s;margin:0 2px}
+.ps-line.done{background:var(--b3)}
+
+/* MAIN */
+main{max-width:680px;margin:0 auto;padding:28px 16px 0;position:relative;z-index:1}
+
+/* HERO */
+.hero{background:var(--sur);border-radius:var(--r);padding:32px 28px;box-shadow:var(--sh);margin-bottom:20px;position:relative;overflow:hidden}
+.hero::before{content:'💼';position:absolute;font-size:120px;right:-20px;top:-20px;opacity:.05;transform:rotate(-15deg)}
+.hero-bdg{display:inline-block;background:var(--b7);color:var(--b2);font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.hero h1{font-family:var(--fd);font-size:clamp(24px,5vw,32px);font-weight:700;color:var(--b1);line-height:1.2;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:var(--b3)}
+.hero-sub{font-size:14px;color:var(--mut);margin-bottom:20px;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:flex;align-items:center;gap:6px;background:var(--b7);border:1px solid var(--b5);color:var(--b2);font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px}
+
+/* STEP */
+.step{display:none}
+.step.active{display:block;animation:sIn .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes sIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARD */
+.card{background:var(--sur);border-radius:var(--r);padding:28px;box-shadow:var(--sh);margin-bottom:16px}
+@media(max-width:640px){.card{padding:20px 16px}.hero{padding:24px 20px}}
+
+.s-num{font-size:11px;font-weight:600;color:var(--b3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px}
+.s-ttl{font-family:var(--fd);font-size:clamp(20px,4vw,26px);font-weight:600;color:var(--b1);line-height:1.25}
+.s-dsc{font-size:14px;color:var(--mut);margin-top:6px;line-height:1.5;margin-bottom:24px}
+
+/* FIELDS */
+.field{margin-bottom:20px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--txt);margin-bottom:7px}
+.field label .req{color:var(--b3);margin-left:2px}
+input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{width:100%;background:#fafafa;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 14px;font-family:var(--fb);font-size:15px;color:var(--txt);outline:none;transition:border-color .2s,box-shadow .2s,background .2s;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--b3);box-shadow:0 0 0 3px rgba(25,135,195,.12);background:#fff}
+input.err2,select.err2,textarea.err2{border-color:var(--err);box-shadow:0 0 0 3px rgba(220,38,38,.08)}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-color:#fafafa;padding-right:36px}
+textarea{resize:vertical;min-height:96px;line-height:1.6}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.frow{grid-template-columns:1fr}}
+.ferr{font-size:12px;color:var(--err);margin-top:5px;display:none}
+.ferr.on{display:block}
+.char-c{font-size:11px;color:var(--lgt);text-align:right;margin-top:4px;transition:color .2s}
+.char-c.near{color:var(--warn)}.char-c.full{color:var(--b3)}
+
+/* RADIO & CHECK */
+.rg,.cg{display:flex;flex-direction:column;gap:10px}
+.rg.row{flex-direction:row;flex-wrap:wrap}
+.ri,.ci{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fafafa;border:1.5px solid #e5e7eb;border-radius:10px;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s;user-select:none}
+.ri:hover,.ci:hover{border-color:var(--b4);background:var(--b7)}
+.ri.sel,.ci.sel{border-color:var(--b3);background:var(--b7);box-shadow:0 0 0 3px rgba(25,135,195,.10)}
+.ri input,.ci input{display:none}
+.rm{width:20px;height:20px;border-radius:50%;border:2px solid #d1d5db;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ri.sel .rm{border-color:var(--b3);background:var(--b3)}
+.ri.sel .rm::after{content:'';width:8px;height:8px;border-radius:50%;background:#fff}
+.cm{width:20px;height:20px;border-radius:5px;border:2px solid #d1d5db;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ci.sel .cm{border-color:var(--b3);background:var(--b3)}
+.ci.sel .cm::after{content:'';width:10px;height:7px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.rl,.cl{font-size:14px;color:var(--txt);flex:1;line-height:1.4}
+
+/* ALERTS */
+.alert{border-radius:10px;padding:14px 16px;font-size:13.5px;line-height:1.5;margin-top:12px;display:flex;gap:10px;align-items:flex-start}
+.alert.err{background:var(--err-bg);border:1px solid #fecaca;color:var(--err)}
+.alert.warn{background:var(--warn-bg);border:1px solid var(--warn-bd);color:var(--warn)}
+.alert strong{font-weight:700}
+
+/* NAV */
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:24px}
+.btn{font-family:var(--fb);font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-pri{background:var(--b3);color:#fff}
+.btn-pri:hover:not(:disabled){background:var(--b2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(25,135,195,.3)}
+.btn-pri:disabled{background:#d1d5db;cursor:not-allowed}
+.btn-sec{background:transparent;color:var(--mut);border:1.5px solid #e5e7eb}
+.btn-sec:hover{background:#f9fafb;border-color:#d1d5db}
+
+/* SUCCESS / DESCLAS */
+.success{background:linear-gradient(135deg,var(--b1) 0%,var(--b2) 60%,var(--b3) 100%);color:#fff;border-radius:var(--r);padding:48px 32px;text-align:center;box-shadow:var(--sh)}
+.success h2{font-family:var(--fd);font-size:28px;margin-bottom:12px}
+.success p{font-size:15px;opacity:.9;line-height:1.6;margin-bottom:16px}
+.success .next-box{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:16px;margin-top:20px;font-size:14px;text-align:left}
+.declas{background:var(--sur);border-radius:var(--r);padding:40px 32px;text-align:center;box-shadow:var(--sh)}
+.declas h2{font-family:var(--fd);font-size:24px;color:var(--b1);margin-bottom:14px}
+.declas .reason-box{background:#f3f4f6;border-radius:10px;padding:14px 16px;font-size:13.5px;color:var(--mut);text-align:left;margin:18px 0}
+.declas .reason-box strong{color:var(--txt)}
+.declas .ig-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);color:#fff;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;font-size:14px;margin-top:8px}
+.declas .restart{display:block;margin-top:14px;font-size:13px;color:var(--b3);text-decoration:underline;cursor:pointer;background:none;border:none}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="logo">💼 SST<span>Card</span></div>
+    <div class="bdg-ps">Processo Seletivo</div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-in">
+      <div class="prog-lbl">Sua candidatura</div>
+      <div class="prog-steps" id="prog">
+        <div class="ps-item"><div class="ps-dot active" data-s="1">1</div><div class="ps-line"></div></div>
+        <div class="ps-item"><div class="ps-dot" data-s="2">2</div><div class="ps-line"></div></div>
+        <div class="ps-item"><div class="ps-dot" data-s="3">3</div><div class="ps-line"></div></div>
+        <div class="ps-item"><div class="ps-dot" data-s="4">4</div><div class="ps-line"></div></div>
+        <div class="ps-item"><div class="ps-dot" data-s="5">5</div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero" id="hero">
+    <div class="hero-bdg">Vaga Aberta · Bairro da Paz / Salvador</div>
+    <h1>Closer / Vendedor Líder <em>SST Card</em></h1>
+    <p class="hero-sub">Procuramos hunter experiente em cartão de saúde popular para liderar a comercialização do SST Card na 2ª filial. Modelo PJ, comissão sem teto.</p>
+    <div class="chips">
+      <span class="chip">📍 Bairro da Paz · Salvador/BA</span>
+      <span class="chip">🕐 Seg-Sex (8h) + Sáb (4h)</span>
+      <span class="chip">💼 PJ · CNPJ próprio</span>
+      <span class="chip">💰 R$ 2.800 – R$ 5.500/mês</span>
+    </div>
+  </div>
+
+  <!-- ETAPA 1 — Dados Pessoais -->
+  <section class="step active" data-step="1">
+    <div class="card">
+      <div class="s-num">Etapa 1 de 5</div>
+      <div class="s-ttl">Quem é você?</div>
+      <div class="s-dsc">Vamos começar com os dados básicos para contato.</div>
+
+      <div class="field">
+        <label>Nome completo <span class="req">*</span></label>
+        <input type="text" id="nome" placeholder="João da Silva"/>
+        <div class="ferr" id="err-nome">Informe seu nome completo</div>
+      </div>
+
+      <div class="field">
+        <label>E-mail <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="seuemail@exemplo.com"/>
+        <div class="ferr" id="err-email">E-mail inválido</div>
+      </div>
+
+      <div class="field">
+        <label>WhatsApp com DDD <span class="req">*</span></label>
+        <input type="tel" id="wpp" placeholder="(71) 99999-9999" maxlength="15"/>
+        <div class="ferr" id="err-wpp">Informe seu WhatsApp</div>
+      </div>
+
+      <div class="frow">
+        <div class="field">
+          <label>Cidade <span class="req">*</span></label>
+          <input type="text" id="cidade" placeholder="Salvador"/>
+          <div class="ferr" id="err-cidade">Informe a cidade</div>
+        </div>
+        <div class="field">
+          <label>Bairro onde mora <span class="req">*</span></label>
+          <input type="text" id="bairro" placeholder="Bairro da Paz"/>
+          <div class="ferr" id="err-bairro">Informe o bairro</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Idade <span class="req">*</span></label>
+        <input type="number" id="idade" min="16" max="80" placeholder="35"/>
+        <div class="ferr" id="err-idade">Idade obrigatória</div>
+      </div>
+
+      <div class="nav">
+        <span></span>
+        <button class="btn btn-pri" onclick="next(1)">Avançar →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETAPA 2 — Experiência [ELIMINATÓRIO] -->
+  <section class="step" data-step="2">
+    <div class="card">
+      <div class="s-num">Etapa 2 de 5 · Eliminatória</div>
+      <div class="s-ttl">Sua experiência em vendas</div>
+      <div class="s-dsc">Estamos buscando hunter com bagagem real em cartão/plano popular.</div>
+
+      <div class="field">
+        <label>Há quanto tempo você vende cartão de saúde popular, plano funeral, seguro ou similar? <span class="req">*</span></label>
+        <div class="rg" id="rg-exp">
+          <label class="ri"><input type="radio" name="exp" value="0"/><span class="rm"></span><span class="rl">Nunca vendi esse tipo de produto</span></label>
+          <label class="ri"><input type="radio" name="exp" value="<1"/><span class="rm"></span><span class="rl">Menos de 1 ano</span></label>
+          <label class="ri"><input type="radio" name="exp" value="1-2"/><span class="rm"></span><span class="rl">Entre 1 e 2 anos</span></label>
+          <label class="ri"><input type="radio" name="exp" value="2-5"/><span class="rm"></span><span class="rl">Entre 2 e 5 anos</span></label>
+          <label class="ri"><input type="radio" name="exp" value=">5"/><span class="rm"></span><span class="rl">Mais de 5 anos</span></label>
+        </div>
+        <div class="ferr" id="err-exp">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>Quais produtos você já vendeu? (pode marcar mais de um)</label>
+        <div class="cg" id="cg-prod">
+          <label class="ci"><input type="checkbox" name="prod" value="tenex"/><span class="cm"></span><span class="cl">Cartão Tenex</span></label>
+          <label class="ci"><input type="checkbox" name="prod" value="cdt"/><span class="cm"></span><span class="cl">Cartão de Todos</span></label>
+          <label class="ci"><input type="checkbox" name="prod" value="drfamilia"/><span class="cm"></span><span class="cl">Dr. Família</span></label>
+          <label class="ci"><input type="checkbox" name="prod" value="maissaude"/><span class="cm"></span><span class="cl">Mais Saúde</span></label>
+          <label class="ci"><input type="checkbox" name="prod" value="funeral"/><span class="cm"></span><span class="cl">Plano funeral / assistência funeral</span></label>
+          <label class="ci"><input type="checkbox" name="prod" value="odonto"/><span class="cm"></span><span class="cl">Plano odontológico popular</span></label>
+          <label class="ci"><input type="checkbox" name="prod" value="seguro"/><span class="cm"></span><span class="cl">Seguro/consórcio porta-a-porta</span></label>
+          <label class="ci"><input type="checkbox" name="prod" value="outro"/><span class="cm"></span><span class="cl">Outros (descrevo na próxima etapa)</span></label>
+          <label class="ci"><input type="checkbox" name="prod" value="nenhum"/><span class="cm"></span><span class="cl">Nenhum dos acima</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Qual a melhor MÉDIA mensal de vendas que você já bateu? <span class="req">*</span></label>
+        <div class="rg" id="rg-vol">
+          <label class="ri"><input type="radio" name="vol" value="0"/><span class="rm"></span><span class="rl">Nunca bati meta de vendas</span></label>
+          <label class="ri"><input type="radio" name="vol" value="<10"/><span class="rm"></span><span class="rl">Até 10 vendas/mês</span></label>
+          <label class="ri"><input type="radio" name="vol" value="10-30"/><span class="rm"></span><span class="rl">Entre 10 e 30 vendas/mês</span></label>
+          <label class="ri"><input type="radio" name="vol" value="30-60"/><span class="rm"></span><span class="rl">Entre 30 e 60 vendas/mês</span></label>
+          <label class="ri"><input type="radio" name="vol" value=">60"/><span class="rm"></span><span class="rl">Acima de 60 vendas/mês</span></label>
+        </div>
+        <div class="ferr" id="err-vol">Selecione uma opção</div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-sec" onclick="back(2)">← Voltar</button>
+        <button class="btn btn-pri" onclick="next(2)">Avançar →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETAPA 3 — Disponibilidade [ELIMINATÓRIO] -->
+  <section class="step" data-step="3">
+    <div class="card">
+      <div class="s-num">Etapa 3 de 5 · Eliminatória</div>
+      <div class="s-ttl">Disponibilidade e localização</div>
+      <div class="s-dsc">A vaga é presencial em Salvador e exige rotina de campo no Bairro da Paz.</div>
+
+      <div class="field">
+        <label>Está disponível para trabalhar presencialmente no Bairro da Paz (Salvador/BA)? <span class="req">*</span></label>
+        <div class="rg" id="rg-pres">
+          <label class="ri"><input type="radio" name="pres" value="sim"/><span class="rm"></span><span class="rl">Sim, sem problema</span></label>
+          <label class="ri"><input type="radio" name="pres" value="muda"/><span class="rm"></span><span class="rl">Hoje moro fora, mas me mudo para Salvador</span></label>
+          <label class="ri"><input type="radio" name="pres" value="nao"/><span class="rm"></span><span class="rl">Não / só remoto</span></label>
+        </div>
+        <div class="ferr" id="err-pres">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>Disponibilidade segunda a sábado, 8h/dia + meio expediente no sábado? <span class="req">*</span></label>
+        <div class="rg" id="rg-disp">
+          <label class="ri"><input type="radio" name="disp" value="sim"/><span class="rm"></span><span class="rl">Sim, integralmente</span></label>
+          <label class="ri"><input type="radio" name="disp" value="restr"/><span class="rm"></span><span class="rl">Com pequenas restrições (explico depois)</span></label>
+          <label class="ri"><input type="radio" name="disp" value="nao"/><span class="rm"></span><span class="rl">Não tenho essa disponibilidade</span></label>
+        </div>
+        <div class="ferr" id="err-disp">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>Aceita modelo PJ (Pessoa Jurídica — CNPJ próprio)? <span class="req">*</span></label>
+        <div class="rg" id="rg-pj">
+          <label class="ri"><input type="radio" name="pj" value="cnpj"/><span class="rm"></span><span class="rl">Sim, já tenho CNPJ ativo (MEI ou ME)</span></label>
+          <label class="ri"><input type="radio" name="pj" value="abre"/><span class="rm"></span><span class="rl">Sim, abro CNPJ em até 10 dias se contratado</span></label>
+          <label class="ri"><input type="radio" name="pj" value="nao"/><span class="rm"></span><span class="rl">Não, só aceito CLT</span></label>
+        </div>
+        <div class="ferr" id="err-pj">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>Tem veículo próprio para deslocamento no campo?</label>
+        <div class="rg row" id="rg-veic">
+          <label class="ri"><input type="radio" name="veic" value="carro"/><span class="rm"></span><span class="rl">Carro</span></label>
+          <label class="ri"><input type="radio" name="veic" value="moto"/><span class="rm"></span><span class="rl">Moto</span></label>
+          <label class="ri"><input type="radio" name="veic" value="nao"/><span class="rm"></span><span class="rl">Não</span></label>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-sec" onclick="back(3)">← Voltar</button>
+        <button class="btn btn-pri" onclick="next(3)">Avançar →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETAPA 4 — Conhecimento do público -->
+  <section class="step" data-step="4">
+    <div class="card">
+      <div class="s-num">Etapa 4 de 5</div>
+      <div class="s-ttl">Conhecimento do público C/D</div>
+      <div class="s-dsc">Queremos saber se você entende quem é o cliente do SST Card.</div>
+
+      <div class="field">
+        <label>Você já vendeu para público com renda 0–2 salários mínimos (informais, autônomos)? <span class="req">*</span></label>
+        <div class="rg" id="rg-cd">
+          <label class="ri"><input type="radio" name="cd" value="sim-foco"/><span class="rm"></span><span class="rl">Sim, foi o foco principal das minhas vendas</span></label>
+          <label class="ri"><input type="radio" name="cd" value="sim-parte"/><span class="rm"></span><span class="rl">Sim, parte da minha base era esse público</span></label>
+          <label class="ri"><input type="radio" name="cd" value="pouco"/><span class="rm"></span><span class="rl">Pouco — meu público era mais classe média</span></label>
+          <label class="ri"><input type="radio" name="cd" value="nao"/><span class="rm"></span><span class="rl">Não, nunca vendi para esse perfil</span></label>
+        </div>
+        <div class="ferr" id="err-cd">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>Tem rede de contatos no Bairro da Paz ou regiões próximas (Mussurunga, São Cristóvão, Periperi)?</label>
+        <div class="rg" id="rg-rede">
+          <label class="ri"><input type="radio" name="rede" value="forte"/><span class="rm"></span><span class="rl">Sim, rede forte — moradores, comerciantes, lideranças</span></label>
+          <label class="ri"><input type="radio" name="rede" value="moderada"/><span class="rm"></span><span class="rl">Alguns contatos</span></label>
+          <label class="ri"><input type="radio" name="rede" value="nenhuma"/><span class="rm"></span><span class="rl">Nenhuma rede ainda</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Quando um cliente diz "já tenho SUS, não preciso pagar", qual sua melhor resposta? <span class="req">*</span></label>
+        <textarea id="resp-sus" maxlength="500" placeholder="Conte do seu jeito como você responderia..."></textarea>
+        <div class="char-c" id="cc-sus">0 / 500</div>
+        <div class="ferr" id="err-sus">Responda em ao menos 1 frase</div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-sec" onclick="back(4)">← Voltar</button>
+        <button class="btn btn-pri" onclick="next(4)">Avançar →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETAPA 5 — Motivação -->
+  <section class="step" data-step="5">
+    <div class="card">
+      <div class="s-num">Etapa 5 de 5</div>
+      <div class="s-ttl">Sua motivação</div>
+      <div class="s-dsc">Última etapa. Seja direto e específico — usamos isso para decidir.</div>
+
+      <div class="field">
+        <label>Por que você quer trabalhar especificamente com SST Card / cartão popular agora? <span class="req">*</span></label>
+        <textarea id="m1" maxlength="400" placeholder="Sem clichê de RH. O que está te trazendo aqui?"></textarea>
+        <div class="char-c" id="cc-m1">0 / 400</div>
+        <div class="ferr" id="err-m1">Resposta obrigatória</div>
+      </div>
+
+      <div class="field">
+        <label>Conte uma venda específica que você teve que insistir 5+ vezes para fechar. O que aconteceu? <span class="req">*</span></label>
+        <textarea id="m2" maxlength="500" placeholder="História real, com nome (ou apelido), valor e desfecho."></textarea>
+        <div class="char-c" id="cc-m2">0 / 500</div>
+        <div class="ferr" id="err-m2">Resposta obrigatória</div>
+      </div>
+
+      <div class="field">
+        <label>Qual sua expectativa REAL de ganho no mês 1 (em R$)? <span class="req">*</span></label>
+        <input type="text" id="exp-ganho" placeholder="Ex: R$ 3.500"/>
+        <div class="ferr" id="err-ganho">Informe um valor</div>
+      </div>
+
+      <div class="field">
+        <label>Onde quer estar daqui a 3 anos profissionalmente?</label>
+        <textarea id="m3" maxlength="300" placeholder="Visão própria — não precisa ser polido."></textarea>
+        <div class="char-c" id="cc-m3">0 / 300</div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-sec" onclick="back(5)">← Voltar</button>
+        <button class="btn btn-pri" onclick="submit()">Enviar candidatura ✓</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA SUCESSO -->
+  <section class="step" data-step="ok">
+    <div class="success">
+      <h2 id="ok-name">🎉 Candidatura recebida!</h2>
+      <p>Recebemos suas respostas e vamos avaliar nos próximos dias úteis. Se houver fit, entramos em contato pelo seu WhatsApp para marcar entrevista presencial.</p>
+      <div class="next-box">
+        <strong>📍 Local da entrevista (se chamado):</strong><br/>
+        Clínica matriz SST — Simões Filho/BA<br/>
+        ou Filial Bairro da Paz — Salvador/BA<br/><br/>
+        <strong>📅 Próximos dias:</strong> retorno em até 5 dias úteis.
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA DESCLASSIFICADO -->
+  <section class="step" data-step="declas">
+    <div class="declas">
+      <h2>Obrigado pelo interesse na SST! 🤝</h2>
+      <p style="color:var(--mut);font-size:14px">No momento o perfil que buscamos é diferente do seu. Isso não significa que você não é bom — só significa que essa vaga específica exige requisitos que não combinam agora.</p>
+      <div class="reason-box" id="declas-reason"><strong>Motivo:</strong> <span id="declas-text"></span></div>
+      <p style="color:var(--mut);font-size:13px">Fique de olho nas nossas redes — abrimos outras vagas regularmente.</p>
+      <a class="ig-btn" href="https://www.instagram.com/sstclinica" target="_blank">📸 Seguir @sstclinica</a>
+      <button class="restart" onclick="restart()">↻ Recomeçar candidatura</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+const data = {};
+
+function step(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  if(typeof n==='number'){
+    document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+    document.querySelectorAll('.ps-dot').forEach(d=>{
+      const s=parseInt(d.dataset.s);
+      d.classList.remove('done','active');
+      if(s<n)d.classList.add('done');
+      else if(s===n)d.classList.add('active');
+    });
+    document.querySelectorAll('.ps-line').forEach((l,i)=>{
+      l.classList.toggle('done',i<n-1);
+    });
+  } else {
+    document.querySelector(`.step[data-step="${n}"]`).classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function radioSel(){
+  document.querySelectorAll('.ri').forEach(r=>{
+    r.addEventListener('click',()=>{
+      const name=r.querySelector('input').name;
+      document.querySelectorAll(`.ri input[name="${name}"]`).forEach(i=>i.closest('.ri').classList.remove('sel'));
+      r.classList.add('sel');
+      r.querySelector('input').checked=true;
+    });
+  });
+  document.querySelectorAll('.ci').forEach(c=>{
+    c.addEventListener('click',()=>{
+      const inp=c.querySelector('input');
+      const value=inp.value;
+      const name=inp.name;
+      if(value==='nenhum' || value==='nenhuma'){
+        document.querySelectorAll(`.ci input[name="${name}"]`).forEach(i=>{
+          if(i.value!==value){i.checked=false;i.closest('.ci').classList.remove('sel')}
+        });
+      } else {
+        const nenhum=document.querySelector(`.ci input[name="${name}"][value="nenhum"]`);
+        if(nenhum){nenhum.checked=false;nenhum.closest('.ci').classList.remove('sel')}
+      }
+      inp.checked=!inp.checked;
+      c.classList.toggle('sel',inp.checked);
+    });
+  });
+}
+radioSel();
+
+// WhatsApp mask
+document.getElementById('wpp').addEventListener('input',e=>{
+  let v=e.target.value.replace(/\D/g,'').slice(0,11);
+  if(v.length>=11) v=v.replace(/^(\d{2})(\d{5})(\d{4}).*/,'($1) $2-$3');
+  else if(v.length>=7) v=v.replace(/^(\d{2})(\d{4,5})(\d{0,4}).*/,'($1) $2-$3');
+  else if(v.length>=3) v=v.replace(/^(\d{2})(\d{0,5}).*/,'($1) $2');
+  else if(v.length>0) v=v.replace(/^(\d{0,2})/,'($1');
+  e.target.value=v;
+});
+
+// Char counters
+['m1','m2','m3','resp-sus'].forEach(id=>{
+  const el=document.getElementById(id);
+  const cc=document.getElementById('cc-'+(id==='resp-sus'?'sus':id));
+  if(!el||!cc) return;
+  const max=el.maxLength;
+  el.addEventListener('input',()=>{
+    cc.textContent=`${el.value.length} / ${max}`;
+    cc.classList.toggle('near',el.value.length>=max*0.8);
+    cc.classList.toggle('full',el.value.length>=max);
+  });
+});
+
+function showErr(id,on){
+  const el=document.getElementById(id);
+  if(el) el.classList.toggle('on',on);
+}
+function markErr(id,on){
+  const el=document.getElementById(id);
+  if(el) el.classList.toggle('err2',on);
+}
+function getRadio(name){
+  const r=document.querySelector(`input[name="${name}"]:checked`);
+  return r?r.value:null;
+}
+
+function next(n){
+  let ok=true;
+  if(n===1){
+    const fields=[['nome','err-nome',v=>v.trim().split(' ').length>=2],
+                  ['email','err-email',v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)],
+                  ['wpp','err-wpp',v=>v.replace(/\D/g,'').length>=10],
+                  ['cidade','err-cidade',v=>v.trim().length>=2],
+                  ['bairro','err-bairro',v=>v.trim().length>=2],
+                  ['idade','err-idade',v=>parseInt(v)>=18 && parseInt(v)<=80]];
+    fields.forEach(([id,err,validator])=>{
+      const v=document.getElementById(id).value;
+      const valid=validator(v);
+      showErr(err,!valid);
+      markErr(id,!valid);
+      if(!valid) ok=false;
+      else data[id]=v;
+    });
+    if(parseInt(data.idade)<21){
+      declas('Vaga restrita a candidatos com 21 anos ou mais.');return;
+    }
+  }
+  if(n===2){
+    const exp=getRadio('exp');
+    showErr('err-exp',!exp);
+    if(!exp) ok=false; else data.exp=exp;
+    const vol=getRadio('vol');
+    showErr('err-vol',!vol);
+    if(!vol) ok=false; else data.vol=vol;
+    data.produtos=Array.from(document.querySelectorAll('input[name="prod"]:checked')).map(i=>i.value);
+    // Eliminatório experiência
+    if(exp==='0' || exp==='<1'){
+      declas('A vaga exige no mínimo 2 anos de experiência em vendas de cartão/plano popular.');return;
+    }
+    if(vol==='0'){
+      declas('A vaga exige histórico comprovado de fechamento de meta.');return;
+    }
+  }
+  if(n===3){
+    const pres=getRadio('pres'),disp=getRadio('disp'),pj=getRadio('pj');
+    showErr('err-pres',!pres);showErr('err-disp',!disp);showErr('err-pj',!pj);
+    if(!pres||!disp||!pj) ok=false;
+    else { data.pres=pres;data.disp=disp;data.pj=pj;data.veic=getRadio('veic')||'nao'; }
+    if(pres==='nao'){declas('A vaga é exclusivamente presencial em Salvador/BA.');return;}
+    if(disp==='nao'){declas('A vaga exige disponibilidade integral seg-sex + sábado meio expediente.');return;}
+    if(pj==='nao'){declas('A vaga é exclusivamente no modelo PJ (CNPJ próprio).');return;}
+  }
+  if(n===4){
+    const cd=getRadio('cd');
+    showErr('err-cd',!cd);
+    if(!cd) ok=false; else data.cd=cd;
+    data.rede=getRadio('rede')||'nenhuma';
+    const sus=document.getElementById('resp-sus').value;
+    const susOk=sus.trim().length>=20;
+    showErr('err-sus',!susOk);markErr('resp-sus',!susOk);
+    if(!susOk) ok=false; else data.respSus=sus;
+  }
+  if(ok) step(n+1);
+}
+
+function back(n){ step(n-1); }
+
+function submit(){
+  let ok=true;
+  const m1=document.getElementById('m1').value;
+  const m2=document.getElementById('m2').value;
+  const ganho=document.getElementById('exp-ganho').value;
+  const m1Ok=m1.trim().length>=30,m2Ok=m2.trim().length>=50,ganhoOk=ganho.trim().length>=2;
+  showErr('err-m1',!m1Ok);markErr('m1',!m1Ok);
+  showErr('err-m2',!m2Ok);markErr('m2',!m2Ok);
+  showErr('err-ganho',!ganhoOk);markErr('exp-ganho',!ganhoOk);
+  if(!m1Ok||!m2Ok||!ganhoOk) return;
+  data.motiv1=m1;data.motiv2=m2;data.motiv3=document.getElementById('m3').value;data.expGanho=ganho;
+  data.timestamp=new Date().toISOString();
+  console.log('CANDIDATURA CLOSER SST →',data);
+  // TODO: enviar via webhook n8n
+  // fetch('https://n8n.sst.com/webhook/closer-candidatura',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  document.getElementById('ok-name').textContent=`🎉 Obrigado, ${data.nome.split(' ')[0]}!`;
+  step('ok');
+}
+
+function declas(reason){
+  document.getElementById('declas-text').textContent=reason;
+  step('declas');
+}
+
+function restart(){
+  document.querySelectorAll('input,textarea').forEach(i=>{i.value='';i.checked=false});
+  document.querySelectorAll('.ri,.ci').forEach(r=>r.classList.remove('sel'));
+  document.querySelectorAll('.err2').forEach(e=>e.classList.remove('err2'));
+  document.querySelectorAll('.ferr').forEach(e=>e.classList.remove('on'));
+  step(1);
+}
+</script>
+</body>
+</html>

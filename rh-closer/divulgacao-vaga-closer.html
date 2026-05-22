@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaga — Closer SST Card | Bairro da Paz · Salvador/BA</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1a1a2e;
+    background: #f5f7fa;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0c4a6e 0%, #1987c3 60%, #38bdf8 100%);
+    color: white;
+    padding: 44px 48px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .header-left .kicker {
+    font-size: 8.5pt;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 8px;
+  }
+  .header-left h1 {
+    font-size: 26pt;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .header-left .sub {
+    font-size: 12pt;
+    opacity: 0.85;
+  }
+  .header-right {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .salario-label { font-size: 8pt; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.7; }
+  .salario-valor { font-size: 22pt; font-weight: 800; line-height: 1.1; }
+  .salario-sub { font-size: 9pt; opacity: 0.75; margin-top: 3px; }
+
+  /* ── BODY ── */
+  .body { max-width: 760px; margin: 0 auto; padding: 28px 32px 40px; background: #fff; }
+
+  /* ── GRID DE DADOS ── */
+  .dados-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .dado {
+    background: #f0f9ff;
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .dado .d-label { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 3px; }
+  .dado .d-val { font-size: 10pt; font-weight: 700; color: #0c4a6e; }
+
+  /* ── SEÇÃO ── */
+  h2 {
+    font-size: 8.5pt;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1987c3;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #1987c3;
+    page-break-after: avoid;
+  }
+  .secao { margin-bottom: 28px; page-break-inside: avoid; }
+
+  /* ── LISTA ATIVIDADES ── */
+  .lista { list-style: none; }
+  .lista li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 10.5pt;
+    color: #334155;
+  }
+  .lista li:last-child { border-bottom: none; }
+  .num {
+    background: #1987c3;
+    color: white;
+    font-size: 8pt;
+    font-weight: 800;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .num.check { background: #16a34a; font-size: 10pt; }
+  .lista li strong { color: #0c4a6e; }
+
+  /* ── TABELA DE COMISSÃO ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+    margin-bottom: 12px;
+  }
+  th {
+    background: #0c4a6e;
+    color: white;
+    padding: 9px 14px;
+    text-align: left;
+    font-size: 8pt;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  td { padding: 9px 14px; border-bottom: 1px solid #e2e8f0; color: #334155; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .val { font-weight: 800; font-size: 12pt; color: #1987c3; }
+  .val-green { font-weight: 800; font-size: 12pt; color: #16a34a; }
+  .badge-meta {
+    background: #dcfce7;
+    color: #166534;
+    font-size: 8pt;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  /* ── ESCADA ── */
+  .escada {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .degrau {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+  }
+  .degrau .d-range { font-size: 8pt; color: #64748b; margin-bottom: 4px; }
+  .degrau .d-val { font-size: 14pt; font-weight: 800; color: #1987c3; }
+  .degrau .d-unit { font-size: 8pt; color: #94a3b8; }
+  .degrau.destaque {
+    background: linear-gradient(135deg, #0c4a6e, #1987c3);
+    border-color: transparent;
+    color: white;
+  }
+  .degrau.destaque .d-range,
+  .degrau.destaque .d-unit { color: rgba(255,255,255,0.7); }
+  .degrau.destaque .d-val { color: white; font-size: 16pt; }
+
+  /* ── BOXES ── */
+  .box-azul {
+    background: #eff6ff;
+    border-left: 4px solid #1987c3;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 10pt;
+    color: #1e3a5f;
+    margin: 12px 0;
+  }
+  .box-verde {
+    background: #f0fdf4;
+    border-left: 4px solid #16a34a;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 10pt;
+    color: #14532d;
+    margin: 12px 0;
+  }
+  .box-amarelo {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 10pt;
+    color: #78350f;
+    margin: 12px 0;
+  }
+
+  /* ── TAGS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .tag {
+    background: #e0f2fe;
+    border: 1px solid #7dd3fc;
+    color: #0c4a6e;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 9.5pt;
+    font-weight: 500;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: linear-gradient(135deg, #0c4a6e, #1987c3);
+    color: white;
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin: 28px 0 0;
+    text-align: center;
+    page-break-inside: avoid;
+  }
+  .cta-section h2 {
+    color: white;
+    border-color: rgba(255,255,255,0.3);
+    font-size: 10pt;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .cta-titulo { font-size: 18pt; font-weight: 800; margin-bottom: 8px; }
+  .cta-sub { font-size: 10.5pt; opacity: 0.85; margin-bottom: 20px; }
+  .cta-link-box {
+    background: white;
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+  .cta-link-label { font-size: 8pt; color: #64748b; letter-spacing: 1px; text-transform: uppercase; }
+  .cta-link { font-size: 13pt; font-weight: 800; color: #1987c3; word-break: break-all; }
+  .cta-steps {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    font-size: 9.5pt;
+    opacity: 0.85;
+  }
+  .cta-step { display: flex; align-items: center; gap: 6px; }
+
+  /* ── RODAPÉ ── */
+  .footer {
+    text-align: center;
+    font-size: 8pt;
+    color: #94a3b8;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; font-size: 10pt; }
+    .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cta-section { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th, .num, .degrau.destaque { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .body { padding: 20px 28px; }
+    .escada { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="kicker">SST Clínica · Recrutamento &amp; Seleção · Maio 2026</div>
+    <h1>Closer<br>SST Card</h1>
+    <div class="sub">Bairro da Paz · Salvador/BA · Início imediato</div>
+  </div>
+  <div class="header-right">
+    <div class="salario-label">Faixa de ganho</div>
+    <div class="salario-valor">R$ 2.800<br>a R$ 5.500</div>
+    <div class="salario-sub">por mês · modelo PJ</div>
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- DADOS RÁPIDOS -->
+  <div class="dados-grid" style="margin-top: 20px;">
+    <div class="dado"><div class="d-label">Cargo</div><div class="d-val">Closer / Vendedor Líder</div></div>
+    <div class="dado"><div class="d-label">Vínculo</div><div class="d-val">PJ — CNPJ próprio</div></div>
+    <div class="dado"><div class="d-label">Localização</div><div class="d-val">Bairro da Paz, Salvador</div></div>
+    <div class="dado"><div class="d-label">Horário</div><div class="d-val">Seg–Sex + Sáb (4h)</div></div>
+    <div class="dado"><div class="d-label">Vagas</div><div class="d-val">01 vaga</div></div>
+    <div class="dado"><div class="d-label">Pró-labore</div><div class="d-val">R$ 2.000 fixo</div></div>
+    <div class="dado"><div class="d-label">Comissão</div><div class="d-val">Sem teto</div></div>
+    <div class="dado"><div class="d-label">Início</div><div class="d-val">Imediato</div></div>
+  </div>
+
+  <!-- O QUE VOCÊ VAI FAZER -->
+  <div class="secao">
+    <h2>O que você vai fazer</h2>
+    <ul class="lista">
+      <li><span class="num">1</span><div><strong>Fechar leads qualificados</strong> — o time de marketing entrega o contato aquecido; você fecha.</div></li>
+      <li><span class="num">2</span><div><strong>Converter no balcão</strong> — quem vem fazer consulta avulsa vira membro SST Card pagando menos no longo prazo.</div></li>
+      <li><span class="num">3</span><div><strong>Prospecção ativa de campo</strong> no Bairro da Paz — comércio local, igrejas, associações, eventos comunitários (≥30 contatos/semana).</div></li>
+      <li><span class="num">4</span><div><strong>Liderar embaixadores</strong> — treinar e acompanhar a rede de indicadores que ganham comissão por cartão indicado.</div></li>
+      <li><span class="num">5</span><div><strong>Reativar carteira inativa</strong> — trabalhar base de contas em atraso com campanha de perdão de dívida e migração para o cartão.</div></li>
+      <li><span class="num">6</span><div><strong>Reportar resultados diários</strong> — participar da matinal das 9h e atualizar o painel de adesões.</div></li>
+    </ul>
+  </div>
+
+  <!-- REMUNERAÇÃO -->
+  <div class="secao">
+    <h2>Remuneração — Modelo PJ</h2>
+
+    <table>
+      <tr>
+        <th>Componente</th>
+        <th>Valor</th>
+        <th>Detalhe</th>
+      </tr>
+      <tr>
+        <td>Pró-labore fixo</td>
+        <td><span class="val">R$ 2.000</span></td>
+        <td>Mensal garantido via NF</td>
+      </tr>
+      <tr>
+        <td>Comissão por adesão</td>
+        <td><span class="val">Até R$ 22</span></td>
+        <td>Por contrato fechado — escada progressiva abaixo</td>
+      </tr>
+      <tr>
+        <td>Reativação de contrato inativo</td>
+        <td><span class="val">R$ 5</span></td>
+        <td>Por contrato renegociado</td>
+      </tr>
+      <tr>
+        <td>Ajuda de custo</td>
+        <td><span class="val">R$ 300</span></td>
+        <td>Deslocamento de campo</td>
+      </tr>
+      <tr>
+        <td>Meta: 100 adesões/mês</td>
+        <td><span class="val-green">R$ 4.000 total</span></td>
+        <td>R$ 2.000 fixo + R$ 2.000 comissão <span class="badge-meta">meta esperada</span></td>
+      </tr>
+    </table>
+
+    <div style="margin: 16px 0 10px; font-size: 9pt; font-weight: 700; color: #0c4a6e; letter-spacing: 1px; text-transform: uppercase;">Escada de comissão por adesão / mês</div>
+    <div class="escada">
+      <div class="degrau">
+        <div class="d-range">Até 50 adesões</div>
+        <div class="d-val">R$ 15</div>
+        <div class="d-unit">por adesão</div>
+      </div>
+      <div class="degrau">
+        <div class="d-range">51 a 100 adesões</div>
+        <div class="d-val">R$ 17</div>
+        <div class="d-unit">por adesão</div>
+      </div>
+      <div class="degrau destaque">
+        <div class="d-range">101 a 150 adesões</div>
+        <div class="d-val">R$ 20</div>
+        <div class="d-unit">por adesão</div>
+      </div>
+      <div class="degrau">
+        <div class="d-range">Acima de 150</div>
+        <div class="d-val">R$ 22</div>
+        <div class="d-unit">sem teto</div>
+      </div>
+    </div>
+
+    <div class="box-verde">
+      <strong>Exemplo real:</strong> 100 adesões no mês = R$ 2.000 fixo + R$ 1.700 comissão + R$ 300 ajuda de custo = <strong>R$ 4.000 no bolso.</strong> Sem descontos de INSS — a SST banca os 3 primeiros meses.
+    </div>
+
+    <div class="box-azul">
+      <strong>Plano de carreira:</strong> 3 meses batendo meta → evolução natural para <strong>Coordenador de Filial</strong> com pró-labore maior + percentual sobre equipe de campo (2ª filial abre em 01/07/2026).
+    </div>
+  </div>
+
+  <!-- O QUE VENDEMOS -->
+  <div class="secao">
+    <h2>O que você vai vender</h2>
+    <table>
+      <tr>
+        <th>Plano</th>
+        <th>Mensalidade</th>
+        <th>Público-alvo</th>
+        <th>Benefícios incluídos</th>
+      </tr>
+      <tr>
+        <td><strong>Individual</strong></td>
+        <td><span class="val">R$ 39,90/mês</span></td>
+        <td>Trabalhador informal solo</td>
+        <td rowspan="2" style="font-size:9pt; color:#334155;">Telemedicina · Consultas populares · Auxílio funeral · Assistência veterinária · Rede de exames com desconto</td>
+      </tr>
+      <tr>
+        <td><strong>Família (até 5 pessoas)</strong></td>
+        <td><span class="val">R$ 79,90/mês</span></td>
+        <td>Núcleo familiar</td>
+      </tr>
+    </table>
+    <div class="box-amarelo" style="margin-top:12px;">
+      <strong>Argumento de venda:</strong> "R$ 1,25 por dia para cuidar de toda a família — sem fila do SUS, sem surpresa no bolso." Público C/D, bairros populares de Salvador. Você já conhece esse cliente.
+    </div>
+  </div>
+
+  <!-- REQUISITOS -->
+  <div class="secao">
+    <h2>Requisitos</h2>
+    <ul class="lista">
+      <li><span class="num check">✓</span><div><strong>≥2 anos</strong> em vendas porta-a-porta de cartão de saúde, plano funeral, seguro popular ou similar</div></li>
+      <li><span class="num check">✓</span><div><strong>Conhece o público C/D</strong> — informais com renda de 0 a 2 salários mínimos, moradores de bairros populares</div></li>
+      <li><span class="num check">✓</span><div><strong>Mora em Salvador</strong> (preferência: Bairro da Paz, Mussurunga, São Cristóvão, Periperi, Cajazeiras)</div></li>
+      <li><span class="num check">✓</span><div><strong>Aceita PJ</strong> — tem CNPJ/MEI ativo ou abre em até 10 dias (gratuito, leva 10 minutos)</div></li>
+      <li><span class="num check">✓</span><div><strong>Disponível segunda a sábado</strong>, presencial · ≥21 anos</div></li>
+    </ul>
+
+    <div style="margin: 16px 0 8px; font-size: 9pt; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Diferenciais que somam ponto</div>
+    <div class="tags">
+      <span class="tag">Ex-Tenex / Cartão de Todos</span>
+      <span class="tag">Ex-Dr. Família / Mais Saúde</span>
+      <span class="tag">CNH + veículo próprio</span>
+      <span class="tag">Rede no Bairro da Paz</span>
+      <span class="tag">Técnico de enfermagem</span>
+      <span class="tag">ACS / Agente comunitário</span>
+      <span class="tag">Background em farmácia</span>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Candidature-se agora</h2>
+    <div class="cta-titulo">Formulário de candidatura</div>
+    <div class="cta-sub">Preencha o formulário abaixo — leva 5 minutos.<br>As melhores candidaturas serão contactadas em até 48h.</div>
+    <div class="cta-link-box">
+      <div class="cta-link-label">Link do formulário</div>
+      <div class="cta-link">[LINK DO FORMULÁRIO AQUI]</div>
+    </div>
+    <div class="cta-steps">
+      <div class="cta-step">① Preencha o formulário</div>
+      <div class="cta-step">② Entrevista presencial (Salvador)</div>
+      <div class="cta-step">③ Dinâmica de campo</div>
+      <div class="cta-step">④ Proposta e contrato</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    SST Clínica · SST Card · Bairro da Paz · Salvador/BA &nbsp;|&nbsp; Consultoria: Mayko Rodrigues — contato@sucessodetodos.com.br &nbsp;|&nbsp; Maio 2026
+  </div>
+
+</div>
+</body>
+</html>

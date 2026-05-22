@@ -4,7 +4,22 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 19/05/2026 — Playbook Vivo com Abas (18/05–20/05) deployed + v3.0 Assistente + Matinal 19/05
+> Última atualização: 22/05/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+
+---
+
+## 🗓️ INAUGURAÇÃO OFICIAL — 01/07/2026
+
+**Decisão tomada por Rogério em 22/05/2026.** Cenário com alvará sanitário (VISA Salvador) — espaço prevê consultas/procedimentos no local, não só ponto de vendas.
+
+| Marco | Prazo | Status |
+|---|---|---|
+| Fechar closer (Roni ou divulgação) | até 25/05 | 🔄 Em andamento |
+| Contratos PJ equipe assinados | até 23/05 | 🔄 Em andamento |
+| Dar entrada VISA + alvará prefeitura | até 30/05 | ⏳ Pendente |
+| Arquiteta finaliza obra | até 13/06 | ⏳ Pendente |
+| Operação piloto (clientes reais) | 15–27/06 | ⏳ Pendente |
+| **Inauguração oficial** | **01/07/2026** | 🎯 Meta |
 
 #em-progresso
 
@@ -22,6 +37,35 @@ Parte de [[Consultoria Comercial]] | Ver: [[contexto_projeto]] | [[plano_lancame
 | Localização | Bairro da Paz (~21.000 hab., baixa renda, alta dependência do SUS) |
 | Produto | SST Card (cartão de benefícios) + consultas/exames populares |
 | Status | 🟡 Planejamento — documentação base concluída em Abril/2026 |
+
+---
+
+## 🆕 Frente RH — Contratação Closer Bairro da Paz (21/05/2026)
+
+**Contexto:** Rogério passou indicação do candidato **Roni** via WhatsApp (21/05 17:09). Entrevista marcada **sexta-feira 22/05/2026 às 14h**. Decidido pelo modelo PJ (pró-labore R$2.000 + comissão R$20/R$40/R$80) com perfil hunter experiente em cartão popular.
+
+**Estrutura criada em `rh-closer/`:**
+
+| Arquivo | Conteúdo | Status |
+|---|---|---|
+| `rh-closer/CLAUDE.md` | Guia da pasta + perfil ideal + skills relevantes | ✅ Pronto |
+| `rh-closer/formulario-abertura-vaga-closer-sst.md` | Dados oficiais da vaga + comissão proposta | 🟡 Aguarda aprovação Rogério |
+| `rh-closer/divulgacao-vaga-closer.html` | Página HTML LinkedIn/Instagram/WhatsApp (paleta azul SST) | ✅ Pronto |
+| `rh-closer/kit-entrevista-closer-sst.md` | Roteiro 75min + simulação Dona Maria + ficha de scoring | ✅ Pronto |
+| `rh-closer/formulario-qualificacao-closer.html` | Form online multi-step com eliminatórios (exp ≥2 anos, PJ, presencial Salvador) | ✅ Pronto |
+| `rh-closer/briefing-entrevista-roni-22-05-2026.md` | Briefing específico Roni + cenários go/no-go + templates Rogério | ✅ Pronto |
+
+**Próximos passos (até 22/05 manhã):**
+- [ ] Confirmar com Rogério aprovação da comissão proposta (R$2.000 + R$20/R$40/R$80 + bônus R$500)
+- [ ] Confirmar local da entrevista (matriz Simões Filho / Bairro da Paz / vídeo)
+- [ ] Pegar sobrenome + WhatsApp do Roni com Rogério
+- [ ] Imprimir Kit Entrevista + Ficha de Scoring + material SST Card
+- [ ] Confirmar se Rogério participa do Bloco 5 (fit cultural)
+
+**Cenário pós-entrevista (22/05):**
+- Score ≥75 → proposta na semana + dinâmica de campo 23/05 ou 25/05
+- Score 60–74 → 2ª rodada com validação de referências antes
+- Score <60 → NO-GO educado + publicar `divulgacao-vaga-closer.html` para abrir pipeline maior
 
 ---
 
@@ -64,23 +108,58 @@ Estrutura criada dentro de **"Processos Comerciais B2C Clube SST CARD/ CARD"**:
 
 ## Decisões Estratégicas Já Tomadas
 
-1. **Precificação definida:**
-   - Individual: R$ 34,90/mês
-   - Família (4 pessoas): R$ 79,90/mês
-   - Empresarial Micro (10 pessoas): R$ 199,90/mês
+> ⚠️ Atualizado em 22/05/2026 — reunião Rogério + Mayko (ver Notion: Triagem de Nova Unidade)
 
-2. **Break-even:** 430 membros ativos (~mês 4)
+1. **Precificação ATUALIZADA (22/05/2026):**
+   - Individual: R$ 39,90/mês *(era R$34,90)*
+   - Família (até 5 pessoas): R$ 79,90/mês *(era R$65)*
+   - Taxa de Adesão: R$ 40,00 por contrato *(NOVO — obrigatória no ato, só isentar em Dia D estratégico)*
+   - Benefícios incluídos: telemedicina + auxílio funeral + assistência veterinária + medicina com custos reduzidos
+   - Ancoragem de discurso: **"R$ 1,25/dia para toda a família"** | comparação com plano de saúde tradicional
 
-3. **Capital de giro necessário:** R$ 35.000–45.000 (primeiros 3 meses)
+2. **Comissão Closer ATUALIZADA (22/05/2026):**
+   - Por adesão: R$ 20 (50% da taxa de R$40)
+   - Por reativação Tenex: R$ 5
+   - Escada progressiva: 80 vendas = R$15–16/adesão | 120 vendas = R$2.000 em comissão
+   - Meta inicial: 100 vendas/mês = R$4.000 total (R$2.000 fixo + R$2.000 comissão)
+   - Sem teto de comissão para atrair hunter
 
-4. **Modelo de embaixadores:** R$ 15 por cartão individual / R$ 30 por família
+3. **Equipe PJ — transição a partir de junho:**
+   - Lucas, Karine e Raquel: R$ 1.500 fixo + comissões
+   - SST banca primeiros 3 meses de INSS (R$ 25/mês)
+   - Apresentar como oportunidade de crescimento — reunião conjunta Mayko + Rogério
 
-5. **Orçamento de marketing Mês 1:** R$ 4.150
+4. **Break-even:** 430 membros ativos (~mês 4)
 
-6. **UVPs aprovadas (3 frases para carro de som/faixas):**
+5. **Capital de giro necessário:** R$ 35.000–45.000 (primeiros 3 meses)
+
+6. **Orçamento de marketing Mês 1:** R$ 4.150
+
+7. **UVPs aprovadas (3 frases para carro de som/faixas):**
    - UVP 1: Dor do SUS (fila)
-   - UVP 2: R$ 1,20/dia (apelo financeiro)
+   - UVP 2: R$ 1,25/dia (apelo financeiro) *(atualizado com novo preço)*
    - UVP 3: Pertencimento local
+
+8. **Meta mês 1 de vendas:** 1.000 adesões = R$ 40.000 em taxas de adesão
+
+---
+
+## 🗒️ Ações em Aberto — Reunião 22/05/2026
+
+| Ação | Responsável | Prazo |
+|---|---|---|
+| Enviar documentos + apresentação PDF para Rogério | Mayko | Hoje |
+| Criar documento de transição PJ para Lucas, Karine, Raquel | Mayko | 23/05 |
+| Enviar documento de avaliação de competências da equipe | Mayko | 23/05 |
+| Agendar reunião conjunta Mayko + Rogério + equipe (transição PJ) | Mayko + Rogério | Até 28/05 |
+| Publicar vaga closer + formulário (candidaturas → email Raquel) | Mayko | 23/05 |
+| Definir escada de comissões progressiva (closing) | Mayko | 23/05 |
+| Rogério acelerar documentação da sala com arquiteta | Rogério | Até 30/05 |
+| Dar entrada VISA Salvador + alvará prefeitura | Rogério | Até 30/05 |
+| Preparar material de vendas (carteirinhas provisórias + scripts) | Mayko | Até 06/06 |
+| Estruturar demonstração de telemedicina para vendas | Mayko | Até 06/06 |
+| Orientar novos PJs sobre abertura de MEI com contador | Rogério | Até 06/06 |
+| Estruturar sistema de acompanhamento de adesões e comissões | Mayko | Até 13/06 |
 
 ---
 
@@ -394,6 +473,23 @@ Estrutura criada dentro de **"Processos Comerciais B2C Clube SST CARD/ CARD"**:
 - [ ] `processo-comercial-7dias/02-cadencias/automacao-dashboard-diario-n8n.md` — Workflow n8n: parsing WhatsApp → cálculo → HTML → envio (iniciar segunda-feira próxima se matinal 19/05 confirmar padrão)
 - [ ] **n8n Automação Perdão Dívida** — Disparar campanhas WhatsApp em lote (50+ contatos/dia) a partir de 19/05
 - [ ] **Validação Tenex Access (Lucas)** — Confirmar se bloqueador persistiu ou foi resolvido
+
+## Matinal SST — 20/05/2026 ✅ CRIADA
+
+**D+2 Campanha Perdão Dívida | Quarta-feira | 08h00–08h15 | Gate Decision em 3 dias (23/05)**
+
+| Documento | Conteúdo | Status |
+|-----------|----------|--------|
+| `processo-comercial-7dias/01-matinais/20-05-2026/roteiro-matinal-20-05-2026.md` | Roteiro 15min: resultado 19/05 (A PREENCHER) + foco Perdão Dívida D+2 + conta regressiva gate | ✅ Pronto |
+| `processo-comercial-7dias/01-matinais/20-05-2026/cartao-bolso-equipe-20-05.md` | Cartão A5: metas + script Karine + horários-chave + gate countdown | ✅ Pronto |
+
+**Metas do dia (20/05):**
+- **Karine:** ≥8 reativações Tenex (Perdão de Dívida)
+- **Lucas:** ≥20 ativações + Tenex ou Google Sheets aberto até 08h30
+- **Raquel:** Se retornou — 50 conversas + 10 leads para Karine até 12h
+- **Rogério:** n8n rodando até 10h + check-ins às 10h e 14h
+
+---
 
 **IMPORTANTE — Até 22/05:**
 - [ ] `estrategia_comercial/script_vendas_whatsapp.md` — Scripts segmentados por plano (Individual/Família 4–5/Família 10)
