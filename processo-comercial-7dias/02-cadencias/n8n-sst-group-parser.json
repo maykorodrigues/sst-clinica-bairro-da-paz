@@ -1,0 +1,207 @@
+{
+  "name": "SST Group Parser — Chatwoot → Claude → Notion",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-group-parser",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson",
+        "options": {}
+      },
+      "id": "c1000001-0001-0001-0001-000000000001",
+      "name": "Webhook Chatwoot",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [120, 300],
+      "webhookId": "sst-group-parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "cond-event",
+              "leftValue": "={{ $json.event }}",
+              "rightValue": "message_created",
+              "operator": { "type": "string", "operation": "equals" }
+            },
+            {
+              "id": "cond-conv",
+              "leftValue": "={{ $json.conversation?.id ?? $json.id }}",
+              "rightValue": "4372",
+              "operator": { "type": "string", "operation": "equals" }
+            },
+            {
+              "id": "cond-type",
+              "leftValue": "={{ $json.message_type }}",
+              "rightValue": "outgoing",
+              "operator": { "type": "string", "operation": "notEquals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c1000002-0002-0002-0002-000000000002",
+      "name": "Filtrar: Conversa SST GROUP?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [340, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrair remetente e texto do conteúdo do grupo\n// Formato Chatwoot grupo WhatsApp: \"+55 7186844401 - Karine Santana 💕: reconciliação\\nfalei com 13\"\nconst body = $input.first().json;\n\nconst content = body.content || '';\nconst conversationId = body.conversation?.id || body.id || '';\nconst messageId = body.id || '';\n\n// Timestamp\nconst ts = body.created_at ? new Date(body.created_at * 1000) : new Date();\nconst dataISO = ts.toISOString().split('T')[0];\nconst hora = ts.toTimeString().substring(0, 5); // HH:MM\n\n// Regex: '+55 XXXXX - Nome: mensagem'\nconst regexGrupo = /^\\+\\d+\\s+[\\d]+\\s*-\\s*(.+?):\\s*([\\s\\S]+)$/;\nconst match = content.match(regexGrupo);\n\nlet senderName = 'Desconhecido';\nlet mensagem = content;\n\nif (match) {\n  senderName = match[1].trim();\n  // Remover emojis do nome para normalizar\n  senderName = senderName.replace(/[\\u{1F300}-\\u{1FFFF}]/gu, '').trim();\n  mensagem = match[2].trim();\n}\n\n// Detectar pessoa pelo nome\nconst mapeamento = {\n  'karine': 'Karine',\n  'raquel': 'Raquel',\n  'lucas': 'Lucas',\n  'rogério': 'Rogério',\n  'rogerio': 'Rogério',\n  'mayko': 'Mayko'\n};\n\nlet pessoa = 'Desconhecido';\nconst nomeLower = senderName.toLowerCase();\nfor (const [chave, valor] of Object.entries(mapeamento)) {\n  if (nomeLower.includes(chave)) {\n    pessoa = valor;\n    break;\n  }\n}\n\n// Detectar se é reporte de parcial (tem números relevantes)\nconst temNumero = /\\d+/.test(mensagem);\nconst palavrasReporte = ['falei', 'fechei', 'paguei', 'pagaram', 'reativei', 'ativei', 'lead', 'contato', 'adesão', 'reconciliação', 'parcial', 'resultado', 'hoje'];\nconst temPalavraReporte = palavrasReporte.some(p => mensagem.toLowerCase().includes(p));\n\nif (!temNumero && !temPalavraReporte) {\n  return [{ json: { ignorar: true, motivo: 'mensagem_sem_metricas', content } }];\n}\n\nreturn [{\n  json: {\n    ignorar: false,\n    sender_name: senderName,\n    pessoa,\n    mensagem,\n    content_original: content,\n    data: dataISO,\n    hora,\n    conversation_id: String(conversationId),\n    message_id: String(messageId)\n  }\n}];"
+      },
+      "id": "c1000003-0003-0003-0003-000000000003",
+      "name": "Extrair Remetente + Mensagem",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [560, 180]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.ignorar }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "notEquals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c1000004-0004-0004-0004-000000000004",
+      "name": "Tem Métricas?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [780, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.ANTHROPIC_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": []
+        },
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 512,\n  \"system\": \"Você é um parser de métricas de vendas. Extraia dados numéricos de mensagens informais de WhatsApp de uma equipe de saúde (SST Card). Retorne APENAS JSON válido, sem markdown, sem explicação.\\n\\nEstrutura de saída obrigatória:\\n{\\n  \\\"tipo\\\": \\\"parcial-12h\\\" | \\\"final-15h\\\" | \\\"check-in\\\" | \\\"reporte-espontaneo\\\",\\n  \\\"falou_com\\\": number | null,\\n  \\\"fechamentos\\\": number | null,\\n  \\\"reativacoes\\\": number | null,\\n  \\\"leads_gerados\\\": number | null,\\n  \\\"ativacoes\\\": number | null,\\n  \\\"observacao\\\": \\\"string com resumo humano\\\",\\n  \\\"confianca\\\": \\\"alta\\\" | \\\"media\\\" | \\\"baixa\\\"\\n}\\n\\nExemplos:\\n- 'falei com 13, pagaram 2' → {tipo: 'reporte-espontaneo', falou_com: 13, fechamentos: 2}\\n- '5 ativações até 12h' → {tipo: 'parcial-12h', ativacoes: 5}\\n- '10 leads passados pra Karine' → {tipo: 'reporte-espontaneo', leads_gerados: 10}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Pessoa: {{ $json.pessoa }}\\nMensagem: {{ $json.mensagem }}\\nData: {{ $json.data }} {{ $json.hora }}\"\n    }\n  ]\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "c1000005-0005-0005-0005-000000000005",
+      "name": "Claude: Parsear Métricas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1000, 180]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Montar payload final com dados do Claude + metadados\nconst msg = $input.all()[0].json;\nconst claudeResp = msg.content?.[0]?.text || '{}';\n\nlet metricas = {};\ntry {\n  metricas = JSON.parse(claudeResp);\n} catch (e) {\n  // Tentar extrair JSON do texto mesmo se vier com markdown\n  const jsonMatch = claudeResp.match(/\\{[\\s\\S]+\\}/);\n  if (jsonMatch) {\n    try { metricas = JSON.parse(jsonMatch[0]); } catch(e2) {}\n  }\n}\n\n// Pegar dados da etapa anterior via $('Extrair Remetente + Mensagem')\nconst extraido = $('Extrair Remetente + Mensagem').first().json;\n\nconst tipo = metricas.tipo || 'reporte-espontaneo';\nconst pessoa = extraido.pessoa || 'Desconhecido';\nconst data = extraido.data;\nconst hora = extraido.hora;\n\n// Título para o Notion\nconst titulo = `${pessoa} | ${tipo} | ${data} ${hora}`;\n\nreturn [{\n  json: {\n    titulo,\n    pessoa,\n    tipo,\n    data,\n    hora,\n    falou_com: metricas.falou_com ?? null,\n    fechamentos: metricas.fechamentos ?? null,\n    reativacoes: metricas.reativacoes ?? null,\n    leads_gerados: metricas.leads_gerados ?? null,\n    ativacoes: metricas.ativacoes ?? null,\n    observacao: metricas.observacao || '',\n    confianca: metricas.confianca || 'media',\n    content_original: extraido.content_original,\n    conversation_id: extraido.conversation_id,\n    message_id: extraido.message_id\n  }\n}];"
+      },
+      "id": "c1000006-0006-0006-0006-000000000006",
+      "name": "Montar Payload Notion",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1220, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.NOTION_TOKEN }}" },
+            { "name": "Notion-Version", "value": "2022-06-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"parent\": { \"database_id\": \"{{ $env.NOTION_PARCIAIS_DB_ID }}\" },\n  \"properties\": {\n    \"Título\": {\n      \"title\": [{ \"text\": { \"content\": \"{{ $json.titulo }}\" } }]\n    },\n    \"Pessoa\": {\n      \"select\": { \"name\": \"{{ $json.pessoa }}\" }\n    },\n    \"Tipo\": {\n      \"select\": { \"name\": \"{{ $json.tipo }}\" }\n    },\n    \"Data\": {\n      \"date\": { \"start\": \"{{ $json.data }}\" }\n    },\n    \"Hora\": {\n      \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.hora }}\" } }]\n    },\n    \"Falou Com\": {\n      \"number\": {{ $json.falou_com ?? 'null' }}\n    },\n    \"Fechamentos\": {\n      \"number\": {{ $json.fechamentos ?? 'null' }}\n    },\n    \"Reativações\": {\n      \"number\": {{ $json.reativacoes ?? 'null' }}\n    },\n    \"Leads Gerados\": {\n      \"number\": {{ $json.leads_gerados ?? 'null' }}\n    },\n    \"Ativações\": {\n      \"number\": {{ $json.ativacoes ?? 'null' }}\n    },\n    \"Confiança Parse\": {\n      \"select\": { \"name\": \"{{ $json.confianca }}\" }\n    },\n    \"Observação\": {\n      \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.observacao }}\" } }]\n    },\n    \"Mensagem Original\": {\n      \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.content_original.substring(0, 2000) }}\" } }]\n    },\n    \"Conversa ID\": {\n      \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.conversation_id }}\" } }]\n    }\n  }\n}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "c1000007-0007-0007-0007-000000000007",
+      "name": "Notion: Criar Parcial",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1440, 180]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Log de erro ou item ignorado — sem ação\nconst item = $input.first().json;\nconsole.log('[SST-GROUP-PARSER] Ignorado:', JSON.stringify(item));\nreturn [{ json: { status: 'ignorado', motivo: item.motivo || 'filtro_conversa' } }];"
+      },
+      "id": "c1000008-0008-0008-0008-000000000008",
+      "name": "Ignorar (sem ação)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [560, 460]
+    }
+  ],
+  "connections": {
+    "Webhook Chatwoot": {
+      "main": [
+        [{ "node": "Filtrar: Conversa SST GROUP?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Filtrar: Conversa SST GROUP?": {
+      "main": [
+        [{ "node": "Extrair Remetente + Mensagem", "type": "main", "index": 0 }],
+        [{ "node": "Ignorar (sem ação)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Extrair Remetente + Mensagem": {
+      "main": [
+        [{ "node": "Tem Métricas?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Tem Métricas?": {
+      "main": [
+        [{ "node": "Claude: Parsear Métricas", "type": "main", "index": 0 }],
+        [{ "node": "Ignorar (sem ação)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Claude: Parsear Métricas": {
+      "main": [
+        [{ "node": "Montar Payload Notion", "type": "main", "index": 0 }]
+      ]
+    },
+    "Montar Payload Notion": {
+      "main": [
+        [{ "node": "Notion: Criar Parcial", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": ["sst", "chatwoot", "notion", "parciais"],
+  "triggerCount": 1,
+  "updatedAt": "2026-05-26T00:00:00.000Z",
+  "versionId": "c1000000-0000-0000-0000-000000000001"
+}
