@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reunião da Clínica — SST · 27/05/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --branco:  #ffffff;
+    --bg:      #f4f6f9;
+    --bg2:     #edf0f5;
+    --azul:    #1987c3;
+    --azul-esc:#0f5a8a;
+    --azul-clr:#e8f3fb;
+    --verde:   #1a9e5c;
+    --verde-cl:#e6f7ef;
+    --verm:    #c0392b;
+    --verm-cl: #fdecea;
+    --amar:    #d68910;
+    --amar-cl: #fef9e7;
+    --txt:     #1a2535;
+    --txt2:    #4a5a70;
+    --txt3:    #8a9ab0;
+    --borda:   #d8e0eb;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── CAPA ── */
+  .capa {
+    background: linear-gradient(160deg, #0d1e38 0%, #0f3460 40%, #1987c3 100%);
+    color: #fff;
+    padding: 40px 24px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .capa::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 40px solid rgba(255,255,255,.04);
+    top: -80px; right: -80px;
+  }
+  .capa::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 30px solid rgba(255,255,255,.04);
+    bottom: -60px; left: 40px;
+  }
+  .capa-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 10px;
+  }
+  .capa-titulo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 34px;
+    line-height: 1.15;
+    margin-bottom: 10px;
+    max-width: 360px;
+  }
+  .capa-titulo em {
+    font-style: italic;
+    color: #7dd3fc;
+  }
+  .capa-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,.65);
+    max-width: 380px;
+    line-height: 1.6;
+    margin-bottom: 22px;
+  }
+  .capa-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .capa-tag {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,.85);
+    letter-spacing: .3px;
+  }
+  .capa-meta {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .capa-meta-item { font-size: 12px; color: rgba(255,255,255,.5); }
+  .capa-meta-item strong { color: rgba(255,255,255,.9); display: block; font-size: 14px; }
+
+  /* ── CONTAINER ── */
+  .container { max-width: 800px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* ── BLOCO SECAO ── */
+  .secao {
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    transition: box-shadow .2s;
+  }
+  .secao:hover { box-shadow: 0 3px 12px rgba(0,0,0,.07); }
+
+  .secao-header {
+    padding: 18px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    user-select: none;
+  }
+  .secao-header:hover { background: var(--bg); }
+
+  .secao-num {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--azul);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: 'DM Serif Display', serif;
+  }
+
+  .secao-info { flex: 1; }
+  .secao-titulo {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--txt);
+  }
+  .secao-sub { font-size: 12px; color: var(--txt3); margin-top: 2px; }
+
+  .secao-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .badge-azul  { background: var(--azul-clr); color: var(--azul-esc); }
+  .badge-verde { background: var(--verde-cl); color: var(--verde); }
+  .badge-amar  { background: var(--amar-cl);  color: var(--amar); }
+  .badge-verm  { background: var(--verm-cl);  color: var(--verm); }
+
+  .chevron {
+    color: var(--txt3);
+    font-size: 12px;
+    transition: transform .25s;
+    flex-shrink: 0;
+  }
+  .secao.open .chevron { transform: rotate(180deg); }
+
+  .secao-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--borda);
+  }
+  .secao.open .secao-body { display: block; }
+
+  /* ── TEMPO ── */
+  .tempo-bar {
+    background: var(--azul);
+    height: 3px;
+    border-radius: 0;
+    margin: 0;
+  }
+  .tempo-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--azul);
+    padding: 10px 20px 0;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline { margin: 16px 0; }
+  .tl-item {
+    display: flex;
+    gap: 14px;
+    padding-bottom: 18px;
+    position: relative;
+  }
+  .tl-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 28px;
+    bottom: 0;
+    width: 1px;
+    background: var(--borda);
+  }
+  .tl-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--azul-clr);
+    border: 1.5px solid var(--azul);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    position: relative;
+    z-index: 1;
+  }
+  .tl-content {}
+  .tl-tempo {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--azul);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .tl-acao { font-size: 14px; color: var(--txt); font-weight: 500; }
+  .tl-desc { font-size: 12.5px; color: var(--txt2); margin-top: 3px; line-height: 1.5; }
+
+  /* ── DIAGNÓSTICO ── */
+  .diagnostico {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 16px;
+    margin: 14px 0;
+  }
+  .diag-titulo {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--txt3);
+    margin-bottom: 10px;
+  }
+  .diag-fluxo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .diag-step {
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--txt);
+    text-align: center;
+    flex: 1;
+    min-width: 90px;
+  }
+  .diag-step.problema { border-color: var(--verm); color: var(--verm); background: var(--verm-cl); }
+  .diag-step.solucao  { border-color: var(--verde); color: var(--verde); background: var(--verde-cl); }
+  .diag-arrow { color: var(--txt3); font-size: 18px; flex-shrink: 0; }
+
+  /* ── CASO ── */
+  .caso {
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    display: flex;
+    gap: 12px;
+  }
+  .caso-verm { background: var(--verm-cl); border: 1px solid #f5c6c2; }
+  .caso-verde { background: var(--verde-cl); border: 1px solid #b7e8d0; }
+  .caso-amar  { background: var(--amar-cl);  border: 1px solid #f8e3a3; }
+  .caso-azul  { background: var(--azul-clr); border: 1px solid #b3d7f0; }
+  .caso-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .caso-titulo { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .caso-desc { font-size: 13px; color: var(--txt2); line-height: 1.5; }
+
+  /* ── CITAÇÃO ── */
+  .citacao {
+    border-left: 3px solid var(--azul);
+    background: var(--azul-clr);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+    color: var(--txt2);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .citacao strong { color: var(--txt); font-style: normal; }
+  .citacao-fonte {
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--txt3);
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: .3px;
+  }
+
+  /* ── SCRIPT BALCÃO ── */
+  .script-box {
+    background: #1a2535;
+    color: #e8edf4;
+    border-radius: 12px;
+    padding: 18px;
+    margin: 12px 0;
+    font-size: 14px;
+    line-height: 1.7;
+    position: relative;
+  }
+  .script-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.35);
+    margin-bottom: 8px;
+  }
+  .script-texto { color: #e8edf4; }
+  .script-texto em {
+    color: #7dd3fc;
+    font-style: normal;
+    font-weight: 600;
+  }
+  .script-texto strong { color: #4ade80; }
+  .script-obs {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    font-size: 11.5px;
+    color: rgba(255,255,255,.45);
+  }
+
+  /* ── PERGUNTA ABERTA ── */
+  .pergunta {
+    background: var(--amar-cl);
+    border: 1.5px solid #f8e3a3;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .pergunta-icon { font-size: 18px; flex-shrink: 0; }
+  .pergunta-texto { font-size: 14px; font-weight: 600; color: var(--txt); line-height: 1.5; }
+  .pergunta-desc { font-size: 12px; color: var(--txt2); margin-top: 4px; font-weight: 400; }
+
+  /* ── GRID DECISÃO ── */
+  .grid-decisao {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  @media (max-width: 500px) { .grid-decisao { grid-template-columns: 1fr; } }
+
+  .decisao-card {
+    border-radius: 10px;
+    padding: 14px;
+    border: 1.5px solid;
+  }
+  .decisao-verde { border-color: #b7e8d0; background: var(--verde-cl); }
+  .decisao-verm  { border-color: #f5c6c2; background: var(--verm-cl); }
+  .decisao-titulo {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .decisao-lista { list-style: none; }
+  .decisao-lista li { font-size: 12.5px; color: var(--txt2); padding: 3px 0; display: flex; gap: 6px; }
+  .decisao-lista li::before { content: '·'; flex-shrink: 0; }
+
+  /* ── META PESSOAL ── */
+  .metas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .meta-card {
+    background: var(--bg);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .meta-avatar {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    margin: 0 auto 8px;
+  }
+  .meta-nome { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+  .meta-acao { font-size: 12px; color: var(--txt2); line-height: 1.4; }
+
+  /* ── CHECKLIST ── */
+  .checklist { margin: 12px 0; }
+  .check-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--bg2);
+    font-size: 14px;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid var(--borda);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .check-lbl { flex: 1; line-height: 1.4; }
+  .check-resp {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: var(--azul);
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  /* ── ENCERRAMENTO ── */
+  .encerramento {
+    background: linear-gradient(135deg, #0d1e38, #0f3460);
+    border-radius: 14px;
+    padding: 24px;
+    color: #fff;
+    text-align: center;
+    margin-top: 8px;
+  }
+  .enc-titulo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .enc-sub { font-size: 13px; color: rgba(255,255,255,.6); margin-bottom: 16px; line-height: 1.6; }
+  .enc-acoes { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .enc-acao {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,.9);
+    text-align: center;
+  }
+  .enc-acao span { display: block; font-size: 10px; font-weight: 400; color: rgba(255,255,255,.45); margin-top: 2px; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; }
+    .capa { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .secao-body { display: block !important; }
+    .chevron { display: none; }
+    .secao-header { cursor: default; }
+  }
+
+  /* ── ANIMAÇÃO ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .container > * {
+    animation: fadeUp .4s ease both;
+  }
+  .container > *:nth-child(1) { animation-delay: .05s; }
+  .container > *:nth-child(2) { animation-delay: .10s; }
+  .container > *:nth-child(3) { animation-delay: .15s; }
+  .container > *:nth-child(4) { animation-delay: .20s; }
+  .container > *:nth-child(5) { animation-delay: .25s; }
+  .container > *:nth-child(6) { animation-delay: .30s; }
+  .container > *:nth-child(7) { animation-delay: .35s; }
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="capa">
+  <div class="capa-eyebrow">SST Clínica · 27/05/2026 · Reunião Estratégica</div>
+  <div class="capa-titulo">Construir a <em>agenda</em><br>antes do médico chegar.</div>
+  <div class="capa-sub">
+    A pediatra foi adiada por falta de membros. A Dra. Tatiana tem fila de 2 meses.
+    A diferença é um sistema comercial ativo — que começa no balcão.
+  </div>
+  <div class="capa-tags">
+    <span class="capa-tag">Rogério · Sponsor</span>
+    <span class="capa-tag">Equipe Clínica</span>
+    <span class="capa-tag">Mayko · Advisor</span>
+    <span class="capa-tag">~35 min</span>
+  </div>
+  <div class="capa-meta">
+    <div class="capa-meta-item">
+      <strong>Objetivo</strong>
+      Definir quem é o "corretor" da clínica
+    </div>
+    <div class="capa-meta-item">
+      <strong>Entregável</strong>
+      Script de 30s + responsável + meta semanal
+    </div>
+    <div class="capa-meta-item">
+      <strong>Decisão necessária</strong>
+      GO na visão comercial da recepção
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 1. ABERTURA -->
+  <div class="secao open">
+    <div class="tempo-label">2 MIN</div>
+    <div class="secao-header" onclick="toggle(this)">
+      <div class="secao-num">1</div>
+      <div class="secao-info">
+        <div class="secao-titulo">Abertura — O Gatilho</div>
+        <div class="secao-sub">Contextualizar o problema com as próprias palavras do Rogério</div>
+      </div>
+      <div class="secao-badge badge-azul">MAYKO CONDUZ</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="secao-body">
+      <div class="citacao">
+        <strong>"A gente pede médico, às vezes a gente consegue médico, mas não temos agenda, médico não fica. E nem eu ficaria."</strong>
+        <br><br>
+        "Da recepção até a menina da higienização, ela vai ter que ter essa visão. Imagine a menina que atende 50, 100 pessoas por dia e não consegue colocar agendamento para os médicos."
+        <div class="citacao-fonte">— Rogério Ferreira · áudio WhatsApp · 26/05/2026 · 15:24</div>
+      </div>
+
+      <div class="caso caso-verm">
+        <div class="caso-icon">📅</div>
+        <div>
+          <div class="caso-titulo">O que aconteceu ontem</div>
+          <div class="caso-desc">O atendimento da Pediatra que seria hoje foi adiado — médica aguardando nova data. Motivo subjacente: agenda vazia por falta de membros. <strong>É o sintoma do problema que vamos resolver hoje.</strong></div>
+        </div>
+      </div>
+
+      <div class="caso caso-verde">
+        <div class="caso-icon">📈</div>
+        <div>
+          <div class="caso-titulo">O que está funcionando: Dra. Tatiana</div>
+          <div class="caso-desc">Cardiologista com <strong>agenda cheia por 2 meses</strong> porque "fez o nome dela na cidade." Ela não esperou o sistema funcionar — ela foi buscar. Vamos entender o que ela fez que os outros não fizeram.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. DIAGNÓSTICO -->
+  <div class="secao open">
+    <div class="tempo-label">5 MIN</div>
+    <div class="secao-header" onclick="toggle(this)">
+      <div class="secao-num">2</div>
+      <div class="secao-info">
+        <div class="secao-titulo">Diagnóstico — O Ciclo do Problema</div>
+        <div class="secao-sub">Mostrar o loop vicioso e onde a gente quebra ele</div>
+      </div>
+      <div class="secao-badge badge-verm">PROBLEMA RAIZ</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="secao-body">
+      <div class="diagnostico">
+        <div class="diag-titulo">🔄 Loop Vicioso Atual</div>
+        <div class="diag-fluxo">
+          <div class="diag-step problema">Poucos membros</div>
+          <div class="diag-arrow">→</div>
+          <div class="diag-step problema">Agenda vazia</div>
+          <div class="diag-arrow">→</div>
+          <div class="diag-step problema">Médico vai embora</div>
+          <div class="diag-arrow">→</div>
+          <div class="diag-step problema">Menos credibilidade</div>
+          <div class="diag-arrow">→</div>
+          <div class="diag-step problema">Menos membros</div>
+        </div>
+        <div class="diag-titulo" style="margin-top:14px">✅ Loop Virtuoso — Meta</div>
+        <div class="diag-fluxo">
+          <div class="diag-step solucao">Base de membros</div>
+          <div class="diag-arrow">→</div>
+          <div class="diag-step solucao">Agenda cheia</div>
+          <div class="diag-arrow">→</div>
+          <div class="diag-step solucao">Médico fica e indica</div>
+          <div class="diag-arrow">→</div>
+          <div class="diag-step solucao">Mais credibilidade</div>
+          <div class="diag-arrow">→</div>
+          <div class="diag-step solucao">Mais membros</div>
+        </div>
+      </div>
+
+      <div class="caso caso-azul">
+        <div class="caso-icon">💡</div>
+        <div>
+          <div class="caso-titulo">A lógica do Barco de Vida (como Rogério descreve)</div>
+          <div class="caso-desc">
+            Quando o plano de saúde funcionava bem, havia corretores ativos injetando clientes. Os corretores eram o motor comercial.<br><br>
+            <strong>Na SST Clínica, quem é o corretor?</strong> Essa é a pergunta que vamos responder hoje.
+          </div>
+        </div>
+      </div>
+
+      <div class="pergunta">
+        <div class="pergunta-icon">🎯</div>
+        <div>
+          <div class="pergunta-texto">Pergunta para Rogério abrir o debate:</div>
+          <div class="pergunta-desc">"Rogério, a Dra. Tatiana fez algo diferente dos outros médicos. O que especificamente ela fez que a gente pode replicar como sistema para toda a clínica?"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. O CORRETOR INTERNO -->
+  <div class="secao open">
+    <div class="tempo-label">8 MIN</div>
+    <div class="secao-header" onclick="toggle(this)">
+      <div class="secao-num">3</div>
+      <div class="secao-info">
+        <div class="secao-titulo">A Proposta — Toda a Equipe Como Corretor</div>
+        <div class="secao-sub">Script de 30 segundos + quem é o responsável</div>
+      </div>
+      <div class="secao-badge badge-verde">SOLUÇÃO PRÁTICA</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="secao-body">
+
+      <div class="caso caso-amar">
+        <div class="caso-icon">🧮</div>
+        <div>
+          <div class="caso-titulo">O potencial que existe agora</div>
+          <div class="caso-desc">
+            A menina do balcão atende <strong>50–100 pessoas por dia</strong> (Rogério, áudio 2).<br>
+            Se 1 em cada 10 virar membro = <strong>5–10 novos membros/dia</strong> = 100–200/mês só no balcão.<br>
+            Com ticket médio R$61 → <strong>R$6k–R$12k/mês de receita nova sem custo de aquisição.</strong>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin:14px 0 8px;font-weight:700;font-size:14px;color:var(--txt)">
+        💬 Script de 30 segundos — versão balcão / recepção
+      </div>
+
+      <div class="script-box">
+        <div class="script-label">Roteiro para recepcionista · use depois de marcar a consulta</div>
+        <div class="script-texto">
+          — "Posso te fazer uma pergunta rápida?"<br><br>
+          — [Cliente responde]<br><br>
+          — "Você sabia que a gente tem um <em>cartão de saúde</em> que dá acesso a consultas, exames e telemedicina por <em>R$34,90 por mês?</em><br>
+          Muito paciente nosso já trocou o plano de saúde caro por ele.<br>
+          <strong>Quer que eu te explique em 2 minutinhos?</strong>"
+        </div>
+        <div class="script-obs">
+          Se o cliente disser não: "Tudo bem! Qualquer dúvida, é só falar." — sem pressão, sem perder o relacionamento.<br>
+          Se disser sim: passar para Karine ou quem está no comercial para fechar.
+        </div>
+      </div>
+
+      <div style="margin:14px 0 8px;font-weight:700;font-size:14px;color:var(--txt)">
+        🏥 Script para médico — versão consultório
+      </div>
+
+      <div class="script-box">
+        <div class="script-label">Para médicos indicarem após a consulta</div>
+        <div class="script-texto">
+          — "Olha, eu queria te avisar de uma coisa antes de você ir embora.<br>
+          A clínica tem um cartão de saúde que garante que você vai poder continuar se consultando aqui com frequência.<br>
+          <em>Por menos de R$35 por mês</em>, você tem acesso prioritário.<br>
+          <strong>Quer ver como funciona? Fala com a recepção na saída.</strong>"
+        </div>
+        <div class="script-obs">
+          O médico que indica cria relacionamento de longo prazo com o paciente. É bom para o médico, bom para a clínica.
+        </div>
+      </div>
+
+      <div class="pergunta" style="margin-top:14px">
+        <div class="pergunta-icon">❓</div>
+        <div>
+          <div class="pergunta-texto">Pergunta para a equipe:</div>
+          <div class="pergunta-desc">"Quem aqui já tentou oferecer o card para um paciente na saída? O que aconteceu? Qual foi a objeção mais comum?"</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. REFERÊNCIA TATIANA -->
+  <div class="secao">
+    <div class="tempo-label">5 MIN</div>
+    <div class="secao-header" onclick="toggle(this)">
+      <div class="secao-num">4</div>
+      <div class="secao-info">
+        <div class="secao-titulo">Case Interno — Dra. Tatiana</div>
+        <div class="secao-sub">Aprender com quem já resolveu o problema dentro da própria clínica</div>
+      </div>
+      <div class="secao-badge badge-verde">CASO DE SUCESSO</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="secao-body">
+
+      <div class="caso caso-verde">
+        <div class="caso-icon">👩‍⚕️</div>
+        <div>
+          <div class="caso-titulo">O que sabemos sobre a Dra. Tatiana</div>
+          <div class="caso-desc">
+            Cardiologista. <strong>Agenda cheia por 2 meses.</strong> Rogério usou ela como exemplo porque "ela fez o nome dela na cidade" — não dependeu do sistema da clínica para encher a agenda. Ela construiu a própria demanda.
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline" style="margin-top:14px">
+        <div class="tl-item">
+          <div class="tl-icon">❓</div>
+          <div class="tl-content">
+            <div class="tl-tempo">Perguntar a Rogério</div>
+            <div class="tl-acao">O que a Dra. Tatiana fez de diferente?</div>
+            <div class="tl-desc">Redes sociais? Indicação ativa de pacientes? Parcerias com empresas? Retorno ativo de ex-pacientes?</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-icon">📋</div>
+          <div class="tl-content">
+            <div class="tl-tempo">Objetivo da conversa</div>
+            <div class="tl-acao">Extrair o "sistema Tatiana" e montar um protocolo replicável</div>
+            <div class="tl-desc">O que ela fez não pode ficar preso à pessoa dela — precisa virar processo para todos os médicos.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-icon">🔁</div>
+          <div class="tl-content">
+            <div class="tl-tempo">Proposta para levar</div>
+            <div class="tl-acao">Criar um "onboarding comercial" para cada novo médico que entrar</div>
+            <div class="tl-desc">Antes de começar a atender: 1h com Mayko + equipe para alinhar a visão comercial. O médico sabe que agenda cheia depende dele também.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 5. META E RESPONSÁVEL -->
+  <div class="secao open">
+    <div class="tempo-label">8 MIN</div>
+    <div class="secao-header" onclick="toggle(this)">
+      <div class="secao-num">5</div>
+      <div class="secao-info">
+        <div class="secao-titulo">Decisão — Quem Faz o Quê</div>
+        <div class="secao-sub">Sair da reunião com nome + meta + prazo por ação</div>
+      </div>
+      <div class="secao-badge badge-amar">DECISÃO NECESSÁRIA</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="secao-body">
+
+      <div class="metas-grid">
+        <div class="meta-card">
+          <div class="meta-avatar" style="background:#e8f3fb;color:#1987c3">🏥</div>
+          <div class="meta-nome">Recepção</div>
+          <div class="meta-acao">Script de 30s com todo paciente que sai. Meta: <strong>3 ofertas/dia</strong> por atendente. Repassar lead para Karine.</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-avatar" style="background:#fef9e7;color:#d68910">👩‍⚕️</div>
+          <div class="meta-nome">Médicos</div>
+          <div class="meta-acao">Indicar o Card no final de cada consulta. Meta: <strong>1 indicação por turno.</strong> Rogério alinha com cada médico.</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-avatar" style="background:#e6f7ef;color:#1a9e5c">💊</div>
+          <div class="meta-nome">Higienização / Apoio</div>
+          <div class="meta-acao">Ter o script na ponta da língua. Se paciente perguntar, saber responder e direcionar para recepção.</div>
+        </div>
+        <div class="meta-card">
+          <div class="meta-avatar" style="background:#fdecea;color:#c0392b">👑</div>
+          <div class="meta-nome">Rogério</div>
+          <div class="meta-acao">Liderar onboarding comercial dos médicos. <strong>1 conversa esta semana</strong> com cada médico ativo sobre visão comercial.</div>
+        </div>
+      </div>
+
+      <div class="checklist" style="margin-top:14px">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--txt3);margin-bottom:8px">Checklist de saída da reunião</div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-lbl">Script de 30s validado e impresso para a recepção
+            <div class="check-resp">HOJE · Mayko imprime e entrega</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-lbl">Responsável da recepção nomeado como "líder de captação" do turno
+            <div class="check-resp">HOJE · Rogério nomeia</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-lbl">Rogério agenda conversa 1:1 com cada médico sobre visão comercial
+            <div class="check-resp">ATÉ 30/05 · Rogério</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-lbl">Meta semanal da clínica: quantos membros novos saídos do balcão?
+            <div class="check-resp">DEFINIR AGORA · Rogério + Mayko</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="check-box"></div>
+          <div class="check-lbl">Protocolo para médico novo: onboarding comercial obrigatório antes de começar
+            <div class="check-resp">ATÉ 06/06 · Mayko cria roteiro</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-decisao" style="margin-top:14px">
+        <div class="decisao-card decisao-verde">
+          <div class="decisao-titulo">✅ GO — Se a reunião funcionar</div>
+          <ul class="decisao-lista">
+            <li>Responsável nomeado na recepção</li>
+            <li>Meta semanal definida e aceita</li>
+            <li>Rogério vai falar com os médicos</li>
+            <li>Script impresso e em uso até amanhã</li>
+          </ul>
+        </div>
+        <div class="decisao-card decisao-verm">
+          <div class="decisao-titulo">⚠️ Sinal de alerta</div>
+          <ul class="decisao-lista">
+            <li>Resistência: "é muita coisa pra recepção"</li>
+            <li>Falta de nome responsável (= ninguém faz)</li>
+            <li>Meta vaga sem número concreto</li>
+            <li>Rogério não se compromete com os médicos</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 6. CONTEXTO BAIRRO DA PAZ -->
+  <div class="secao">
+    <div class="tempo-label">5 MIN</div>
+    <div class="secao-header" onclick="toggle(this)">
+      <div class="secao-num">6</div>
+      <div class="secao-info">
+        <div class="secao-titulo">Bairro da Paz — O que Muda</div>
+        <div class="secao-sub">Inauguração 01/07 · VISA em andamento · Playbook da clínica como referência</div>
+      </div>
+      <div class="secao-badge badge-azul">INAUGURAÇÃO 01/07</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="secao-body">
+
+      <div class="caso caso-azul">
+        <div class="caso-icon">🏗️</div>
+        <div>
+          <div class="caso-titulo">O que está sendo construído</div>
+          <div class="caso-desc">
+            A 2ª filial (Bairro da Paz) abre em <strong>01/07/2026</strong> com alvará VISA Salvador.
+            20.509 habitantes na área, 57,5% com renda de 0–1 salário mínimo — <strong>o público exato do SST Card.</strong><br><br>
+            A lição de hoje — recepção com visão comercial, médicos com onboarding comercial — precisa estar funcionando aqui antes de exportar para lá.
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-icon">📋</div>
+          <div class="tl-content">
+            <div class="tl-tempo">Até 30/05</div>
+            <div class="tl-acao">VISA + alvará prefeitura — dar entrada</div>
+            <div class="tl-desc">Rogério responsável · sem isso, inauguração atrasa</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-icon">🔨</div>
+          <div class="tl-content">
+            <div class="tl-tempo">Até 13/06</div>
+            <div class="tl-acao">Obra finalizada pela arquiteta</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-icon">🧪</div>
+          <div class="tl-content">
+            <div class="tl-tempo">15–27/06</div>
+            <div class="tl-acao">Operação piloto com clientes reais</div>
+            <div class="tl-desc">O sistema comercial que definirmos hoje vai para o piloto</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-icon">🚀</div>
+          <div class="tl-content">
+            <div class="tl-tempo">01/07</div>
+            <div class="tl-acao">Inauguração oficial — Bairro da Paz</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pergunta">
+        <div class="pergunta-icon">🔑</div>
+        <div>
+          <div class="pergunta-texto">Pergunta para Rogério sobre o Closer:</div>
+          <div class="pergunta-desc">"Rogério, o candidato Roni foi entrevistado na semana passada. Qual é o status? Precisamos do closer em campo antes do piloto de 15/06."</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 7. ENCERRAMENTO -->
+  <div class="secao open">
+    <div class="tempo-label">2 MIN</div>
+    <div class="secao-header" onclick="toggle(this)">
+      <div class="secao-num">7</div>
+      <div class="secao-info">
+        <div class="secao-titulo">Encerramento</div>
+        <div class="secao-sub">3 itens que saem da sala hoje</div>
+      </div>
+      <div class="secao-badge badge-azul">FECHAMENTO</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="secao-body">
+      <div class="encerramento">
+        <div class="enc-titulo">Sair desta sala com 3 coisas</div>
+        <div class="enc-sub">
+          Não é para pensar depois. Se sair sem isso, não funcionou.
+        </div>
+        <div class="enc-acoes">
+          <div class="enc-acao">
+            📌 Script impresso
+            <span>Na mão da recepção hoje</span>
+          </div>
+          <div class="enc-acao">
+            👤 Responsável nomeado
+            <span>Nome + meta + frequência</span>
+          </div>
+          <div class="enc-acao">
+            📅 Data da próxima revisão
+            <span>Quantos membros entraram pelo balcão?</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="caso caso-azul" style="margin-top:14px">
+        <div class="caso-icon">💬</div>
+        <div>
+          <div class="caso-titulo">Frase para fechar a reunião</div>
+          <div class="caso-desc">
+            "A Dra. Tatiana não esperou a clínica resolver o problema dela. Ela resolveu. A partir de hoje, o balcão é o nosso primeiro corretor. Cada conversa no balcão é uma agenda que não vai ser cancelada amanhã."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--borda);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <div style="font-size:12px;color:var(--txt3)">
+      <strong style="color:var(--txt2)">SST Clínica — Reunião Estratégica 27/05/2026</strong><br>
+      Advisor: Mayko Rodrigues · contato@sucessodetodos.com.br
+    </div>
+    <div style="font-size:12px;color:var(--txt3);text-align:right">
+      <a href="https://playbook.ssfcard.ia.br" style="color:var(--azul);text-decoration:none">playbook.ssfcard.ia.br</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(header) {
+  const secao = header.closest('.secao');
+  secao.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
