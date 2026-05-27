@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matinal SST Card — 27/05/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:    #1987c3;
+    --azul-esc:#0f5a8a;
+    --verde:   #27ae60;
+    --verm:    #e74c3c;
+    --amar:    #f39c12;
+    --bg:      #0b1220;
+    --bg2:     #111d30;
+    --bg3:     #172036;
+    --borda:   #1e2e47;
+    --txt:     #e8edf4;
+    --txt2:    #8fa3bb;
+    --txt3:    #5c7a99;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    min-height: 100vh;
+  }
+
+  /* ── TOPO ── */
+  .topo {
+    background: linear-gradient(135deg, var(--bg2) 0%, #0d1e38 100%);
+    border-bottom: 1px solid var(--borda);
+    padding: 20px 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .topo-esq { display: flex; align-items: center; gap: 12px; }
+  .badge-sst {
+    background: var(--azul);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .topo-titulo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    color: var(--txt);
+  }
+  .topo-titulo span { color: var(--azul); }
+  .topo-data {
+    font-size: 12px;
+    color: var(--txt3);
+    font-weight: 500;
+    white-space: nowrap;
+    text-align: right;
+  }
+  .dot-live {
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: var(--verde);
+    border-radius: 50%;
+    margin-right: 5px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 16px 16px 60px; }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 28px 0 12px;
+  }
+  .section-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--azul);
+    text-transform: uppercase;
+  }
+  .section-titulo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.3px;
+    color: var(--txt);
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--borda);
+  }
+  .section-time {
+    font-size: 11px;
+    color: var(--txt3);
+    font-weight: 600;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: var(--azul-esc); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .card-header:hover { background: var(--bg3); }
+
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .av-verde  { background: rgba(39,174,96,.18);  color: var(--verde); }
+  .av-azul   { background: rgba(25,135,195,.18); color: var(--azul); }
+  .av-amar   { background: rgba(243,156,18,.18); color: var(--amar); }
+  .av-verm   { background: rgba(231,76,60,.18);  color: var(--verm); }
+  .av-branco { background: rgba(255,255,255,.1); color: var(--txt); }
+
+  .card-info { flex: 1; min-width: 0; }
+  .card-nome {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: .3px;
+  }
+  .card-sub { font-size: 12px; color: var(--txt3); margin-top: 1px; }
+
+  .card-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+  .chip {
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: .5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .chip-verde  { background: rgba(39,174,96,.15);  color: #4ade80;   border: 1px solid rgba(39,174,96,.3); }
+  .chip-azul   { background: rgba(25,135,195,.15); color: #60b4f0;   border: 1px solid rgba(25,135,195,.3); }
+  .chip-amar   { background: rgba(243,156,18,.15); color: #fbbf24;   border: 1px solid rgba(243,156,18,.3); }
+  .chip-verm   { background: rgba(231,76,60,.15);  color: #f87171;   border: 1px solid rgba(231,76,60,.3); }
+
+  .chevron {
+    color: var(--txt3);
+    font-size: 12px;
+    transition: transform .25s;
+    flex-shrink: 0;
+  }
+  .card.open .chevron { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--borda);
+  }
+  .card.open .card-body { display: block; }
+
+  /* ── MÉTRICAS GRID ── */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 8px;
+    margin: 14px 0;
+  }
+  .metric {
+    background: var(--bg3);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .metric-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .metric-label { font-size: 10px; color: var(--txt3); text-transform: uppercase; letter-spacing: .8px; font-weight: 600; }
+  .mv-verde { color: var(--verde); }
+  .mv-azul  { color: var(--azul); }
+  .mv-amar  { color: var(--amar); }
+  .mv-verm  { color: var(--verm); }
+  .mv-txt   { color: var(--txt); }
+
+  /* ── FUNIL ── */
+  .funil {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 12px 0;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .funil-step {
+    background: var(--bg3);
+    border: 1px solid var(--borda);
+    border-radius: 6px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    flex: 1;
+    min-width: 60px;
+    text-align: center;
+  }
+  .funil-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    line-height: 1;
+  }
+  .funil-lbl { font-size: 9px; color: var(--txt3); text-transform: uppercase; letter-spacing: .6px; font-weight: 700; }
+  .funil-arrow { color: var(--txt3); font-size: 14px; flex-shrink: 0; }
+  .funil-pct { font-size: 9px; color: var(--txt3); }
+
+  /* ── FECHAMENTOS ── */
+  .fechamentos { margin: 10px 0; }
+  .fechamento-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(39,174,96,.06);
+    border: 1px solid rgba(39,174,96,.2);
+    border-radius: 7px;
+    padding: 9px 12px;
+    margin-bottom: 7px;
+  }
+  .fechamento-icon { font-size: 18px; }
+  .fechamento-nome { font-weight: 600; font-size: 14px; }
+  .fechamento-plano {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: .5px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .plano-ouro  { background: rgba(243,156,18,.2); color: #fbbf24; border: 1px solid rgba(243,156,18,.3); }
+  .plano-prata { background: rgba(148,163,184,.15); color: #94a3b8; border: 1px solid rgba(148,163,184,.25); }
+
+  /* ── LISTA SIMPLES ── */
+  .lista { list-style: none; margin: 10px 0; }
+  .lista li {
+    padding: 7px 0;
+    border-bottom: 1px solid var(--borda);
+    font-size: 13.5px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .lista li:last-child { border-bottom: none; }
+  .lista li::before { content: '›'; color: var(--azul); font-size: 16px; flex-shrink: 0; margin-top: -1px; }
+
+  /* ── ALERTA ── */
+  .alerta {
+    display: flex;
+    gap: 10px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .alerta-verm { background: rgba(231,76,60,.08); border: 1px solid rgba(231,76,60,.25); color: #f87171; }
+  .alerta-amar { background: rgba(243,156,18,.08); border: 1px solid rgba(243,156,18,.25); color: #fbbf24; }
+  .alerta-verde{ background: rgba(39,174,96,.08);  border: 1px solid rgba(39,174,96,.25);  color: #4ade80; }
+  .alerta-azul { background: rgba(25,135,195,.08); border: 1px solid rgba(25,135,195,.25); color: #60b4f0; }
+  .alerta-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── METAS ── */
+  .meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--borda);
+    gap: 10px;
+  }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-label { font-size: 13.5px; font-weight: 500; flex: 1; }
+  .meta-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    white-space: nowrap;
+  }
+
+  /* ── CITAÇÃO ── */
+  .citacao {
+    background: var(--bg3);
+    border-left: 3px solid var(--azul);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 13.5px;
+    color: var(--txt2);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 10px 0;
+  }
+  .citacao-fonte {
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--txt3);
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: .5px;
+  }
+
+  /* ── CANTADA DO DIA ── */
+  .cantada-box {
+    background: linear-gradient(135deg, rgba(25,135,195,.12) 0%, rgba(15,90,138,.08) 100%);
+    border: 1px solid rgba(25,135,195,.3);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 14px;
+  }
+  .cantada-emoji { font-size: 28px; margin-bottom: 8px; }
+  .cantada-texto {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--txt);
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+  .cantada-sub { font-size: 12px; color: var(--txt3); }
+
+  /* ── GRID 2 COLUNAS ── */
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  @media (max-width: 500px) { .grid2 { grid-template-columns: 1fr; } }
+
+  .mini-card {
+    background: var(--bg3);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .mini-titulo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: var(--txt3);
+    margin-bottom: 8px;
+  }
+
+  /* ── BARRA DE PROGRESSO ── */
+  .progresso { margin: 8px 0; }
+  .progresso-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--txt2);
+    margin-bottom: 4px;
+  }
+  .progresso-bar {
+    height: 5px;
+    background: var(--borda);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progresso-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width .6s ease;
+  }
+
+  /* ── ROTEIRO TEMPO ── */
+  .roteiro { margin: 8px 0; }
+  .roteiro-item {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--borda);
+    align-items: flex-start;
+  }
+  .roteiro-item:last-child { border-bottom: none; }
+  .roteiro-tempo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--azul);
+    white-space: nowrap;
+    min-width: 45px;
+    margin-top: 1px;
+  }
+  .roteiro-acao { font-size: 13.5px; color: var(--txt2); }
+  .roteiro-acao strong { color: var(--txt); }
+
+  /* ── PENDÊNCIA ── */
+  .pendencia {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 9px 12px;
+    border-radius: 7px;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  .pendencia-verm { background: rgba(231,76,60,.07); border: 1px solid rgba(231,76,60,.2); }
+  .pendencia-amar { background: rgba(243,156,18,.07); border: 1px solid rgba(243,156,18,.2); }
+  .pendencia-icon { font-size: 16px; flex-shrink: 0; }
+  .pendencia-info {}
+  .pendencia-titulo { font-weight: 600; margin-bottom: 2px; }
+  .pendencia-desc { font-size: 12px; color: var(--txt2); }
+  .pendencia-resp { font-size: 11px; color: var(--txt3); margin-top: 3px; font-weight: 600; letter-spacing: .3px; }
+
+  /* ── ABERTURA ── */
+  .abertura {
+    background: linear-gradient(135deg, var(--bg2) 0%, #0d1830 100%);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .abertura::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--azul), var(--verde), var(--azul));
+  }
+  .abertura-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--azul);
+    margin-bottom: 6px;
+  }
+  .abertura-titulo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 30px;
+    color: var(--txt);
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .abertura-titulo em { color: var(--azul); font-style: normal; }
+  .abertura-sub { font-size: 13px; color: var(--txt2); line-height: 1.5; }
+  .abertura-stats {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .abertura-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .abertura-stat-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1;
+  }
+  .abertura-stat-lbl { font-size: 10px; color: var(--txt3); text-transform: uppercase; letter-spacing: .8px; font-weight: 600; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; color: #111; font-size: 13px; }
+    .topo { position: static; background: #fff; border-bottom: 2px solid #1987c3; }
+    .card { border: 1px solid #ccc; break-inside: avoid; }
+    .card-body { display: block !important; }
+    .card-header { cursor: default; }
+    .chevron { display: none; }
+    * { color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+
+  /* ── ANIMAÇÕES ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .container > * {
+    animation: fadeUp .35s ease both;
+  }
+  .container > *:nth-child(1) { animation-delay: .05s; }
+  .container > *:nth-child(2) { animation-delay: .10s; }
+  .container > *:nth-child(3) { animation-delay: .15s; }
+  .container > *:nth-child(4) { animation-delay: .20s; }
+  .container > *:nth-child(5) { animation-delay: .25s; }
+</style>
+</head>
+<body>
+
+<!-- TOPO -->
+<header class="topo">
+  <div class="topo-esq">
+    <div class="badge-sst">SST CARD</div>
+    <div class="topo-titulo">Matinal <span>27/05</span></div>
+  </div>
+  <div class="topo-data">
+    <div><span class="dot-live"></span>AO VIVO</div>
+    <div>Quarta-feira · 08h</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ABERTURA -->
+  <div class="abertura">
+    <div class="abertura-eyebrow">Briefing do dia</div>
+    <div class="abertura-titulo">Médico sem agenda <em>vai embora.</em></div>
+    <div class="abertura-sub">
+      Rogério mandou o recado ontem às 15h: a pediatra de amanhã foi adiada por falta de membros com agenda.
+      Dra. Tatiana tem fila de 2 meses — porque fez o nome. <strong>A gente é o corretor que injeta clientes.</strong>
+    </div>
+    <div class="abertura-stats">
+      <div class="abertura-stat">
+        <div class="abertura-stat-val" style="color:var(--verde)">2</div>
+        <div class="abertura-stat-lbl">Fechados ontem</div>
+      </div>
+      <div class="abertura-stat">
+        <div class="abertura-stat-val" style="color:var(--azul)">8</div>
+        <div class="abertura-stat-lbl">Pagamentos recuperados</div>
+      </div>
+      <div class="abertura-stat">
+        <div class="abertura-stat-val" style="color:var(--amar)">10</div>
+        <div class="abertura-stat-lbl">Em conversa (pipeline)</div>
+      </div>
+      <div class="abertura-stat">
+        <div class="abertura-stat-val" style="color:var(--txt)">761</div>
+        <div class="abertura-stat-lbl">Tenex a trabalhar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: ROTEIRO -->
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-titulo">Roteiro da Reunião</div>
+    <div class="section-line"></div>
+    <div class="section-time">~20 MIN</div>
+  </div>
+
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="avatar av-branco">⏱</div>
+      <div class="card-info">
+        <div class="card-nome">Agenda da Matinal</div>
+        <div class="card-sub">Sequência e tempo por bloco</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="roteiro">
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">2 min</div>
+          <div class="roteiro-acao"><strong>Abertura</strong> — Mayko lê a frase do Rogério: "Médico sem agenda vai embora." Contextualizar a pediatra adiada.</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">6 min</div>
+          <div class="roteiro-acao"><strong>Retrospectiva ontem (26/05)</strong> — cada um fala: o que foi, o que travou, o que está em aberto.</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">3 min</div>
+          <div class="roteiro-acao"><strong>Pendências críticas</strong> — Fabiana Moura (Lucas), Ana Luiza (Rogério assumiu), upgrade Prata→Ouro (alerta operacional).</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">6 min</div>
+          <div class="roteiro-acao"><strong>Foco de hoje por pessoa</strong> — meta clara, número e estratégia de cada um.</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">2 min</div>
+          <div class="roteiro-acao"><strong>Cantada do dia</strong> — rotação da equipe. Quem vai hoje?</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">1 min</div>
+          <div class="roteiro-acao"><strong>Encerramento</strong> — próxima parcial às 14h no grupo. Vespertina às 13h30.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: RETROSPECTIVA -->
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-titulo">Retrospectiva — 26/05 (ontem)</div>
+    <div class="section-line"></div>
+    <div class="section-time">6 MIN</div>
+  </div>
+
+  <!-- RAQUEL -->
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="avatar av-verde">R</div>
+      <div class="card-info">
+        <div class="card-nome">Raquel</div>
+        <div class="card-sub">Abordagem ativa · 26/05</div>
+      </div>
+      <div class="card-chips">
+        <span class="chip chip-verde">2 FECHADOS ✅</span>
+        <span class="chip chip-azul">10 EM CONV.</span>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="funil">
+        <div class="funil-step">
+          <div class="funil-val mv-txt">27</div>
+          <div class="funil-lbl">Abordados</div>
+        </div>
+        <div class="funil-arrow">›</div>
+        <div class="funil-step">
+          <div class="funil-val mv-azul">15</div>
+          <div class="funil-lbl">Responderam</div>
+          <div class="funil-pct">55%</div>
+        </div>
+        <div class="funil-arrow">›</div>
+        <div class="funil-step">
+          <div class="funil-val mv-amar">5</div>
+          <div class="funil-lbl">Qualificados</div>
+          <div class="funil-pct">33%</div>
+        </div>
+        <div class="funil-arrow">›</div>
+        <div class="funil-step">
+          <div class="funil-val mv-verde">2</div>
+          <div class="funil-lbl">Fechados</div>
+          <div class="funil-pct">40%</div>
+        </div>
+      </div>
+
+      <div class="fechamentos">
+        <div class="fechamento-item">
+          <div class="fechamento-icon">🏅</div>
+          <div class="fechamento-nome">Gabriela de Jesus Souza</div>
+          <div class="fechamento-plano plano-ouro">PLANO OURO</div>
+        </div>
+        <div class="fechamento-item">
+          <div class="fechamento-icon">🥈</div>
+          <div class="fechamento-nome">Eugenio Valdevino da Silva</div>
+          <div class="fechamento-plano plano-prata">PLANO PRATA</div>
+        </div>
+      </div>
+
+      <div class="alerta alerta-azul">
+        <div class="alerta-icon">💬</div>
+        <div><strong>10 ainda em conversa</strong> — são o pipeline de hoje. Follow-up prioritário antes de abrir novas abordagens.</div>
+      </div>
+
+      <div class="alerta alerta-verde">
+        <div class="alerta-icon">📋</div>
+        <div>Lista Klingo de <strong>16 pacientes particulares</strong> enviada ao grupo — base quente para oferta do Card com desconto.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LUCAS -->
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="avatar av-azul">L</div>
+      <div class="card-info">
+        <div class="card-nome">Lucas</div>
+        <div class="card-sub">Ativações + Retenção · 26/05</div>
+      </div>
+      <div class="card-chips">
+        <span class="chip chip-azul">13 ATIVAÇÕES</span>
+        <span class="chip chip-amar">20 RETENÇÕES</span>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-val mv-txt">33</div>
+          <div class="metric-label">Total contatos</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val mv-verde">13</div>
+          <div class="metric-label">Ativações</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val mv-azul">20</div>
+          <div class="metric-label">Retenções</div>
+        </div>
+      </div>
+
+      <div class="pendencia pendencia-verm">
+        <div class="pendencia-icon">⚠️</div>
+        <div class="pendencia-info">
+          <div class="pendencia-titulo">Ana Luiza Souza Nunes Santos — ameaçando processo</div>
+          <div class="pendencia-desc">Contratou jun/2025, pagou 4 meses, entrou em reconciliação. Escalado para Rogério às 14:14.</div>
+          <div class="pendencia-resp">→ ROGÉRIO ASSUMIU · Lucas não precisa mais contatar</div>
+        </div>
+      </div>
+
+      <div class="pendencia pendencia-amar">
+        <div class="pendencia-icon">🔔</div>
+        <div class="pendencia-info">
+          <div class="pendencia-titulo">Diná dos Santos Bandeira — cancelamento aceito</div>
+          <div class="pendencia-desc">Não mora mais em Simões Filho. Erro foi da clínica — cancelamento aceito. Disse que volta quando vier à cidade.</div>
+          <div class="pendencia-resp">→ ENCERRADO · registrar no sistema</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SST CARD OPERACIONAL -->
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="avatar av-amar">K</div>
+      <div class="card-info">
+        <div class="card-nome">Karine / SST Card Operacional</div>
+        <div class="card-sub">Cobrança + Reconciliação · 26/05</div>
+      </div>
+      <div class="card-chips">
+        <span class="chip chip-verde">8 PAGARAM</span>
+        <span class="chip chip-amar">33 CONTACTADOS</span>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="mini-card">
+          <div class="mini-titulo">🤝 Reconciliação de Dívida</div>
+          <div class="metrics" style="grid-template-columns:1fr 1fr;margin:0">
+            <div class="metric">
+              <div class="metric-val mv-txt">16</div>
+              <div class="metric-label">Falou</div>
+            </div>
+            <div class="metric">
+              <div class="metric-val mv-verde">5</div>
+              <div class="metric-label">Pagaram</div>
+            </div>
+          </div>
+          <div class="progresso" style="margin-top:10px">
+            <div class="progresso-top">
+              <span>Conversão</span>
+              <span style="color:var(--amar)">31%</span>
+            </div>
+            <div class="progresso-bar">
+              <div class="progresso-fill" style="width:31%;background:var(--amar)"></div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--txt3);margin-top:5px">Meta hoje: 40%+</div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-titulo">💰 Cobrança Regular</div>
+          <div class="metrics" style="grid-template-columns:1fr 1fr;margin:0">
+            <div class="metric">
+              <div class="metric-val mv-txt">17</div>
+              <div class="metric-label">Falou</div>
+            </div>
+            <div class="metric">
+              <div class="metric-val mv-verde">3</div>
+              <div class="metric-label">Pagaram</div>
+            </div>
+          </div>
+          <div class="progresso" style="margin-top:10px">
+            <div class="progresso-top">
+              <span>Conversão</span>
+              <span style="color:var(--verm)">18%</span>
+            </div>
+            <div class="progresso-bar">
+              <div class="progresso-fill" style="width:18%;background:var(--verm)"></div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--txt3);margin-top:5px">Ref sexta: <strong style="color:var(--verde)">52%</strong> (27 falou, 14 pagaram)</div>
+        </div>
+      </div>
+
+      <div class="alerta alerta-verde" style="margin-top:10px">
+        <div class="alerta-icon">⭐</div>
+        <div>Referência de sexta (22/05): Karine contactou 27 → <strong>14 pagaram (52%)</strong>. Essa é a barra. O que foi diferente?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: INSIGHT ROGÉRIO -->
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-titulo">Insight do Rogério</div>
+    <div class="section-line"></div>
+    <div class="section-time">2 MIN</div>
+  </div>
+
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="avatar av-verm">RO</div>
+      <div class="card-info">
+        <div class="card-nome">Rogério — Áudios 26/05 (15:24 e 15:25)</div>
+        <div class="card-sub">Gatilho: pediatra adiada por falta de agenda</div>
+      </div>
+      <div class="card-chips">
+        <span class="chip chip-verm">CONVOCAÇÃO</span>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="citacao">
+        "A gente pede médico, às vezes a gente consegue médico, mas não temos agenda, médico não fica. E nem eu ficaria. Vamos fazer um trabalho forte nessa questão de ter uma massa de cliente de 5 mil, 3 mil, 10 mil, para a gente girar em cima disso."
+        <div class="citacao-fonte">— Rogério, áudio 1 · 15:24</div>
+      </div>
+      <div class="citacao" style="margin-top:8px">
+        "Quando o Barco de Vida tinha, os caras injetavam corretores, corretores injetam cliente. Da recepção até a menina da higienização, ela vai ter que ter essa visão. Tenho a Dra. Tatiana com agenda cheia por 2 meses porque ela fez o nome dela na cidade."
+        <div class="citacao-fonte">— Rogério, áudio 2 · 15:25</div>
+      </div>
+
+      <div class="lista" style="margin-top:12px">
+        <li><strong>O problema</strong>: médico sem membros suficientes → vai embora → clínica perde credibilidade</li>
+        <li><strong>A solução</strong>: construir base de membros antes do médico chegar, não depois</li>
+        <li><strong>O modelo</strong>: toda a equipe = corretor passivo. Recepção, atendimento, higienização</li>
+        <li><strong>A referência</strong>: Dra. Tatiana (agenda cheia 2 meses por marketing ativo de si mesma)</li>
+        <li><strong>A meta</strong>: 3.000 → 5.000 → 10.000 membros ativos</li>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: PENDÊNCIAS -->
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-titulo">Pendências Críticas</div>
+    <div class="section-line"></div>
+    <div class="section-time">3 MIN</div>
+  </div>
+
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="avatar av-amar">!</div>
+      <div class="card-info">
+        <div class="card-nome">Abertos da semana</div>
+        <div class="card-sub">Resolver ainda hoje</div>
+      </div>
+      <div class="card-chips">
+        <span class="chip chip-verm">2 CRÍTICOS</span>
+        <span class="chip chip-amar">1 ALERTA OP.</span>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="pendencia pendencia-amar">
+        <div class="pendencia-icon">🔔</div>
+        <div class="pendencia-info">
+          <div class="pendencia-titulo">Fabiana Moura Pereira — aguardando resposta (Lucas)</div>
+          <div class="pendencia-desc">Pediu cancelamento mas se interessou por telemedicina e benefícios. Está quitada. Lucas ofereceu consulta clínica grátis.</div>
+          <div class="pendencia-resp">→ LUCAS · retornar hoje pela manhã antes de 12h</div>
+        </div>
+      </div>
+
+      <div class="pendencia pendencia-verm">
+        <div class="pendencia-icon">⚖️</div>
+        <div class="pendencia-info">
+          <div class="pendencia-titulo">Ana Luiza Souza Nunes Santos — ameaça de processo</div>
+          <div class="pendencia-desc">Rogério assumiu via áudio às 14:19. Situação escalada com sucesso.</div>
+          <div class="pendencia-resp">→ ROGÉRIO · acompanhar desfecho e comunicar equipe</div>
+        </div>
+      </div>
+
+      <div class="alerta alerta-amar">
+        <div class="alerta-icon">⚠️</div>
+        <div>
+          <strong>ALERTA OPERACIONAL — Upgrade de Plano</strong><br>
+          Upgrade Prata → Ouro: <strong>encerrar o contrato Prata</strong> e abrir novo contrato Ouro. Não editar os valores do contrato existente.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: FOCO DE HOJE -->
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-titulo">Foco de Hoje — 27/05</div>
+    <div class="section-line"></div>
+    <div class="section-time">6 MIN</div>
+  </div>
+
+  <!-- RAQUEL HOJE -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="avatar av-verde">R</div>
+      <div class="card-info">
+        <div class="card-nome">Raquel — Foco do Dia</div>
+        <div class="card-sub">Abordagem ativa + follow-up pipeline</div>
+      </div>
+      <div class="card-chips">
+        <span class="chip chip-verde">META: +2 FECHAMENTOS</span>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="roteiro">
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">Manhã</div>
+          <div class="roteiro-acao"><strong>Follow-up dos 10 em conversa</strong> — prioridade máxima. São leads quentes de ontem. Abrir com: "Você pensou melhor?"</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">Tarde</div>
+          <div class="roteiro-acao"><strong>Nova rodada — lista Klingo</strong> — os 16 pacientes particulares enviados ontem. Oferecer card com vantagem de telemedicina.</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">14h</div>
+          <div class="roteiro-acao"><strong>Parcial no grupo</strong> — modelo: abordagens / respondidos / qualificados / fechados</div>
+        </div>
+      </div>
+      <div class="meta-row" style="margin-top:12px;border-top:1px solid var(--borda);padding-top:12px">
+        <div class="meta-label">Meta de fechamentos hoje</div>
+        <div class="meta-val" style="color:var(--verde)">≥ 2</div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-label">Meta de abordagens hoje</div>
+        <div class="meta-val" style="color:var(--azul)">30+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LUCAS HOJE -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="avatar av-azul">L</div>
+      <div class="card-info">
+        <div class="card-nome">Lucas — Foco do Dia</div>
+        <div class="card-sub">Ativações + retenções + Fabiana</div>
+      </div>
+      <div class="card-chips">
+        <span class="chip chip-azul">META: 15 ATIV.</span>
+        <span class="chip chip-amar">25 RETENÇÕES</span>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="roteiro">
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">Urgente</div>
+          <div class="roteiro-acao"><strong>Retornar Fabiana Moura</strong> — interesse em telemedicina confirmado. Proposta: consulta grátis + manter card ativo.</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">Manhã</div>
+          <div class="roteiro-acao"><strong>Ativações novas</strong> — base Tenex (761 contas). Focar nos que ficaram sem resposta nos últimos 7 dias.</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">Tarde</div>
+          <div class="roteiro-acao"><strong>Retenções</strong> — seguir protocolo: telemedicina, benefícios, consulta grátis como âncora de permanência.</div>
+        </div>
+      </div>
+      <div class="meta-row" style="margin-top:12px;border-top:1px solid var(--borda);padding-top:12px">
+        <div class="meta-label">Ativações hoje</div>
+        <div class="meta-val" style="color:var(--verde)">≥ 15</div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-label">Retenções hoje</div>
+        <div class="meta-val" style="color:var(--azul)">≥ 25</div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-label">Fabiana Moura — retorno</div>
+        <div class="meta-val" style="color:var(--amar)">ATÉ 12H</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KARINE HOJE -->
+  <div class="card">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="avatar av-amar">K</div>
+      <div class="card-info">
+        <div class="card-nome">Karine — Foco do Dia</div>
+        <div class="card-sub">Cobrança + Reconciliação Tenex</div>
+      </div>
+      <div class="card-chips">
+        <span class="chip chip-amar">META: 50% COBRANÇA</span>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <div class="alerta alerta-verde" style="margin-top:4px">
+        <div class="alerta-icon">⭐</div>
+        <div>Na sexta você converteu <strong>52% na cobrança</strong> (14/27). Isso é o benchmark. O que você fez diferente que podemos replicar?</div>
+      </div>
+      <div class="roteiro">
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">Manhã</div>
+          <div class="roteiro-acao"><strong>Reconciliação Tenex</strong> — meta sair de 31% para 40%+. Usar argumento do perdão de dívida com urgência (válido por tempo limitado).</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">Tarde</div>
+          <div class="roteiro-acao"><strong>Cobrança regular</strong> — meta 50%+. Referência da sexta: o que travou ontem (18%) que não travou sexta (52%)?</div>
+        </div>
+        <div class="roteiro-item">
+          <div class="roteiro-tempo">!!</div>
+          <div class="roteiro-acao"><strong>Upgrade Prata→Ouro</strong> — lembrar equipe: fechar contrato antigo + novo contrato. Nunca editar.</div>
+        </div>
+      </div>
+      <div class="meta-row" style="margin-top:12px;border-top:1px solid var(--borda);padding-top:12px">
+        <div class="meta-label">Conversão cobrança hoje</div>
+        <div class="meta-val" style="color:var(--verde)">≥ 50%</div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-label">Conversão reconciliação hoje</div>
+        <div class="meta-val" style="color:var(--amar)">≥ 40%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: CANTADA DO DIA -->
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-titulo">Cantada do Dia</div>
+    <div class="section-line"></div>
+    <div class="section-time">1 MIN</div>
+  </div>
+
+  <div class="cantada-box">
+    <div class="cantada-emoji">💬</div>
+    <div class="cantada-texto">
+      "Você é a razão pela qual o médico fica.<br>
+      Cada conversa que você tem hoje<br>
+      é uma agenda que amanhã não vai ser cancelada."
+    </div>
+    <div class="cantada-sub" style="color:var(--txt3);font-size:12px;margin-top:8px">
+      Rogério falou: a Dra. Tatiana tem fila de 2 meses. Ela não esperou o sistema funcionar. Ela foi. Vai junto.
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <div style="margin-top:28px;padding-top:16px;border-top:1px solid var(--borda);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+    <div style="font-size:11px;color:var(--txt3)">
+      <strong style="color:var(--txt2)">SST Card — Matinal 27/05/2026</strong><br>
+      Próxima parcial: <strong style="color:var(--azul)">14h no grupo</strong> · Vespertina: <strong style="color:var(--azul)">13h30</strong>
+    </div>
+    <div style="font-size:11px;color:var(--txt3);text-align:right">
+      Consultor: Mayko Rodrigues<br>
+      <a href="https://playbook.ssfcard.ia.br" style="color:var(--azul);text-decoration:none">playbook.ssfcard.ia.br</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(header) {
+  const card = header.closest('.card');
+  card.classList.toggle('open');
+}
+
+// Animar barras de progresso
+window.addEventListener('load', () => {
+  document.querySelectorAll('.progresso-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '0';
+    setTimeout(() => { el.style.width = w; }, 300);
+  });
+});
+</script>
+
+</body>
+</html>
