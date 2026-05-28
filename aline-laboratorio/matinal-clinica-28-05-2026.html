@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matinal Clínica Lab — 28/05/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde:    #0f9b6e;
+    --verde-esc:#077a56;
+    --verde-cl: #e8f7f2;
+    --verm:     #d63031;
+    --verm-cl:  #fdecea;
+    --amar:     #e17055;
+    --amar-cl:  #fff0ec;
+    --azul:     #2d6a9f;
+    --azul-cl:  #eaf2fb;
+    --cinza:    #636e72;
+    --bg:       #0e1820;
+    --bg2:      #152030;
+    --bg3:      #1c2d42;
+    --borda:    #253548;
+    --txt:      #dde6f0;
+    --txt2:     #8ba3bd;
+    --txt3:     #4d6680;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14.5px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── TOPO ── */
+  .topo {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--borda);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 12px;
+  }
+  .topo-esq { display: flex; align-items: center; gap: 10px; }
+  .badge {
+    background: var(--verde);
+    color: #fff;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+  .topo-titulo {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+  }
+  .topo-titulo span { color: var(--verde); }
+  .topo-dir { font-size: 11px; color: var(--txt3); text-align: right; }
+  .dot { display: inline-block; width: 6px; height: 6px; background: var(--verde); border-radius: 50%; margin-right: 4px; animation: pulsar 2s infinite; }
+  @keyframes pulsar { 0%,100%{opacity:1}50%{opacity:.3} }
+
+  /* ── CONTAINER ── */
+  .container { max-width: 820px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* ── ALERTA DE RETORNO ── */
+  .retorno {
+    background: linear-gradient(135deg, rgba(15,155,110,.12), rgba(15,155,110,.04));
+    border: 1px solid rgba(15,155,110,.3);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .retorno-icon { font-size: 26px; flex-shrink: 0; }
+  .retorno-titulo {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #4ade80;
+    margin-bottom: 4px;
+  }
+  .retorno-texto { font-size: 13px; color: var(--txt2); line-height: 1.6; }
+  .retorno-citacao {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,.2);
+    border-left: 2px solid var(--verde);
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--txt2);
+    line-height: 1.6;
+  }
+
+  /* ── SECTION ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 24px 0 12px;
+  }
+  .section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--verde);
+    text-transform: uppercase;
+  }
+  .section-titulo {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .section-line { flex: 1; height: 1px; background: var(--borda); }
+  .section-tempo {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--txt3);
+    white-space: nowrap;
+    font-family: 'Syne', sans-serif;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .card-header:hover { background: var(--bg3); }
+  .card.open .chevron { transform: rotate(180deg); }
+  .chevron { color: var(--txt3); font-size: 11px; transition: transform .2s; flex-shrink: 0; }
+  .card-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 1px solid var(--borda);
+  }
+  .card.open .card-body { display: block; }
+
+  .av {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .av-verde { background: rgba(15,155,110,.15); color: #4ade80; }
+  .av-verm  { background: rgba(214,48,49,.15);  color: #f87171; }
+  .av-amar  { background: rgba(225,112,85,.15); color: #fb923c; }
+  .av-cinza { background: rgba(99,110,114,.15); color: var(--txt2); }
+
+  .card-info { flex: 1; }
+  .card-nome { font-weight: 600; font-size: 15px; }
+  .card-sub  { font-size: 11px; color: var(--txt3); margin-top: 1px; }
+
+  .chip {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-family: 'Syne', sans-serif;
+  }
+  .chip-verde { background: rgba(15,155,110,.15); color: #4ade80;  border: 1px solid rgba(15,155,110,.3); }
+  .chip-verm  { background: rgba(214,48,49,.15);  color: #f87171;  border: 1px solid rgba(214,48,49,.3); }
+  .chip-amar  { background: rgba(225,112,85,.15); color: #fb923c;  border: 1px solid rgba(225,112,85,.3); }
+  .chip-cinza { background: rgba(99,110,114,.12); color: var(--txt2); border: 1px solid var(--borda); }
+
+  /* ── TABELA RESULTADO ── */
+  .resultado-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13px;
+  }
+  .resultado-table th {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--txt3);
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--borda);
+    text-align: left;
+  }
+  .resultado-table td {
+    padding: 10px 10px;
+    border-bottom: 1px solid rgba(37,53,72,.5);
+    color: var(--txt2);
+  }
+  .resultado-table tr:last-child td { border-bottom: none; }
+  .resultado-table .nome-cell { color: var(--txt); font-weight: 600; }
+  .resultado-table .conversao-cell {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .conv-ok   { color: #4ade80; }
+  .conv-warn { color: #fb923c; }
+  .conv-bad  { color: #f87171; }
+
+  /* ── BARRA ── */
+  .barra-wrap { margin: 4px 0 0; }
+  .barra {
+    height: 4px;
+    background: var(--borda);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .barra-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width .6s ease;
+  }
+  .meta-line {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background: var(--borda);
+    border-radius: 2px;
+    overflow: visible;
+    margin-top: 6px;
+  }
+  .meta-marker {
+    position: absolute;
+    top: -3px;
+    width: 2px;
+    height: 10px;
+    background: rgba(255,255,255,.4);
+    border-radius: 1px;
+    left: 40%;
+  }
+  .meta-marker::after {
+    content: 'META 40%';
+    position: absolute;
+    top: -14px;
+    left: -12px;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: var(--txt3);
+    white-space: nowrap;
+  }
+
+  /* ── BLOQUEADOR ── */
+  .bloqueador {
+    display: flex;
+    gap: 8px;
+    padding: 9px 12px;
+    background: rgba(225,112,85,.06);
+    border: 1px solid rgba(225,112,85,.2);
+    border-radius: 7px;
+    margin: 8px 0;
+    font-size: 12.5px;
+    align-items: flex-start;
+  }
+  .bloqueador-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .bloqueador-txt { color: var(--txt2); }
+  .bloqueador strong { color: #fb923c; }
+
+  /* ── DIAGNÓSTICO ── */
+  .diag-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--borda);
+    align-items: flex-start;
+  }
+  .diag-item:last-child { border-bottom: none; }
+  .diag-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .dot-verm { background: var(--verm); }
+  .dot-amar { background: var(--amar); }
+  .dot-verde { background: var(--verde); }
+  .diag-txt { font-size: 13.5px; line-height: 1.5; color: var(--txt2); }
+  .diag-txt strong { color: var(--txt); }
+
+  /* ── ARGUMENTO ── */
+  .argumento {
+    background: var(--bg3);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 10px 0;
+  }
+  .arg-titulo {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--verde);
+    margin-bottom: 8px;
+  }
+  .arg-objecao {
+    font-size: 13px;
+    color: var(--txt3);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  .arg-resposta {
+    font-size: 13.5px;
+    color: var(--txt);
+    background: rgba(15,155,110,.08);
+    border-left: 2px solid var(--verde);
+    padding: 8px 12px;
+    border-radius: 0 6px 6px 0;
+    line-height: 1.6;
+  }
+
+  /* ── FOCO PESSOA ── */
+  .foco-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .foco-card {
+    background: var(--bg3);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .foco-nome {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .foco-lista { list-style: none; }
+  .foco-lista li {
+    font-size: 12.5px;
+    color: var(--txt2);
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(37,53,72,.4);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .foco-lista li:last-child { border-bottom: none; }
+  .foco-lista li::before { content: '›'; color: var(--verde); flex-shrink: 0; }
+
+  /* ── TOTAL BOX ── */
+  .total-box {
+    background: var(--bg3);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .total-item { text-align: center; flex: 1; min-width: 80px; }
+  .total-val {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .total-lbl { font-size: 10px; color: var(--txt3); text-transform: uppercase; letter-spacing: .7px; font-weight: 600; }
+  .tv-verde { color: #4ade80; }
+  .tv-verm  { color: #f87171; }
+  .tv-amar  { color: #fb923c; }
+  .tv-txt   { color: var(--txt); }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; color: #111; }
+    .topo { position: static; background: #fff; border-bottom: 2px solid #0f9b6e; }
+    .card-body { display: block !important; }
+    .chevron { display: none; }
+    * { color-adjust: exact; -webkit-print-color-adjust: exact; }
+  }
+
+  /* ── FADE IN ── */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .container > * { animation: fadeUp .35s ease both; }
+  .container > *:nth-child(1){animation-delay:.05s}
+  .container > *:nth-child(2){animation-delay:.10s}
+  .container > *:nth-child(3){animation-delay:.15s}
+  .container > *:nth-child(4){animation-delay:.20s}
+  .container > *:nth-child(5){animation-delay:.25s}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="topo-esq">
+    <div class="badge">LAB</div>
+    <div class="topo-titulo">Matinal Clínica <span>28/05</span></div>
+  </div>
+  <div class="topo-dir">
+    <div><span class="dot"></span>Quinta-feira · 08h</div>
+    <div style="margin-top:1px">SST Clínica · Conversão Lab</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- RETORNO ALINE -->
+  <div class="retorno">
+    <div class="retorno-icon">🙌</div>
+    <div>
+      <div class="retorno-titulo">Aline voltou — e tomou a frente</div>
+      <div class="retorno-texto">
+        Hoje de manhã Aline reconheceu a ausência, pediu desculpas e convocou a equipe. Isso é liderança.
+        Ela também foi a primeira a preencher a parcial e a admitir que pulou o processo.
+        <strong style="color:var(--txt)">O termômetro da equipe está reagindo.</strong>
+      </div>
+      <div class="retorno-citacao">
+        "Não podemos permitir que nada roube nossa motivação. Cada atendimento, cada esforço e cada detalhe fazem diferença. Vamos sair do automático."
+        <div style="margin-top:5px;font-size:11px;color:var(--txt3);font-style:normal;font-weight:600">— Aline Souza · grupo SST Clínica Conversão Lab · 27/05 · 09:01</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RETROSPECTIVA -->
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-titulo">Parciais 27/05 — Resultado</div>
+    <div class="section-line"></div>
+    <div class="section-tempo">5 MIN</div>
+  </div>
+
+  <!-- TOTAIS -->
+  <div class="total-box">
+    <div class="total-item">
+      <div class="total-val tv-txt">~R$4.250</div>
+      <div class="total-lbl">Total orçado</div>
+    </div>
+    <div class="total-item">
+      <div class="total-val tv-amar">R$766</div>
+      <div class="total-lbl">Total convertido</div>
+    </div>
+    <div class="total-item">
+      <div class="total-val tv-verm">~18%</div>
+      <div class="total-lbl">Conversão geral</div>
+    </div>
+    <div class="total-item">
+      <div class="total-val" style="color:rgba(255,255,255,.25)">40%</div>
+      <div class="total-lbl">Meta do dia</div>
+    </div>
+  </div>
+
+  <!-- ATENDENTE NÃO IDENTIFICADA -->
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="av av-verde">?</div>
+      <div class="card-info">
+        <div class="card-nome">Atendente (a identificar)</div>
+        <div class="card-sub">Melhor resultado do dia · sem processo ativo</div>
+      </div>
+      <div class="chip chip-verde">38,43% ⭐</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <table class="resultado-table">
+        <thead>
+          <tr>
+            <th>Orçado</th><th>Convertido</th><th>Conversão</th><th>Ligações</th><th>Mensagens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>R$1.668,00</td>
+            <td>R$641,00</td>
+            <td class="conversao-cell conv-ok">38,43%</td>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="barra-wrap">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-bottom:3px">
+          <span>Conversão: 38,43%</span><span>Meta: 40%</span>
+        </div>
+        <div class="meta-line">
+          <div class="barra-fill" style="width:38%;background:var(--verde)"></div>
+          <div class="meta-marker"></div>
+        </div>
+      </div>
+      <div class="bloqueador" style="margin-top:12px">
+        <div class="bloqueador-icon">🚧</div>
+        <div class="bloqueador-txt"><strong>Bloqueador:</strong> Pacientes questionam preço vs. concorrência + data do cartão de crédito</div>
+      </div>
+      <div style="margin-top:10px;padding:10px 12px;background:rgba(15,155,110,.08);border-radius:7px;font-size:12.5px;color:var(--txt2)">
+        <strong style="color:#4ade80">📌 Ponto de atenção:</strong> 38% de conversão <em>sem nenhum processo ativo</em> (0 ligações, 0 mensagens) é o melhor resultado do dia.
+        Com o processo completo (ligações D+1/D+3 + mensagens), estima-se <strong style="color:#4ade80">55–60%</strong>.
+        <br><br>Quem é este atendente? Identificar e entender o que está fazendo no atendimento presencial.
+      </div>
+    </div>
+  </div>
+
+  <!-- ALINE -->
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="av av-amar">A</div>
+      <div class="card-info">
+        <div class="card-nome">Aline Souza</div>
+        <div class="card-sub">Processo parcial · interrompida por outras atividades</div>
+      </div>
+      <div class="chip chip-amar">12,72% ⚠️</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <table class="resultado-table">
+        <thead>
+          <tr>
+            <th>Orçado</th><th>Convertido</th><th>Conversão</th><th>Ligações</th><th>Mensagens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>R$983,00</td>
+            <td>R$125,00</td>
+            <td class="conversao-cell conv-warn">12,72%</td>
+            <td style="color:#4ade80">6</td>
+            <td style="color:#4ade80">4</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="barra-wrap">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-bottom:3px">
+          <span>Hoje: 12,72%</span><span>Ref. com processo: 54%</span>
+        </div>
+        <div class="meta-line">
+          <div class="barra-fill" style="width:13%;background:var(--amar)"></div>
+          <div class="meta-marker"></div>
+        </div>
+      </div>
+      <div class="bloqueador" style="margin-top:12px">
+        <div class="bloqueador-icon">🚧</div>
+        <div class="bloqueador-txt"><strong>Bloqueadores:</strong> Preço concorrência + data cartão + <strong>outras atividades que interromperam o fluxo de conversão</strong></div>
+      </div>
+      <div style="margin-top:10px;font-size:12.5px;color:var(--txt2);line-height:1.6">
+        <strong style="color:var(--txt)">Diagnóstico:</strong> Aline fez 6 ligações e 4 mensagens (processo parcial) mas chegou a apenas 12,72%.
+        A referência dela <strong>com processo completo é 49–54%</strong>. A diferença está nas interrupções que tiraram o foco.
+        <br><br>
+        <strong style="color:#fb923c">Ação para hoje:</strong> Time block 13h–16h exclusivo para conversão. Nenhuma outra atividade nesse horário.
+      </div>
+    </div>
+  </div>
+
+  <!-- DÉBORA -->
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="av av-verm">D</div>
+      <div class="card-info">
+        <div class="card-nome">Débora Silva</div>
+        <div class="card-sub">Sem ligações · padrão histórico crítico</div>
+      </div>
+      <div class="chip chip-verm">0,00% 🔴</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+      <table class="resultado-table">
+        <thead>
+          <tr>
+            <th>Orçado</th><th>Convertido</th><th>Conversão</th><th>Ligações</th><th>Mensagens</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>~R$1.599,00</td>
+            <td style="color:#f87171">R$0</td>
+            <td class="conversao-cell conv-bad">0,00%</td>
+            <td style="color:#f87171">0</td>
+            <td>4</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="barra-wrap">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-bottom:3px">
+          <span>Hoje: 0%</span><span>Histórico: 10–14%</span>
+        </div>
+        <div class="meta-line">
+          <div class="barra-fill" style="width:1%;background:var(--verm)"></div>
+          <div class="meta-marker"></div>
+        </div>
+      </div>
+      <div class="bloqueador" style="margin-top:12px">
+        <div class="bloqueador-icon">🚧</div>
+        <div class="bloqueador-txt"><strong>Bloqueador:</strong> Preço concorrência + data cartão (idem). 4 mensagens enviadas, 0 ligações.</div>
+      </div>
+      <div style="margin-top:10px;padding:10px 12px;background:rgba(214,48,49,.06);border:1px solid rgba(214,48,49,.2);border-radius:7px;font-size:12.5px;color:var(--txt2)">
+        <strong style="color:#f87171">⚠️ Padrão crítico:</strong> 01–14/mai Débora ficou em 10,42%. Retreino foi indicado em 16/05 com validação em 22/05 (meta ≥20%).
+        Hoje: 0%. A questão já não é de script — é de <strong style="color:#f87171">engajamento e método de trabalho.</strong>
+        <br><br>
+        <strong style="color:var(--txt)">Decisão necessária para Rogério + Aline:</strong> Débora precisa de acompanhamento 1:1 presencial hoje ou considerar reallocation de função.
+      </div>
+    </div>
+  </div>
+
+  <!-- DIAGNÓSTICO -->
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-titulo">Diagnóstico Rápido</div>
+    <div class="section-line"></div>
+    <div class="section-tempo">5 MIN</div>
+  </div>
+
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="av av-cinza">🔍</div>
+      <div class="card-info">
+        <div class="card-nome">O que o 27/05 mostra</div>
+        <div class="card-sub">3 problemas, 1 oportunidade</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body" style="padding-top:12px">
+
+      <div class="diag-item">
+        <div class="diag-dot dot-verm"></div>
+        <div class="diag-txt"><strong>Débora em 0% — linha vermelha atingida.</strong> Terceiro ciclo abaixo de 15%. Não é falta de script: ela enviou 4 mensagens mas fez 0 ligações. O processo não está sendo seguido. Precisa de decisão de gestão hoje.</div>
+      </div>
+      <div class="diag-item">
+        <div class="diag-dot dot-amar"></div>
+        <div class="diag-txt"><strong>Aline interrompida = resultado pela metade.</strong> Com processo completo ela chega a 54%. Hoje chegou a 12,72% porque "outras atividades" competiram com o horário de conversão. Time block é inegociável.</div>
+      </div>
+      <div class="diag-item">
+        <div class="diag-dot dot-amar"></div>
+        <div class="diag-txt"><strong>Bloqueador universal: preço + data do cartão.</strong> Aparece nas 3 parciais. A equipe não tem argumento de contorno padronizado para isso. Precisamos criar e treinar <em>hoje</em> — veja seção 3.</div>
+      </div>
+      <div class="diag-item">
+        <div class="diag-dot dot-verde"></div>
+        <div class="diag-txt"><strong>Atendente não identificada: 38% sem processo ativo.</strong> É a melhor conversão do dia. Com processo, pode chegar a 55–60%. Descobrir quem é e o que está fazendo diferente no atendimento presencial.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ARGUMENTO DE PREÇO -->
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-titulo">Argumento de Contorno — Bloqueadores</div>
+    <div class="section-line"></div>
+    <div class="section-tempo">5 MIN</div>
+  </div>
+
+  <div class="card open">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="av av-verde">💬</div>
+      <div class="card-info">
+        <div class="card-nome">Scripts de resposta para hoje</div>
+        <div class="card-sub">Treinar antes da abertura do turno</div>
+      </div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body">
+
+      <div class="argumento">
+        <div class="arg-titulo">Objeção 1 — "Tá mais barato em outro laboratório"</div>
+        <div class="arg-objecao">"Ah, mas eu vi em outro lugar por menos..."</div>
+        <div class="arg-resposta">
+          "Entendo! A gente compete em qualidade e comodidade, não só no preço. Aqui você tem o resultado em [X horas], a coleta é feita pelo mesmo profissional de sempre, e se precisar repetir ou tirar dúvida, pode ligar direto. Isso tem valor — e muitos pacientes que foram mais barato acabaram voltando por isso. Posso ver se consigo uma condição especial pra você fechar hoje?"
+        </div>
+      </div>
+
+      <div class="argumento" style="margin-top:10px">
+        <div class="arg-titulo">Objeção 2 — "Meu cartão vence em outro dia"</div>
+        <div class="arg-objecao">"Hoje não consigo, meu cartão fecha amanhã..."</div>
+        <div class="arg-resposta">
+          "Sem problema! A gente pode fazer o agendamento agora e você paga amanhã ou na data que fechar melhor pra você. Assim você já garante o horário e fica tranquilo. Qual horário ficaria melhor — manhã ou tarde?"
+        </div>
+      </div>
+
+      <div style="margin-top:12px;padding:10px 14px;background:rgba(15,155,110,.07);border-radius:7px;font-size:12px;color:var(--txt2)">
+        <strong style="color:var(--verde)">Instrução:</strong> Cada atendente treina esses dois argumentos em voz alta por 2 minutos antes de abrir o turno. Aline acompanha e corrige.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOCO DE HOJE -->
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-titulo">Foco de Hoje — 28/05</div>
+    <div class="section-line"></div>
+    <div class="section-tempo">5 MIN</div>
+  </div>
+
+  <div class="foco-grid">
+    <div class="foco-card">
+      <div class="foco-nome">
+        <div class="av av-amar" style="width:26px;height:26px;font-size:12px">A</div>
+        Aline Souza
+      </div>
+      <ul class="foco-lista">
+        <li><strong>Time block 13h–16h</strong> exclusivo conversão — sem interrupções</li>
+        <li>Follow-up dos orçamentos de ontem que não fecharam</li>
+        <li>Treinar a equipe nos 2 argumentos de contorno</li>
+        <li>Identificar quem é a atendente dos 38%</li>
+        <li>Meta pessoal: <strong style="color:#4ade80">≥ 40%</strong></li>
+      </ul>
+    </div>
+    <div class="foco-card">
+      <div class="foco-nome">
+        <div class="av av-verm" style="width:26px;height:26px;font-size:12px">D</div>
+        Débora Silva
+      </div>
+      <ul class="foco-lista">
+        <li>Acompanhamento 1:1 com Aline <strong>antes das 10h</strong></li>
+        <li>Revisar por que 0 ligações foram feitas ontem</li>
+        <li>Seguir protocolo completo: orçamento → ligação D+1 → mensagem D+1</li>
+        <li>Meta: <strong style="color:#fb923c">≥ 20%</strong> (mínimo aceitável)</li>
+        <li>Rogério decide se mantém no fluxo se não atingir</li>
+      </ul>
+    </div>
+    <div class="foco-card">
+      <div class="foco-nome">
+        <div class="av av-verde" style="width:26px;height:26px;font-size:12px">?</div>
+        Atendente (38%)
+      </div>
+      <ul class="foco-lista">
+        <li>Identificar nome e turno</li>
+        <li>Entender o que faz no atendimento presencial</li>
+        <li>Adicionar processo ativo (ligações + mensagens) ao que já faz</li>
+        <li>Meta: <strong style="color:#4ade80">≥ 55%</strong> com processo</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- DECISÃO ROGÉRIO -->
+  <div class="card open" style="margin-top:14px">
+    <div class="card-header" onclick="toggle(this)">
+      <div class="av av-verm" style="background:rgba(214,48,49,.15);color:#f87171">!</div>
+      <div class="card-info">
+        <div class="card-nome">Decisão para Aline / Rogério hoje</div>
+        <div class="card-sub">Não sai desta matinal sem definir</div>
+      </div>
+      <div class="chip chip-verm">URGENTE</div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="card-body" style="padding-top:14px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:rgba(15,155,110,.06);border:1px solid rgba(15,155,110,.2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;font-size:13px;color:#4ade80;margin-bottom:8px">✅ Se Débora atingir ≥20% hoje</div>
+          <ul style="list-style:none;font-size:12px;color:var(--txt2);line-height:1.7">
+            <li>→ Manter no fluxo de conversão</li>
+            <li>→ Acompanhamento diário por 1 semana</li>
+            <li>→ Revisar meta em 03/06</li>
+          </ul>
+        </div>
+        <div style="background:rgba(214,48,49,.06);border:1px solid rgba(214,48,49,.2);border-radius:8px;padding:12px">
+          <div style="font-weight:700;font-size:13px;color:#f87171;margin-bottom:8px">⚠️ Se Débora ficar abaixo de 10%</div>
+          <ul style="list-style:none;font-size:12px;color:var(--txt2);line-height:1.7">
+            <li>→ Reallocation: tirar do fluxo de conversão</li>
+            <li>→ Mover para atendimento/recepção pura</li>
+            <li>→ Abrir slot para atendente dos 38%</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RODAPÉ -->
+  <div style="margin-top:28px;padding-top:14px;border-top:1px solid var(--borda);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:11px;color:var(--txt3)">
+    <div>
+      <strong style="color:var(--txt2)">SST Clínica · Conversão Lab · 28/05/2026</strong><br>
+      Próxima parcial: <strong style="color:var(--verde)">14h no grupo</strong> · Modelo enviado ao grupo ✓
+    </div>
+    <div style="text-align:right">
+      Advisor: Mayko Rodrigues · contato@sucessodetodos.com.br
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(header) {
+  const card = header.closest('.card');
+  card.classList.toggle('open');
+}
+window.addEventListener('load', () => {
+  document.querySelectorAll('.barra-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '0';
+    setTimeout(() => { el.style.width = w; }, 300);
+  });
+});
+</script>
+</body>
+</html>
