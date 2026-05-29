@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comunicado Oficial — Equipe SST Card · 29/05/2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 11pt; line-height: 1.65; color: #1a1a2e; background: #f8fafc; }
+
+  /* CAPA */
+  .capa { background: linear-gradient(135deg, #0c4a6e 0%, #1987c3 60%, #38bdf8 100%); color: white; padding: 52px 40px 44px; text-align: center; }
+  .capa-logo { font-size: 9pt; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; opacity: 0.75; margin-bottom: 24px; }
+  .capa-badge { display: inline-block; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35); border-radius: 20px; padding: 6px 18px; font-size: 9pt; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; margin-bottom: 20px; }
+  .capa-titulo { font-size: 30pt; font-weight: 900; line-height: 1.1; margin-bottom: 14px; }
+  .capa-sub { font-size: 12pt; opacity: 0.85; font-weight: 400; }
+  .capa-data { margin-top: 28px; font-size: 9pt; opacity: 0.65; letter-spacing: 1px; }
+
+  /* CONTEÚDO */
+  .conteudo { max-width: 680px; margin: 0 auto; padding: 36px 28px 60px; }
+
+  /* ABERTURA */
+  .abertura { background: white; border-radius: 14px; padding: 28px 28px 24px; margin-bottom: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); border-left: 5px solid #1987c3; }
+  .abertura h2 { font-size: 15pt; font-weight: 800; color: #0c4a6e; margin-bottom: 14px; }
+  .abertura p { font-size: 11pt; color: #334155; margin-bottom: 12px; }
+  .abertura p:last-child { margin-bottom: 0; }
+  .abertura strong { color: #0c4a6e; }
+
+  /* CARD PESSOA */
+  .card { border-radius: 14px; padding: 26px 26px 22px; margin-bottom: 22px; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+  .card-karine  { background: white; border-top: 5px solid #1987c3; }
+  .card-raquel  { background: white; border-top: 5px solid #7c3aed; }
+  .card-lucas   { background: white; border-top: 5px solid #d97706; }
+
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+  .card-nome { font-size: 18pt; font-weight: 900; }
+  .nome-karine { color: #0c4a6e; }
+  .nome-raquel { color: #6d28d9; }
+  .nome-lucas  { color: #92400e; }
+  .card-cargo { font-size: 9pt; color: #64748b; margin-top: 3px; }
+  .card-badge { border-radius: 20px; padding: 6px 14px; font-size: 9pt; font-weight: 800; white-space: nowrap; }
+  .badge-clt    { background: #1987c3; color: white; }
+  .badge-estagio { background: #d97706; color: white; }
+
+  /* TABELA */
+  table { width: 100%; border-collapse: collapse; font-size: 10pt; margin: 10px 0 6px; }
+  th { background: #0c4a6e; color: white; padding: 8px 12px; text-align: left; font-size: 8pt; letter-spacing: 1px; text-transform: uppercase; }
+  td { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .valor-azul  { font-weight: 700; color: #1987c3; }
+  .valor-verde { font-weight: 700; color: #16a34a; }
+  .valor-roxo  { font-weight: 700; color: #7c3aed; }
+  .valor-laranja { font-weight: 700; color: #d97706; }
+
+  /* BLOCO POTENCIAL */
+  .potencial { background: #f0fdf4; border: 1px solid #86efac; border-left: 5px solid #16a34a; border-radius: 0 10px 10px 0; padding: 18px 20px; margin: 20px 0 0; }
+  .potencial h3 { font-size: 10pt; font-weight: 800; color: #14532d; margin-bottom: 10px; }
+
+  /* INFO BOX */
+  .info-box { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 5px solid #1987c3; border-radius: 0 10px 10px 0; padding: 16px 18px; margin: 14px 0; font-size: 10.5pt; color: #1e3a5f; }
+  .info-box strong { color: #0c4a6e; }
+  .aviso-box { background: #fffbeb; border: 1px solid #fde68a; border-left: 5px solid #d97706; border-radius: 0 10px 10px 0; padding: 16px 18px; margin: 14px 0; font-size: 10.5pt; color: #78350f; }
+  .aviso-box strong { color: #92400e; }
+
+  /* TÍTULO DE SEÇÃO */
+  .sec-titulo { font-size: 12pt; font-weight: 800; color: #0c4a6e; margin: 36px 0 16px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; display: flex; align-items: center; gap: 10px; }
+  .sec-numero { background: #1987c3; color: white; font-size: 9pt; font-weight: 800; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  /* TIMELINE */
+  .timeline { margin: 4px 0; }
+  .tl-item { display: flex; gap: 14px; margin-bottom: 12px; align-items: flex-start; }
+  .tl-data { font-size: 8pt; font-weight: 800; padding: 4px 10px; border-radius: 6px; min-width: 80px; text-align: center; flex-shrink: 0; margin-top: 2px; }
+  .tl-azul   { background: #1987c3; color: white; }
+  .tl-verde  { background: #16a34a; color: white; }
+  .tl-roxo   { background: #7c3aed; color: white; }
+  .tl-laranja { background: #d97706; color: white; }
+  .tl-texto { font-size: 10.5pt; color: #334155; padding-top: 3px; }
+  .tl-texto strong { color: #0c4a6e; }
+
+  /* MENSAGEM FINAL */
+  .mensagem-final { background: linear-gradient(135deg, #0c4a6e, #1987c3); color: white; border-radius: 14px; padding: 28px 28px 24px; margin-top: 36px; }
+  .mensagem-final p { margin-bottom: 12px; font-size: 11pt; line-height: 1.7; opacity: 0.93; }
+  .mensagem-final p:last-child { margin-bottom: 0; }
+  .mensagem-final strong { opacity: 1; font-size: 11.5pt; }
+  .assinatura { margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.25); font-size: 9.5pt; opacity: 0.75; }
+
+  /* RODAPÉ */
+  .rodape { text-align: center; font-size: 8pt; color: #94a3b8; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; }
+
+  @media (max-width: 600px) {
+    .capa { padding: 40px 24px 36px; }
+    .capa-titulo { font-size: 22pt; }
+    .conteudo { padding: 24px 16px 48px; }
+    .card-header { flex-direction: column; gap: 10px; }
+    .card-badge { align-self: flex-start; }
+  }
+
+  @media print {
+    body { background: white; font-size: 10pt; }
+    .capa, .card-badge, .badge-clt, .badge-estagio, th, .tl-data, .sec-numero, .mensagem-final { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .conteudo { padding: 28px 30px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CAPA -->
+<div class="capa">
+  <div class="capa-logo">SST Card · Bairro da Paz · Salvador-BA</div>
+  <div class="capa-badge">Comunicado Oficial</div>
+  <h1 class="capa-titulo">Vocês são<br>parte da casa.</h1>
+  <p class="capa-sub">Karine · Raquel · Lucas</p>
+  <div class="capa-data">29 de maio de 2026</div>
+</div>
+
+
+<div class="conteudo">
+
+  <!-- ABERTURA -->
+  <div class="abertura" style="margin-top:32px;">
+    <h2>A notícia de hoje</h2>
+    <p>
+      Vocês entregaram resultados reais nesse tempo juntos. Honraram a confiança que o Rogério depositou em cada um. Agora é hora de formalizar essa relação do jeito certo.
+    </p>
+    <p>
+      <strong>A partir de 01 de junho de 2026, a SST Card contrata Karine e Raquel como CLT — carteira assinada.</strong> E a vaga de Lucas está garantida assim que ele retornar ao presencial.
+    </p>
+    <p>
+      Abaixo estão os detalhes de cada um.
+    </p>
+  </div>
+
+  <!-- O QUE VOCÊS PRODUZIRAM -->
+  <div class="sec-titulo">
+    <div class="sec-numero">1</div>
+    O que vocês construíram este mês
+  </div>
+
+  <div class="potencial">
+    <h3>Levantamento — Produção de maio</h3>
+    <table>
+      <tr><th>Pessoa</th><th>Produção atual (mês)</th><th>Com +2h/dia</th></tr>
+      <tr>
+        <td><strong>Karine</strong></td>
+        <td>~20 adesões / mês</td>
+        <td class="valor-verde">~27 adesões / mês</td>
+      </tr>
+      <tr>
+        <td><strong>Raquel</strong></td>
+        <td>~25 abordagens / dia</td>
+        <td class="valor-verde">~33 abordagens / dia</td>
+      </tr>
+      <tr>
+        <td><strong>Lucas</strong></td>
+        <td>~15 ativações / semana</td>
+        <td class="valor-verde">~20 ativações / semana</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="info-box" style="margin-top:16px;">
+    Esses números mostram o que vocês entregam hoje — e o potencial que a gente enxerga em vocês. <strong>O CLT é o reconhecimento disso.</strong>
+  </div>
+
+
+  <!-- CONDIÇÕES INDIVIDUAIS -->
+  <div class="sec-titulo">
+    <div class="sec-numero">2</div>
+    Condições de cada um
+  </div>
+
+  <!-- KARINE -->
+  <div class="card card-karine">
+    <div class="card-header">
+      <div>
+        <div class="card-nome nome-karine">Karine</div>
+        <div class="card-cargo">Comercial · Financeiro · Fechamento</div>
+      </div>
+      <div class="card-badge badge-clt">CLT · 01/06/2026</div>
+    </div>
+    <table>
+      <tr><th>Componente</th><th>Valor</th><th>Observação</th></tr>
+      <tr><td>Salário fixo CLT</td><td class="valor-azul">R$ 1.500</td><td>FGTS · férias · 13º garantidos</td></tr>
+      <tr><td>Adesão Individual (R$ 39,90)</td><td class="valor-azul">R$ 20 / contrato</td><td>50% da taxa de adesão</td></tr>
+      <tr><td>Adesão Família (R$ 79,90)</td><td class="valor-azul">R$ 20 / contrato</td><td>50% da taxa de adesão</td></tr>
+      <tr><td>Reativação Tenex</td><td class="valor-azul">R$ 5 / membro</td><td>Sem teto</td></tr>
+      <tr><td>Supervisão Bairro da Paz</td><td class="valor-azul">% das vendas</td><td>A partir de 01/07/2026</td></tr>
+      <tr><td><strong>Faixa esperada</strong></td><td class="valor-verde"><strong>R$ 2.200 – 4.000/mês</strong></td><td>Fixo + variável</td></tr>
+    </table>
+  </div>
+
+  <!-- RAQUEL -->
+  <div class="card card-raquel">
+    <div class="card-header">
+      <div>
+        <div class="card-nome nome-raquel">Raquel</div>
+        <div class="card-cargo">Marketing · SDR · Captação de Leads</div>
+      </div>
+      <div class="card-badge badge-clt" style="background:#7c3aed;">CLT · 01/06/2026</div>
+    </div>
+    <table>
+      <tr><th>Componente</th><th>Valor</th><th>Observação</th></tr>
+      <tr><td>Salário fixo CLT</td><td class="valor-roxo">R$ 1.500</td><td>FGTS · férias · 13º · licença maternidade</td></tr>
+      <tr><td>Lead convertido em venda</td><td class="valor-roxo">R$ 5 / conversão</td><td>Lead gerado por ela que vira venda</td></tr>
+      <tr><td>Venda direta (campo / Instagram)</td><td class="valor-roxo">R$ 20 / contrato</td><td>Ela mesma fecha</td></tr>
+      <tr><td>Apoio Bairro da Paz</td><td class="valor-roxo">Bônus a definir</td><td>A partir de 01/07/2026</td></tr>
+      <tr><td><strong>Faixa esperada</strong></td><td class="valor-verde"><strong>R$ 1.700 – 2.800/mês</strong></td><td>Fixo + variável</td></tr>
+    </table>
+  </div>
+
+  <!-- LUCAS -->
+  <div class="card card-lucas">
+    <div class="card-header">
+      <div>
+        <div class="card-nome nome-lucas">Lucas</div>
+        <div class="card-cargo">Customer Success · Onboarding · Retenção</div>
+      </div>
+      <div class="card-badge badge-estagio">Estágio → CLT em breve</div>
+    </div>
+
+    <div class="aviso-box">
+      Lucas, a sua <strong>vaga de CLT está garantida</strong> e reservada para quando você se recuperar e retornar ao presencial. Enquanto isso, você continua no estágio — <strong>com as mesmas condições financeiras dos seus colegas CLT se entregar os resultados combinados.</strong>
+    </div>
+
+    <table>
+      <tr><th>Componente</th><th>Valor</th><th>Observação</th></tr>
+      <tr><td>Pró-labore estágio</td><td class="valor-laranja">R$ 1.500</td><td>Mantido durante a recuperação</td></tr>
+      <tr><td>Reativação Tenex</td><td class="valor-laranja">R$ 5 / membro</td><td>Sem teto — mediante entrega</td></tr>
+      <tr><td>Onboarding Bairro da Paz</td><td class="valor-laranja">R$ 10 / membro</td><td>A partir de 01/07/2026</td></tr>
+      <tr><td>Bônus de resultado</td><td class="valor-laranja">Equiparado ao CLT</td><td>Se entregar as metas combinadas</td></tr>
+      <tr><td><strong>CLT formal</strong></td><td class="valor-verde"><strong>Garantido — ao retornar</strong></td><td>Vaga reservada · ninguém vai ocupar</td></tr>
+    </table>
+  </div>
+
+
+  <!-- PRÓXIMOS PASSOS -->
+  <div class="sec-titulo">
+    <div class="sec-numero">3</div>
+    O que vem por aí
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-data tl-azul">29/05 · HOJE</div>
+      <div class="tl-texto"><strong>Conversa individual</strong> com cada um — detalhes, dúvidas, aceite</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-data tl-azul">Até 01/06</div>
+      <div class="tl-texto"><strong>Carteira assinada</strong> — Karine e Raquel formalizadas · contador SST cuida dos documentos</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-data tl-laranja">Em andamento</div>
+      <div class="tl-texto"><strong>Lucas</strong> — estágio + variável equiparada · triagem e retenção da base Tenex</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-data tl-roxo">13/06</div>
+      <div class="tl-texto"><strong>Obra Bairro da Paz finalizada</strong> — arquiteta entrega o espaço</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-data tl-verde">01/07/2026</div>
+      <div class="tl-texto"><strong>Inauguração oficial Bairro da Paz</strong> · equipe SST operando no novo espaço</div>
+    </div>
+  </div>
+
+
+  <!-- MENSAGEM FINAL -->
+  <div class="mensagem-final">
+    <p>
+      Vocês vieram pra mim num momento em que acreditei antes de ter certeza. Viram o trabalho crescer, entregaram resultados, ficaram — mesmo sem ter tudo estruturado ainda.
+    </p>
+    <p>
+      <strong>O Bairro da Paz abre dia 01 de julho. E vocês vão estar lá como referência do que funciona.</strong>
+    </p>
+    <p>
+      O CLT não é o destino — é o ponto de partida certo. A partir daqui, a gente cresce junto.
+    </p>
+    <div class="assinatura">
+      Rogério Ferreira — SST Card · Salvador, 29/05/2026
+    </div>
+  </div>
+
+  <div class="rodape">
+    SST Card · Bairro da Paz · Salvador-BA · 29/05/2026
+  </div>
+
+</div>
+
+</body>
+</html>
