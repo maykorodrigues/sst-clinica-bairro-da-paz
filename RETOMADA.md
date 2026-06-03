@@ -4,7 +4,7 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 22/05/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+> Última atualização: 03/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
 
 ---
 
@@ -108,17 +108,21 @@ Estrutura criada dentro de **"Processos Comerciais B2C Clube SST CARD/ CARD"**:
 
 ## Decisões Estratégicas Já Tomadas
 
-> ⚠️ Atualizado em 22/05/2026 — reunião Rogério + Mayko (ver Notion: Triagem de Nova Unidade)
+> ⚠️ Atualizado em 03/06/2026 — decisão de produto via áudios WhatsApp 02/06 (12:03 e 12:43). Ver Notion: [[Estratégia SST Card - Rogério 03/06]]
 
-1. **Precificação ATUALIZADA (22/05/2026):**
-   - Individual: R$ 39,90/mês *(era R$34,90)*
-   - Família (até 5 pessoas): R$ 79,90/mês *(era R$65)*
-   - Taxa de Adesão: R$ 40,00 por contrato *(NOVO — obrigatória no ato, só isentar em Dia D estratégico)*
+1. **Precificação ATUALIZADA (02/06/2026) — DECISÃO ROGÉRIO:**
+   - **Individual (entrada):** R$ 39,90/mês — titular com TODOS os benefícios + 3 dependentes com acesso à saúde
+   - **Família Premium:** R$ 64,90/mês — 4 pessoas com TODOS os benefícios *(era R$79,90)*
+   - **Taxa de Adesão:** R$ 35,00 por contrato *(era R$40)*
+   - ❌ **Eliminado:** plano R$79,90 e cobrança por dependente avulso (R$7,90 cada)
+   - **Lógica comercial:** R$39,90 = entrada fácil → cross-sell natural para R$64,90 (+R$25)
+   - **Famílias grandes (7+):** dois contratos — núcleo (4 pessoas) + avós/netos
+   - **Pitch âncora:** *"R$25 a mais e todo mundo tem todos os benefícios"*
+   - **Insight-chave (Rogério, dez/2025):** muitos dependentes = ninguém usa. Foco em 4 que realmente vão cuidar.
    - Benefícios incluídos: telemedicina + auxílio funeral + assistência veterinária + medicina com custos reduzidos
-   - Ancoragem de discurso: **"R$ 1,25/dia para toda a família"** | comparação com plano de saúde tradicional
 
-2. **Comissão Closer ATUALIZADA (22/05/2026):**
-   - Por adesão: R$ 20 (50% da taxa de R$40)
+2. **Comissão Closer CONFIRMADA (03/06/2026):**
+   - Por adesão: **R$ 20** (mantido — agora representa 57% da taxa de R$35)
    - Por reativação Tenex: R$ 5
    - Escada progressiva: 80 vendas = R$15–16/adesão | 120 vendas = R$2.000 em comissão
    - Meta inicial: 100 vendas/mês = R$4.000 total (R$2.000 fixo + R$2.000 comissão)
@@ -129,9 +133,9 @@ Estrutura criada dentro de **"Processos Comerciais B2C Clube SST CARD/ CARD"**:
    - SST banca primeiros 3 meses de INSS (R$ 25/mês)
    - Apresentar como oportunidade de crescimento — reunião conjunta Mayko + Rogério
 
-4. **Break-even:** 430 membros ativos (~mês 4)
+4. **Break-even:** ~~430 membros~~ → **364 contratos** (~mês 3,5) — ver `estrategia_comercial/viabilidade_card.md` seção 2.3
 
-5. **Capital de giro necessário:** R$ 35.000–45.000 (primeiros 3 meses)
+5. **Capital de giro necessário:** ~~R$ 35.000–45.000~~ → **R$ 28.000–35.000** (primeiros 3 meses)
 
 6. **Orçamento de marketing Mês 1:** R$ 4.150
 
@@ -696,6 +700,136 @@ Commit + push → nova aba aparece automaticamente no playbook.ssfcard.ia.br
 - [ ] **Gráficos dinâmicos** — Chart.js para visualizar trend (Karine, Lucas, Raquel)
 - [ ] **Export CSV** — Baixar histórico de 7 dias para análise
 - [ ] **Notificação WhatsApp** — Bot envia "Aba 19/05 atualizada!" quando Mayko faz push
+
+---
+
+## Operação 27/05/2026 — Dia Completo ✅
+
+**Participantes:** Mayko (advisor) | SST Card + Lab MADIP  
+**Foco:** Matinal SST Card + reunião estratégica clínica + parciais lab + calendário equipe
+
+---
+
+### 🎙️ Áudios do Rogério Transcritos (26/05 15:24 e 15:25)
+
+Ambos transcritos via Whisper CLI (`--language Portuguese --model turbo`). Conteúdo:
+
+| Áudio | Tema | Destaques |
+|---|---|---|
+| **15:24 (~1min)** | Closer + VISA + inauguração | Roni ainda avaliando; VISA entrada até 30/05; inauguração 01/07 confirmada |
+| **15:25 (~45s)** | Parciais semana + time | Raquel ativa (Gabriela + Eugenio fechados); Lucas retomando; semana decisiva |
+
+---
+
+### 📊 Parciais SST Card — 26/05/2026
+
+Dados capturados do grupo WhatsApp:
+
+| Atendente | Contatos | Resultado | Status |
+|---|---|---|---|
+| **Raquel** | Funil: 27→15→5→2 | ✅ **2 fechados** (Gabriela Ouro R$79,90 + Eugenio Prata R$39,90) | 🟢 EXCELENTE |
+| **Lucas** | 33 contatos | 13 ativações + 20 retenções | 🟢 BOM |
+| **Karine** | — | Reconciliação 5/16 (31%) + Cobrança 3/17 (18%) + Ref sexta 52% | 🟡 OK |
+
+**Alerta identificado:** Eugenio Prata (R$39,90) — potencial upgrade para Ouro (R$79,90) pela realidade financeira declarada. Fabiana Moura e Ana Luiza pendentes de resposta.
+
+---
+
+### 📊 Parciais Lab MADIP — 27/05/2026
+
+Dados capturados do grupo WhatsApp da clínica:
+
+| Atendente | Conversão | Estimativa convertido | Status |
+|---|---|---|---|
+| **Atendente anônima** | 38,43% | ~R$766 | 🟢 POTENCIAL ALTO |
+| **Aline** | 12,72% | ~R$250 | 🟡 ABAIXO do padrão |
+| **Débora** | 0% | R$0 | 🔴 CRÍTICO — linha vermelha |
+| **Total** | ~18% | ~R$1.016 / R$~5.600 orçado | 🔴 META: 40% |
+
+**Decisão GO/NO-GO Débora (validar em 28/05):**
+- ≥20% → mantém no programa, coaching adicional
+- <10% por 3 dias seguidos → reallocation (outra função)
+
+**Atendente anônima:** 38% sem processo ativo estruturado. Com scripts e cadência, estimativa 55–60%. Identificar quem é e replicar comportamento para equipe.
+
+---
+
+### 📄 Documentos Criados — 27/05/2026
+
+| Arquivo | Conteúdo | URL Pública | Status |
+|---|---|---|---|
+| `processo-comercial-7dias/01-matinais/27-05-2026/roteiro-matinal-27-05-2026.html` | Matinal SST Card — dados reais parciais + seções colapsáveis (dark theme, Barlow) | [playbook.ssfcard.ia.br/processo-comercial-7dias/01-matinais/27-05-2026/roteiro-matinal-27-05-2026.html](https://playbook.ssfcard.ia.br/processo-comercial-7dias/01-matinais/27-05-2026/roteiro-matinal-27-05-2026.html) | ✅ Deployed |
+| `processo-comercial-7dias/01-matinais/27-05-2026/roteiro-reuniao-clinica-27-05-2026.html` | Reunião estratégica clínica — loop vicioso vs virtuoso, script balcão, case Tatiana, GO/NO-GO checklist (light theme, DM Serif) | [playbook.ssfcard.ia.br/processo-comercial-7dias/01-matinais/27-05-2026/roteiro-reuniao-clinica-27-05-2026.html](https://playbook.ssfcard.ia.br/processo-comercial-7dias/01-matinais/27-05-2026/roteiro-reuniao-clinica-27-05-2026.html) | ✅ Deployed |
+| `aline-laboratorio/matinal-clinica-28-05-2026.html` | Matinal lab 28/05 — barras de progresso animadas, parciais reais, GO/NO-GO Débora (dark theme, Space Grotesk) | [playbook.ssfcard.ia.br/aline-laboratorio/matinal-clinica-28-05-2026.html](https://playbook.ssfcard.ia.br/aline-laboratorio/matinal-clinica-28-05-2026.html) | ✅ Deployed |
+
+**Deploy:** `git push origin master` → Vercel auto-redeploy (<1 min) → todos os HTMLs servidos em `playbook.ssfcard.ia.br`
+
+---
+
+### 📄 Documentos Criados — 28/05/2026
+
+| Arquivo | Conteúdo | Status |
+|---|---|---|
+| `pesquisa-satisfacao-sponsor/typebot-satisfacao-rogerio.json` | Pesquisa de satisfação do sponsor Rogério (Typebot v6, 7 perguntas, tema azul SST) — enviar ANTES da cobrança da 2ª mensalidade (R$ 3.800, vence 29/05) | ✅ Criado |
+| `pesquisa-satisfacao-sponsor/typebot-satisfacao-rogerio.flow.yaml` | Spec do fluxo + design das perguntas + checklist de implantação | ✅ Criado |
+| `pesquisa-satisfacao-sponsor/n8n-workflow-satisfacao-rogerio.json` | Webhook → **semáforo** (🔴/🟡/🟢) → WhatsApp Mayko: diz se pode cobrar direto ou se deve ligar antes | ✅ Criado |
+
+**Decisão de processo:** medir satisfação → semáforo decide o tom da cobrança. 🔴 = ligar antes; 🟢 = cobrar com tranquilidade. Base: padrão validado [[padrao-typebot-whatsapp]].
+
+---
+
+### 📅 Eventos Google Calendar Criados — 27/05/2026
+
+| Evento | Data/Hora | Google Meet | Participantes |
+|---|---|---|---|
+| **Matinal SST Card** | 27/05/2026 12h00 BRT | meet.google.com/tag-ppoq-yvv | Equipe SST Card |
+| **Matinal Clínica MADIP** | 28/05/2026 08h00 BRT | meet.google.com/mfw-fmiq-pte | Aline + equipe lab |
+
+---
+
+### 🛠️ Infraestrutura Atualizada
+
+| Item | O que mudou |
+|---|---|
+| **CLAUDE.md** | Reescrito com status 27/05, frente RH Closer, pasta `rh-closer/`, `01-matinais/`, personas Closer + Aline, correção typo `7dados→7dias`, gate decision removido |
+| **`02-areas/historico-acoes.md`** | Entrada `2026-05-27` adicionada (operação completa do dia) |
+
+---
+
+### 🎯 Próximas Ações Prioritárias (28/05+)
+
+| Ação | Responsável | Prazo | Observação |
+|---|---|---|---|
+| Dar entrada VISA + alvará prefeitura | Rogério | 30/05 | Marco crítico para inauguração 01/07 |
+| Validar resultado Débora na matinal 28/05 | Aline + Mayko | 28/05 08h | GO/NO-GO: ≥20% mantém, <10% reallocation |
+| Identificar atendente anônima 38% | Aline | 28/05 | Replicar comportamento para equipe |
+| Decisão comissão Closer (Rogério aprova) | Rogério | ASAP | Roni em avaliação — comissão ainda pendente |
+| Contrato PJ equipe (Lucas, Karine, Raquel) | Rogério | Junho | Transição iniciada em 23/05 |
+
+---
+
+## Decisão de Produto — 02–03/06/2026
+
+### Áudios Rogério (02/06/2026) — Revisão Estrutura de Preços
+
+Decisão comunicada via WhatsApp (áudios 12:03 e 12:43). Rogério redefiniu a estrutura de produtos do SST Card para o Bairro da Paz com base na experiência de campo de dezembro/2025 (reconciliação com equipe) e análise via IA.
+
+| Produto | Antes | Depois |
+|---|---|---|
+| Individual | R$34,90 (1 titular) | **R$39,90** (titular todos benefícios + 3 dep. saúde) |
+| Família | R$79,90 (até 5 pessoas) | **R$64,90** (4 pessoas todos benefícios) |
+| Adesão | R$40,00 | **R$35,00** |
+| Dependente avulso | R$7,90 | **Eliminado** |
+
+**Impacto no break-even:** 430 → **364 contratos** (-15%). Ticket médio sobe de R$61 para R$71,40/contrato (+17%).
+
+| Documento atualizado | O que mudou |
+|---|---|
+| `estrategia_comercial/viabilidade_card.md` | Tabela de produtos, ticket médio, break-even, ramp-up, comparativo |
+| `RETOMADA.md` (este arquivo) | Decisões estratégicas item 1 (precificação), item 4 (break-even), item 5 (capital de giro) |
+| Notion — Estratégia SST Card Rogério | Transcrições áudios + síntese conversa + break-even revisado |
+
+**Comissão closer confirmada (03/06/2026):** R$20 por adesão mantido. Com adesão de R$35, representa 57% (era 50% quando a adesão era R$40). Decisão favorece atração de hunter sem alterar estrutura já comunicada.
 
 ---
 
