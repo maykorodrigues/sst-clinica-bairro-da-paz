@@ -1,0 +1,698 @@
+{
+  "version": "6",
+  "id": "sst-clinica-atendente-qual-v1",
+  "name": "Qualificação Atendente — SST Clínica · Bairro da Paz",
+  "events": [
+    {
+      "id": "evt_start",
+      "type": "start",
+      "graphCoordinates": { "x": -400, "y": 0 },
+      "outgoingEdgeId": "e_start_to_g00"
+    }
+  ],
+  "variables": [
+    { "id": "v01", "name": "Nome" },
+    { "id": "v02", "name": "Email" },
+    { "id": "v03", "name": "Telefone" },
+    { "id": "v04", "name": "Cidade" },
+    { "id": "v05", "name": "Bairro" },
+    { "id": "v06", "name": "Idade" },
+    { "id": "v07", "name": "Escolaridade" },
+    { "id": "v08", "name": "Presencial" },
+    { "id": "v09", "name": "Disponibilidade" },
+    { "id": "v10", "name": "InicioTrabalho" },
+    { "id": "v11", "name": "ExpAtendimento" },
+    { "id": "v12", "name": "FuncaoRecente" },
+    { "id": "v13", "name": "ConfirmouAgenda" },
+    { "id": "v14", "name": "Ferramentas" },
+    { "id": "v15", "name": "CasoPratico" },
+    { "id": "v16", "name": "GostRotina" },
+    { "id": "v17", "name": "ReageAoDuvidar" },
+    { "id": "v18", "name": "MotivoVaga" },
+    { "id": "v19", "name": "Visao2Anos" },
+    { "id": "v20", "name": "ExpSalario" },
+    { "id": "v21", "name": "AceitaCLT" },
+    { "id": "v22", "name": "FonteVaga" }
+  ],
+  "edges": [
+    { "id": "e_start_to_g00", "from": { "eventId": "evt_start" },                        "to": { "groupId": "g00" } },
+    { "id": "e_consent_ok",   "from": { "groupId": "g00", "blockId": "b00_consent" },    "to": { "groupId": "g01" } },
+    { "id": "e_consent_no",   "from": { "groupId": "g00", "blockId": "b00_consent" },    "to": { "groupId": "g13" } },
+    { "id": "e01_to_g02",     "from": { "groupId": "g01", "blockId": "b01_esc" },        "to": { "groupId": "g02" } },
+    { "id": "e02_nogo",       "from": { "groupId": "g02", "blockId": "b02_cond" },       "to": { "groupId": "g03" } },
+    { "id": "e02_ok",         "from": { "groupId": "g02", "blockId": "b02_cond" },       "to": { "groupId": "g04" } },
+    { "id": "e04_pres_nogo",  "from": { "groupId": "g04", "blockId": "b04_pres" },      "to": { "groupId": "g05" } },
+    { "id": "e04_disp_nogo",  "from": { "groupId": "g04", "blockId": "b04_disp" },      "to": { "groupId": "g06" } },
+    { "id": "e04_inicio_nogo","from": { "groupId": "g04", "blockId": "b04_inicio" },    "to": { "groupId": "g07" } },
+    { "id": "e04_to_g08",     "from": { "groupId": "g04", "blockId": "b04_inicio" },    "to": { "groupId": "g08" } },
+    { "id": "e08_to_g09",     "from": { "groupId": "g08", "blockId": "b08_tools" },     "to": { "groupId": "g09" } },
+    { "id": "e09_to_g10",     "from": { "groupId": "g09", "blockId": "b09_reage" },     "to": { "groupId": "g10" } },
+    { "id": "e10_clt_nogo",   "from": { "groupId": "g10", "blockId": "b10_clt" },       "to": { "groupId": "g11" } },
+    { "id": "e10_to_g12",     "from": { "groupId": "g10", "blockId": "b10_fonte" },     "to": { "groupId": "g12" } }
+  ],
+  "groups": [
+
+    {
+      "id": "g00",
+      "title": "Boas-vindas + Consentimento LGPD",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "blocks": [
+        {
+          "id": "b00_bv",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "👋 Olá! Você está se candidatando para:" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Atendente de Clínica — SST Clínica", "bold": true }] },
+              { "type": "p", "children": [{ "text": "📍 Nova unidade · Bairro da Paz · Salvador/BA" }] },
+              { "type": "p", "children": [{ "text": "📋 CLT · R$ 1.518 – R$ 1.800/mês + bônus + benefícios" }] },
+              { "type": "p", "children": [{ "text": "📈 Vaga com trilha real de crescimento para quem se destacar" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "São 5 etapas rápidas (cerca de 10 minutos). Responda com honestidade — buscamos fit real, não candidata perfeita no papel." }] }
+            ]
+          }
+        },
+        {
+          "id": "b00_q_consent",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Concorda que seus dados serão usados exclusivamente para análise desta candidatura, conforme a LGPD?" }] }
+            ]
+          }
+        },
+        {
+          "id": "b00_consent",
+          "type": "choice input",
+          "items": [
+            { "id": "c00_ok", "content": "Concordo ✓",   "outgoingEdgeId": "e_consent_ok" },
+            { "id": "c00_no", "content": "Não concordo", "outgoingEdgeId": "e_consent_no" }
+          ],
+          "options": { "isMultipleChoice": false }
+        }
+      ]
+    },
+
+    {
+      "id": "g01",
+      "title": "Etapa 1 — Dados Pessoais",
+      "graphCoordinates": { "x": 400, "y": 0 },
+      "blocks": [
+        {
+          "id": "b01_intro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "📋 Etapa 1 de 5 — Dados para contato" }] }] }
+        },
+        {
+          "id": "b01_q_nome",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Qual seu nome completo?" }] }] }
+        },
+        {
+          "id": "b01_nome",
+          "type": "text input",
+          "options": { "variableId": "v01", "labels": { "placeholder": "Maria da Silva", "button": "Avançar →" } }
+        },
+        {
+          "id": "b01_q_email",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Seu e-mail:" }] }] }
+        },
+        {
+          "id": "b01_email",
+          "type": "email input",
+          "options": { "variableId": "v02", "labels": { "placeholder": "seuemail@exemplo.com", "button": "Avançar →" } }
+        },
+        {
+          "id": "b01_q_tel",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "WhatsApp com DDD (usaremos para te contatar se for selecionada):" }] }] }
+        },
+        {
+          "id": "b01_tel",
+          "type": "phone number input",
+          "options": {
+            "variableId": "v03",
+            "labels": { "placeholder": "(71) 99999-9999", "button": "Avançar →" },
+            "defaultCountryCode": "BR"
+          }
+        },
+        {
+          "id": "b01_q_cidade",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Cidade onde você mora:" }] }] }
+        },
+        {
+          "id": "b01_cidade",
+          "type": "text input",
+          "options": { "variableId": "v04", "labels": { "placeholder": "Salvador", "button": "Avançar →" } }
+        },
+        {
+          "id": "b01_q_bairro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Bairro onde você mora:" }] }] }
+        },
+        {
+          "id": "b01_bairro",
+          "type": "text input",
+          "options": { "variableId": "v05", "labels": { "placeholder": "Bairro da Paz", "button": "Avançar →" } }
+        },
+        {
+          "id": "b01_q_idade",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Qual a sua idade?" }] }] }
+        },
+        {
+          "id": "b01_idade",
+          "type": "number input",
+          "options": { "variableId": "v06", "labels": { "placeholder": "24", "button": "Avançar →" }, "min": 16, "max": 70 }
+        },
+        {
+          "id": "b01_q_esc",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Escolaridade:" }] }] }
+        },
+        {
+          "id": "b01_esc",
+          "type": "choice input",
+          "items": [
+            { "id": "esc_i0", "content": "Ensino Médio incompleto" },
+            { "id": "esc_i1", "content": "Ensino Médio completo" },
+            { "id": "esc_i2", "content": "Curso técnico" },
+            { "id": "esc_i3", "content": "Superior incompleto" },
+            { "id": "esc_i4", "content": "Superior completo" },
+            { "id": "esc_i5", "content": "Pós-graduação" }
+          ],
+          "options": { "variableId": "v07", "isMultipleChoice": false },
+          "outgoingEdgeId": "e01_to_g02"
+        }
+      ]
+    },
+
+    {
+      "id": "g02",
+      "title": "Check — Idade ≥ 18",
+      "graphCoordinates": { "x": 800, "y": 0 },
+      "blocks": [
+        {
+          "id": "b02_cond",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "cond_idade_nogo",
+              "outgoingEdgeId": "e02_nogo",
+              "condition": {
+                "logicalOperator": "AND",
+                "comparisons": [
+                  {
+                    "id": "comp_idade",
+                    "variableId": "v06",
+                    "comparisonOperator": "Less than",
+                    "value": "18"
+                  }
+                ]
+              }
+            }
+          ],
+          "outgoingEdgeId": "e02_ok"
+        }
+      ]
+    },
+
+    {
+      "id": "g03",
+      "title": "NO-GO — Idade < 18",
+      "graphCoordinates": { "x": 800, "y": 360 },
+      "blocks": [
+        {
+          "id": "b03_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Obrigado pelo interesse na SST Clínica! 🙏" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Motivo: ", "bold": true }, { "text": "A vaga exige candidatas com 18 anos ou mais." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Quando tiver 18 anos, adoraríamos ouvir você! Siga a gente: 📸 @sstclinica" }] }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g04",
+      "title": "Etapa 2 — Disponibilidade (eliminatória)",
+      "graphCoordinates": { "x": 1200, "y": 0 },
+      "blocks": [
+        {
+          "id": "b04_intro",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "📍 Etapa 2 de 5 — Disponibilidade e localização", "bold": true }, { "text": " (eliminatória)" }] }
+          ]}
+        },
+        {
+          "id": "b04_q_pres",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Você pode trabalhar presencialmente no Bairro da Paz, Salvador/BA?" }] }] }
+        },
+        {
+          "id": "b04_pres",
+          "type": "choice input",
+          "items": [
+            { "id": "pres_i0", "content": "Sim — já moro em Salvador e consigo chegar ao Bairro da Paz" },
+            { "id": "pres_i1", "content": "Moro em outra cidade, mas me mudo para Salvador se for contratada" },
+            { "id": "pres_i2", "content": "Não consigo trabalhar presencialmente nessa região", "outgoingEdgeId": "e04_pres_nogo" }
+          ],
+          "options": { "variableId": "v08", "isMultipleChoice": false }
+        },
+        {
+          "id": "b04_q_disp",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Disponibilidade de segunda a sexta (8h por dia) e sábado de manhã?" }] }] }
+        },
+        {
+          "id": "b04_disp",
+          "type": "choice input",
+          "items": [
+            { "id": "disp_i0", "content": "Sim, tenho disponibilidade completa" },
+            { "id": "disp_i1", "content": "Tenho uma restrição pequena (explico na entrevista)" },
+            { "id": "disp_i2", "content": "Não tenho essa disponibilidade no momento", "outgoingEdgeId": "e04_disp_nogo" }
+          ],
+          "options": { "variableId": "v09", "isMultipleChoice": false }
+        },
+        {
+          "id": "b04_q_inicio",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Quando você poderia começar a trabalhar?" }] }] }
+        },
+        {
+          "id": "b04_inicio",
+          "type": "choice input",
+          "items": [
+            { "id": "ini_i0", "content": "Imediato (até 2 semanas)" },
+            { "id": "ini_i1", "content": "Em até 30 dias" },
+            { "id": "ini_i2", "content": "Entre 30 e 60 dias" },
+            { "id": "ini_i3", "content": "Somente após 60 dias", "outgoingEdgeId": "e04_inicio_nogo" }
+          ],
+          "options": { "variableId": "v10", "isMultipleChoice": false },
+          "outgoingEdgeId": "e04_to_g08"
+        }
+      ]
+    },
+
+    {
+      "id": "g05",
+      "title": "NO-GO — Não presencial",
+      "graphCoordinates": { "x": 1200, "y": 360 },
+      "blocks": [
+        {
+          "id": "b05_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Obrigado pelo interesse na SST Clínica! 🙏" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Motivo: ", "bold": true }, { "text": "A vaga é 100% presencial no Bairro da Paz, Salvador/BA. Não temos opção remota ou em outra cidade." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Fique de olho nas nossas redes para futuras oportunidades! 📸 @sstclinica" }] }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g06",
+      "title": "NO-GO — Sem disponibilidade de horário",
+      "graphCoordinates": { "x": 1200, "y": 580 },
+      "blocks": [
+        {
+          "id": "b06_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Obrigado pelo interesse na SST Clínica! 🙏" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Motivo: ", "bold": true }, { "text": "A vaga de atendimento exige disponibilidade de segunda a sábado. Não conseguimos flexibilizar essa condição no momento." }] }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g07",
+      "title": "NO-GO — Início após 60 dias",
+      "graphCoordinates": { "x": 1200, "y": 760 },
+      "blocks": [
+        {
+          "id": "b07_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Obrigado pelo interesse na SST Clínica! 🙏" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Motivo: ", "bold": true }, { "text": "Nossa inauguração é em 01/07/2026 e precisamos de alguém disponível em até 60 dias. Se sua situação mudar, nos procure!" }] }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g08",
+      "title": "Etapa 3 — Experiência de Trabalho",
+      "graphCoordinates": { "x": 1700, "y": 0 },
+      "blocks": [
+        {
+          "id": "b08_intro",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "💼 Etapa 3 de 5 — Experiência de trabalho", "bold": true }] },
+            { "type": "p", "children": [{ "text": "Esta etapa não é eliminatória. Seja honesta — candidatas sem experiência em saúde também são consideradas! 😊", "italic": true }] }
+          ]}
+        },
+        {
+          "id": "b08_q_atend",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Você já trabalhou em algum serviço de atendimento ao público?" }] }] }
+        },
+        {
+          "id": "b08_atend",
+          "type": "choice input",
+          "items": [
+            { "id": "atd_i0", "content": "Não — essa seria minha primeira experiência com atendimento" },
+            { "id": "atd_i1", "content": "Sim, em outro tipo de serviço (comércio, farmácia, escola, etc.)" },
+            { "id": "atd_i2", "content": "Sim, em saúde (clínica, laboratório, hospital, consultório)" }
+          ],
+          "options": { "variableId": "v11", "isMultipleChoice": false }
+        },
+        {
+          "id": "b08_q_func",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Se já trabalhou em algum lugar, qual foi sua função mais recente?" }] },
+            { "type": "p", "children": [{ "text": "(Deixe em branco se nunca trabalhou formalmente)", "italic": true }] }
+          ]}
+        },
+        {
+          "id": "b08_func",
+          "type": "text input",
+          "options": {
+            "variableId": "v12",
+            "labels": { "placeholder": "Ex: atendente de farmácia, recepcionista, caixa de supermercado...", "button": "Avançar →" }
+          }
+        },
+        {
+          "id": "b08_q_agenda",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Você já confirmou consultas, reservas ou agendamentos pelo WhatsApp ou telefone?" }] }] }
+        },
+        {
+          "id": "b08_agenda",
+          "type": "choice input",
+          "items": [
+            { "id": "ag_i0", "content": "Sim, em clínica ou serviço de saúde" },
+            { "id": "ag_i1", "content": "Sim, em outro tipo de serviço (salão, prestador, etc.)" },
+            { "id": "ag_i2", "content": "Não, mas consigo aprender rápido" }
+          ],
+          "options": { "variableId": "v13", "isMultipleChoice": false }
+        },
+        {
+          "id": "b08_q_tools",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Quais ferramentas você usa no dia a dia? (pode marcar mais de uma)" }] }] }
+        },
+        {
+          "id": "b08_tools",
+          "type": "choice input",
+          "items": [
+            { "id": "tl_i0", "content": "WhatsApp (inclusive pelo celular do trabalho)" },
+            { "id": "tl_i1", "content": "Planilha (Excel ou Google Sheets)" },
+            { "id": "tl_i2", "content": "Sistema de clínica ou agendamento (qualquer um)" },
+            { "id": "tl_i3", "content": "Word / Google Docs" },
+            { "id": "tl_i4", "content": "Só uso o celular no pessoal" }
+          ],
+          "options": { "variableId": "v14", "isMultipleChoice": true },
+          "outgoingEdgeId": "e08_to_g09"
+        }
+      ]
+    },
+
+    {
+      "id": "g09",
+      "title": "Etapa 4 — Comportamento Prático",
+      "graphCoordinates": { "x": 2200, "y": 0 },
+      "blocks": [
+        {
+          "id": "b09_intro",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "🎯 Etapa 4 de 5 — Como você age na prática", "bold": true }] },
+            { "type": "p", "children": [{ "text": "Não existe resposta certa. Queremos ver como você pensa e reage.", "italic": true }] }
+          ]}
+        },
+        {
+          "id": "b09_q_caso",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Situação real: você está na recepção. Um paciente chega nervoso dizendo que esperou 40 minutos e quer falar com o médico agora — mas o médico está em consulta." }] },
+            { "type": "p", "children": [{ "text": "O que você faz? Descreva, com as palavras que usaria de verdade:" }] }
+          ]}
+        },
+        {
+          "id": "b09_caso",
+          "type": "text input",
+          "options": {
+            "variableId": "v15",
+            "isLong": true,
+            "labels": { "placeholder": "Descreva o que você faria, passo a passo. Não precisa ser perfeito...", "button": "Avançar →" }
+          }
+        },
+        {
+          "id": "b09_q_rotina",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Você tem facilidade para trabalhar seguindo rotinas e checklists diários?" }] }] }
+        },
+        {
+          "id": "b09_rotina",
+          "type": "choice input",
+          "items": [
+            { "id": "rot_i0", "content": "Sim — gosto de ter o dia organizado e rotina clara" },
+            { "id": "rot_i1", "content": "Em parte — prefiro flexibilidade, mas me adapto" },
+            { "id": "rot_i2", "content": "Não — fico entediada com rotina, prefiro variedade" }
+          ],
+          "options": { "variableId": "v16", "isMultipleChoice": false }
+        },
+        {
+          "id": "b09_q_reage",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "O que você faz quando não sabe como resolver algo no trabalho?" }] }] }
+        },
+        {
+          "id": "b09_reage",
+          "type": "choice input",
+          "items": [
+            { "id": "rg_i0", "content": "Espero até alguém me orientar" },
+            { "id": "rg_i1", "content": "Tento resolver por conta — pesquiso ou penso uma saída" },
+            { "id": "rg_i2", "content": "Comunico logo para quem é responsável e pergunto o que fazer" },
+            { "id": "rg_i3", "content": "Tento resolver; se não consigo, comunico rápido — não deixo arrastar" }
+          ],
+          "options": { "variableId": "v17", "isMultipleChoice": false },
+          "outgoingEdgeId": "e09_to_g10"
+        }
+      ]
+    },
+
+    {
+      "id": "g10",
+      "title": "Etapa 5 — Motivação e Expectativa",
+      "graphCoordinates": { "x": 2700, "y": 0 },
+      "blocks": [
+        {
+          "id": "b10_intro",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "💬 Etapa 5 de 5 — Última etapa! Seja direta.", "bold": true }] }
+          ]}
+        },
+        {
+          "id": "b10_q_motivo",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Por que essa vaga chamou sua atenção? O que te fez querer se candidatar?" }] },
+            { "type": "p", "children": [{ "text": "Sem resposta de RH. Seja honesta 😊", "italic": true }] }
+          ]}
+        },
+        {
+          "id": "b10_motivo",
+          "type": "text input",
+          "options": {
+            "variableId": "v18",
+            "isLong": true,
+            "labels": { "placeholder": "O que te trouxe até aqui?", "button": "Avançar →" }
+          }
+        },
+        {
+          "id": "b10_q_visao",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Onde você quer estar profissionalmente daqui a 2 anos?" }] },
+            { "type": "p", "children": [{ "text": "Pode ser simples. Queremos saber se você quer crescer.", "italic": true }] }
+          ]}
+        },
+        {
+          "id": "b10_visao",
+          "type": "text input",
+          "options": {
+            "variableId": "v19",
+            "isLong": true,
+            "labels": { "placeholder": "Minha visão para daqui 2 anos...", "button": "Avançar →" }
+          }
+        },
+        {
+          "id": "b10_q_salario",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Qual é a sua expectativa de salário mensal para esta vaga (em R$)?" }] }] }
+        },
+        {
+          "id": "b10_salario",
+          "type": "text input",
+          "options": {
+            "variableId": "v20",
+            "labels": { "placeholder": "Ex: R$ 1.700", "button": "Avançar →" }
+          }
+        },
+        {
+          "id": "b10_q_clt",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Você tem CTPS (carteira de trabalho) e aceita ser contratada em regime CLT?" }] }] }
+        },
+        {
+          "id": "b10_clt",
+          "type": "choice input",
+          "items": [
+            { "id": "clt_i0", "content": "Sim, tenho CTPS e aceito CLT" },
+            { "id": "clt_i1", "content": "Ainda não tenho CTPS, mas posso tirar" },
+            { "id": "clt_i2", "content": "Prefiro não trabalhar em regime CLT", "outgoingEdgeId": "e10_clt_nogo" }
+          ],
+          "options": { "variableId": "v21", "isMultipleChoice": false }
+        },
+        {
+          "id": "b10_q_fonte",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Última pergunta: onde você soube dessa vaga?" }] }] }
+        },
+        {
+          "id": "b10_fonte",
+          "type": "choice input",
+          "items": [
+            { "id": "fte_i0", "content": "Grupo ou indicação por WhatsApp" },
+            { "id": "fte_i1", "content": "Instagram / redes sociais" },
+            { "id": "fte_i2", "content": "Indicação de amigo ou familiar" },
+            { "id": "fte_i3", "content": "Liderança comunitária / igreja / associação do bairro" },
+            { "id": "fte_i4", "content": "Outro canal" }
+          ],
+          "options": { "variableId": "v22", "isMultipleChoice": false },
+          "outgoingEdgeId": "e10_to_g12"
+        }
+      ]
+    },
+
+    {
+      "id": "g11",
+      "title": "NO-GO — Não aceita CLT",
+      "graphCoordinates": { "x": 2700, "y": 420 },
+      "blocks": [
+        {
+          "id": "b11_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Obrigado pelo interesse na SST Clínica! 🙏" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Motivo: ", "bold": true }, { "text": "Esta vaga é exclusivamente no regime CLT (carteira assinada). Não temos modelo PJ para a posição de atendente." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Se sua situação mudar, adoraríamos ouvir você! 📸 @sstclinica" }] }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g12",
+      "title": "Candidatura Recebida — Sucesso",
+      "graphCoordinates": { "x": 3200, "y": 0 },
+      "blocks": [
+        {
+          "id": "b12_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "{{v01}}, sua candidatura foi recebida com sucesso! 🎉", "bold": true }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Vamos avaliar suas respostas nos próximos dias úteis. Se houver fit com o perfil que buscamos, entramos em contato pelo seu WhatsApp para agendar uma conversa rápida." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "📍 Local da entrevista (se chamada):", "bold": true }] },
+              { "type": "p", "children": [{ "text": "SST Clínica — Bairro da Paz · Salvador/BA" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "📅 Prazo de retorno:", "bold": true }, { "text": " até 5 dias úteis." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "💡 Dica para a entrevista:", "bold": true }, { "text": " pense em uma situação real em que você ajudou alguém num momento difícil — pode ser até fora do trabalho. Esse tipo de história é valorizado por nós. 🤝" }] }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g13",
+      "title": "NO-GO — Não concordou com LGPD",
+      "graphCoordinates": { "x": 0, "y": 360 },
+      "blocks": [
+        {
+          "id": "b13_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Entendemos! Sem o consentimento não é possível prosseguir com a candidatura, pois precisamos processar seus dados para a seleção." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Se mudar de ideia, pode acessar este link novamente e reiniciar. 🤝" }] }
+            ]
+          }
+        }
+      ]
+    }
+
+  ],
+
+  "settings": {
+    "general": {
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": true,
+      "isHideQueryParamsEnabled": true
+    },
+    "typingEmulation": {
+      "enabled": true,
+      "speed": 300,
+      "maxDelay": 2.5
+    }
+  },
+
+  "theme": {
+    "general": {
+      "font": "Inter",
+      "background": { "type": "Color", "content": "#f2efe6" }
+    },
+    "chat": {
+      "hostBubbles": { "backgroundColor": "#1987c3", "color": "#ffffff" },
+      "guestBubbles": { "backgroundColor": "#f0f7ff", "color": "#1a1a2e" },
+      "buttons": { "backgroundColor": "#1987c3", "color": "#ffffff" },
+      "inputs": { "backgroundColor": "#ffffff", "color": "#1a1a2e", "placeholderColor": "#9ca3af" }
+    }
+  }
+}

@@ -808,6 +808,37 @@ Dados capturados do grupo WhatsApp da clínica:
 
 ---
 
+## Grande Automação MADIP — 05/06/2026 ✅ CRIADA
+
+**Escopo:** SST Card + SST Clínica MADIP + Bairro da Paz — 9 automações mapeadas.
+
+| Documento | Conteúdo | Status |
+|---|---|---|
+| `processo-comercial-7dias/02-cadencias/GRANDE-AUTOMACAO-MADIP.md` | **Plano mestre**: inventário 9 automações, arquitetura global, variáveis de ambiente, cronograma e checklist de implantação | ✅ Criado |
+| `processo-comercial-7dias/02-cadencias/n8n-dashboard-diario-sst.json` | Workflow n8n: cron 15h45 → lê Notion "Parciais SST Card" → consolida Karine/Lucas/Raquel → envia texto no grupo WhatsApp | ✅ JSON pronto — importar |
+| `processo-comercial-7dias/02-cadencias/n8n-cobranca-d3-d7-d15.json` | Workflow n8n: cron 9h → lê Sheets "Cobranças" → calcula fase → envia WhatsApp individual → atualiza Sheets | ✅ JSON pronto — importar |
+
+**Estado geral das 9 automações (05/06):**
+
+| # | Automação | Estado |
+|---|-----------|--------|
+| A1 | Group Parser v2 (SST Card + Clínica) | ✅ JSON pronto — **implantar hoje** |
+| A2 | Dashboard diário 15h45 | ✅ JSON criado — **implantar hoje** |
+| A3 | Cadência cobrança D+3/7/15 | ✅ JSON criado — implantar esta semana |
+| A4 | Funil 1 anti-noshow (cron D-3/D-1/D+1) | ✅ JSON pronto — **implantar hoje** |
+| A5 | Typebot anti-noshow | ✅ JSON pronto — **importar no Typebot hoje** |
+| A6 | Onboarding novos membros D+0→D+30 | ✅ JSON criado — implantar (10/06) |
+| A7 | Reativação cancelados | ✅ JSON criado — implantar (15/06) |
+| A8 | Typebot qualificação lead Bairro da Paz | ✅ JSON criado — importar no Typebot (10/06) |
+| A9 | n8n Typebot BP → Chatwoot | ✅ JSON criado — implantar (13/06) |
+
+**Variáveis de ambiente n8n necessárias (configurar antes de implantar):**
+`ANTHROPIC_API_KEY` · `NOTION_TOKEN` · `NOTION_PARCIAIS_DB_ID` · `NOTION_CLINICA_DB_ID` · `CHATWOOT_API_KEY` · `EVOLUTION_API_URL` · `EVOLUTION_API_KEY` · `EVOLUTION_INSTANCE` · `SST_CARD_GROUP_CHAT_ID` · `SHEETS_COBRANCA_ID` · `SHEETS_AGENDA_ID`
+
+**Guia de implantação passo a passo:** `processo-comercial-7dias/02-cadencias/guia-implantacao-automacoes.html` — publicado em playbook.ssfcard.ia.br (dark theme, checklists interativos com persistência localStorage, barra de progresso, troubleshooting por automação). Usar no celular durante a implantação.
+
+---
+
 ## Decisão de Produto — 02–03/06/2026
 
 ### Áudios Rogério (02/06/2026) — Revisão Estrutura de Preços

@@ -1,0 +1,312 @@
+{
+  "version": "6",
+  "id": "sst-clinica-funil1-noshow-v1",
+  "name": "Funil 1 — Anti No-Show · SST Clínica MADIP",
+
+  "events": [
+    {
+      "id": "evt_start",
+      "type": "start",
+      "graphCoordinates": { "x": -400, "y": 0 },
+      "outgoingEdgeId": "e_start_to_g01"
+    }
+  ],
+
+  "variables": [
+    { "id": "v01", "name": "nome_paciente" },
+    { "id": "v02", "name": "nome_medico" },
+    { "id": "v03", "name": "especialidade" },
+    { "id": "v04", "name": "data_consulta" },
+    { "id": "v05", "name": "hora_consulta" },
+    { "id": "v06", "name": "telefone" },
+    { "id": "v07", "name": "data_op1" },
+    { "id": "v08", "name": "data_op2" },
+    { "id": "v09", "name": "data_op3" },
+    { "id": "v10", "name": "data_remarcada" }
+  ],
+
+  "edges": [
+    { "id": "e_start_to_g01",   "from": { "eventId": "evt_start" },                           "to": { "groupId": "g01" } },
+    { "id": "e01_to_g02",       "from": { "groupId": "g01", "blockId": "b01_msg3" },           "to": { "groupId": "g02" } },
+    { "id": "e02_sim",          "from": { "groupId": "g02", "blockId": "b02_choice" },         "to": { "groupId": "g03" } },
+    { "id": "e02_rem",          "from": { "groupId": "g02", "blockId": "b02_choice" },         "to": { "groupId": "g04" } },
+    { "id": "e03_to_gfim",      "from": { "groupId": "g03", "blockId": "b03_wh" },             "to": { "groupId": "gfim" } },
+    { "id": "e04_d1_to_g05",    "from": { "groupId": "g04", "blockId": "b04_choice" },         "to": { "groupId": "g05" } },
+    { "id": "e04_d2_to_g05",    "from": { "groupId": "g04", "blockId": "b04_choice" },         "to": { "groupId": "g05" } },
+    { "id": "e04_d3_to_g05",    "from": { "groupId": "g04", "blockId": "b04_choice" },         "to": { "groupId": "g05" } },
+    { "id": "e04_ligar_to_g06", "from": { "groupId": "g04", "blockId": "b04_choice" },         "to": { "groupId": "g06" } },
+    { "id": "e05_to_gfim",      "from": { "groupId": "g05", "blockId": "b05_wh" },             "to": { "groupId": "gfim" } },
+    { "id": "e06_to_gfim",      "from": { "groupId": "g06", "blockId": "b06_wh" },             "to": { "groupId": "gfim" } }
+  ],
+
+  "groups": [
+
+    {
+      "id": "g01",
+      "title": "Mensagem D-3 — Confirmação",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "blocks": [
+        {
+          "id": "b01_msg1",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [
+                { "text": "Olá, " },
+                { "text": "{{nome_paciente}}", "bold": true },
+                { "text": "! 👋" }
+              ]}
+            ]
+          }
+        },
+        {
+          "id": "b01_msg2",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [
+                { "text": "Sua consulta com " },
+                { "text": "{{nome_medico}}", "bold": true },
+                { "text": " ({{especialidade}}) está agendada para:" }
+              ]},
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [
+                { "text": "📅 " },
+                { "text": "{{data_consulta}}", "bold": true },
+                { "text": " às " },
+                { "text": "{{hora_consulta}}", "bold": true }
+              ]},
+              { "type": "p", "children": [{ "text": "📍 SST Clínica — Simões Filho/BA" }] }
+            ]
+          }
+        },
+        {
+          "id": "b01_msg3",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Você confirma sua presença? 😊" }] }
+            ]
+          },
+          "outgoingEdgeId": "e01_to_g02"
+        }
+      ]
+    },
+
+    {
+      "id": "g02",
+      "title": "Escolha — Confirmar ou Remarcar",
+      "graphCoordinates": { "x": 440, "y": 0 },
+      "blocks": [
+        {
+          "id": "b02_choice",
+          "type": "choice input",
+          "items": [
+            { "id": "c02_sim", "content": "✅ Sim, estarei lá!",    "outgoingEdgeId": "e02_sim" },
+            { "id": "c02_rem", "content": "📅 Preciso remarcar",    "outgoingEdgeId": "e02_rem" }
+          ],
+          "options": { "isMultipleChoice": false }
+        }
+      ]
+    },
+
+    {
+      "id": "g03",
+      "title": "Fluxo Confirmado",
+      "graphCoordinates": { "x": 880, "y": -220 },
+      "blocks": [
+        {
+          "id": "b03_msg1",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [
+                { "text": "Perfeito! Consulta confirmada para " },
+                { "text": "{{data_consulta}}", "bold": true },
+                { "text": " 🎉" }
+              ]}
+            ]
+          }
+        },
+        {
+          "id": "b03_msg2",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Lembretes:" }] },
+              { "type": "p", "children": [{ "text": "• Chegue 10 minutos antes ⏰" }] },
+              { "type": "p", "children": [{ "text": "• Traga documento com foto 🪪" }] },
+              { "type": "p", "children": [{ "text": "• Cartão SST Card (se tiver) 💙" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Dúvidas? É só responder aqui 😊" }] }
+            ]
+          }
+        },
+        {
+          "id": "b03_wh",
+          "type": "Webhook",
+          "webhookId": "wh-confirmado",
+          "outgoingEdgeId": "e03_to_gfim",
+          "options": {
+            "url": "https://SEU_N8N/webhook/sst-noshow-confirmado",
+            "method": "POST",
+            "isCustomBody": true,
+            "body": "{\"evento\":\"confirmado\",\"telefone\":\"{{telefone}}\",\"nome\":\"{{nome_paciente}}\",\"data\":\"{{data_consulta}}\",\"hora\":\"{{hora_consulta}}\",\"medico\":\"{{nome_medico}}\"}"
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g04",
+      "title": "Fluxo Remarcar — Escolher Data",
+      "graphCoordinates": { "x": 880, "y": 200 },
+      "blocks": [
+        {
+          "id": "b04_msg1",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Sem problemas! 😊 Escolha uma data disponível:" }] }
+            ]
+          }
+        },
+        {
+          "id": "b04_choice",
+          "type": "choice input",
+          "items": [
+            { "id": "c04_d1",    "content": "📅 {{data_op1}}",            "outgoingEdgeId": "e04_d1_to_g05" },
+            { "id": "c04_d2",    "content": "📅 {{data_op2}}",            "outgoingEdgeId": "e04_d2_to_g05" },
+            { "id": "c04_d3",    "content": "📅 {{data_op3}}",            "outgoingEdgeId": "e04_d3_to_g05" },
+            { "id": "c04_ligar", "content": "📞 Prefiro que me liguem",   "outgoingEdgeId": "e04_ligar_to_g06" }
+          ],
+          "options": {
+            "isMultipleChoice": false,
+            "variableId": "v10"
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g05",
+      "title": "Fluxo Remarcado — Data Confirmada",
+      "graphCoordinates": { "x": 1340, "y": 80 },
+      "blocks": [
+        {
+          "id": "b05_msg1",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [
+                { "text": "Anotado! ✅ Sua consulta foi remarcada para " },
+                { "text": "{{data_remarcada}}", "bold": true },
+                { "text": " 🗓️" }
+              ]}
+            ]
+          }
+        },
+        {
+          "id": "b05_msg2",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Enviaremos um lembrete 3 dias antes. Até lá! 😊" }] }
+            ]
+          }
+        },
+        {
+          "id": "b05_wh",
+          "type": "Webhook",
+          "webhookId": "wh-remarcado",
+          "outgoingEdgeId": "e05_to_gfim",
+          "options": {
+            "url": "https://SEU_N8N/webhook/sst-noshow-remarcado",
+            "method": "POST",
+            "isCustomBody": true,
+            "body": "{\"evento\":\"remarcado\",\"telefone\":\"{{telefone}}\",\"nome\":\"{{nome_paciente}}\",\"data_nova\":\"{{data_remarcada}}\",\"medico\":\"{{nome_medico}}\",\"especialidade\":\"{{especialidade}}\"}"
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g06",
+      "title": "Fluxo Solicita Ligação",
+      "graphCoordinates": { "x": 1340, "y": 360 },
+      "blocks": [
+        {
+          "id": "b06_msg1",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Entendido! Nossa equipe vai ligar para você em breve para remarcar 📞" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [
+                { "text": "Obrigado pelo aviso, " },
+                { "text": "{{nome_paciente}}", "bold": true },
+                { "text": "!" }
+              ]}
+            ]
+          }
+        },
+        {
+          "id": "b06_wh",
+          "type": "Webhook",
+          "webhookId": "wh-ligar",
+          "outgoingEdgeId": "e06_to_gfim",
+          "options": {
+            "url": "https://SEU_N8N/webhook/sst-noshow-ligar",
+            "method": "POST",
+            "isCustomBody": true,
+            "body": "{\"evento\":\"solicita_ligacao\",\"telefone\":\"{{telefone}}\",\"nome\":\"{{nome_paciente}}\",\"medico\":\"{{nome_medico}}\",\"especialidade\":\"{{especialidade}}\"}"
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "gfim",
+      "title": "Fim",
+      "graphCoordinates": { "x": 1800, "y": 0 },
+      "blocks": [
+        {
+          "id": "bfim_msg",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Cuide-se bem! Até logo 💙" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "— SST Clínica" }] }
+            ]
+          }
+        }
+      ]
+    }
+
+  ],
+
+  "theme": {
+    "chat": {
+      "hostBubbles":  { "backgroundColor": "#1987c3", "color": "#ffffff" },
+      "guestBubbles": { "backgroundColor": "#e8f4fd", "color": "#1a1a1a" },
+      "buttons":      { "backgroundColor": "#1987c3", "color": "#ffffff" }
+    },
+    "general": {
+      "background": { "type": "Color", "content": "#f0f7ff" }
+    }
+  },
+
+  "settings": {
+    "general": {
+      "isBrandingEnabled":    false,
+      "isInputPrefillEnabled": true,
+      "isHideQueryParamsEnabled": false
+    },
+    "typingEmulation": {
+      "enabled": true,
+      "speed":   300,
+      "maxDelay": 1.5
+    }
+  }
+}

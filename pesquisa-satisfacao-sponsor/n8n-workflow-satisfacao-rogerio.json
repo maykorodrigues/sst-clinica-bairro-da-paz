@@ -1,0 +1,79 @@
+{
+  "name": "SST Satisfação Sponsor — Rogério → WhatsApp Mayko",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-satisfacao-sponsor",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "d4e5f6a7-0001-0001-0001-b2c3d4e5f6a7",
+      "name": "Receber Pesquisa",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\nconst b = raw.body ?? raw;\nconst r = b.respostas ?? {};\n\nconst sat = (r.satisfacao_geral ?? '').toLowerCase();\nconst valor = (r.percepcao_valor ?? '').toLowerCase();\nconst cont = (r.continuidade ?? '').toLowerCase();\n\n// Semáforo: define se Mayko pode cobrar direto ou deve ligar antes\nlet semaforo = '🟢 OK — satisfação positiva';\nlet acao = 'Pode enviar a cobrança da 2ª mensalidade com tranquilidade.';\n\nconst vermelho = sat.includes('abaixo')\n  || valor.includes('esperava mais')\n  || cont.includes('pausar')\n  || cont.includes('encerrar');\n\nconst amarelo = sat.includes('dentro do esperado')\n  || valor.includes('ainda não sei')\n  || cont.includes('dúvidas');\n\nif (vermelho) {\n  semaforo = '🔴 ATENÇÃO — risco de insatisfação';\n  acao = '⚠️ LIGUE para o Rogério ANTES de enviar a cobrança. Resolva o ponto antes do financeiro.';\n} else if (amarelo) {\n  semaforo = '🟡 MORNO — satisfação neutra';\n  acao = 'Considere uma ligação rápida de alinhamento antes da cobrança.';\n}\n\nconst linhas = [\n  '📊 *Pesquisa de Satisfação — Rogério (Advisory)*',\n  semaforo,\n  '',\n  `*Satisfação geral:* ${r.satisfacao_geral ?? 'N/A'}`,\n  `*Valor x investimento:* ${r.percepcao_valor ?? 'N/A'}`,\n  `*Maior entrega:* ${r.maior_entrega ?? 'N/A'}`,\n  `*Comunicação/ritmo:* ${r.comunicacao ?? 'N/A'}`,\n  `*Continuidade:* ${r.continuidade ?? 'N/A'}`,\n  `*Prioridade próx. mês:* ${r.prioridade_prox_mes ?? 'N/A'}`,\n  '',\n  `*O que melhorar:* ${r.pode_melhorar || '—'}`,\n  `*Mensagem direta:* ${r.mensagem_mayko || '—'}`,\n  '',\n  `➡️ *Ação sugerida:* ${acao}`,\n];\n\nreturn [{ json: { mensagem: linhas.join('\\n'), numero: '5571982170967' } }];"
+      },
+      "id": "d4e5f6a7-0002-0002-0002-b2c3d4e5f6a7",
+      "name": "Montar Mensagem + Semáforo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://evolution.clinicalucrativa.ia.br/message/sendText/Mayko Rodrigues - Consultor Comercial Clínica Lucrativa",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ number: $json.numero, text: $json.mensagem }) }}",
+        "options": {}
+      },
+      "id": "d4e5f6a7-0003-0003-0003-b2c3d4e5f6a7",
+      "name": "WhatsApp Mayko",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [720, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2WoKcrxJKwbaBV05",
+          "name": "apikey"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Receber Pesquisa": {
+      "main": [
+        [
+          {
+            "node": "Montar Mensagem + Semáforo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar Mensagem + Semáforo": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Mayko",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

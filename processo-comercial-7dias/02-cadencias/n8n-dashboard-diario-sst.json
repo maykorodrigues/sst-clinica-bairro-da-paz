@@ -1,0 +1,299 @@
+{
+  "name": "SST — Dashboard Diário (cron 15h45)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "45 15 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "a1b2c3d4-0001-0001-0001-000000000001",
+      "name": "Cron 15h45 Seg–Sex",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [260, 300],
+      "notes": "Dispara de segunda a sexta às 15h45 (BRT). Horário configurado em São Paulo."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calcular datas: hoje no formato YYYY-MM-DD e início do dia\nconst agora = new Date();\nconst hoje = agora.toLocaleDateString('pt-BR', { \n  year: 'numeric', \n  month: '2-digit', \n  day: '2-digit',\n  timeZone: 'America/Sao_Paulo'\n}).split('/').reverse().join('-');\n\n// Data início: hoje às 00:00 BRT → ISO\nconst inicioHoje = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate(), 3, 0, 0).toISOString();\n\nreturn [{ json: { hoje, inicioHoje } }];"
+      },
+      "id": "a1b2c3d4-0002-0002-0002-000000000002",
+      "name": "Calcular Data Hoje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/databases/{{ $env.NOTION_PARCIAIS_DB_ID }}/query",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer {{ $env.NOTION_TOKEN }}"
+            },
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "filter",
+              "value": "={\"property\":\"Data\",\"date\":{\"equals\":\"{{ $json.hoje }}\"}}"
+            },
+            {
+              "name": "page_size",
+              "value": "50"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0003-0003-0003-000000000003",
+      "name": "Buscar Parciais Notion",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [700, 300],
+      "notes": "Lê o database 'Parciais SST Card' do Notion filtrando pela data de hoje."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Consolidar métricas por pessoa a partir dos dados do Notion\nconst items = $input.first().json.results || [];\nconst hoje = $('Calcular Data Hoje').first().json.hoje;\n\nconst consolidado = {\n  karine: { fechamentos: 0, reativacoes: 0, falou_com: 0 },\n  lucas:  { ativacoes: 0, retencoes: 0, msgs: 0 },\n  raquel: { leads: 0, instagram: 0, falou_com: 0 },\n  bloqueadores: []\n};\n\nfor (const item of items) {\n  const props = item.properties;\n  const pessoa = (props.Pessoa?.select?.name || '').toLowerCase();\n  const tipo = props.Tipo?.select?.name || '';\n  \n  if (pessoa === 'karine') {\n    consolidado.karine.fechamentos  += props.Fechamentos?.number || 0;\n    consolidado.karine.reativacoes  += props.Reativações?.number || 0;\n    consolidado.karine.falou_com    += props['Falou Com']?.number || 0;\n  } else if (pessoa === 'lucas') {\n    consolidado.lucas.ativacoes     += props.Ativações?.number || 0;\n    consolidado.lucas.retencoes     += props.Reativações?.number || 0;\n    consolidado.lucas.msgs          += props['Falou Com']?.number || 0;\n  } else if (pessoa === 'raquel') {\n    consolidado.raquel.leads        += props['Leads Gerados']?.number || 0;\n    consolidado.raquel.falou_com    += props['Falou Com']?.number || 0;\n  }\n\n  // Capturar bloqueadores registrados\n  const obs = props.Observação?.rich_text?.[0]?.plain_text || '';\n  if (obs.toLowerCase().includes('bloqueador') || obs.toLowerCase().includes('problema')) {\n    consolidado.bloqueadores.push(`${props.Pessoa?.select?.name}: ${obs.slice(0, 80)}`);\n  }\n}\n\n// Metas do dia (ajustar conforme sprint)\nconst metas = {\n  karine_fechamentos: 3,\n  lucas_ativacoes: 20,\n  raquel_leads: 10\n};\n\n// Calcular status\nconst status = (val, meta) => val >= meta ? '🟢' : val >= meta * 0.5 ? '🟡' : '🔴';\n\nconst total_cartoes = consolidado.karine.fechamentos;\nconst total_leads   = consolidado.raquel.leads;\n\nreturn [{ json: { consolidado, metas, status, total_cartoes, total_leads, hoje } }];"
+      },
+      "id": "a1b2c3d4-0004-0004-0004-000000000004",
+      "name": "Consolidar Métricas por Pessoa",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [920, 300],
+      "notes": "Agrupa os parciais do Notion por pessoa (Karine, Lucas, Raquel) e calcula totais e status."
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nconst c = d.consolidado;\nconst m = d.metas;\nconst s = d.status;\nconst hoje = d.hoje;\n\n// Formatar data para exibição\nconst partes = hoje.split('-');\nconst dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;\n\n// Emoji de status por pessoa\nconst sk = s(c.karine.fechamentos, m.karine_fechamentos);\nconst sl = s(c.lucas.ativacoes, m.lucas_ativacoes);\nconst sr = s(c.raquel.leads, m.raquel_leads);\n\n// Bloqueadores\nconst blocos = c.bloqueadores.length > 0\n  ? c.bloqueadores.map(b => `  ▸ ${b}`).join('\\n')\n  : '  Nenhum registrado';\n\nconst mensagem = `📊 *Resultado SST Card — ${dataFormatada}*\n\n` +\n  `👤 *Karine:* ${sk}\\n` +\n  `  Cartões: *${c.karine.fechamentos}* / ${m.karine_fechamentos} | Reativações: ${c.karine.reativacoes} | Contatos: ${c.karine.falou_com}\\n\\n` +\n  `👤 *Lucas:* ${sl}\\n` +\n  `  Ativações: *${c.lucas.ativacoes}* / ${m.lucas_ativacoes} | Retenções: ${c.lucas.retencoes}\\n\\n` +\n  `👤 *Raquel:* ${sr}\\n` +\n  `  Leads: *${c.raquel.leads}* / ${m.raquel_leads} leads\\n\\n` +\n  `━━━━━━━━━━━━━━━━━━\\n` +\n  `📦 *Consolidado:* ${d.total_cartoes} cartões | ${d.total_leads} leads\\n\\n` +\n  `🔔 *Bloqueadores:*\\n${blocos}\\n\\n` +\n  `_Gerado automaticamente às 15h45 | n8n SST_`;\n\nreturn [{ json: { mensagem } }];"
+      },
+      "id": "a1b2c3d4-0005-0005-0005-000000000005",
+      "name": "Gerar Texto do Dashboard",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1140, 300],
+      "notes": "Formata a mensagem final com emojis e status para envio no grupo WhatsApp."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.EVOLUTION_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $env.SST_CARD_GROUP_CHAT_ID }}\",\n  \"text\": {{ JSON.stringify($json.mensagem) }}\n}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0006-0006-0006-000000000006",
+      "name": "Enviar no Grupo WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1360, 300],
+      "notes": "Envia o dashboard via Evolution API no grupo SST Card. Configure SST_CARD_GROUP_CHAT_ID com o chat ID do grupo (formato: 5571XXXXXXXX-XXXXXXXXXX@g.us)."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-001",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0007-0007-0007-000000000007",
+      "name": "Envio OK?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1580, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date().toISOString();\nconsole.log(`[${now}] Dashboard diário enviado com sucesso.`);\nreturn [{ json: { status: 'ok', timestamp: now } }];"
+      },
+      "id": "a1b2c3d4-0008-0008-0008-000000000008",
+      "name": "Log: Sucesso",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1800, 220]
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date().toISOString();\nconsole.error(`[${now}] Falha ao enviar dashboard diário.`);\nreturn [{ json: { status: 'erro', timestamp: now, dados: $input.first().json } }];"
+      },
+      "id": "a1b2c3d4-0009-0009-0009-000000000009",
+      "name": "Log: Falha",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1800, 400]
+    }
+  ],
+  "connections": {
+    "Cron 15h45 Seg–Sex": {
+      "main": [
+        [
+          {
+            "node": "Calcular Data Hoje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Data Hoje": {
+      "main": [
+        [
+          {
+            "node": "Buscar Parciais Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Parciais Notion": {
+      "main": [
+        [
+          {
+            "node": "Consolidar Métricas por Pessoa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolidar Métricas por Pessoa": {
+      "main": [
+        [
+          {
+            "node": "Gerar Texto do Dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Texto do Dashboard": {
+      "main": [
+        [
+          {
+            "node": "Enviar no Grupo WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar no Grupo WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Envio OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envio OK?": {
+      "main": [
+        [
+          {
+            "node": "Log: Sucesso",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log: Falha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo"
+  },
+  "versionId": "a1b2c3d4-ffff-ffff-ffff-000000000001",
+  "id": "dashboard-diario-sst-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "sst-clinica"
+  },
+  "tags": [
+    { "name": "sst" },
+    { "name": "dashboard" },
+    { "name": "automacao" }
+  ],
+  "_setup_notes": {
+    "variaveis_necessarias": [
+      "NOTION_TOKEN — token de integração Notion",
+      "NOTION_PARCIAIS_DB_ID — ID do database 'Parciais SST Card'",
+      "EVOLUTION_API_URL — URL base da Evolution API (ex: https://evo.xxx.com)",
+      "EVOLUTION_API_KEY — chave da Evolution API",
+      "EVOLUTION_INSTANCE — nome da instância (ex: sstcard)",
+      "SST_CARD_GROUP_CHAT_ID — chat ID do grupo WhatsApp (ex: 5571XXXXXXXX-XXXXXXXXXX@g.us)"
+    ],
+    "dependencias": [
+      "A1 — Group Parser v2 deve estar ativo e alimentando o Notion com parciais diários",
+      "O database Notion deve ter colunas: Pessoa (select), Fechamentos (number), Reativações (number), Falou Com (number), Ativações (number), Leads Gerados (number), Data (date), Observação (text)"
+    ],
+    "como_testar": [
+      "1. Verificar que há entradas no Notion com Data = hoje",
+      "2. Clicar 'Execute workflow' no n8n (não aguardar o cron)",
+      "3. Confirmar mensagem chegou no grupo WhatsApp"
+    ]
+  }
+}

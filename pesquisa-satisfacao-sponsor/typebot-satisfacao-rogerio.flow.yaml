@@ -1,0 +1,206 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Flow Spec — Pesquisa de Satisfação do Sponsor · Rogério (Advisory SST)
+# Versão: 1.0 · Data: 28/05/2026
+# Objetivo: medir satisfação ANTES de enviar a cobrança da 2ª mensalidade
+#           (R$ 3.800 · vence 29/05). Decidir: cobrar direto ou ligar antes.
+# Importar via: typebot.clinicalucrativa.ia.br → Criar typebot → Importar JSON
+# JSON gerado: typebot-satisfacao-rogerio.json (mesmo diretório)
+# Workflow n8n: n8n-workflow-satisfacao-rogerio.json (mesmo diretório)
+# Base: padrão validado em [[padrao-typebot-whatsapp]]
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: satisfacao-sponsor-rogerio-v1
+locale: pt-BR
+entry_channels: [web]   # link enviado por WhatsApp (não é bot de conversa)
+
+theme:
+  host_bubble_bg: "#1987c3"   # azul SST
+  host_bubble_color: "#ffffff"
+  guest_bubble_bg: "#f0f7ff"
+  guest_bubble_color: "#1a1a2e"
+  button_bg: "#1987c3"
+  button_color: "#ffffff"
+  font: "Inter"
+  background_color: "#f2efe6"
+
+# ── VARIÁVEIS ─────────────────────────────────────────────────────────────────
+variables:
+  - id: v01  name: SatisfacaoGeral     # escala — headline (CSAT)
+  - id: v02  name: PercepcaoValor      # valor x investimento (sinal pré-cobrança)
+  - id: v03  name: MaiorEntrega        # múltipla escolha — o que gerou valor
+  - id: v04  name: PodeMelhorar        # texto longo — risco de churn / ajustes
+  - id: v05  name: Comunicacao         # escala — clareza/ritmo
+  - id: v06  name: Continuidade        # intenção de seguir/expandir (retenção)
+  - id: v07  name: PrioridadeProxMes   # foco do próximo ciclo
+  - id: v08  name: MensagemMayko       # texto longo, opcional
+
+# ── DESIGN (por que cada pergunta) ────────────────────────────────────────────
+# Q1 Satisfação geral  → métrica de cabeçalho, comparável mês a mês.
+# Q2 Valor x investim.  → o ponto que mais importa antes de cobrar R$ 3.800.
+# Q3 Maior entrega      → reforça os pontos fortes; mostra o que o sponsor VÊ valor.
+# Q4 O que melhorar     → abre espaço para frustração antes que vire churn.
+# Q5 Comunicação/ritmo  → calibra cadência (matinais, relatórios) — Rogério gosta direto.
+# Q6 Continuidade       → sinal de retenção/expansão (o real objetivo pré-cobrança).
+# Q7 Prioridade próx.   → transforma a pesquisa em direção de trabalho (parceria).
+# Q8 Mensagem aberta    → canal direto, sem fricção, opcional.
+
+# ── FLUXO (linear — sem eliminatórios; nunca "elimina" o sponsor) ─────────────
+blocks:
+
+  - id: abertura
+    group: g00
+    type: text
+    text: |
+      Olá, Sr. Rogério! 👋
+
+      Aqui é o Advisory do Mayko Rodrigues.
+
+      Antes de fecharmos o 1º mês, queria 2 minutos do seu tempo: 7 perguntas rápidas pra eu entender o que está funcionando e calibrar o próximo ciclo com a SUA prioridade.
+
+      Resposta honesta vale mais que elogio. 🙏
+    next: q1_satisfacao  # botão "Bora começar →"
+
+  - id: q1_satisfacao
+    group: g01
+    type: choice
+    text: "De forma geral, o quanto você está satisfeito com o trabalho do Advisory neste 1º mês?"
+    save_to: SatisfacaoGeral
+    options:
+      - "⭐ Muito abaixo do esperado"
+      - "⭐⭐ Abaixo do esperado"
+      - "⭐⭐⭐ Dentro do esperado"
+      - "⭐⭐⭐⭐ Acima do esperado"
+      - "⭐⭐⭐⭐⭐ Muito acima do esperado"
+    next: q2_valor
+
+  - id: q2_valor
+    group: g02
+    type: choice
+    text: "Pensando no que foi entregue (Bairro da Paz, campanha de recuperação, capacitação da equipe, RH do closer...), o investimento mensal está se justificando?"
+    save_to: PercepcaoValor
+    options:
+      - "Sim, com folga — entrega maior que o investimento"
+      - "Sim, está equilibrado"
+      - "Ainda não sei dizer — preciso ver mais resultado"
+      - "Não, esperava mais pelo valor"
+    next: q3_entrega
+
+  - id: q3_entrega
+    group: g03
+    type: choice
+    multiple: true
+    text: "O que mais te gerou valor neste mês? (pode marcar mais de um)"
+    save_to: MaiorEntrega
+    options:
+      - "Estruturação da filial Bairro da Paz"
+      - "Campanha de recuperação (Perdão de Dívida / Tenex)"
+      - "Capacitação da equipe (Karine, Raquel, Lucas)"
+      - "Processo seletivo do Closer (RH)"
+      - "Organização / estrutura PJ da equipe"
+      - "Playbook e relatórios (matinais, dashboards)"
+      - "Visão estratégica / direção do negócio"
+    next: q4_melhorar
+
+  - id: q4_melhorar
+    group: g04
+    type: input
+    input_type: long_text
+    prompt: "Na sua visão, o que faltou ou o que eu deveria fazer diferente no próximo mês? Pode ser direto."
+    save_to: PodeMelhorar
+    next: q5_comunicacao
+
+  - id: q5_comunicacao
+    group: g05
+    type: choice
+    text: "E sobre a forma de trabalho — comunicação, ritmo das matinais, clareza dos relatórios?"
+    save_to: Comunicacao
+    options:
+      - "Está ótimo, não mudaria nada"
+      - "Bom, mas dá pra ajustar (digo no campo aberto)"
+      - "Excesso de contato / informação"
+      - "Pouco contato — queria mais presença"
+    next: q6_continuidade
+
+  - id: q6_continuidade
+    group: g06
+    type: choice
+    text: "Pretende seguir com o Advisory nos próximos meses?"
+    save_to: Continuidade
+    options:
+      - "Com certeza — quero continuar e até expandir"
+      - "Sim, mantenho o combinado"
+      - "Tenho dúvidas — vamos conversar"
+      - "Penso em pausar / encerrar"
+    next: q7_prioridade
+
+  - id: q7_prioridade
+    group: g07
+    type: choice
+    text: "Onde você quer que eu concentre energia no próximo mês? (prioridade nº 1)"
+    save_to: PrioridadeProxMes
+    options:
+      - "Inauguração Bairro da Paz (01/07)"
+      - "Contratação e rampagem do Closer"
+      - "Campanha de recuperação (761 contas Tenex)"
+      - "Vendas / conversão do SST Card"
+      - "Laboratório MADIP (Aline)"
+      - "Produtividade da equipe atual"
+    next: q8_mensagem
+
+  - id: q8_mensagem
+    group: g08
+    type: input
+    input_type: long_text
+    prompt: "Por último: algo que você queira me dizer diretamente? Elogio, cobrança, ideia — vale tudo. (opcional)"
+    save_to: MensagemMayko
+    next: webhook_n8n
+
+  - id: webhook_n8n
+    group: g09
+    type: webhook
+    method: POST
+    url: "https://n8n.clinicalucrativa.ia.br/webhook/sst-satisfacao-sponsor"
+    body: |
+      {
+        "source": "typebot:satisfacao-sponsor-rogerio",
+        "sponsor": "Rogério Ferreira",
+        "respostas": {
+          "satisfacao_geral":    "{{SatisfacaoGeral}}",
+          "percepcao_valor":     "{{PercepcaoValor}}",
+          "maior_entrega":       "{{MaiorEntrega}}",
+          "pode_melhorar":       "{{PodeMelhorar}}",
+          "comunicacao":         "{{Comunicacao}}",
+          "continuidade":        "{{Continuidade}}",
+          "prioridade_prox_mes": "{{PrioridadeProxMes}}",
+          "mensagem_mayko":      "{{MensagemMayko}}"
+        }
+      }
+    next: agradecimento
+
+  - id: agradecimento
+    group: g10
+    type: text
+    text: |
+      Valeu, Sr. Rogério! 🙏
+
+      Suas respostas chegaram. Vou usar exatamente isso pra calibrar o próximo ciclo — e te trago um plano focado na prioridade que você marcou.
+
+      Seguimos juntos. 🚀
+    next: end
+
+# ── SEMÁFORO (calculado no n8n, não no Typebot) ───────────────────────────────
+# O Code node lê SatisfacaoGeral + PercepcaoValor + Continuidade e classifica:
+#   🔴 ATENÇÃO  → "abaixo" | "esperava mais" | "pausar/encerrar"
+#                 Ação: LIGAR para Rogério ANTES de enviar a cobrança.
+#   🟡 MORNO    → "dentro do esperado" | "ainda não sei" | "dúvidas"
+#                 Ação: ligação rápida de alinhamento antes da cobrança.
+#   🟢 OK       → demais casos
+#                 Ação: enviar cobrança da 2ª mensalidade com tranquilidade.
+# A notificação chega no WhatsApp do Mayko (5571982170967) com a ação sugerida.
+
+# ── CHECKLIST DE IMPLANTAÇÃO (5 itens) ────────────────────────────────────────
+# [ ] 1. typebot.clinicalucrativa.ia.br → Criar typebot → Importar typebot-satisfacao-rogerio.json
+# [ ] 2. Importar n8n-workflow-satisfacao-rogerio.json no n8n e ATIVAR (POST /api/v1/workflows/{id}/activate)
+# [ ] 3. Publicar o typebot e copiar o link público
+# [ ] 4. Teste rápido: responder com nota "abaixo" → confirmar alerta 🔴 no WhatsApp do Mayko
+# [ ] 5. Enviar o link ao Rogério (após a msg da Julia) → só depois da resposta, mandar a cobrança

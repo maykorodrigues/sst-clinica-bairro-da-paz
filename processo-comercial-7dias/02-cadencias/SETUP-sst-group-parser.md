@@ -191,14 +191,117 @@ O n8n captura automaticamente e cria uma entrada no Notion a cada mensagem.
 3. Ver métricas consolidadas por pessoa
 4. Atualizar manualmente o playbook HTML com os números reais
 
-### Próxima evolução (v2 — opcional)
+### Próxima evolução (v3 — opcional)
 
 Adicionar um nó n8n Cron às 15h30 que:
-1. Lê todas as parciais do dia no Notion
-2. Consolida por pessoa (soma de fechamentos, reativações, etc.)
+1. Lê todas as parciais do dia no Notion (SST Card + Clínica)
+2. Consolida por pessoa e unidade
 3. Gera um bloco HTML com os dados
-4. Faz commit no GitHub via API
-5. Vercel redeploya o playbook automaticamente
+4. Faz commit no GitHub via API → Vercel redeploya o playbook automaticamente
+
+---
+
+## ⭐ v2 — Dual Group: SST Card + Clínica Simões Filhos (27/05/2026)
+
+Workflow expandido que monitora **dois grupos** simultaneamente e grava em **databases separados** no Notion.
+
+**Arquivo:** `02-cadencias/n8n-sst-group-parser-v2.json`
+
+### Arquitetura v2
+
+```
+Chatwoot Webhook (todos os grupos)
+    ↓
+Filtrar: Evento Válido? (message_created + não outgoing)
+    ↓
+Identificar Grupo + Extrair Base
+    ↓
+Switch: Por Grupo
+    ├── SST Card (conv. 4372) → Filtrar Relevância → Claude Vendas → Notion "Parciais SST Card"
+    ├── Clínica Simões Filhos (conv. XXXX) → Filtrar Relevância → Claude Clínica → Notion "Parciais Clínica"
+    └── Outros grupos → Ignorar (sem custo)
+```
+
+### Passo 1 — Descobrir o conversation_id do grupo da Clínica
+
+Abra o Chatwoot, entre na conversa do grupo da Clínica Simões Filhos e veja a URL:
+```
+https://chatwoot.clinicalucrativa.ia.br/app/accounts/1/conversations/XXXX
+```
+O número `XXXX` é o `conversation_id`.
+
+### Passo 2 — IDs dos grupos (já configurados no JSON)
+
+Os IDs estão gravados no nó **"Identificar Grupo + Extrair Base"**:
+
+```javascript
+const GRUPOS = {
+  '4372': 'sstcard',   // Clube SSTCARD (GROUP) — equipe comercial
+  '5590': 'clinica'    // SST CLÍNICA CONVERSÃO LABORATÓRIO (GROUP) — Débora, Aline
+};
+```
+
+> Nenhuma edição necessária — IDs já confirmados via Chatwoot em 27/05/2026.
+
+### Passo 3 — Criar o Database Notion "Parciais Clínica Simões Filhos"
+
+Dentro do Hub SST (https://www.notion.so/33ead3c0037381b093b3d0c0a41d3c4b):
+
+> **Grupo monitorado:** SST CLÍNICA CONVERSÃO LABORATÓRIO (GROUP) — conv. 5590
+> Métricas de conversão do laboratório MADIP (Débora, Aline). Foco em orçamentos × convertidos × taxa.
+
+| Nome da Coluna | Tipo | Opções / Notas |
+|---|---|---|
+| **Título** | Title | (automático: Pessoa \| tipo \| data hora) |
+| **Tipo** | Select | parcial-12h, final-dia, meta, bloqueador, reporte-espontaneo |
+| **Unidade** | Select | Simões Filhos, Bairro da Paz |
+| **Data** | Date | — |
+| **Hora** | Text | — |
+| **Pessoa** | Text | — |
+| **Orçamentos Dia** | Number | Valor R$ como número (ex: R$983 → 983) |
+| **Convertidos** | Number | Valor R$ convertido como número |
+| **Taxa Conversão** | Number | Percentual como float (ex: 40,5% → 40.5) |
+| **Ligações Feitas** | Number | — |
+| **Mensagens Enviadas** | Number | — |
+| **Bloqueador** | Text | Objeção ou impedimento relatado |
+| **Meta do Dia** | Text | Objetivo/alvo do dia |
+| **Confiança Parse** | Select | alta, media, baixa |
+| **Observação** | Text | — |
+| **Mensagem Original** | Text | — |
+| **Conversa ID** | Text | — |
+
+Pegar o Database ID da URL e salvar em: `NOTION_CLINICA_DB_ID = <ID aqui>`
+
+### Passo 4 — Adicionar variável de ambiente no n8n
+
+Em **Settings → Environment Variables**, adicionar:
+
+```
+NOTION_CLINICA_DB_ID = <ID do database "Parciais Clínica Simões Filhos">
+```
+
+As demais variáveis (`ANTHROPIC_API_KEY`, `NOTION_TOKEN`, `NOTION_PARCIAIS_DB_ID`) já existem do v1.
+
+### Passo 5 — Importar e ativar o workflow v2
+
+1. n8n → Workflows → Import from File → `n8n-sst-group-parser-v2.json`
+2. **Desativar** o workflow v1 (para não duplicar entradas do grupo SST Card)
+3. Ativar o workflow v2
+4. O webhook URL é o mesmo: `https://n8n.clinicalucrativa.ia.br/webhook/sst-group-parser`
+5. O Chatwoot já está configurado — nenhuma mudança necessária
+
+### O que o Claude extrai de cada grupo
+
+**Grupo SST Card — conv. 4372 (equipe comercial: Karine, Lucas, Raquel):**
+- tipo: parcial-12h, final-15h, check-in, reporte-espontaneo
+- falou_com, fechamentos, reativacoes, leads_gerados, ativacoes
+- → Notion database: `NOTION_PARCIAIS_DB_ID`
+
+**Grupo SST Clínica Conversão Laboratório — conv. 5590 (Débora, Aline):**
+- tipo: parcial-12h, final-dia, meta, bloqueador, reporte-espontaneo
+- orcamentos_dia (R$), convertidos (R$), taxa_conversao (%), ligacoes_feitas, mensagens_enviadas
+- bloqueador (objeção relatada), meta_dia (objetivo do dia)
+- → Notion database: `NOTION_CLINICA_DB_ID`
 
 ---
 
@@ -207,17 +310,20 @@ Adicionar um nó n8n Cron às 15h30 que:
 | Problema | Causa Provável | Solução |
 |---|---|---|
 | Webhook não recebe nada | Chatwoot não configurado | Verificar Settings → Integrations → Webhooks |
-| Filtro bloqueando tudo | conversation_id diferente | Verificar URL Chatwoot (`.../conversations/XXXX`) |
+| Grupo da Clínica não entra no banco | conversation_id errado no código | Verificar URL Chatwoot (`.../conversations/XXXX`) e editar o nó "Identificar Grupo" |
+| Filtro bloqueando tudo | conversation_id diferente | Verificar URL Chatwoot |
 | Claude não responde | `ANTHROPIC_API_KEY` inválida | Verificar env vars do n8n |
 | Notion dá 401 | Token expirado ou sem permissão | Reconectar integração no Notion |
-| Notion dá 404 | Database ID errado | Verificar `NOTION_PARCIAIS_DB_ID` |
+| Notion SST Card dá 404 | `NOTION_PARCIAIS_DB_ID` errado | Verificar env var |
+| Notion Clínica dá 404 | `NOTION_CLINICA_DB_ID` não configurado | Adicionar env var no n8n |
 | Parse com confiança "baixa" | Mensagem muito curta/informal | Aceitar — Claude extrai o que consegue |
 
 ---
 
 ## Links Úteis
 
-- Workflow JSON: `02-cadencias/n8n-sst-group-parser.json`
+- Workflow v1: `02-cadencias/n8n-sst-group-parser.json`
+- **Workflow v2 (dual group):** `02-cadencias/n8n-sst-group-parser-v2.json`
 - Hub Notion SST: https://www.notion.so/33ead3c0037381b093b3d0c0a41d3c4b
 - Chatwoot: https://chatwoot.clinicalucrativa.ia.br
 - n8n: https://n8n.clinicalucrativa.ia.br

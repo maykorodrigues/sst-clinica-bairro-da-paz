@@ -1,0 +1,474 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Flow Spec — Qualificação Closer / Vendedor Líder · SST Card · Bairro da Paz
+# Versão: 1.0 · Data: 22/05/2026 · Aprovado: Cenário A (PJ Fixo + Comissão)
+# Importar via: typebot.clinicalucrativa.ia.br → Criar typebot → Importar JSON
+# JSON gerado: typebot-qualificacao-closer.json (mesmo diretório)
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: qualificacao-closer-sst-card-v1
+locale: pt-BR
+entry_channels: [web]
+
+theme:
+  host_bubble_bg: "#1987c3"   # azul SST
+  host_bubble_color: "#ffffff"
+  guest_bubble_bg: "#f0f7ff"
+  guest_bubble_color: "#1a1a2e"
+  button_bg: "#1987c3"
+  button_color: "#ffffff"
+  font: "Inter"
+  background_color: "#f2efe6"
+
+# ── VARIÁVEIS ─────────────────────────────────────────────────────────────────
+variables:
+  - id: v01  name: Nome
+  - id: v02  name: Email
+  - id: v03  name: Telefone
+  - id: v04  name: Cidade
+  - id: v05  name: Bairro
+  - id: v06  name: Idade             # number — eliminatório < 21
+  - id: v07  name: ExpTempo          # eliminatório: 0, <1
+  - id: v08  name: Produtos          # múltipla escolha
+  - id: v09  name: Volume            # eliminatório: 0
+  - id: v10  name: Presencial        # eliminatório: nao
+  - id: v11  name: Disponibilidade   # eliminatório: nao
+  - id: v12  name: AceitaPJ          # eliminatório: nao
+  - id: v13  name: Veiculo
+  - id: v14  name: PublicoCD
+  - id: v15  name: RedeContatos
+  - id: v16  name: RespostaSUS       # long text
+  - id: v17  name: MotivoSST         # long text
+  - id: v18  name: VendaPersistiu    # long text
+  - id: v19  name: ExpGanho
+  - id: v20  name: Visao3Anos        # long text, opcional
+
+# ── ELIMINATÓRIOS (referência rápida) ─────────────────────────────────────────
+eliminatorios:
+  - variavel: Idade        operador: menor_que  valor: 21
+    motivo: "Vaga restrita a candidatos com 21 anos ou mais."
+
+  - variavel: ExpTempo     valores: ["0", "<1"]
+    motivo: "A vaga exige no mínimo 2 anos de experiência em vendas de cartão/plano popular."
+
+  - variavel: Volume       valores: ["0"]
+    motivo: "A vaga exige histórico comprovado de fechamento de meta."
+
+  - variavel: Presencial   valores: ["nao"]
+    motivo: "A vaga é exclusivamente presencial em Salvador/BA."
+
+  - variavel: Disponibilidade  valores: ["nao"]
+    motivo: "A vaga exige disponibilidade integral seg-sex + sábado meio expediente."
+
+  - variavel: AceitaPJ     valores: ["nao"]
+    motivo: "A vaga é exclusivamente no modelo PJ (CNPJ próprio)."
+
+# ── BLOCOS ────────────────────────────────────────────────────────────────────
+
+blocks:
+
+  # ───── BOAS-VINDAS ──────────────────────────────────────────────────────────
+
+  - id: boas_vindas
+    group: g_start
+    type: text
+    text: |
+      👋 Olá! Você está se candidatando para:
+
+      *Closer / Vendedor Líder — SST Card*
+      📍 Filial Bairro da Paz · Salvador/BA
+      💰 R$ 2.800 – R$ 5.500/mês (PJ fixo + comissão sem teto)
+
+      São 5 etapas rápidas. Responda com honestidade — buscamos fit real, não candidato perfeito no papel.
+    next: consentimento
+
+  - id: consentimento
+    group: g_start
+    type: choice
+    text: "Concorda que seus dados serão usados exclusivamente para análise desta candidatura (LGPD)?"
+    options:
+      - label: "Concordo ✓"
+        next: etapa1_nome
+      - label: "Não concordo"
+        next: encerrar_lgpd
+
+  # ───── ETAPA 1: DADOS PESSOAIS ──────────────────────────────────────────────
+
+  - id: etapa1_nome
+    group: g_dados
+    type: input
+    input_type: text
+    prompt: "Qual seu nome completo?"
+    save_to: Nome
+    next: etapa1_email
+
+  - id: etapa1_email
+    group: g_dados
+    type: input
+    input_type: email
+    prompt: "Seu e-mail:"
+    save_to: Email
+    next: etapa1_tel
+
+  - id: etapa1_tel
+    group: g_dados
+    type: input
+    input_type: phone
+    prompt: "WhatsApp com DDD (ex: 71 99999-9999):"
+    save_to: Telefone
+    next: etapa1_cidade
+
+  - id: etapa1_cidade
+    group: g_dados
+    type: input
+    input_type: text
+    prompt: "Cidade onde você mora:"
+    save_to: Cidade
+    next: etapa1_bairro
+
+  - id: etapa1_bairro
+    group: g_dados
+    type: input
+    input_type: text
+    prompt: "Bairro onde você mora:"
+    save_to: Bairro
+    next: etapa1_idade
+
+  - id: etapa1_idade
+    group: g_dados
+    type: input
+    input_type: number
+    prompt: "Qual a sua idade?"
+    save_to: Idade
+    next: check_idade   # → ConditionBlock
+
+  # ConditionBlock: idade < 21 → NO-GO
+  - id: check_idade
+    group: g_check_idade
+    type: condition
+    rules:
+      - if: "Idade < 21"
+        next: nogo_idade
+      - else: etapa2_intro
+
+  - id: nogo_idade
+    group: g_nogo_idade
+    type: text
+    text: |
+      Obrigado pelo interesse na SST Card! 🙏
+
+      *Motivo:* A vaga exige candidatos com 21 anos ou mais.
+
+      Fique de olho — abrimos vagas para outros perfis regularmente.
+      📸 @sstclinica
+    next: end
+
+  # ───── ETAPA 2: EXPERIÊNCIA (eliminatória) ──────────────────────────────────
+
+  - id: etapa2_intro
+    group: g_etapa2
+    type: text
+    text: "⚡ *Etapa 2 de 5 — Experiência em vendas* _(eliminatória)_"
+    next: exp_tempo
+
+  - id: exp_tempo
+    group: g_etapa2
+    type: choice        # single — eliminatório direto por item
+    text: "Há quanto tempo você vende cartão de saúde popular, plano funeral, seguro ou similar?"
+    save_to: ExpTempo
+    options:
+      - label: "Nunca vendi esse tipo de produto"   value: "0"    next: nogo_exp
+      - label: "Menos de 1 ano"                     value: "<1"   next: nogo_exp
+      - label: "Entre 1 e 2 anos"                   value: "1-2"  next: exp_produtos
+      - label: "Entre 2 e 5 anos"                   value: "2-5"  next: exp_produtos
+      - label: "Mais de 5 anos"                     value: ">5"   next: exp_produtos
+
+  - id: nogo_exp
+    group: g_nogo_exp
+    type: text
+    text: |
+      Obrigado pelo interesse! 🙏
+
+      *Motivo:* A vaga exige no mínimo 2 anos de experiência em vendas de cartão/plano popular.
+
+      Quando você tiver essa bagagem, adoraríamos ouvir você novamente.
+    next: end
+
+  - id: exp_produtos
+    group: g_etapa2
+    type: choice
+    multiple: true      # múltipla escolha
+    text: "Quais produtos você já vendeu? _(pode marcar mais de um)_"
+    save_to: Produtos
+    options:
+      - { label: "Cartão Tenex",                  value: "tenex" }
+      - { label: "Cartão de Todos",               value: "cdt" }
+      - { label: "Dr. Família",                   value: "drfamilia" }
+      - { label: "Mais Saúde",                    value: "maissaude" }
+      - { label: "Plano funeral / assistência",   value: "funeral" }
+      - { label: "Plano odontológico popular",    value: "odonto" }
+      - { label: "Seguro/consórcio porta-a-porta",value: "seguro" }
+      - { label: "Outros",                        value: "outro" }
+    next: exp_volume
+
+  - id: exp_volume
+    group: g_etapa2
+    type: choice
+    text: "Qual a melhor média mensal de vendas que você já bateu?"
+    save_to: Volume
+    options:
+      - label: "Nunca bati meta de vendas"    value: "0"     next: nogo_vol
+      - label: "Até 10 vendas/mês"            value: "<10"   next: etapa3_intro
+      - label: "Entre 10 e 30 vendas/mês"     value: "10-30" next: etapa3_intro
+      - label: "Entre 30 e 60 vendas/mês"     value: "30-60" next: etapa3_intro
+      - label: "Acima de 60 vendas/mês"       value: ">60"   next: etapa3_intro
+
+  - id: nogo_vol
+    group: g_nogo_vol
+    type: text
+    text: |
+      Obrigado pelo interesse! 🙏
+
+      *Motivo:* A vaga exige histórico comprovado de fechamento de meta mensalmente.
+    next: end
+
+  # ───── ETAPA 3: DISPONIBILIDADE (eliminatória) ──────────────────────────────
+
+  - id: etapa3_intro
+    group: g_etapa3
+    type: text
+    text: "📍 *Etapa 3 de 5 — Disponibilidade e localização* _(eliminatória)_"
+    next: disp_presencial
+
+  - id: disp_presencial
+    group: g_etapa3
+    type: choice
+    text: "Disponível para trabalhar presencialmente no Bairro da Paz (Salvador/BA)?"
+    save_to: Presencial
+    options:
+      - label: "Sim, sem problema"                   value: "sim"   next: disp_horario
+      - label: "Moro fora, mas me mudo para Salvador" value: "muda"  next: disp_horario
+      - label: "Não / só remoto"                     value: "nao"   next: nogo_pres
+
+  - id: nogo_pres
+    group: g_nogo_pres
+    type: text
+    text: |
+      Obrigado pelo interesse! 🙏
+
+      *Motivo:* A vaga é exclusivamente presencial em Salvador/BA.
+    next: end
+
+  - id: disp_horario
+    group: g_etapa3
+    type: choice
+    text: "Disponibilidade segunda a sábado: 8h/dia nos dias úteis + meio expediente no sábado?"
+    save_to: Disponibilidade
+    options:
+      - label: "Sim, integralmente"                      value: "sim"   next: disp_pj
+      - label: "Com pequenas restrições (explico depois)" value: "restr" next: disp_pj
+      - label: "Não tenho essa disponibilidade"           value: "nao"   next: nogo_disp
+
+  - id: nogo_disp
+    group: g_nogo_disp
+    type: text
+    text: |
+      Obrigado pelo interesse! 🙏
+
+      *Motivo:* A vaga exige disponibilidade integral seg-sex + sábado meio expediente.
+    next: end
+
+  - id: disp_pj
+    group: g_etapa3
+    type: choice
+    text: "Aceita modelo PJ (Pessoa Jurídica — CNPJ próprio)?"
+    save_to: AceitaPJ
+    options:
+      - label: "Sim, já tenho CNPJ ativo (MEI ou ME)"        value: "cnpj" next: disp_veiculo
+      - label: "Sim, abro CNPJ em até 10 dias se contratado"  value: "abre" next: disp_veiculo
+      - label: "Não, só aceito CLT"                           value: "nao"  next: nogo_pj
+
+  - id: nogo_pj
+    group: g_nogo_pj
+    type: text
+    text: |
+      Obrigado pelo interesse! 🙏
+
+      *Motivo:* A vaga é exclusivamente no modelo PJ (CNPJ próprio).
+    next: end
+
+  - id: disp_veiculo
+    group: g_etapa3
+    type: choice
+    text: "Tem veículo próprio para deslocamento no campo? _(opcional — não elimina)_"
+    save_to: Veiculo
+    options:
+      - { label: "Carro 🚗", value: "carro" }
+      - { label: "Moto 🏍️",  value: "moto"  }
+      - { label: "Não",      value: "nao"   }
+    next: etapa4_intro
+
+  # ───── ETAPA 4: CONHECIMENTO DO PÚBLICO ─────────────────────────────────────
+
+  - id: etapa4_intro
+    group: g_etapa4
+    type: text
+    text: "🎯 *Etapa 4 de 5 — Conhecimento do público C/D*"
+    next: cd_exp
+
+  - id: cd_exp
+    group: g_etapa4
+    type: choice
+    text: "Você já vendeu para público com renda 0–2 salários mínimos (informais, autônomos)?"
+    save_to: PublicoCD
+    options:
+      - { label: "Sim, foi o foco principal das minhas vendas", value: "sim-foco"  }
+      - { label: "Sim, parte da minha base era esse público",   value: "sim-parte" }
+      - { label: "Pouco — meu público era mais classe média",   value: "pouco"     }
+      - { label: "Não, nunca vendi para esse perfil",           value: "nao"       }
+    next: cd_rede
+
+  - id: cd_rede
+    group: g_etapa4
+    type: choice
+    text: "Tem rede de contatos no Bairro da Paz ou regiões próximas (Mussurunga, São Cristóvão, Periperi)?"
+    save_to: RedeContatos
+    options:
+      - { label: "Sim — moradores, comerciantes, lideranças", value: "forte"    }
+      - { label: "Alguns contatos",                           value: "moderada" }
+      - { label: "Nenhuma rede ainda",                        value: "nenhuma"  }
+    next: cd_sus
+
+  - id: cd_sus
+    group: g_etapa4
+    type: input
+    input_type: long_text
+    prompt: |
+      Quando um cliente diz *"já tenho SUS, não preciso pagar"*, qual sua melhor resposta?
+
+      Escreva do seu jeito (mínimo 1 frase):
+    save_to: RespostaSUS
+    next: etapa5_intro
+
+  # ───── ETAPA 5: MOTIVAÇÃO ───────────────────────────────────────────────────
+
+  - id: etapa5_intro
+    group: g_etapa5
+    type: text
+    text: "💬 *Etapa 5 de 5 — Sua motivação* _(última etapa!)_"
+    next: motiv1
+
+  - id: motiv1
+    group: g_etapa5
+    type: input
+    input_type: long_text
+    prompt: "Por que você quer trabalhar com SST Card / cartão popular *agora*?\n\nSem clichê de RH. O que está te trazendo aqui?"
+    save_to: MotivoSST
+    next: motiv2
+
+  - id: motiv2
+    group: g_etapa5
+    type: input
+    input_type: long_text
+    prompt: "Conte uma venda específica em que você teve que insistir *5+ vezes* para fechar.\n\nHistória real, com nome (ou apelido), produto e desfecho:"
+    save_to: VendaPersistiu
+    next: motiv3
+
+  - id: motiv3
+    group: g_etapa5
+    type: input
+    input_type: text
+    prompt: "Qual sua expectativa REAL de ganho no mês 1 (em R$)? Ex: R$ 3.500"
+    save_to: ExpGanho
+    next: motiv4
+
+  - id: motiv4
+    group: g_etapa5
+    type: input
+    input_type: long_text
+    prompt: "Onde você quer estar daqui a 3 anos profissionalmente? _(opcional — pode pular)_"
+    save_to: Visao3Anos
+    next: webhook_n8n
+
+  # ───── WEBHOOK → n8n ────────────────────────────────────────────────────────
+
+  - id: webhook_n8n
+    group: g_webhook
+    type: webhook
+    method: POST
+    # ⚠️ Ajuste a URL para o endpoint correto do seu n8n
+    url: "https://n8n.clinicalucrativa.ia.br/webhook/sst-closer-candidatura"
+    body: |
+      {
+        "source": "typebot:qualificacao-closer-sst",
+        "timestamp": "{{now}}",
+        "candidato": {
+          "nome":     "{{Nome}}",
+          "email":    "{{Email}}",
+          "telefone": "{{Telefone}}",
+          "cidade":   "{{Cidade}}",
+          "bairro":   "{{Bairro}}",
+          "idade":    "{{Idade}}"
+        },
+        "qualificacao": {
+          "exp_tempo":      "{{ExpTempo}}",
+          "produtos":       "{{Produtos}}",
+          "volume":         "{{Volume}}",
+          "presencial":     "{{Presencial}}",
+          "disponibilidade":"{{Disponibilidade}}",
+          "aceita_pj":      "{{AceitaPJ}}",
+          "veiculo":        "{{Veiculo}}",
+          "publico_cd":     "{{PublicoCD}}",
+          "rede_contatos":  "{{RedeContatos}}"
+        },
+        "respostas_abertas": {
+          "resposta_sus":     "{{RespostaSUS}}",
+          "motivo_sst":       "{{MotivoSST}}",
+          "venda_persistiu":  "{{VendaPersistiu}}",
+          "exp_ganho":        "{{ExpGanho}}",
+          "visao_3anos":      "{{Visao3Anos}}"
+        }
+      }
+    next: sucesso
+
+  # ───── SUCESSO ──────────────────────────────────────────────────────────────
+
+  - id: sucesso
+    group: g_sucesso
+    type: text
+    text: |
+      🎉 *Candidatura recebida, {{Nome}}!*
+
+      Suas respostas chegaram com sucesso.
+
+      📞 Se houver fit, entramos em contato pelo seu WhatsApp em até *5 dias úteis*.
+
+      *Local da entrevista (se chamado):*
+      🏥 Clínica SST — Simões Filho/BA
+      ou 📍 Filial Bairro da Paz — Salvador/BA
+    next: end
+
+  # ───── LGPD NÃO ─────────────────────────────────────────────────────────────
+
+  - id: encerrar_lgpd
+    group: g_lgpd_no
+    type: text
+    text: |
+      Tudo bem, respeitamos sua escolha! 🙏
+
+      Você pode refazer a candidatura a qualquer momento.
+      O link ficará disponível sempre que precisar.
+    next: end
+
+# ── PAYLOAD n8n (referência para criar o workflow de notificação) ─────────────
+# n8n recebe o JSON acima e deve:
+# 1. Notificar Mayko via Telegram (mensagem formatada com nome, score implícito, WhatsApp)
+# 2. Criar card no pipeline RH do Notion (se disponível)
+# 3. (Opcional) Criar Person no PipeRun se email não existir
+# Webhook URL: configurar em n8n > Credentials > SST Closer Candidatura
+
+# ── CHECKLIST DE IMPLANTAÇÃO ─────────────────────────────────────────────────
+# [ ] Criar typebot em typebot.clinicalucrativa.ia.br → Importar typebot-qualificacao-closer.json
+# [ ] Ajustar URL do webhook n8n (bloco webhook_n8n)
+# [ ] Criar workflow n8n: recebe payload → Telegram Mayko + Notion pipeline
+# [ ] Testar fluxo completo (candidato aprovado + cada eliminatório)
+# [ ] Publicar link e distribuir via WhatsApp (grupos Salvador)

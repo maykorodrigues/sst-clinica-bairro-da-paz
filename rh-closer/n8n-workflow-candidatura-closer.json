@@ -1,0 +1,79 @@
+{
+  "name": "SST Closer — Candidatura → WhatsApp Mayko",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-closer-candidatura",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "c3d4e5f6-0001-0001-0001-a1b2c3d4e5f6",
+      "name": "Receber Candidatura",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\nconst body = raw.body ?? raw;\nconst c = body.candidato ?? {};\nconst q = body.qualificacao ?? {};\n\nconst linhas = [\n  '🎯 *Nova Candidatura — Closer SST Card*',\n  '',\n  `*Nome:* ${c.nome ?? 'N/A'}`,\n  `*Telefone:* ${c.telefone ?? 'N/A'}`,\n  `*E-mail:* ${c.email ?? 'N/A'}`,\n  `*Local:* ${c.cidade ?? ''} / ${c.bairro ?? ''}`,\n  `*Idade:* ${c.idade ?? 'N/A'} anos`,\n  '',\n  '*Qualificação:*',\n  `• Exp. vendas: ${q.exp_tempo ?? 'N/A'}`,\n  `• Produtos: ${q.produtos ?? 'N/A'}`,\n  `• Volume diário: ${q.volume ?? 'N/A'}`,\n  `• Aceita PJ: ${q.aceita_pj ?? 'N/A'}`,\n  `• Tem veículo: ${q.veiculo ?? 'N/A'}`,\n  `• Público C/D: ${q.publico_cd ?? 'N/A'}`,\n];\n\nreturn [{ json: { mensagem: linhas.join('\\n'), numero: '5571982170967' } }];"
+      },
+      "id": "c3d4e5f6-0002-0002-0002-a1b2c3d4e5f6",
+      "name": "Montar Mensagem",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://evolution.clinicalucrativa.ia.br/message/sendText/Mayko Rodrigues - Consultor Comercial Clínica Lucrativa",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ number: $json.numero, text: $json.mensagem }) }}",
+        "options": {}
+      },
+      "id": "c3d4e5f6-0003-0003-0003-a1b2c3d4e5f6",
+      "name": "WhatsApp Mayko",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [720, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2WoKcrxJKwbaBV05",
+          "name": "apikey"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Receber Candidatura": {
+      "main": [
+        [
+          {
+            "node": "Montar Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar Mensagem": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Mayko",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

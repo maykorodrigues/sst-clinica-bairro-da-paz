@@ -4,16 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## O que é este projeto
 
-Consultoria comercial ativa para **Rogério Ferreira** (SST Clínica / SST Card), focada em estruturar e executar a máquina de vendas da 2ª filial (Bairro da Paz, Salvador/BA). O produto central é o **SST Card** — benefício de saúde (R$34,90–199,90/mês) voltado a trabalhadores informais de baixa renda.
+Consultoria comercial ativa para **Rogério Ferreira** (SST Clínica / SST Card), focada em estruturar e executar a máquina de vendas da 2ª filial (Bairro da Paz, Salvador/BA). O produto central é o **SST Card** — benefício de saúde (R$39,90–79,90/mês + taxa de adesão R$40,00) voltado a trabalhadores informais de baixa renda.
 
 O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório em Markdown, espelhado no Notion e executado via WhatsApp + n8n.
 
-**Status do Projeto (27/05/2026):**
+**Status do Projeto (02/06/2026):**
 - ✅ **Advisory assinado** em 01/05/2026 (contrato R$30k validado)
 - ✅ **Bairro da Paz** — contrato assinado, inauguração oficial **01/07/2026**
 - 🔄 **Campanha Perdão de Dívida** — 761 contas Tenex em atraso (foco operacional atual)
-- 👤 **RH Closer** — candidato Roni entrevistado em 22/05; processo em `rh-closer/`
-- 🔔 **Estrutura PJ equipe** — contratos em transição (prazo 23/05)
+- 🔄 **Transição PJ equipe** — reunião realizada 29/05; contratos Lucas/Karine/Raquel em andamento (detalhes em `processo-comercial-7dias/transicao-pj-equipe-sst.md`)
+- 🔄 **VISA Salvador + alvará** — entrada prevista até 30/05 (marco crítico para inauguração 01/07)
+- 🔄 **Funil 1 anti-noshow (lab MADIP)** — Typebot + n8n prontos em `02-cadencias/`, aguardando implantação
+- 👤 **RH Closer** — candidato Roni entrevistado em 22/05; resultado pendente em `rh-closer/`
 - 📊 **Playbook web** — https://playbook.ssfcard.ia.br (Vercel + Cloudflare)
 
 **Leia sempre `RETOMADA.md` antes de agir** — é o "estado do projeto": decisões tomadas, documentos criados e próximos passos. Não repita o que já está lá.
@@ -37,9 +39,16 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | `processo-comercial-7dias/04-dia-sst-saude/` | Blueprint do evento de lançamento (08/05/2026) |
 | `processo-comercial-7dias/05-bairro-da-paz/` | Estratégia específica da nova filial |
 | `processo-comercial-7dias/06-metricas/` | Dashboard diário e cálculo de metas |
-| `processo-comercial-7dias/01-matinais/` | Resultados diários organizados por data (ex: `20-05-2026/`) |
+| `processo-comercial-7dias/01-matinais/` | Resultados diários por data — cada subpasta `DD-MM-YYYY/` contém: `roteiro-matinal`, `cartao-bolso-equipe`, `template-relatorio-12h-15h`, `parcial` |
 | `rh-closer/` | Processo seletivo closer Bairro da Paz — tem `CLAUDE.md` local |
 | `aline-laboratorio/` | Consultoria laboratório MADIP (Aline Souza) — tem `CLAUDE.md` local |
+| `pesquisa-satisfacao-sponsor/` | Pesquisa de satisfação Rogério (Typebot 7 perguntas + n8n semáforo cobrança) — enviada 28/05/2026 |
+| `processo-comercial-7dias/transicao-pj-equipe-sst.md` | Documento de transição PJ: proposta, roteiro individual por pessoa, escada de comissões |
+| `processo-comercial-7dias/reuniao-transicao-pj-roteiro.html` | Roteiro HTML da reunião de transição PJ → publicado em playbook.ssfcard.ia.br |
+| `processo-comercial-7dias/cronograma-inauguracao-01-07-2026.md` | Cronograma detalhado marcos da inauguração Bairro da Paz |
+| `RMA-MAIO-2026-INDICE.md` | Índice do RMA com links para todas as seções |
+| `RMA-MAIO-2026-NOTAS-APRESENTADOR.md` | Notas do apresentador slide a slide para RMA ao vivo |
+| `RMA-MAIO-2026-RESUMO-EXECUTIVO.md` | Resumo executivo 1 página — decisão rápida do Rogério |
 | `agentamento-equipe-sst.md` | Mapa de capacitação IA da equipe (roadmap por pessoa) |
 | `perfil-rogerio-diretor.md` | Como trabalhar com Rogério (perfil comportamental + proposta) |
 | `perfil-karine-entrevista-nov2025.md` | Perfil Karine (vendas/financeiro) — âncora motivacional: buffet |
@@ -139,8 +148,11 @@ git push origin master
 
 **Arquivos HTML publicados** (principais):
 - `index.html` — página principal do domínio
-- `processo-comercial-7dias/playbook-vivo-20-05-2026.html` — playbook mais recente
-- `processo-comercial-7dias/reuniao-transicao-pj-roteiro.html` — roteiro reunião PJ (em staging)
+- `processo-comercial-7dias/01-matinais/[DD-MM-YYYY]/roteiro-matinal-*.html` — matinais diárias (subpastas por data; ver `01-matinais/` para as mais recentes)
+- `processo-comercial-7dias/reuniao-transicao-pj-roteiro.html` — roteiro reunião PJ
+- `processo-comercial-7dias/playbook-sst-assistente-19-05.html` — assistente operacional com checklists por pessoa
+- `processo-comercial-7dias/playbook-vivo-20-05-2026.html` — playbook com abas históricas por data
+- `aline-laboratorio/matinal-clinica-28-05-2026.html` — matinal clínica 28/05 (lab MADIP)
 - `rh-closer/divulgacao-vaga-closer.html` — divulgação da vaga closer
 
 **Ciclo de atualização do playbook:**
@@ -155,6 +167,8 @@ git push origin master
 
 Localização: `lucas-cs/`
 
+> ⚠️ **`lucas-cs/` é um repositório git aninhado** (tem `.git/` próprio) e contém `node_modules/`. Não fazer `git add lucas-cs/` do repo raiz — o subdiretório é gerenciado separadamente.
+
 **`gerar_apresentacao.py`** — Gera o arquivo `.pptx` de Customer Success via `python-pptx`. Paleta SST Card embutida (azul `#1987c3`, vermelho, verde, amarelo).
 
 ```powershell
@@ -163,12 +177,10 @@ pip install python-pptx
 
 # Gerar apresentação
 python lucas-cs/gerar_apresentacao.py
-# Saída: lucas-cs/apresentacao-sucesso-cliente-2026.pptx
+# Saída: lucas-cs/Apresentacao-Sucesso-Cliente-Maio-2026-v2.pptx
 ```
 
-**`apresentacao-sucesso-cliente-2026.html`** — Versão web interativa da apresentação (abrir no navegador, Ctrl+P para PDF).
-
-Para editar KPIs e metas no HTML: buscar por `data` no arquivo. Para alterar cor primária: buscar `#1987c3`.
+Para editar KPIs e metas: abrir `gerar_apresentacao.py` e editar os valores na seção de dados. Para alterar cor primária: buscar `#1987c3`.
 
 ---
 
@@ -178,10 +190,14 @@ Localização: `processo-comercial-7dias/02-cadencias/`
 
 | Arquivo JSON | O que faz |
 |---|---|
-| `n8n-sst-group-parser.json` | Lê mensagens de grupo Chatwoot → Claude → extrai dados → salva no Notion (parciais) |
+| `n8n-sst-group-parser-v2.json` | **Versão atual** — lê mensagens de grupo Chatwoot → Claude → extrai dados → salva no Notion (parciais) |
+| `n8n-sst-group-parser.json` | Versão anterior (manter como referência) |
 | `n8n-noshow-cadencia.json` | Cadência automática para pacientes no-show do laboratório |
 | `n8n-noshow-webhook-resposta.json` | Webhook de resposta para a cadência de no-show |
+| `n8n-funil1-cron-anti-noshow-sst-clinica.json` | **Funil 1 anti-noshow** — cron dispara WhatsApp em D-3/D-1/D+1 em torno da consulta; par com Typebot JSON abaixo |
+| `typebot-funil1-anti-noshow-sst-clinica.json` | Typebot do Funil 1 — bot de confirmação/reagendamento; importar no Typebot self-hosted (Easypanel) |
 | `rh-closer/n8n-workflow-candidatura-closer.json` | Recebe candidatura do Typebot → notifica Rogério + Mayko via WhatsApp |
+| `pesquisa-satisfacao-sponsor/n8n-workflow-satisfacao-rogerio.json` | Semáforo pós-pesquisa → decide se Mayko liga antes do vencimento |
 
 Setup do group-parser: ver `02-cadencias/SETUP-sst-group-parser.md` (requer variáveis de ambiente: URL Chatwoot, API key, Notion token).
 
@@ -238,8 +254,11 @@ Referência completa: `.claude/skills/cerebro-ia-clinica-lucrativa/SKILL.md`.
 | Pasta | Descrição | CLAUDE.md Local |
 |-------|-----------|---|
 | `rh-closer/` | Processo seletivo closer PJ Bairro da Paz (Typebot + kit entrevista + scoring) | `rh-closer/CLAUDE.md` |
-| `aline-laboratorio/` | Consultoria laboratório MADIP (Aline Souza) — sessões mensais | `aline-laboratorio/CLAUDE.md` |
-| `estrategia_comercial/` | Modelos financeiros, plano de lançamento | Documentado neste CLAUDE.md |
-| `processo-comercial-7dias/` | Sprint operacional (scripts, cadências n8n, prompts IA, matinais) | Documentado neste CLAUDE.md |
+| `aline-laboratorio/` | Consultoria laboratório MADIP (Aline Souza) — sessões mensais + Funil 1 anti-noshow | `aline-laboratorio/CLAUDE.md` |
+| `pesquisa-satisfacao-sponsor/` | Pesquisa de satisfação do Rogério (Typebot JSON + n8n semáforo); sem CLAUDE.md local | — |
+| `estrategia_comercial/` | Modelos financeiros, plano de lançamento, implementação 2ª filial | Documentado neste CLAUDE.md |
+| `processo-comercial-7dias/` | Sprint operacional (scripts, cadências n8n, prompts IA, matinais, transição PJ) | Documentado neste CLAUDE.md |
+| `vault-sst/` | Pipeline Obsidian de leads (Inbox → Pipeline 01–06 → Dashboards Dataview DQL) | Documentado neste CLAUDE.md |
+| `lucas-cs/` | Apresentação CS (Python PPTX) — **repositório git aninhado**, não incluir em `git add` | — |
 
 Leia o CLAUDE.md local antes de trabalhar em qualquer subprojeto.

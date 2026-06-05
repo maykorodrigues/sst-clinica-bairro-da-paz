@@ -1,0 +1,378 @@
+{
+  "name": "SST Group Parser v2 — SST Card + Clínica Simões Filhos",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-group-parser",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson",
+        "options": {}
+      },
+      "id": "c2000001-0001-0001-0001-000000000001",
+      "name": "Webhook Chatwoot",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [120, 400],
+      "webhookId": "sst-group-parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "cond-event",
+              "leftValue": "={{ $json.event }}",
+              "rightValue": "message_created",
+              "operator": { "type": "string", "operation": "equals" }
+            },
+            {
+              "id": "cond-type",
+              "leftValue": "={{ $json.message_type }}",
+              "rightValue": "outgoing",
+              "operator": { "type": "string", "operation": "notEquals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c2000002-0002-0002-0002-000000000002",
+      "name": "Filtrar: Evento Válido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [340, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json;\nconst conversationId = String(body.conversation?.id ?? body.id ?? '');\n\n// IDs dos grupos monitorados\n// IMPORTANTE: Substituir 'CLINICA_CONV_ID' pelo ID real do grupo da Clínica no Chatwoot\n// Como descobrir: abrir a conversa no Chatwoot e ver a URL: .../conversations/XXXX\nconst GRUPOS = {\n  '4372': 'sstcard',\n  '5590': 'clinica'\n};\n\nconst grupo = GRUPOS[conversationId] || 'ignorar';\n\nconst content = body.content || '';\nconst ts = body.created_at ? new Date(body.created_at * 1000) : new Date();\nconst dataISO = ts.toISOString().split('T')[0];\nconst hora = ts.toTimeString().substring(0, 5);\n\n// Formato Chatwoot grupo WhatsApp: '+55 7186844401 - Karine Santana: mensagem'\nconst regexGrupo = /^\\+\\d+[\\s\\d]+\\s*-\\s*(.+?):\\s*([\\s\\S]+)$/;\nconst match = content.match(regexGrupo);\n\nlet senderName = 'Desconhecido';\nlet mensagem = content;\n\nif (match) {\n  senderName = match[1].trim().replace(/[\\u{1F300}-\\u{1FFFF}]/gu, '').trim();\n  mensagem = match[2].trim();\n}\n\nconst mapeamento = {\n  'karine': 'Karine', 'raquel': 'Raquel', 'lucas': 'Lucas',\n  'rogerio': 'Rogério', 'rogério': 'Rogério', 'mayko': 'Mayko'\n};\nlet pessoa = senderName;\nconst nomeLower = senderName.toLowerCase();\nfor (const [chave, valor] of Object.entries(mapeamento)) {\n  if (nomeLower.includes(chave)) { pessoa = valor; break; }\n}\n\nreturn [{\n  json: {\n    grupo,\n    conversation_id: conversationId,\n    message_id: String(body.id || ''),\n    sender_name: senderName,\n    pessoa,\n    mensagem,\n    content_original: content,\n    data: dataISO,\n    hora\n  }\n}];"
+      },
+      "id": "c2000003-0003-0003-0003-000000000003",
+      "name": "Identificar Grupo + Extrair Base",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [560, 400]
+    },
+    {
+      "parameters": {
+        "mode": "rules",
+        "rules": {
+          "rules": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": false, "typeValidation": "loose" },
+                "conditions": [
+                  {
+                    "id": "rule-sstcard",
+                    "leftValue": "={{ $json.grupo }}",
+                    "rightValue": "sstcard",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SST Card"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": false, "typeValidation": "loose" },
+                "conditions": [
+                  {
+                    "id": "rule-clinica",
+                    "leftValue": "={{ $json.grupo }}",
+                    "rightValue": "clinica",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Clínica Simões Filhos"
+            }
+          ]
+        },
+        "fallbackOutput": "extra",
+        "options": {}
+      },
+      "id": "c2000004-0004-0004-0004-000000000004",
+      "name": "Switch: Por Grupo",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [780, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const json = $input.first().json;\nconst mensagem = json.mensagem?.toLowerCase() || '';\n\nconst temNumero = /\\d+/.test(mensagem);\nconst palavrasReporte = ['falei', 'fechei', 'paguei', 'pagaram', 'reativei', 'ativei',\n  'lead', 'contato', 'adesão', 'adesao', 'reconciliação', 'reconciliacao',\n  'parcial', 'resultado', 'hoje', 'vendeu', 'renovação', 'renovacao'];\nconst temPalavra = palavrasReporte.some(p => mensagem.includes(p));\n\nif (!temNumero && !temPalavra) {\n  return [{ json: { ...json, ignorar: true, motivo: 'sem_metricas_vendas' } }];\n}\nreturn [{ json: { ...json, ignorar: false } }];"
+      },
+      "id": "c2000005-0005-0005-0005-000000000005",
+      "name": "[SST Card] Filtrar Relevância",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 180]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false },
+          "conditions": [
+            {
+              "id": "cond-ignorar-sst",
+              "leftValue": "={{ $json.ignorar }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "notEquals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c2000006-0006-0006-0006-000000000006",
+      "name": "[SST Card] Tem Métricas?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1220, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.ANTHROPIC_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 512,\n  \"system\": \"Você é um parser de métricas de vendas. Extraia dados numéricos de mensagens informais de WhatsApp de uma equipe de saúde (SST Card). Retorne APENAS JSON válido, sem markdown, sem explicação.\\n\\nEstrutura de saída obrigatória:\\n{\\n  \\\"tipo\\\": \\\"parcial-12h\\\" | \\\"final-15h\\\" | \\\"check-in\\\" | \\\"reporte-espontaneo\\\",\\n  \\\"falou_com\\\": number | null,\\n  \\\"fechamentos\\\": number | null,\\n  \\\"reativacoes\\\": number | null,\\n  \\\"leads_gerados\\\": number | null,\\n  \\\"ativacoes\\\": number | null,\\n  \\\"observacao\\\": \\\"resumo em 1-2 frases\\\",\\n  \\\"confianca\\\": \\\"alta\\\" | \\\"media\\\" | \\\"baixa\\\"\\n}\\n\\nExemplos:\\n- 'falei com 13, pagaram 2' → {tipo: 'reporte-espontaneo', falou_com: 13, fechamentos: 2}\\n- '5 ativações até 12h' → {tipo: 'parcial-12h', ativacoes: 5}\\n- '10 leads passados pra Karine' → {tipo: 'reporte-espontaneo', leads_gerados: 10}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Pessoa: {{ $json.pessoa }}\\nMensagem: {{ $json.mensagem }}\\nData: {{ $json.data }} {{ $json.hora }}\"\n    }\n  ]\n}",
+        "options": { "timeout": 30000 }
+      },
+      "id": "c2000007-0007-0007-0007-000000000007",
+      "name": "[SST Card] Claude: Parsear Métricas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1440, 180]
+    },
+    {
+      "parameters": {
+        "jsCode": "const msg = $input.all()[0].json;\nconst claudeResp = msg.content?.[0]?.text || '{}';\n\nlet metricas = {};\ntry {\n  metricas = JSON.parse(claudeResp);\n} catch (e) {\n  const jsonMatch = claudeResp.match(/\\{[\\s\\S]+\\}/);\n  if (jsonMatch) { try { metricas = JSON.parse(jsonMatch[0]); } catch(e2) {} }\n}\n\nconst extraido = $('[SST Card] Filtrar Relevância').first().json;\nconst tipo = metricas.tipo || 'reporte-espontaneo';\nconst pessoa = extraido.pessoa || 'Desconhecido';\nconst data = extraido.data;\nconst hora = extraido.hora;\n\nreturn [{\n  json: {\n    titulo: `${pessoa} | ${tipo} | ${data} ${hora}`,\n    pessoa, tipo, data, hora,\n    falou_com: metricas.falou_com ?? null,\n    fechamentos: metricas.fechamentos ?? null,\n    reativacoes: metricas.reativacoes ?? null,\n    leads_gerados: metricas.leads_gerados ?? null,\n    ativacoes: metricas.ativacoes ?? null,\n    observacao: metricas.observacao || '',\n    confianca: metricas.confianca || 'media',\n    content_original: extraido.content_original,\n    conversation_id: extraido.conversation_id,\n    message_id: extraido.message_id\n  }\n}];"
+      },
+      "id": "c2000008-0008-0008-0008-000000000008",
+      "name": "[SST Card] Montar Payload Notion",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1660, 180]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.NOTION_TOKEN }}" },
+            { "name": "Notion-Version", "value": "2022-06-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"parent\": { \"database_id\": \"{{ $env.NOTION_PARCIAIS_DB_ID }}\" },\n  \"properties\": {\n    \"Título\": { \"title\": [{ \"text\": { \"content\": \"{{ $json.titulo }}\" } }] },\n    \"Pessoa\": { \"select\": { \"name\": \"{{ $json.pessoa }}\" } },\n    \"Tipo\": { \"select\": { \"name\": \"{{ $json.tipo }}\" } },\n    \"Data\": { \"date\": { \"start\": \"{{ $json.data }}\" } },\n    \"Hora\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.hora }}\" } }] },\n    \"Falou Com\": { \"number\": {{ $json.falou_com ?? 'null' }} },\n    \"Fechamentos\": { \"number\": {{ $json.fechamentos ?? 'null' }} },\n    \"Reativações\": { \"number\": {{ $json.reativacoes ?? 'null' }} },\n    \"Leads Gerados\": { \"number\": {{ $json.leads_gerados ?? 'null' }} },\n    \"Ativações\": { \"number\": {{ $json.ativacoes ?? 'null' }} },\n    \"Confiança Parse\": { \"select\": { \"name\": \"{{ $json.confianca }}\" } },\n    \"Observação\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.observacao }}\" } }] },\n    \"Mensagem Original\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.content_original.substring(0, 2000) }}\" } }] },\n    \"Conversa ID\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.conversation_id }}\" } }] }\n  }\n}",
+        "options": { "timeout": 15000 }
+      },
+      "id": "c2000009-0009-0009-0009-000000000009",
+      "name": "[SST Card] Notion: Criar Parcial",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1880, 180]
+    },
+    {
+      "parameters": {
+        "jsCode": "const json = $input.first().json;\nconst mensagem = json.mensagem?.toLowerCase() || '';\n\n// Para a Clínica, ser mais permissivo: capturar qualquer conteúdo operacional ou comercial\nconst temNumero = /\\d+/.test(mensagem);\nconst palavrasOp = ['atendimento', 'consulta', 'exame', 'paciente', 'medico', 'médico',\n  'fila', 'agenda', 'cancelamento', 'cancelou', 'procedimento', 'laudo', 'resultado',\n  'raio', 'ultrassom', 'anestesia', 'urgente', 'emergência', 'emergencia', 'quebrou'];\nconst palavrasCom = ['card', 'adesão', 'adesao', 'cadastro', 'pagamento', 'mensalidade',\n  'plano', 'fechei', 'vendeu', 'renovação', 'renovacao', 'sstcard'];\nconst palavrasGeral = ['hoje', 'amanhã', 'amanha', 'decidimos', 'vamos fechar', 'problema',\n  'solução', 'solucao', 'conseguimos', 'terminamos', 'fizemos', 'atenção', 'atencao'];\n\nconst relevante = temNumero ||\n  palavrasOp.some(p => mensagem.includes(p)) ||\n  palavrasCom.some(p => mensagem.includes(p)) ||\n  palavrasGeral.some(p => mensagem.includes(p));\n\nif (!relevante || mensagem.length < 5) {\n  return [{ json: { ...json, ignorar: true, motivo: 'sem_conteudo_relevante_clinica' } }];\n}\nreturn [{ json: { ...json, ignorar: false } }];"
+      },
+      "id": "c2000010-0010-0010-0010-000000000010",
+      "name": "[Clínica] Filtrar Relevância",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 620]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false },
+          "conditions": [
+            {
+              "id": "cond-ignorar-clinica",
+              "leftValue": "={{ $json.ignorar }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "notEquals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c2000011-0011-0011-0011-000000000011",
+      "name": "[Clínica] Tem Conteúdo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1220, 620]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{ $env.ANTHROPIC_API_KEY }}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-haiku-4-5-20251001\",\n  \"max_tokens\": 600,\n  \"system\": \"Você é um parser de métricas de conversão de laboratório clínico. Extraia dados de mensagens informais do grupo WhatsApp 'SST Clínica Conversão Laboratório' (MADIP, Simões Filhos, Salvador/BA).\\n\\nO grupo registra resultados diários da equipe de conversão (Débora, Aline). Métricas típicas: orçamentos do dia, valor convertido, taxa de conversão, ligações feitas, mensagens enviadas, bloqueadores e metas.\\n\\nRetorne APENAS JSON válido, sem markdown, sem explicação.\\n\\nEstrutura de saída:\\n{\\n  \\\"tipo\\\": \\\"parcial-12h\\\" | \\\"final-dia\\\" | \\\"meta\\\" | \\\"bloqueador\\\" | \\\"reporte-espontaneo\\\",\\n  \\\"orcamentos_dia\\\": number | null,\\n  \\\"convertidos\\\": number | null,\\n  \\\"taxa_conversao\\\": number | null,\\n  \\\"ligacoes_feitas\\\": number | null,\\n  \\\"mensagens_enviadas\\\": number | null,\\n  \\\"bloqueador\\\": \\\"descrição do bloqueador\\\" | null,\\n  \\\"meta_dia\\\": \\\"descrição da meta ou % alvo\\\" | null,\\n  \\\"observacao\\\": \\\"resumo em 1-2 frases\\\",\\n  \\\"confianca\\\": \\\"alta\\\" | \\\"media\\\" | \\\"baixa\\\"\\n}\\n\\nNotas importantes:\\n- orcamentos_dia e convertidos: extrair só o número (ex: '$983,00' → 983, '$1.599,00' → 1599)\\n- taxa_conversao: extrair percentual como float (ex: '40,5%' → 40.5, '0,00%' → 0)\\n- bloqueador: preencher apenas quando há objeção ou impedimento explícito relatado\\n- tipo 'meta' quando o texto fala de objetivo ou alvo do dia\\n\\nExemplos:\\n- 'orçamentos: $983, convertidos: $1.599, taxa: 0%' → {tipo: 'final-dia', orcamentos_dia: 983, convertidos: 1599, taxa_conversao: 0}\\n- 'ligações feitas: 0, mensagens enviadas: 4' → {ligacoes_feitas: 0, mensagens_enviadas: 4}\\n- 'bloqueador: pacientes dizem que outros labs são mais baratos' → {tipo: 'bloqueador', bloqueador: 'Pacientes comparam preço com laboratórios concorrentes'}\\n- 'meta 40%+ de conversão' → {tipo: 'meta', meta_dia: '40% de taxa de conversão'}\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Pessoa: {{ $json.pessoa }}\\nMensagem: {{ $json.mensagem }}\\nData: {{ $json.data }} {{ $json.hora }}\"\n    }\n  ]\n}",
+        "options": { "timeout": 30000 }
+      },
+      "id": "c2000012-0012-0012-0012-000000000012",
+      "name": "[Clínica] Claude: Parsear Dados",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1440, 620]
+    },
+    {
+      "parameters": {
+        "jsCode": "const msg = $input.all()[0].json;\nconst claudeResp = msg.content?.[0]?.text || '{}';\n\nlet dados = {};\ntry {\n  dados = JSON.parse(claudeResp);\n} catch (e) {\n  const jsonMatch = claudeResp.match(/\\{[\\s\\S]+\\}/);\n  if (jsonMatch) { try { dados = JSON.parse(jsonMatch[0]); } catch(e2) {} }\n}\n\nconst extraido = $('[Clínica] Filtrar Relevância').first().json;\nconst tipo = dados.tipo || 'reporte-espontaneo';\nconst pessoa = extraido.pessoa || extraido.sender_name || 'Equipe';\nconst data = extraido.data;\nconst hora = extraido.hora;\n\nreturn [{\n  json: {\n    titulo: `${pessoa} | ${tipo} | ${data} ${hora}`,\n    pessoa, tipo, data, hora,\n    orcamentos_dia: dados.orcamentos_dia ?? null,\n    convertidos: dados.convertidos ?? null,\n    taxa_conversao: dados.taxa_conversao ?? null,\n    ligacoes_feitas: dados.ligacoes_feitas ?? null,\n    mensagens_enviadas: dados.mensagens_enviadas ?? null,\n    bloqueador: dados.bloqueador || null,\n    meta_dia: dados.meta_dia || null,\n    observacao: dados.observacao || '',\n    confianca: dados.confianca || 'media',\n    content_original: extraido.content_original,\n    conversation_id: extraido.conversation_id,\n    message_id: extraido.message_id\n  }\n}];"
+      },
+      "id": "c2000013-0013-0013-0013-000000000013",
+      "name": "[Clínica] Montar Payload Notion",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1660, 620]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.NOTION_TOKEN }}" },
+            { "name": "Notion-Version", "value": "2022-06-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"parent\": { \"database_id\": \"{{ $env.NOTION_CLINICA_DB_ID }}\" },\n  \"properties\": {\n    \"Título\": { \"title\": [{ \"text\": { \"content\": \"{{ $json.titulo }}\" } }] },\n    \"Tipo\": { \"select\": { \"name\": \"{{ $json.tipo }}\" } },\n    \"Unidade\": { \"select\": { \"name\": \"Simões Filhos\" } },\n    \"Data\": { \"date\": { \"start\": \"{{ $json.data }}\" } },\n    \"Hora\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.hora }}\" } }] },\n    \"Pessoa\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.pessoa }}\" } }] },\n    \"Orçamentos Dia\": { \"number\": {{ $json.orcamentos_dia ?? 'null' }} },\n    \"Convertidos\": { \"number\": {{ $json.convertidos ?? 'null' }} },\n    \"Taxa Conversão\": { \"number\": {{ $json.taxa_conversao ?? 'null' }} },\n    \"Ligações Feitas\": { \"number\": {{ $json.ligacoes_feitas ?? 'null' }} },\n    \"Mensagens Enviadas\": { \"number\": {{ $json.mensagens_enviadas ?? 'null' }} },\n    \"Bloqueador\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.bloqueador || '' }}\" } }] },\n    \"Meta do Dia\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.meta_dia || '' }}\" } }] },\n    \"Confiança Parse\": { \"select\": { \"name\": \"{{ $json.confianca }}\" } },\n    \"Observação\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.observacao }}\" } }] },\n    \"Mensagem Original\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.content_original.substring(0, 2000) }}\" } }] },\n    \"Conversa ID\": { \"rich_text\": [{ \"text\": { \"content\": \"{{ $json.conversation_id }}\" } }] }\n  }\n}",
+        "options": { "timeout": 15000 }
+      },
+      "id": "c2000014-0014-0014-0014-000000000014",
+      "name": "[Clínica] Notion: Criar Registro",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1880, 620]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconsole.log('[SST-GROUP-PARSER-v2] Ignorado:', JSON.stringify({ grupo: item.grupo, motivo: item.motivo || 'grupo_nao_monitorado', conv: item.conversation_id }));\nreturn [{ json: { status: 'ignorado', motivo: item.motivo || 'grupo_nao_monitorado' } }];"
+      },
+      "id": "c2000015-0015-0015-0015-000000000015",
+      "name": "Ignorar (sem ação)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 400]
+    }
+  ],
+  "connections": {
+    "Webhook Chatwoot": {
+      "main": [
+        [{ "node": "Filtrar: Evento Válido?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Filtrar: Evento Válido?": {
+      "main": [
+        [{ "node": "Identificar Grupo + Extrair Base", "type": "main", "index": 0 }],
+        [{ "node": "Ignorar (sem ação)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Identificar Grupo + Extrair Base": {
+      "main": [
+        [{ "node": "Switch: Por Grupo", "type": "main", "index": 0 }]
+      ]
+    },
+    "Switch: Por Grupo": {
+      "main": [
+        [{ "node": "[SST Card] Filtrar Relevância", "type": "main", "index": 0 }],
+        [{ "node": "[Clínica] Filtrar Relevância", "type": "main", "index": 0 }],
+        [{ "node": "Ignorar (sem ação)", "type": "main", "index": 0 }]
+      ]
+    },
+    "[SST Card] Filtrar Relevância": {
+      "main": [
+        [{ "node": "[SST Card] Tem Métricas?", "type": "main", "index": 0 }]
+      ]
+    },
+    "[SST Card] Tem Métricas?": {
+      "main": [
+        [{ "node": "[SST Card] Claude: Parsear Métricas", "type": "main", "index": 0 }],
+        [{ "node": "Ignorar (sem ação)", "type": "main", "index": 0 }]
+      ]
+    },
+    "[SST Card] Claude: Parsear Métricas": {
+      "main": [
+        [{ "node": "[SST Card] Montar Payload Notion", "type": "main", "index": 0 }]
+      ]
+    },
+    "[SST Card] Montar Payload Notion": {
+      "main": [
+        [{ "node": "[SST Card] Notion: Criar Parcial", "type": "main", "index": 0 }]
+      ]
+    },
+    "[Clínica] Filtrar Relevância": {
+      "main": [
+        [{ "node": "[Clínica] Tem Conteúdo?", "type": "main", "index": 0 }]
+      ]
+    },
+    "[Clínica] Tem Conteúdo?": {
+      "main": [
+        [{ "node": "[Clínica] Claude: Parsear Dados", "type": "main", "index": 0 }],
+        [{ "node": "Ignorar (sem ação)", "type": "main", "index": 0 }]
+      ]
+    },
+    "[Clínica] Claude: Parsear Dados": {
+      "main": [
+        [{ "node": "[Clínica] Montar Payload Notion", "type": "main", "index": 0 }]
+      ]
+    },
+    "[Clínica] Montar Payload Notion": {
+      "main": [
+        [{ "node": "[Clínica] Notion: Criar Registro", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": ["sst", "chatwoot", "notion", "group-parser", "clinica"],
+  "triggerCount": 1,
+  "updatedAt": "2026-05-27T00:00:00.000Z",
+  "versionId": "c2000000-0000-0000-0000-000000000002"
+}

@@ -1,0 +1,319 @@
+{
+  "name": "SST — Onboarding Novos Membros (D+0 → D+30)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 8-18 * * 1-6"
+            }
+          ]
+        }
+      },
+      "id": "c1d2e3f4-0001-0001-0001-200000000001",
+      "name": "Polling Horário (8h–18h Seg–Sab)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [260, 300],
+      "notes": "Verifica o Sheets uma vez por hora entre 8h e 18h. Detecta novos membros e envia mensagens nas fases corretas."
+    },
+    {
+      "parameters": {
+        "operation": "readAllRows",
+        "documentId": {
+          "value": "={{ $env.SHEETS_MEMBROS_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "Membros Ativos",
+          "mode": "name"
+        },
+        "options": {
+          "headerRow": 1
+        }
+      },
+      "id": "c1d2e3f4-0002-0002-0002-200000000002",
+      "name": "Ler Membros Ativos",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [480, 300],
+      "notes": "Lê a aba 'Membros Ativos'. Colunas obrigatórias descritas em _setup_notes."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filtrar apenas membros com status 'ativo'\n// Ignorar cancelados e inadimplentes\nconst membrosAtivos = $input.all().filter(item => {\n  const s = (item.json.status || '').toLowerCase();\n  return s === 'ativo';\n});\n\nconsole.log(`Total membros ativos: ${membrosAtivos.length}`);\nreturn membrosAtivos;"
+      },
+      "id": "c1d2e3f4-0003-0003-0003-200000000003",
+      "name": "Filtrar Status Ativo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Para cada membro ativo, calcular quantos dias se passaram desde data_entrada\n// e determinar qual fase (se alguma) deve ser disparada agora.\n\nconst hoje = new Date();\nhoje.setHours(0, 0, 0, 0);\nconst hojeISO = hoje.toISOString().split('T')[0];\n\nconst acoes = [];\n\nfor (const item of $input.all()) {\n  const m = item.json;\n  const nome = m.nome_membro || 'Membro';\n  const fone = (m.whatsapp || '').replace(/\\D/g, '');\n  const plano = m.plano || 'individual';\n  const valor = m.valor_mensalidade || '39,90';\n\n  if (!fone) continue;\n\n  // Calcular dias desde entrada\n  let diasDesdeEntrada = -1;\n  if (m.data_entrada) {\n    const entrada = new Date(m.data_entrada);\n    entrada.setHours(0, 0, 0, 0);\n    diasDesdeEntrada = Math.floor((hoje - entrada) / (1000 * 60 * 60 * 24));\n  }\n\n  // D+0 — novo membro (onboarding não iniciado)\n  if (!m.onboarding_iniciado || m.onboarding_iniciado === 'FALSE') {\n    acoes.push({ fase: 'D0_BOAS_VINDAS', ...m, nome, fone, plano, valor, diasDesdeEntrada });\n    acoes.push({ fase: 'D0_ALERTA_KARINE', ...m, nome, fone, plano, valor, diasDesdeEntrada });\n    continue; // só iniciar o onboarding, as fases seguintes virão nos próximos dias\n  }\n\n  if (diasDesdeEntrada < 0) continue;\n\n  // D+3 — dica de uso\n  if (diasDesdeEntrada >= 3 && !m.data_d3_enviado) {\n    acoes.push({ fase: 'D3', ...m, nome, fone, plano, valor, diasDesdeEntrada });\n  }\n\n  // D+7 — urgência leve\n  if (diasDesdeEntrada >= 7 && !m.data_d7_enviado) {\n    acoes.push({ fase: 'D7', ...m, nome, fone, plano, valor, diasDesdeEntrada });\n  }\n\n  // D+15 — toque humano (Karine faz manualmente: gerar alerta Notion)\n  if (diasDesdeEntrada >= 15 && !m.data_d15_alerta) {\n    acoes.push({ fase: 'D15_ALERTA_NOTION', ...m, nome, fone, plano, valor, diasDesdeEntrada });\n  }\n\n  // D+25 — alerta renovação\n  if (diasDesdeEntrada >= 25 && !m.data_d25_enviado) {\n    acoes.push({ fase: 'D25', ...m, nome, fone, plano, valor, diasDesdeEntrada });\n  }\n\n  // D+30 — NPS\n  if (diasDesdeEntrada >= 30 && !m.data_d30_enviado) {\n    acoes.push({ fase: 'D30', ...m, nome, fone, plano, valor, diasDesdeEntrada });\n  }\n}\n\nconsole.log(`Ações a executar: ${acoes.length}`);\nreturn acoes.map(a => ({ json: a }));"
+      },
+      "id": "c1d2e3f4-0004-0004-0004-200000000004",
+      "name": "Calcular Fases Pendentes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [920, 300],
+      "notes": "Determina para cada membro qual fase está pendente. Retorna uma lista de ações a executar."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "cond-fase",
+              "leftValue": "={{ $json.fase }}",
+              "rightValue": "D15_ALERTA_NOTION",
+              "operator": { "type": "string", "operation": "notEquals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "c1d2e3f4-0005-0005-0005-200000000005",
+      "name": "É Alerta Notion ou WhatsApp?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1140, 300],
+      "notes": "true = enviar via WhatsApp | false = criar tarefa no Notion para Karine (D+15 é manual)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Montar a mensagem certa para cada fase\nconst acao = $input.first().json;\nconst nome = acao.nome;\nconst valor = acao.valor;\nconst fase = acao.fase;\nconst fone = acao.fone;\n\nconst mensagens = {\n  D0_BOAS_VINDAS: `Bem-vindo(a) à família SST Card, ${nome}! 🎉\\n\\nSeu cartão já tá ativo. Aqui vai o que você tem acesso:\\n✅ Consultas médicas incluídas\\n✅ Laboratório com desconto especial\\n✅ Exames de rotina\\n✅ Telemedicina\\n\\nPra usar: é só vir na SST Clínica e apresentar o CPF. Simples assim.\\nQualquer dúvida, me chama aqui. Sou a Karine 😊`,\n\n  D0_ALERTA_KARINE: `🔔 *Novo membro ativado!*\\n\\n👤 *${nome}*\\n📱 ${fone}\\n💳 Plano: ${acao.plano || 'Individual'}\\n\\n⚡ Entrar em contato em até 2h para agendar a primeira consulta.\\nMembro que usa na 1ª semana tem 85% de renovação!`,\n\n  D3: `Oi ${nome}! Karine aqui 😊\\n\\nSabia que consulta de rotina é o melhor jeito de usar o SST Card? Muita gente deixa pra quando tá doente — mas o cartão foi feito pra antes disso.\\n\\nVocê tem algum exame ou consulta atrasada? Posso te ajudar a agendar agora.`,\n\n  D7: `${nome}, já faz uma semana com seu SST Card! 🎊\\n\\nVocê já usou algum serviço? Se não usou ainda, não perde tempo — marque uma consulta essa semana e já aproveita o que é seu.\\n\\nAgenda pelo WhatsApp: é só me chamar aqui.`,\n\n  D25: `${nome}, sua mensalidade do SST Card vence em 5 dias.\\n\\nPra não perder o acesso, você pode:\\n💳 Pix: [chave Pix SST]\\n💳 Débito: presencialmente na clínica\\n\\nDúvida? Me chama que resolvo agora. — Karine`,\n\n  D30: `${nome}, um mês com o SST Card! 🥳\\n\\nQueria saber: de 1 a 5, qual nota você dá pra nossa clínica?\\nResponde aqui com o número — leva 5 segundos e ajuda muito a gente.\\n\\n1 = Muito ruim | 5 = Excelente`\n};\n\nconst destino = fase === 'D0_ALERTA_KARINE' \n  ? $env.KARINE_WHATSAPP   // número pessoal da Karine\n  : fone;                   // número do membro\n\nconst texto = mensagens[fase];\n\nif (!texto) return [];  // fase não mapeada, ignorar\n\nreturn [{ json: { ...acao, mensagem: texto, destino } }];"
+      },
+      "id": "c1d2e3f4-0006-0006-0006-200000000006",
+      "name": "Montar Mensagem por Fase",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1360, 200],
+      "notes": "D0_ALERTA_KARINE → envia para o WhatsApp da Karine. Todas as outras → envia para o membro."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.EVOLUTION_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.destino }}\",\n  \"text\": {{ JSON.stringify($json.mensagem) }},\n  \"delay\": 1500\n}",
+        "options": {}
+      },
+      "id": "c1d2e3f4-0007-0007-0007-200000000007",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1580, 200],
+      "notes": "Envia mensagem via Evolution API. Delay de 1.5s embutido no payload."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Atualizar colunas de controle no Sheets após envio\nconst acao = $input.first().json;\nconst hoje = new Date().toISOString().split('T')[0];\nconst fase = acao.fase;\n\n// Mapear fase → coluna que precisa ser atualizada\nconst mapeamento = {\n  D0_BOAS_VINDAS:    { onboarding_iniciado: 'TRUE', data_entrada: hoje, data_d0_enviado: hoje },\n  D0_ALERTA_KARINE:  {},  // sem atualização extra (D0_BOAS_VINDAS já marca onboarding)\n  D3:                { data_d3_enviado: hoje },\n  D7:                { data_d7_enviado: hoje },\n  D25:               { data_d25_enviado: hoje },\n  D30:               { data_d30_enviado: hoje }\n};\n\nconst atualizacoes = mapeamento[fase] || {};\n\nreturn [{ json: { ...acao, atualizacoes, hoje } }];"
+      },
+      "id": "c1d2e3f4-0008-0008-0008-200000000008",
+      "name": "Preparar Atualização Sheets",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1800, 200],
+      "notes": "Determina quais colunas do Sheets atualizar após o envio bem-sucedido."
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "value": "={{ $env.SHEETS_MEMBROS_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "Membros Ativos",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": "={{ $json.atualizacoes }}",
+          "matchingColumns": ["whatsapp"],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "c1d2e3f4-0009-0009-0009-200000000009",
+      "name": "Atualizar Sheets (marcar fase enviada)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [2020, 200],
+      "notes": "Atualiza as colunas de controle (onboarding_iniciado, data_d3_enviado etc.) para não reenviar."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer {{ $env.NOTION_TOKEN }}" },
+            { "name": "Notion-Version", "value": "2022-06-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"parent\": { \"database_id\": \"{{ $env.NOTION_TAREFAS_DB_ID }}\" },\n  \"properties\": {\n    \"Nome\": { \"title\": [{ \"text\": { \"content\": \"🤝 D+15 Ligação Karine — {{ $json.nome }}\" } }] },\n    \"Status\": { \"select\": { \"name\": \"pendente\" } },\n    \"Responsável\": { \"select\": { \"name\": \"Karine\" } },\n    \"Prioridade\": { \"select\": { \"name\": \"alta\" } },\n    \"Notas\": { \"rich_text\": [{ \"text\": { \"content\": \"Membro {{ $json.nome }} completou 15 dias. Ligar hoje para verificar uso e engajar. WhatsApp: {{ $json.fone }}. Se não usou ainda: oferecer agendamento na ligação. Se usou: pedir depoimento para Raquel gravar.\" } }] }\n  }\n}",
+        "options": {}
+      },
+      "id": "c1d2e3f4-0010-0010-0010-200000000010",
+      "name": "Criar Tarefa D+15 no Notion (Karine)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1360, 440],
+      "notes": "D+15 é sempre manual: cria uma tarefa no Notion para Karine ligar/mandar áudio personalizado. Não automatizar este toque."
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "value": "={{ $env.SHEETS_MEMBROS_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "Membros Ativos",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data_d15_alerta": "={{ new Date().toISOString().split('T')[0] }}"
+          },
+          "matchingColumns": ["whatsapp"],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "c1d2e3f4-0011-0011-0011-200000000011",
+      "name": "Marcar D+15 Alerta Enviado",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [1580, 440],
+      "notes": "Registra data_d15_alerta no Sheets para não criar a tarefa de Karine duas vezes."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Verificar resposta do NPS (D+30)\n// Se o membro respondeu com número 1-3 → alerta Karine (risco churn)\n// Se respondeu 4-5 → pedir indicação\n// Se não respondeu → registrar como não respondeu\n// (Este nó é informativo — a lógica de resposta depende do Chatwoot capturar a mensagem)\nconsole.log('D+30 NPS enviado para:', $input.first().json.nome);\nreturn $input.all();"
+      },
+      "id": "c1d2e3f4-0012-0012-0012-200000000012",
+      "name": "Log NPS D+30",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2240, 200],
+      "notes": "A resposta do NPS (1-5) deve ser capturada via Chatwoot webhook em workflow separado. Aqui só registramos o envio."
+    }
+  ],
+  "connections": {
+    "Polling Horário (8h–18h Seg–Sab)": {
+      "main": [[{ "node": "Ler Membros Ativos", "type": "main", "index": 0 }]]
+    },
+    "Ler Membros Ativos": {
+      "main": [[{ "node": "Filtrar Status Ativo", "type": "main", "index": 0 }]]
+    },
+    "Filtrar Status Ativo": {
+      "main": [[{ "node": "Calcular Fases Pendentes", "type": "main", "index": 0 }]]
+    },
+    "Calcular Fases Pendentes": {
+      "main": [[{ "node": "É Alerta Notion ou WhatsApp?", "type": "main", "index": 0 }]]
+    },
+    "É Alerta Notion ou WhatsApp?": {
+      "main": [
+        [{ "node": "Montar Mensagem por Fase", "type": "main", "index": 0 }],
+        [{ "node": "Criar Tarefa D+15 no Notion (Karine)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Montar Mensagem por Fase": {
+      "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]]
+    },
+    "Enviar WhatsApp": {
+      "main": [[{ "node": "Preparar Atualização Sheets", "type": "main", "index": 0 }]]
+    },
+    "Preparar Atualização Sheets": {
+      "main": [[{ "node": "Atualizar Sheets (marcar fase enviada)", "type": "main", "index": 0 }]]
+    },
+    "Atualizar Sheets (marcar fase enviada)": {
+      "main": [[{ "node": "Log NPS D+30", "type": "main", "index": 0 }]]
+    },
+    "Criar Tarefa D+15 no Notion (Karine)": {
+      "main": [[{ "node": "Marcar D+15 Alerta Enviado", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo"
+  },
+  "versionId": "c1d2e3f4-ffff-ffff-ffff-200000000001",
+  "id": "onboarding-novos-membros-sst-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "sst-clinica"
+  },
+  "tags": [
+    { "name": "sst" },
+    { "name": "onboarding" },
+    { "name": "automacao" }
+  ],
+  "_setup_notes": {
+    "variaveis_necessarias": [
+      "SHEETS_MEMBROS_ID — ID da planilha Google Sheets (mesma do projeto ou nova aba 'Membros Ativos')",
+      "EVOLUTION_API_URL — URL base da Evolution API",
+      "EVOLUTION_API_KEY — chave da Evolution API",
+      "EVOLUTION_INSTANCE — nome da instância WhatsApp",
+      "KARINE_WHATSAPP — número WhatsApp da Karine (ex: 5571XXXXXXXXX) para alertas D+0",
+      "NOTION_TOKEN — token de integração Notion",
+      "NOTION_TAREFAS_DB_ID — ID do database de tarefas no Notion (onde aparecerá o D+15 para Karine)"
+    ],
+    "credenciais_n8n": [
+      "Google Sheets — configurar OAuth2 ou Service Account em n8n Credentials"
+    ],
+    "colunas_obrigatorias_sheets_aba_membros_ativos": [
+      "nome_membro (texto)",
+      "whatsapp (texto — formato: 5571XXXXXXXXX sem traços)",
+      "plano (texto: individual / família)",
+      "valor_mensalidade (texto: ex '39,90')",
+      "data_entrada (data — formato: YYYY-MM-DD — preenchida manualmente por Karine ao ativar)",
+      "status (texto: ativo / cancelado / inadimplente)",
+      "onboarding_iniciado (texto: vazio ou TRUE)",
+      "data_d0_enviado (data)",
+      "data_d3_enviado (data)",
+      "data_d7_enviado (data)",
+      "data_d15_alerta (data)",
+      "data_d25_enviado (data)",
+      "data_d30_enviado (data)"
+    ],
+    "fluxo_operacional": {
+      "karine_faz": "Quando membro paga e ativa: adicionar linha na aba 'Membros Ativos' com status='ativo' e data_entrada=hoje",
+      "workflow_faz": "Detecta novo membro em até 1h → envia boas-vindas para o membro + alerta urgência para Karine → nas datas certas envia D+3, D+7, D+25, D+30 → no D+15 cria tarefa no Notion para Karine ligar manualmente",
+      "parar_cadencia": "Mudar status para 'cancelado' ou 'inadimplente' — o workflow ignora automaticamente esses membros"
+    },
+    "dado_critico": "Membro que agenda a 1ª consulta em até 7 dias da adesão tem taxa de renovação >85%. Por isso o alerta imediato para Karine (D+0) é o nó mais crítico.",
+    "como_testar": [
+      "1. Adicionar linha de teste com seu WhatsApp, status='ativo', data_entrada=hoje, onboarding_iniciado vazio",
+      "2. Executar workflow manualmente (botão 'Execute')",
+      "3. Confirmar recebimento das mensagens D+0 no celular e alerta para Karine",
+      "4. Verificar que onboarding_iniciado ficou TRUE e data_d0_enviado=hoje no Sheets",
+      "5. Mudar data_entrada para 3 dias atrás → executar novamente → confirmar D+3 chegou",
+      "6. Ativar o workflow para rodar automaticamente"
+    ],
+    "d15_logica": "D+15 NÃO envia WhatsApp automático. Cria uma tarefa no Notion com o nome e número do membro para Karine fazer toque humano (ligação ou áudio personalizado). Esse é o momento decisivo — quem não usou em 15 dias cancela em 60 dias.",
+    "d30_nps_logica": "O D+30 envia a pergunta de NPS (nota 1-5). A resposta chega via WhatsApp → Chatwoot captura. Para automatizar o follow-up da resposta (indicação se 4-5, retenção se 1-3), criar workflow separado com trigger Chatwoot webhook."
+  }
+}

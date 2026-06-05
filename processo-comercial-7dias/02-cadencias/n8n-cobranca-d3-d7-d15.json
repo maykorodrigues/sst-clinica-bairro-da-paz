@@ -1,0 +1,317 @@
+{
+  "name": "SST — Cadência Cobrança D+3/D+7/D+15",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1-6"
+            }
+          ]
+        }
+      },
+      "id": "b1c2d3e4-0001-0001-0001-100000000001",
+      "name": "Cron 9h Seg–Sab",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [260, 300],
+      "notes": "Dispara de segunda a sábado às 9h (BRT). Limite de 100 disparos/dia para proteção do número."
+    },
+    {
+      "parameters": {
+        "operation": "readAllRows",
+        "documentId": {
+          "value": "={{ $env.SHEETS_COBRANCA_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "Cobranças",
+          "mode": "name"
+        },
+        "options": {
+          "headerRow": 1
+        }
+      },
+      "id": "b1c2d3e4-0002-0002-0002-100000000002",
+      "name": "Ler Planilha de Cobranças",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [480, 300],
+      "notes": "Lê toda a aba 'Cobranças'. Colunas obrigatórias: nome_membro, whatsapp, valor_mensalidade, data_vencimento, status_pagamento, fase_cobranca, nao_contatar"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filtrar apenas inadimplentes elegíveis para disparo\nconst hoje = new Date();\nhoje.setHours(0, 0, 0, 0);\n\nconst elegíveis = [];\nconst logs = [];\n\nfor (const item of $input.all()) {\n  const row = item.json;\n  \n  // Pular se blacklist\n  if (row.nao_contatar === 'TRUE' || row.nao_contatar === true) {\n    logs.push(`SKIP (blacklist): ${row.nome_membro}`);\n    continue;\n  }\n  \n  // Pular se já encerrado ou pago\n  if (['encerrado', 'pago', 'em_dia'].includes(row.status_pagamento)) {\n    continue;\n  }\n  \n  // Calcular dias em atraso\n  const vencimento = new Date(row.data_vencimento);\n  vencimento.setHours(0, 0, 0, 0);\n  const diasAtraso = Math.floor((hoje - vencimento) / (1000 * 60 * 60 * 24));\n  \n  if (diasAtraso < 3) continue; // Ainda não elegível\n  \n  // Determinar fase\n  let fasePróxima = null;\n  const faseAtual = row.fase_cobranca || '';\n  \n  if (diasAtraso >= 3  && !faseAtual)           fasePróxima = 'D3';\n  if (diasAtraso >= 7  && faseAtual === 'D3')   fasePróxima = 'D7';\n  if (diasAtraso >= 15 && faseAtual === 'D7')   fasePróxima = 'D15';\n  if (diasAtraso > 15  && faseAtual === 'D15')  fasePróxima = 'encerrado';\n  \n  if (!fasePróxima) continue;\n  \n  elegíveis.push({\n    ...row,\n    diasAtraso,\n    fasePróxima,\n    rowIndex: item.json.__rowIndex || 0\n  });\n}\n\nconsole.log(`Elegíveis para disparo: ${elegíveis.length} | Logs: ${logs.join(', ')}`);\n\n// Limitar a 100 por dia\nconst limitados = elegíveis.slice(0, 100);\nreturn limitados.map(r => ({ json: r }));"
+      },
+      "id": "b1c2d3e4-0003-0003-0003-100000000003",
+      "name": "Filtrar Inadimplentes Elegíveis",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300],
+      "notes": "Calcula dias de atraso, determina fase (D3/D7/D15/encerrado) e aplica limite de 100/dia."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-encerrado",
+              "leftValue": "={{ $json.fasePróxima }}",
+              "rightValue": "encerrado",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b1c2d3e4-0004-0004-0004-100000000004",
+      "name": "É Encerrar ou Disparar?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [920, 300],
+      "notes": "true = disparar WhatsApp | false = encerrar conta (escalar para Karine)"
+    },
+    {
+      "parameters": {
+        "jsCode": "const row = $input.first().json;\nconst nome = row.nome_membro || 'Cliente';\nconst valor = parseFloat(row.valor_mensalidade || 0).toFixed(2).replace('.', ',');\nconst fase = row.fasePróxima;\n\nconst mensagens = {\n  D3: `Oi ${nome}, tudo bem? Aqui é a Karine da SST Card 😊 Identifiquei que sua mensalidade de R$${valor} está em aberto. Pode ser esquecimento — acontece! Pode me confirmar quando consegue regularizar? Pix, débito ou dinheiro na clínica, o que for mais fácil pra você.`,\n\n  D7: `${nome}, já são 7 dias com o cartão suspenso. Não quero te perder como membro! O que aconteceu? Me conta e a gente resolve. A SST Card continua aqui por você — só precisamos que o pagamento de R$${valor} seja regularizado pra reativar o acesso.`,\n\n  D15: `${nome}, última tentativa antes de encerrar sua conta SST Card. Passaram 15 dias de atraso. Se quiser manter o cartão, regularize R$${valor} hoje. Se tiver algum problema financeiro, me fala — a gente pode negociar. Caso não queira continuar, me avisa que encerro sem cobranças futuras.`\n};\n\nconst texto = mensagens[fase] || mensagens.D3;\n\nreturn [{ json: { ...row, mensagem: texto } }];"
+      },
+      "id": "b1c2d3e4-0005-0005-0005-100000000005",
+      "name": "Montar Mensagem por Fase",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1140, 200],
+      "notes": "Seleciona o texto correto (D+3, D+7 ou D+15) e substitui variáveis."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $env.EVOLUTION_API_KEY }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.whatsapp }}\",\n  \"text\": {{ JSON.stringify($json.mensagem) }},\n  \"delay\": 2000\n}",
+        "options": {}
+      },
+      "id": "b1c2d3e4-0006-0006-0006-100000000006",
+      "name": "Enviar WhatsApp Individual",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1360, 200],
+      "notes": "Delay de 2s entre mensagens. O número deve estar no formato: 5571XXXXXXXX (sem traços, sem @)."
+    },
+    {
+      "parameters": {
+        "unit": "seconds",
+        "amount": 60
+      },
+      "id": "b1c2d3e4-0007-0007-0007-100000000007",
+      "name": "Aguardar 60s (cooldown)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1580, 200],
+      "notes": "Cooldown de 60s entre disparos para não sobrecarregar o número e evitar bloqueio."
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "value": "={{ $env.SHEETS_COBRANCA_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "Cobranças",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fase_cobranca": "={{ $json.fasePróxima }}",
+            "data_ultimo_contato": "={{ new Date().toISOString().split('T')[0] }}",
+            "log_disparo": "={{ $json.fasePróxima + '_enviado_' + new Date().toLocaleDateString('pt-BR').replace(/\\//g, '') }}"
+          },
+          "matchingColumns": ["whatsapp"],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "b1c2d3e4-0008-0008-0008-100000000008",
+      "name": "Atualizar Fase no Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [1800, 200],
+      "notes": "Atualiza fase_cobranca, data_ultimo_contato e log_disparo na linha correspondente."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Escalada para Karine — este membro deve ser encerrado\nconst row = $input.first().json;\nconsole.warn(`ENCERRAR: ${row.nome_membro} | WhatsApp: ${row.whatsapp} | Atraso: ${row.diasAtraso} dias`);\n\n// Aqui pode adicionar notificação para Karine via Telegram/WhatsApp se necessário\nreturn [{ json: { acao: 'encerrar', membro: row.nome_membro, whatsapp: row.whatsapp, diasAtraso: row.diasAtraso } }];"
+      },
+      "id": "b1c2d3e4-0009-0009-0009-100000000009",
+      "name": "Escalar para Karine (encerrar)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1140, 420],
+      "notes": "Membros com >15 dias D+15 → Karine decide se encerra ou negocia pessoalmente."
+    }
+  ],
+  "connections": {
+    "Cron 9h Seg–Sab": {
+      "main": [
+        [
+          {
+            "node": "Ler Planilha de Cobranças",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler Planilha de Cobranças": {
+      "main": [
+        [
+          {
+            "node": "Filtrar Inadimplentes Elegíveis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtrar Inadimplentes Elegíveis": {
+      "main": [
+        [
+          {
+            "node": "É Encerrar ou Disparar?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "É Encerrar ou Disparar?": {
+      "main": [
+        [
+          {
+            "node": "Montar Mensagem por Fase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Escalar para Karine (encerrar)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar Mensagem por Fase": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp Individual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp Individual": {
+      "main": [
+        [
+          {
+            "node": "Aguardar 60s (cooldown)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aguardar 60s (cooldown)": {
+      "main": [
+        [
+          {
+            "node": "Atualizar Fase no Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "maxExecutionTime": 3600
+  },
+  "versionId": "b1c2d3e4-ffff-ffff-ffff-100000000001",
+  "id": "cobranca-d3-d7-d15-sst-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "sst-clinica"
+  },
+  "tags": [
+    { "name": "sst" },
+    { "name": "cobranca" },
+    { "name": "automacao" }
+  ],
+  "_setup_notes": {
+    "variaveis_necessarias": [
+      "SHEETS_COBRANCA_ID — ID da planilha Google Sheets (URL: /spreadsheets/d/[ID]/)",
+      "EVOLUTION_API_URL — URL base da Evolution API",
+      "EVOLUTION_API_KEY — chave da Evolution API",
+      "EVOLUTION_INSTANCE — nome da instância WhatsApp"
+    ],
+    "credenciais_n8n": [
+      "Google Sheets — configurar OAuth2 ou Service Account em n8n Credentials"
+    ],
+    "colunas_obrigatorias_sheets": [
+      "nome_membro (texto)",
+      "whatsapp (texto — formato: 5571XXXXXXXXX sem traços)",
+      "valor_mensalidade (número)",
+      "data_vencimento (data — formato: YYYY-MM-DD)",
+      "status_pagamento (texto: vencido / em_dia / pago / renegociado)",
+      "fase_cobranca (texto: vazio / D3 / D7 / D15 / encerrado)",
+      "data_ultimo_contato (data)",
+      "log_disparo (texto)",
+      "nao_contatar (texto: TRUE para blacklist)"
+    ],
+    "como_testar": [
+      "1. Criar 3 linhas de teste com whatsapp = seu próprio número",
+      "2. data_vencimento: 3 dias atrás / 7 dias atrás / 15 dias atrás",
+      "3. status_pagamento = 'vencido', fase_cobranca = ''",
+      "4. Executar workflow manualmente (não cron)",
+      "5. Confirmar recebimento das 3 mensagens no celular",
+      "6. Verificar atualização das colunas no Sheets"
+    ],
+    "limites_seguranca": [
+      "Máximo 100 disparos/dia (hardcoded no nó Filtrar)",
+      "Cooldown de 60s entre mensagens",
+      "Coluna nao_contatar = TRUE bloqueia o membro"
+    ]
+  }
+}

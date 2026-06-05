@@ -1,0 +1,465 @@
+{
+  "name": "SST BP — Typebot Lead → Classificar → Chatwoot + Closer (A9)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-bp-lead-novo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "e1f2a3b4-0001-0001-0001-400000000001",
+      "name": "Webhook — Recebe Lead do Typebot",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [260, 300],
+      "notes": "Recebe o payload do Typebot de qualificação (A8). URL: n8n.clinicalucrativa.ia.br/webhook/sst-bp-lead-novo"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"status\": \"recebido\", \"timestamp\": \"{{ new Date().toISOString() }}\"}",
+        "options": {}
+      },
+      "id": "e1f2a3b4-0002-0002-0002-400000000002",
+      "name": "Resposta 200 Imediata",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [480, 160],
+      "notes": "Responde ao Typebot imediatamente para não deixar o bot travado aguardando."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrair e normalizar dados do payload do Typebot\nconst body = $input.first().json.body || $input.first().json;\n\nconst nome      = (body.nome      || 'Desconhecido').trim();\nconst whatsapp  = (body.whatsapp  || '').replace(/\\D/g, '');\nconst bairro    = body.bairro    || '';\nconst familia   = body.familia   || '';\nconst usa_sus   = body.usa_sus   || '';\nconst maior_dor = body.maior_dor || '';\nconst interesse = (body.interesse || '').toLowerCase();\nconst origem    = body.origem    || 'typebot-qualificacao-bp';\nconst timestamp = body.timestamp || new Date().toISOString();\n\n// CLASSIFICAÇÃO DO LEAD\n// Quente: quer falar com consultor (interesse=sim) e tem WhatsApp\n// Morno:  respondeu tudo mas não quer agora\n// Frio:   não tem WhatsApp (saiu antes da captura)\nlet score = 'frio';\nif (interesse === 'sim' && whatsapp.length >= 10) {\n  score = 'quente';\n} else if (bairro && familia && usa_sus && maior_dor) {\n  score = 'morno';\n}\n\n// Montar resumo para o Closer\nconst familiaLabel = {\n  'Só eu (1 pessoa)': '1 pessoa',\n  '2 a 4 pessoas':    '2–4 pessoas',\n  '5 ou mais pessoas':'5+ pessoas'\n}[familia] || familia;\n\nconst susLabel = {\n  'Sim, com frequência': 'usa SUS sempre',\n  'Às vezes':            'usa SUS às vezes',\n  'Raramente / não preciso': 'quase não usa SUS'\n}[usa_sus] || usa_sus;\n\nconsole.log(`Lead novo: ${nome} | Score: ${score} | WA: ${whatsapp}`);\n\nreturn [{ json: {\n  nome, whatsapp, bairro, familia: familiaLabel,\n  usa_sus: susLabel, maior_dor, interesse, score,\n  origem, timestamp\n} }];"
+      },
+      "id": "e1f2a3b4-0003-0003-0003-400000000003",
+      "name": "Normalizar Dados + Classificar Lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 380],
+      "notes": "Quente = interesse+WhatsApp | Morno = respondeu tudo sem interesse | Frio = sem WhatsApp"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "cond-score",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": "frio",
+              "operator": { "type": "string", "operation": "notEquals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e1f2a3b4-0004-0004-0004-400000000004",
+      "name": "Quente ou Morno vs Frio?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [700, 380],
+      "notes": "true = quente/morno (tem dados) | false = frio (sem WhatsApp, só registrar)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "cond-quente",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": "quente",
+              "operator": { "type": "string", "operation": "equals" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e1f2a3b4-0005-0005-0005-400000000005",
+      "name": "É Quente?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [920, 260],
+      "notes": "true = quente (criar no Chatwoot + alertar Closer imediatamente) | false = morno (cadência D+1)"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $env.CHATWOOT_ACCOUNT_ID }}/contacts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "api_access_token", "value": "={{ $env.CHATWOOT_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"name\": {{ JSON.stringify($json.nome) }},\n  \"phone_number\": \"+{{ $json.whatsapp }}\",\n  \"additional_attributes\": {\n    \"bairro\": {{ JSON.stringify($json.bairro) }},\n    \"familia\": {{ JSON.stringify($json.familia) }},\n    \"maior_dor\": {{ JSON.stringify($json.maior_dor) }},\n    \"usa_sus\": {{ JSON.stringify($json.usa_sus) }},\n    \"score_lead\": \"quente\",\n    \"origem\": \"typebot-qualificacao-bp\"\n  }\n}",
+        "options": {}
+      },
+      "id": "e1f2a3b4-0006-0006-0006-400000000006",
+      "name": "Criar Contato no Chatwoot (Quente)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1140, 140],
+      "notes": "Cria o contato na conta do Chatwoot com atributos do lead. Retorna contact_id."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.CHATWOOT_URL }}/api/v1/accounts/{{ $env.CHATWOOT_ACCOUNT_ID }}/conversations",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "api_access_token", "value": "={{ $env.CHATWOOT_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contact_id\": {{ $json.id }},\n  \"inbox_id\": {{ $env.CHATWOOT_INBOX_BP_ID }},\n  \"assignee_id\": {{ $env.CHATWOOT_CLOSER_BP_ID }},\n  \"additional_attributes\": {\n    \"origem\": \"typebot-qualificacao-bp\",\n    \"score\": \"quente\"\n  }\n}",
+        "options": {}
+      },
+      "id": "e1f2a3b4-0007-0007-0007-400000000007",
+      "name": "Abrir Conversa no Chatwoot (Quente)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1360, 140],
+      "notes": "Cria conversa e já atribui ao Closer do Bairro da Paz. CHATWOOT_INBOX_BP_ID = ID do inbox da filial BP. CHATWOOT_CLOSER_BP_ID = ID do agente Closer no Chatwoot."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Montar mensagem de alerta para o Closer via WhatsApp\nconst lead = $('Normalizar Dados + Classificar Lead').first().json;\nconst conversa = $input.first().json;\nconst conversaId = conversa.id || '???';\nconst conversaUrl = `${$env.CHATWOOT_URL}/app/accounts/${$env.CHATWOOT_ACCOUNT_ID}/conversations/${conversaId}`;\n\nconst mensagem =\n  `🔥 *LEAD QUENTE — Bairro da Paz*\\n\\n` +\n  `👤 *Nome:* ${lead.nome}\\n` +\n  `📱 *WhatsApp:* ${lead.whatsapp}\\n` +\n  `📍 *Bairro:* ${lead.bairro}\\n` +\n  `👨‍👩‍👧 *Família:* ${lead.familia}\\n` +\n  `🏥 *SUS:* ${lead.usa_sus}\\n` +\n  `😤 *Maior dor:* ${lead.maior_dor}\\n\\n` +\n  `✅ *Quer falar com consultor agora!*\\n\\n` +\n  `💬 Chatwoot: ${conversaUrl}\\n\\n` +\n  `⚡ Entrar em contato em até *30 minutos*.`;\n\nreturn [{ json: { mensagem, lead, conversaId } }];"
+      },
+      "id": "e1f2a3b4-0008-0008-0008-400000000008",
+      "name": "Montar Alerta Closer (Quente)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1580, 140]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.EVOLUTION_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $env.CLOSER_BP_WHATSAPP }}\",\n  \"text\": {{ JSON.stringify($json.mensagem) }},\n  \"delay\": 1000\n}",
+        "options": {}
+      },
+      "id": "e1f2a3b4-0009-0009-0009-400000000009",
+      "name": "Alertar Closer via WhatsApp (Quente)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1800, 140],
+      "notes": "Envia notificação urgente para o WhatsApp do Closer. CLOSER_BP_WHATSAPP = número pessoal do Closer Bairro da Paz."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lead morno: respondeu tudo mas não quer falar agora\n// Estratégia: cadência leve D+1 / D+3 / D+7 via WhatsApp\nconst lead = $input.first().json;\n\nconst msg_d1 =\n  `Oi${lead.nome !== 'Desconhecido' ? ', ' + lead.nome : ''}! Aqui é a equipe da SST Clínica Bairro da Paz 😊\\n\\n` +\n  `Vi que você se interessou pelo SST Card mas talvez não fosse o momento certo.\\n\\n` +\n  `Só queria te lembrar: por R$39,90/mês você e mais 3 da família têm consultas, laboratório e telemedicina — sem fila, sem burocracia.\\n\\n` +\n  `Se quiser saber mais, é só responder aqui!`;\n\nreturn [{ json: {\n  ...lead,\n  mensagem_d1: msg_d1,\n  data_d1: new Date(Date.now() + 86400000).toISOString().split('T')[0],\n  data_d3: new Date(Date.now() + 3 * 86400000).toISOString().split('T')[0],\n  data_d7: new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0]\n} }];"
+      },
+      "id": "e1f2a3b4-0010-0010-0010-400000000010",
+      "name": "Preparar Cadência Morno (D+1/3/7)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1140, 380],
+      "notes": "Lead morno: calculamos as datas de D+1, D+3 e D+7 para gravar no Sheets. O cron de reativação vai disparar nas datas certas."
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "value": "={{ $env.SHEETS_LEADS_BP_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "Leads BP",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome":         "={{ $json.nome }}",
+            "whatsapp":     "={{ $json.whatsapp }}",
+            "bairro":       "={{ $json.bairro }}",
+            "familia":      "={{ $json.familia }}",
+            "usa_sus":      "={{ $json.usa_sus }}",
+            "maior_dor":    "={{ $json.maior_dor }}",
+            "score":        "={{ $json.score }}",
+            "origem":       "={{ $json.origem }}",
+            "data_entrada": "={{ new Date().toISOString().split('T')[0] }}",
+            "data_d1":      "={{ $json.data_d1 || '' }}",
+            "data_d3":      "={{ $json.data_d3 || '' }}",
+            "data_d7":      "={{ $json.data_d7 || '' }}",
+            "status":       "novo"
+          },
+          "matchingColumns": ["whatsapp"],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "e1f2a3b4-0011-0011-0011-400000000011",
+      "name": "Salvar Lead no Sheets (Morno)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [1360, 380],
+      "notes": "Grava o lead morno na aba 'Leads BP' do Sheets. As colunas data_d1/d3/d7 são usadas pelo cron de follow-up."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Montar alerta mais suave para o Closer (lead morno)\nconst lead = $input.first().json;\n\nconst mensagem =\n  `🟡 *Lead Morno — Bairro da Paz*\\n\\n` +\n  `👤 *Nome:* ${lead.nome}\\n` +\n  `📍 *Bairro:* ${lead.bairro}\\n` +\n  `👨‍👩‍👧 *Família:* ${lead.familia}\\n` +\n  `😤 *Maior dor:* ${lead.maior_dor}\\n\\n` +\n  `⚠️ Não quer contato agora. Cadência D+1/D+3/D+7 iniciada automaticamente.\\n\\n` +\n  `💡 Se quiser antecipar o contato, WhatsApp: ${lead.whatsapp || 'não informado'}`;\n\nreturn [{ json: { ...lead, mensagem } }];"
+      },
+      "id": "e1f2a3b4-0012-0012-0012-400000000012",
+      "name": "Montar Alerta Closer (Morno)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1580, 380]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.EVOLUTION_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $env.CLOSER_BP_WHATSAPP }}\",\n  \"text\": {{ JSON.stringify($json.mensagem) }},\n  \"delay\": 1000\n}",
+        "options": {}
+      },
+      "id": "e1f2a3b4-0013-0013-0013-400000000013",
+      "name": "Alertar Closer via WhatsApp (Morno)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1800, 380],
+      "notes": "Alerta mais suave — cadência automática já foi iniciada, Closer decide se antecipa."
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "value": "={{ $env.SHEETS_LEADS_BP_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "Leads BP",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome":         "={{ $json.nome }}",
+            "whatsapp":     "",
+            "bairro":       "={{ $json.bairro }}",
+            "familia":      "={{ $json.familia }}",
+            "usa_sus":      "={{ $json.usa_sus }}",
+            "maior_dor":    "={{ $json.maior_dor }}",
+            "score":        "frio",
+            "origem":       "={{ $json.origem }}",
+            "data_entrada": "={{ new Date().toISOString().split('T')[0] }}",
+            "status":       "frio"
+          },
+          "matchingColumns": ["nome"],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "e1f2a3b4-0014-0014-0014-400000000014",
+      "name": "Salvar Lead Frio no Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [920, 540],
+      "notes": "Lead frio: sem WhatsApp, sem alerta para o Closer. Entra na lista de transmissão mensal (dica de saúde)."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Registrar lead quente no Sheets também (histórico + comissão)\nconst lead = $('Normalizar Dados + Classificar Lead').first().json;\nconst chatwoot = $input.first().json;\n\nreturn [{ json: {\n  ...lead,\n  chatwoot_conversa_id: chatwoot.id || '',\n  data_entrada: new Date().toISOString().split('T')[0],\n  status: 'alerta-enviado'\n} }];"
+      },
+      "id": "e1f2a3b4-0015-0015-0015-400000000015",
+      "name": "Preparar Registro Lead Quente",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2020, 140]
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "value": "={{ $env.SHEETS_LEADS_BP_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "Leads BP",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "nome":                  "={{ $json.nome }}",
+            "whatsapp":              "={{ $json.whatsapp }}",
+            "bairro":                "={{ $json.bairro }}",
+            "familia":               "={{ $json.familia }}",
+            "usa_sus":               "={{ $json.usa_sus }}",
+            "maior_dor":             "={{ $json.maior_dor }}",
+            "score":                 "quente",
+            "origem":                "={{ $json.origem }}",
+            "data_entrada":          "={{ $json.data_entrada }}",
+            "chatwoot_conversa_id":  "={{ $json.chatwoot_conversa_id }}",
+            "status":                "alerta-enviado"
+          },
+          "matchingColumns": ["whatsapp"],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "e1f2a3b4-0016-0016-0016-400000000016",
+      "name": "Salvar Lead Quente no Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [2240, 140],
+      "notes": "Histórico de todos os leads quentes — usado para apurar comissões do Closer."
+    }
+  ],
+  "connections": {
+    "Webhook — Recebe Lead do Typebot": {
+      "main": [
+        [
+          { "node": "Resposta 200 Imediata",               "type": "main", "index": 0 },
+          { "node": "Normalizar Dados + Classificar Lead", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Normalizar Dados + Classificar Lead": {
+      "main": [[{ "node": "Quente ou Morno vs Frio?", "type": "main", "index": 0 }]]
+    },
+    "Quente ou Morno vs Frio?": {
+      "main": [
+        [{ "node": "É Quente?", "type": "main", "index": 0 }],
+        [{ "node": "Salvar Lead Frio no Sheets", "type": "main", "index": 0 }]
+      ]
+    },
+    "É Quente?": {
+      "main": [
+        [{ "node": "Criar Contato no Chatwoot (Quente)", "type": "main", "index": 0 }],
+        [{ "node": "Preparar Cadência Morno (D+1/3/7)",  "type": "main", "index": 0 }]
+      ]
+    },
+    "Criar Contato no Chatwoot (Quente)": {
+      "main": [[{ "node": "Abrir Conversa no Chatwoot (Quente)", "type": "main", "index": 0 }]]
+    },
+    "Abrir Conversa no Chatwoot (Quente)": {
+      "main": [[{ "node": "Montar Alerta Closer (Quente)", "type": "main", "index": 0 }]]
+    },
+    "Montar Alerta Closer (Quente)": {
+      "main": [[{ "node": "Alertar Closer via WhatsApp (Quente)", "type": "main", "index": 0 }]]
+    },
+    "Alertar Closer via WhatsApp (Quente)": {
+      "main": [[{ "node": "Preparar Registro Lead Quente", "type": "main", "index": 0 }]]
+    },
+    "Preparar Registro Lead Quente": {
+      "main": [[{ "node": "Salvar Lead Quente no Sheets", "type": "main", "index": 0 }]]
+    },
+    "Preparar Cadência Morno (D+1/3/7)": {
+      "main": [[{ "node": "Salvar Lead no Sheets (Morno)", "type": "main", "index": 0 }]]
+    },
+    "Salvar Lead no Sheets (Morno)": {
+      "main": [[{ "node": "Montar Alerta Closer (Morno)", "type": "main", "index": 0 }]]
+    },
+    "Montar Alerta Closer (Morno)": {
+      "main": [[{ "node": "Alertar Closer via WhatsApp (Morno)", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo"
+  },
+  "versionId": "e1f2a3b4-ffff-ffff-ffff-400000000001",
+  "id": "typebot-bp-chatwoot-a9-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "sst-clinica"
+  },
+  "tags": [
+    { "name": "sst" },
+    { "name": "bairro-da-paz" },
+    { "name": "automacao" }
+  ],
+  "_setup_notes": {
+    "variaveis_necessarias": [
+      "CHATWOOT_URL — URL base do Chatwoot (ex: https://chatwoot.clinicalucrativa.ia.br)",
+      "CHATWOOT_ACCOUNT_ID — ID da conta Chatwoot (geralmente '1')",
+      "CHATWOOT_API_KEY — token de acesso à API do Chatwoot",
+      "CHATWOOT_INBOX_BP_ID — ID do inbox da filial Bairro da Paz no Chatwoot (criar inbox antes)",
+      "CHATWOOT_CLOSER_BP_ID — ID do agente Closer no Chatwoot (pegar em Agents → ver ID na URL)",
+      "CLOSER_BP_WHATSAPP — número WhatsApp pessoal do Closer (ex: 5571XXXXXXXXX)",
+      "EVOLUTION_API_URL — URL base da Evolution API",
+      "EVOLUTION_API_KEY — chave da Evolution API",
+      "EVOLUTION_INSTANCE — nome da instância WhatsApp",
+      "SHEETS_LEADS_BP_ID — ID do Google Sheets com aba 'Leads BP'"
+    ],
+    "colunas_obrigatorias_sheets_aba_leads_bp": [
+      "nome (texto)",
+      "whatsapp (texto)",
+      "bairro (texto)",
+      "familia (texto)",
+      "usa_sus (texto)",
+      "maior_dor (texto)",
+      "score (texto: quente / morno / frio)",
+      "origem (texto)",
+      "data_entrada (data)",
+      "data_d1 (data — preenchida para leads mornos)",
+      "data_d3 (data — preenchida para leads mornos)",
+      "data_d7 (data — preenchida para leads mornos)",
+      "chatwoot_conversa_id (texto — preenchida para leads quentes)",
+      "status (texto: novo / alerta-enviado / em-contato / fechado / frio)"
+    ],
+    "pre_requisitos_chatwoot": [
+      "1. Criar inbox 'Bairro da Paz' no Chatwoot (WhatsApp via Evolution API) → pegar ID",
+      "2. Criar agente Closer no Chatwoot → pegar ID do agente",
+      "3. Ou usar um agente existente e pegar o ID em Settings → Agents"
+    ],
+    "fluxo_completo_lead_quente": [
+      "Lead responde Typebot (A8) → 'Quero falar com consultor'",
+      "→ Typebot envia POST para /webhook/sst-bp-lead-novo",
+      "→ A9 responde 200 imediatamente (Typebot não trava)",
+      "→ Classifica como 'quente'",
+      "→ Cria contato no Chatwoot com todos os atributos do lead",
+      "→ Abre conversa no inbox BP e atribui ao Closer",
+      "→ Envia alerta urgente no WhatsApp do Closer",
+      "→ Salva no Sheets 'Leads BP' com chatwoot_conversa_id",
+      "→ Closer recebe alerta com link direto para a conversa no Chatwoot"
+    ],
+    "fluxo_completo_lead_morno": [
+      "Lead responde tudo mas escolhe 'Por enquanto não'",
+      "→ A9 classifica como 'morno'",
+      "→ Calcula datas D+1, D+3, D+7",
+      "→ Salva no Sheets 'Leads BP'",
+      "→ Envia alerta suave para Closer (sem urgência)",
+      "→ Um cron separado (a criar) verifica o Sheets diariamente e dispara os follow-ups nas datas certas"
+    ],
+    "cron_follow_up_morno": "Para automatizar os follow-ups D+1/D+3/D+7 dos leads mornos, criar um workflow adicional com cron 9h que lê a aba 'Leads BP' filtrando por score=morno e data_d1/d3/d7 = hoje. Estrutura similar ao A6 (onboarding).",
+    "como_testar": [
+      "1. Importar A8 (Typebot) no Easypanel → publicar → pegar URL",
+      "2. Substituir SEU_N8N_URL no Typebot pela URL real do n8n",
+      "3. Importar este workflow (A9) no n8n → ativar",
+      "4. Abrir o Typebot → responder como lead quente com seu WhatsApp",
+      "5. Confirmar: contato criado no Chatwoot, conversa aberta, alerta no WhatsApp do Closer, linha no Sheets",
+      "6. Repetir como lead morno → confirmar linha no Sheets + alerta suave"
+    ]
+  }
+}

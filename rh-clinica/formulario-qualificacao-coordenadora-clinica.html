@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Candidatura — Atendente de Clínica · SST Clínica Bairro da Paz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --b1:#0c4a6e;--b2:#075985;--b3:#1987c3;--b4:#38bdf8;--b5:#bae6fd;--b6:#e0f2fe;--b7:#f0f9ff;
+  --bg:#f2efe6;--sur:#fff;--txt:#1a1a2e;--mut:#6b7280;--lgt:#9ca3af;
+  --err:#dc2626;--err-bg:#fef2f2;--warn:#b45309;--warn-bg:#fffbeb;--warn-bd:#fde68a;
+  --r:14px;--sh:0 4px 24px rgba(12,74,110,.10);
+  --fd:'Fraunces',Georgia,serif;--fb:'DM Sans',system-ui,sans-serif;
+}
+body{font-family:var(--fb);background:var(--bg);color:var(--txt);min-height:100vh;padding-bottom:60px}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(12,74,110,.04) 1px,transparent 0);background-size:24px 24px;pointer-events:none;z-index:0}
+
+.hdr{position:sticky;top:0;z-index:100;background:var(--b1)}
+.hdr-in{max-width:680px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 20px}
+.logo{font-family:var(--fd);font-size:20px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.logo span{color:var(--b4)}
+.bdg-ps{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:var(--b6);font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:4px 12px;border-radius:20px}
+
+.prog-wrap{background:var(--b2);padding:14px 20px 16px}
+.prog-in{max-width:680px;margin:0 auto}
+.prog-lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,.6);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
+.prog-steps{display:flex;align-items:center}
+.ps-item{display:flex;align-items:center;flex:1}
+.ps-item:last-child{flex:0}
+.ps-dot{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);transition:all .3s;flex-shrink:0;background:var(--b2)}
+.ps-dot.done{background:var(--b3);border-color:var(--b3);color:#fff}
+.ps-dot.active{background:#fff;border-color:#fff;color:var(--b1);box-shadow:0 0 0 4px rgba(255,255,255,.2)}
+.ps-line{flex:1;height:2px;background:rgba(255,255,255,.15);transition:background .3s;margin:0 2px}
+.ps-line.done{background:var(--b3)}
+
+main{max-width:680px;margin:0 auto;padding:28px 16px 0;position:relative;z-index:1}
+
+.hero{background:var(--sur);border-radius:var(--r);padding:32px 28px;box-shadow:var(--sh);margin-bottom:20px;position:relative;overflow:hidden}
+.hero::before{content:'🏥';position:absolute;font-size:120px;right:-20px;top:-20px;opacity:.05;transform:rotate(-15deg)}
+.hero-bdg{display:inline-block;background:var(--b7);color:var(--b2);font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:14px}
+.hero h1{font-family:var(--fd);font-size:clamp(22px,5vw,30px);font-weight:700;color:var(--b1);line-height:1.2;margin-bottom:8px}
+.hero h1 em{font-style:italic;color:var(--b3)}
+.hero-sub{font-size:14px;color:var(--mut);margin-bottom:20px;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:flex;align-items:center;gap:6px;background:var(--b7);border:1px solid var(--b5);color:var(--b2);font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px}
+
+.growth-banner{background:linear-gradient(135deg,#064e3b,#065f46);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start}
+.growth-banner .icon{font-size:24px;flex-shrink:0;margin-top:2px}
+.growth-banner .text{color:#d1fae5;font-size:13.5px;line-height:1.55}
+.growth-banner strong{color:#6ee7b7;display:block;margin-bottom:4px;font-size:14px}
+
+.step{display:none}
+.step.active{display:block;animation:sIn .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes sIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:var(--sur);border-radius:var(--r);padding:28px;box-shadow:var(--sh);margin-bottom:16px}
+@media(max-width:640px){.card{padding:20px 16px}.hero{padding:24px 20px}}
+
+.s-num{font-size:11px;font-weight:600;color:var(--b3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px}
+.s-ttl{font-family:var(--fd);font-size:clamp(20px,4vw,26px);font-weight:600;color:var(--b1);line-height:1.25}
+.s-dsc{font-size:14px;color:var(--mut);margin-top:6px;line-height:1.5;margin-bottom:24px}
+
+.field{margin-bottom:20px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--txt);margin-bottom:7px}
+.field label .req{color:var(--b3);margin-left:2px}
+input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{width:100%;background:#fafafa;border:1.5px solid #e5e7eb;border-radius:10px;padding:12px 14px;font-family:var(--fb);font-size:15px;color:var(--txt);outline:none;transition:border-color .2s,box-shadow .2s,background .2s;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--b3);box-shadow:0 0 0 3px rgba(25,135,195,.12);background:#fff}
+input.err2,select.err2,textarea.err2{border-color:var(--err);box-shadow:0 0 0 3px rgba(220,38,38,.08)}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-color:#fafafa;padding-right:36px}
+textarea{resize:vertical;min-height:96px;line-height:1.6}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.frow{grid-template-columns:1fr}}
+.ferr{font-size:12px;color:var(--err);margin-top:5px;display:none}
+.ferr.on{display:block}
+.char-c{font-size:11px;color:var(--lgt);text-align:right;margin-top:4px;transition:color .2s}
+.char-c.near{color:var(--warn)}.char-c.full{color:var(--b3)}
+
+.rg,.cg{display:flex;flex-direction:column;gap:10px}
+.rg.row{flex-direction:row;flex-wrap:wrap}
+.ri,.ci{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fafafa;border:1.5px solid #e5e7eb;border-radius:10px;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s;user-select:none}
+.ri:hover,.ci:hover{border-color:var(--b4);background:var(--b7)}
+.ri.sel,.ci.sel{border-color:var(--b3);background:var(--b7);box-shadow:0 0 0 3px rgba(25,135,195,.10)}
+.ri input,.ci input{display:none}
+.rm{width:20px;height:20px;border-radius:50%;border:2px solid #d1d5db;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ri.sel .rm{border-color:var(--b3);background:var(--b3)}
+.ri.sel .rm::after{content:'';width:8px;height:8px;border-radius:50%;background:#fff}
+.cm{width:20px;height:20px;border-radius:5px;border:2px solid #d1d5db;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.ci.sel .cm{border-color:var(--b3);background:var(--b3)}
+.ci.sel .cm::after{content:'';width:10px;height:7px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.rl,.cl{font-size:14px;color:var(--txt);flex:1;line-height:1.4}
+
+.alert{border-radius:10px;padding:14px 16px;font-size:13.5px;line-height:1.5;margin-top:12px;display:flex;gap:10px;align-items:flex-start}
+.alert.info{background:var(--b7);border:1px solid var(--b5);color:var(--b2)}
+.alert.warn{background:var(--warn-bg);border:1px solid var(--warn-bd);color:var(--warn)}
+.alert strong{font-weight:700}
+
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:24px}
+.btn{font-family:var(--fb);font-size:15px;font-weight:600;padding:14px 28px;border-radius:10px;border:none;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-pri{background:var(--b3);color:#fff}
+.btn-pri:hover:not(:disabled){background:var(--b2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(25,135,195,.3)}
+.btn-pri:disabled{background:#d1d5db;cursor:not-allowed}
+.btn-sec{background:transparent;color:var(--mut);border:1.5px solid #e5e7eb}
+.btn-sec:hover{background:#f9fafb;border-color:#d1d5db}
+
+.success{background:linear-gradient(135deg,var(--b1) 0%,var(--b2) 60%,var(--b3) 100%);color:#fff;border-radius:var(--r);padding:48px 32px;text-align:center;box-shadow:var(--sh)}
+.success h2{font-family:var(--fd);font-size:28px;margin-bottom:12px}
+.success p{font-size:15px;opacity:.9;line-height:1.6;margin-bottom:16px}
+.success .next-box{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:16px;margin-top:20px;font-size:14px;text-align:left}
+.declas{background:var(--sur);border-radius:var(--r);padding:40px 32px;text-align:center;box-shadow:var(--sh)}
+.declas h2{font-family:var(--fd);font-size:24px;color:var(--b1);margin-bottom:14px}
+.declas .reason-box{background:#f3f4f6;border-radius:10px;padding:14px 16px;font-size:13.5px;color:var(--mut);text-align:left;margin:18px 0}
+.declas .reason-box strong{color:var(--txt)}
+.declas .ig-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);color:#fff;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;font-size:14px;margin-top:8px}
+.declas .restart{display:block;margin-top:14px;font-size:13px;color:var(--b3);text-decoration:underline;cursor:pointer;background:none;border:none}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="logo">🏥 SST<span>Clínica</span></div>
+    <div class="bdg-ps">Processo Seletivo</div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-in">
+      <div class="prog-lbl">Sua candidatura</div>
+      <div class="prog-steps" id="prog">
+        <div class="ps-item"><div class="ps-dot active" data-s="1">1</div><div class="ps-line"></div></div>
+        <div class="ps-item"><div class="ps-dot" data-s="2">2</div><div class="ps-line"></div></div>
+        <div class="ps-item"><div class="ps-dot" data-s="3">3</div><div class="ps-line"></div></div>
+        <div class="ps-item"><div class="ps-dot" data-s="4">4</div><div class="ps-line"></div></div>
+        <div class="ps-item"><div class="ps-dot" data-s="5">5</div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero" id="hero">
+    <div class="hero-bdg">Vaga Aberta · Bairro da Paz / Salvador — BA</div>
+    <h1>Atendente de Clínica <em>SST Clínica</em></h1>
+    <p class="hero-sub">Estamos abrindo a nossa nova unidade no Bairro da Paz e buscamos uma pessoa comprometida, com boa comunicação e vontade de crescer. Você vai cuidar do atendimento, da agenda e do dia a dia da clínica — com suporte direto da nossa equipe na matriz.</p>
+    <div class="chips">
+      <span class="chip">📍 Bairro da Paz · Salvador/BA</span>
+      <span class="chip">🕐 Seg–Sex (8h) + Sáb (4h)</span>
+      <span class="chip">📋 CLT · Carteira assinada</span>
+      <span class="chip">💰 R$ 1.518 – R$ 1.800/mês</span>
+    </div>
+  </div>
+
+  <div class="growth-banner">
+    <div class="icon">📈</div>
+    <div class="text">
+      <strong>Oportunidade de crescimento real</strong>
+      Começamos com atendimento, mas quem mostrar resultado tem caminho aberto para assumir a referência operacional da unidade — com progressão de salário e responsabilidades nos primeiros 6 a 12 meses.
+    </div>
+  </div>
+
+  <!-- ETAPA 1 — Dados Pessoais -->
+  <section class="step active" data-step="1">
+    <div class="card">
+      <div class="s-num">Etapa 1 de 5</div>
+      <div class="s-ttl">Quem é você?</div>
+      <div class="s-dsc">Vamos começar com os dados básicos para contato. Tudo que você preencher aqui é sigiloso.</div>
+
+      <div class="field">
+        <label>Nome completo <span class="req">*</span></label>
+        <input type="text" id="nome" placeholder="Maria da Silva"/>
+        <div class="ferr" id="err-nome">Informe seu nome completo</div>
+      </div>
+
+      <div class="field">
+        <label>E-mail <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="seuemail@exemplo.com"/>
+        <div class="ferr" id="err-email">E-mail inválido</div>
+      </div>
+
+      <div class="field">
+        <label>WhatsApp com DDD <span class="req">*</span></label>
+        <input type="tel" id="wpp" placeholder="(71) 99999-9999" maxlength="15"/>
+        <div class="ferr" id="err-wpp">Informe seu WhatsApp</div>
+      </div>
+
+      <div class="frow">
+        <div class="field">
+          <label>Cidade onde mora <span class="req">*</span></label>
+          <input type="text" id="cidade" placeholder="Salvador"/>
+          <div class="ferr" id="err-cidade">Informe a cidade</div>
+        </div>
+        <div class="field">
+          <label>Bairro <span class="req">*</span></label>
+          <input type="text" id="bairro" placeholder="Bairro da Paz"/>
+          <div class="ferr" id="err-bairro">Informe o bairro</div>
+        </div>
+      </div>
+
+      <div class="frow">
+        <div class="field">
+          <label>Idade <span class="req">*</span></label>
+          <input type="number" id="idade" min="18" max="70" placeholder="24"/>
+          <div class="ferr" id="err-idade">Idade mínima: 18 anos</div>
+        </div>
+        <div class="field">
+          <label>Escolaridade <span class="req">*</span></label>
+          <select id="escolaridade">
+            <option value="">Selecione...</option>
+            <option value="medio">Ensino Médio completo</option>
+            <option value="tecnico">Curso técnico</option>
+            <option value="superior-inc">Superior incompleto</option>
+            <option value="superior">Superior completo</option>
+            <option value="pos">Pós-graduação</option>
+          </select>
+          <div class="ferr" id="err-esc">Selecione a escolaridade</div>
+        </div>
+      </div>
+
+      <div class="nav">
+        <span></span>
+        <button class="btn btn-pri" onclick="next(1)">Avançar →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETAPA 2 — Disponibilidade [ELIMINATÓRIO] -->
+  <section class="step" data-step="2">
+    <div class="card">
+      <div class="s-num">Etapa 2 de 5 · Eliminatória</div>
+      <div class="s-ttl">Disponibilidade e localização</div>
+      <div class="s-dsc">A vaga é 100% presencial no Bairro da Paz, Salvador. Essas perguntas são obrigatórias.</div>
+
+      <div class="field">
+        <label>Você pode trabalhar presencialmente no Bairro da Paz, Salvador/BA? <span class="req">*</span></label>
+        <div class="rg" id="rg-pres">
+          <label class="ri"><input type="radio" name="pres" value="sim"/><span class="rm"></span><span class="rl">Sim — já moro em Salvador e consigo chegar ao Bairro da Paz</span></label>
+          <label class="ri"><input type="radio" name="pres" value="muda"/><span class="rm"></span><span class="rl">Moro em outra cidade, mas me mudo para Salvador se for contratada</span></label>
+          <label class="ri"><input type="radio" name="pres" value="nao"/><span class="rm"></span><span class="rl">Não consigo trabalhar presencialmente nessa região</span></label>
+        </div>
+        <div class="ferr" id="err-pres">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>Você tem disponibilidade para trabalhar de segunda a sexta (8h por dia) e sábado de manhã? <span class="req">*</span></label>
+        <div class="rg" id="rg-disp">
+          <label class="ri"><input type="radio" name="disp" value="sim"/><span class="rm"></span><span class="rl">Sim, tenho disponibilidade completa</span></label>
+          <label class="ri"><input type="radio" name="disp" value="restr"/><span class="rm"></span><span class="rl">Tenho uma restrição pequena (explico na entrevista)</span></label>
+          <label class="ri"><input type="radio" name="disp" value="nao"/><span class="rm"></span><span class="rl">Não tenho essa disponibilidade no momento</span></label>
+        </div>
+        <div class="ferr" id="err-disp">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>Quando você poderia começar a trabalhar? <span class="req">*</span></label>
+        <div class="rg" id="rg-inicio">
+          <label class="ri"><input type="radio" name="inicio" value="imediato"/><span class="rm"></span><span class="rl">Imediato (até 2 semanas)</span></label>
+          <label class="ri"><input type="radio" name="inicio" value="30d"/><span class="rm"></span><span class="rl">Em até 30 dias</span></label>
+          <label class="ri"><input type="radio" name="inicio" value="60d"/><span class="rm"></span><span class="rl">Entre 30 e 60 dias</span></label>
+          <label class="ri"><input type="radio" name="inicio" value=">60d"/><span class="rm"></span><span class="rl">Somente após 60 dias</span></label>
+        </div>
+        <div class="ferr" id="err-inicio">Selecione uma opção</div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-sec" onclick="back(2)">← Voltar</button>
+        <button class="btn btn-pri" onclick="next(2)">Avançar →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETAPA 3 — Experiência (sem eliminatório rígido) -->
+  <section class="step" data-step="3">
+    <div class="card">
+      <div class="s-num">Etapa 3 de 5</div>
+      <div class="s-ttl">Sua experiência de trabalho</div>
+      <div class="s-dsc">Não precisa ter trabalhado em clínica antes — mas queremos entender sua bagagem. Seja honesta.</div>
+
+      <div class="alert info" style="margin-bottom:20px">
+        <span>💡</span>
+        <span>Esta etapa <strong>não é eliminatória</strong>. Candidatas sem experiência em saúde podem ser consideradas se tiverem boa comunicação e disposição para aprender.</span>
+      </div>
+
+      <div class="field">
+        <label>Você já trabalhou em algum serviço de atendimento ao público? <span class="req">*</span></label>
+        <div class="rg" id="rg-atend">
+          <label class="ri"><input type="radio" name="atend" value="nunca"/><span class="rm"></span><span class="rl">Não, essa seria minha primeira experiência com atendimento</span></label>
+          <label class="ri"><input type="radio" name="atend" value="outro"/><span class="rm"></span><span class="rl">Sim, em outro tipo de serviço (comércio, telefonia, escola, etc.)</span></label>
+          <label class="ri"><input type="radio" name="atend" value="saude"/><span class="rm"></span><span class="rl">Sim, em saúde (clínica, farmácia, laboratório, hospital)</span></label>
+        </div>
+        <div class="ferr" id="err-atend">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>Se já trabalhou em algum lugar, qual foi a função mais recente? (deixe em branco se nunca trabalhou formalmente)</label>
+        <input type="text" id="funcao" placeholder="Ex: atendente de farmácia, recepcionista, caixa..."/>
+      </div>
+
+      <div class="field">
+        <label>Você já confirmou consultas ou agendamentos pelo WhatsApp ou telefone? <span class="req">*</span></label>
+        <div class="rg" id="rg-agenda">
+          <label class="ri"><input type="radio" name="agenda" value="sim-saude"/><span class="rm"></span><span class="rl">Sim, em clínica ou serviço de saúde</span></label>
+          <label class="ri"><input type="radio" name="agenda" value="sim-outro"/><span class="rm"></span><span class="rl">Sim, em outro tipo de serviço (salão, prestador de serviço, etc.)</span></label>
+          <label class="ri"><input type="radio" name="agenda" value="nao"/><span class="rm"></span><span class="rl">Não, mas consigo aprender rápido</span></label>
+        </div>
+        <div class="ferr" id="err-agenda">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>Quais ferramentas você usa no dia a dia? (pode marcar mais de uma)</label>
+        <div class="cg" id="cg-tools">
+          <label class="ci"><input type="checkbox" name="tools" value="whatsapp"/><span class="cm"></span><span class="cl">WhatsApp (inclusive pelo celular do trabalho)</span></label>
+          <label class="ci"><input type="checkbox" name="tools" value="planilha"/><span class="cm"></span><span class="cl">Planilha (Excel, Google Sheets)</span></label>
+          <label class="ci"><input type="checkbox" name="tools" value="sistema"/><span class="cm"></span><span class="cl">Sistema de clínica ou de agendamento (qualquer um)</span></label>
+          <label class="ci"><input type="checkbox" name="tools" value="word"/><span class="cm"></span><span class="cl">Word / Google Docs</span></label>
+          <label class="ci"><input type="checkbox" name="tools" value="nenhuma"/><span class="cm"></span><span class="cl">Nenhuma das acima (só uso o celular no pessoal)</span></label>
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-sec" onclick="back(3)">← Voltar</button>
+        <button class="btn btn-pri" onclick="next(3)">Avançar →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETAPA 4 — Comportamento e raciocínio prático -->
+  <section class="step" data-step="4">
+    <div class="card">
+      <div class="s-num">Etapa 4 de 5</div>
+      <div class="s-ttl">Como você reage na prática</div>
+      <div class="s-dsc">Não existe resposta certa. Queremos entender como você pensa e age em situações do dia a dia.</div>
+
+      <div class="field">
+        <label>Imagine que você está na recepção da clínica. Um paciente chega nervoso dizendo que esperou 40 minutos e quer falar com o médico agora, mas o médico está em consulta. O que você faz? <span class="req">*</span></label>
+        <textarea id="caso1" maxlength="500" placeholder="Descreva como você responderia e o que faria. Seja direta — não precisa ser perfeito."></textarea>
+        <div class="char-c" id="cc-caso1">0 / 500</div>
+        <div class="ferr" id="err-caso1">Responda em ao menos 2 frases</div>
+      </div>
+
+      <div class="field">
+        <label>Você tem facilidade para trabalhar seguindo rotinas e checklists diários? <span class="req">*</span></label>
+        <div class="rg" id="rg-rotina">
+          <label class="ri"><input type="radio" name="rotina" value="sim"/><span class="rm"></span><span class="rl">Sim — gosto de ter o dia organizado e rotina clara</span></label>
+          <label class="ri"><input type="radio" name="rotina" value="parcial"/><span class="rm"></span><span class="rl">Em parte — prefiro flexibilidade, mas me adapto</span></label>
+          <label class="ri"><input type="radio" name="rotina" value="nao"/><span class="rm"></span><span class="rl">Não — fico entediada com rotina, prefiro variedade</span></label>
+        </div>
+        <div class="ferr" id="err-rotina">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>O que você faz quando não sabe como resolver alguma coisa no trabalho? <span class="req">*</span></label>
+        <div class="rg" id="rg-duvida">
+          <label class="ri"><input type="radio" name="duvida" value="espera"/><span class="rm"></span><span class="rl">Espero até alguém me orientar</span></label>
+          <label class="ri"><input type="radio" name="duvida" value="pesquisa"/><span class="rm"></span><span class="rl">Tento resolver por conta — pesquiso ou penso numa solução</span></label>
+          <label class="ri"><input type="radio" name="duvida" value="pergunta"/><span class="rm"></span><span class="rl">Comunico imediatamente para quem é responsável e pergunto o que fazer</span></label>
+          <label class="ri"><input type="radio" name="duvida" value="misto"/><span class="rm"></span><span class="rl">Tento resolver, mas se não consigo, comunico logo — não deixo arrastar</span></label>
+        </div>
+        <div class="ferr" id="err-duvida">Selecione uma opção</div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-sec" onclick="back(4)">← Voltar</button>
+        <button class="btn btn-pri" onclick="next(4)">Avançar →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETAPA 5 — Motivação e expectativa -->
+  <section class="step" data-step="5">
+    <div class="card">
+      <div class="s-num">Etapa 5 de 5</div>
+      <div class="s-ttl">Última etapa — sobre você</div>
+      <div class="s-dsc">Seja direta. Essas respostas são decisivas para quem chamamos para entrevista.</div>
+
+      <div class="field">
+        <label>Por que essa vaga chamou sua atenção? O que te fez querer se candidatar? <span class="req">*</span></label>
+        <textarea id="m1" maxlength="400" placeholder="Seja honesta — não precisa ser resposta de RH."></textarea>
+        <div class="char-c" id="cc-m1">0 / 400</div>
+        <div class="ferr" id="err-m1">Resposta obrigatória</div>
+      </div>
+
+      <div class="field">
+        <label>Onde você quer estar profissionalmente daqui a 2 anos? <span class="req">*</span></label>
+        <textarea id="m2" maxlength="400" placeholder="Pode ser simples e direto. Nos interessa saber se você quer crescer."></textarea>
+        <div class="char-c" id="cc-m2">0 / 400</div>
+        <div class="ferr" id="err-m2">Resposta obrigatória</div>
+      </div>
+
+      <div class="field">
+        <label>Qual é a sua expectativa de salário mensal para esta vaga? <span class="req">*</span></label>
+        <input type="text" id="exp-salario" placeholder="Ex: R$ 1.700"/>
+        <div class="ferr" id="err-salario">Informe um valor</div>
+      </div>
+
+      <div class="field">
+        <label>Você tem CTPS (carteira de trabalho) e pode ser contratada em regime CLT? <span class="req">*</span></label>
+        <div class="rg" id="rg-ctps">
+          <label class="ri"><input type="radio" name="ctps" value="sim"/><span class="rm"></span><span class="rl">Sim, tenho CTPS e aceito CLT</span></label>
+          <label class="ri"><input type="radio" name="ctps" value="sem-ctps"/><span class="rm"></span><span class="rl">Ainda não tenho CTPS, mas posso tirar</span></label>
+          <label class="ri"><input type="radio" name="ctps" value="nao-clt"/><span class="rm"></span><span class="rl">Prefiro não trabalhar em regime CLT</span></label>
+        </div>
+        <div class="ferr" id="err-ctps">Selecione uma opção</div>
+      </div>
+
+      <div class="field">
+        <label>Onde soube dessa vaga? <span class="req">*</span></label>
+        <div class="rg" id="rg-fonte">
+          <label class="ri"><input type="radio" name="fonte" value="whatsapp"/><span class="rm"></span><span class="rl">Grupo ou indicação por WhatsApp</span></label>
+          <label class="ri"><input type="radio" name="fonte" value="instagram"/><span class="rm"></span><span class="rl">Instagram / redes sociais</span></label>
+          <label class="ri"><input type="radio" name="fonte" value="indicacao"/><span class="rm"></span><span class="rl">Indicação de amigo ou familiar</span></label>
+          <label class="ri"><input type="radio" name="fonte" value="comunidade"/><span class="rm"></span><span class="rl">Comunidade / liderança do bairro</span></label>
+          <label class="ri"><input type="radio" name="fonte" value="outro"/><span class="rm"></span><span class="rl">Outro canal</span></label>
+        </div>
+        <div class="ferr" id="err-fonte">Selecione uma opção</div>
+      </div>
+
+      <div class="nav">
+        <button class="btn btn-sec" onclick="back(5)">← Voltar</button>
+        <button class="btn btn-pri" onclick="submit()">Enviar candidatura ✓</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA SUCESSO -->
+  <section class="step" data-step="ok">
+    <div class="success">
+      <h2 id="ok-name">Candidatura recebida!</h2>
+      <p>Recebemos suas respostas. Vamos avaliar nos próximos dias úteis e, se houver fit, entramos em contato pelo seu WhatsApp para agendar uma conversa rápida.</p>
+      <div class="next-box">
+        <strong>📍 Local da entrevista (se chamada):</strong><br/>
+        SST Clínica — Bairro da Paz · Salvador/BA<br/>
+        (ou por vídeo, caso necessário)<br/><br/>
+        <strong>📅 Prazo de retorno:</strong> até 5 dias úteis.<br/><br/>
+        <strong>💡 Dica:</strong> Pense em uma situação em que você ajudou alguém num momento difícil. Pode ser na vida pessoal mesmo — usamos esse tipo de história na entrevista.
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA DESCLASSIFICADO -->
+  <section class="step" data-step="declas">
+    <div class="declas">
+      <h2>Obrigado pelo interesse!</h2>
+      <p style="color:var(--mut);font-size:14px">Por enquanto não seguiremos com sua candidatura para esta vaga específica, mas agradecemos o tempo que você dedicou.</p>
+      <div class="reason-box" id="declas-reason"><strong>Motivo:</strong> <span id="declas-text"></span></div>
+      <p style="color:var(--mut);font-size:13px">Fique de olho nas nossas redes — abrimos outras oportunidades conforme a operação cresce.</p>
+      <a class="ig-btn" href="https://www.instagram.com/sstclinica" target="_blank">📸 Seguir @sstclinica</a>
+      <button class="restart" onclick="restart()">Revisar minhas respostas</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+let cur = 1;
+const TOTAL = 5;
+
+function showStep(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  const el = document.querySelector(`.step[data-step="${n}"]`);
+  if(el) el.classList.add('active');
+  updateProg(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProg(n){
+  const dots = document.querySelectorAll('.ps-dot');
+  const lines = document.querySelectorAll('.ps-line');
+  dots.forEach(d=>{
+    const s = parseInt(d.dataset.s);
+    d.classList.remove('done','active');
+    if(typeof n === 'number'){
+      if(s < n) d.classList.add('done');
+      else if(s === n) d.classList.add('active');
+    } else {
+      d.classList.add('done');
+    }
+  });
+  lines.forEach((l,i)=>{
+    l.classList.remove('done');
+    if(typeof n === 'number' && i < n-1) l.classList.add('done');
+    else if(typeof n !== 'number') l.classList.add('done');
+  });
+}
+
+function back(step){ cur = step-1; showStep(cur); }
+
+function next(step){
+  if(!validate(step)) return;
+  const result = checkElim(step);
+  if(result){
+    document.getElementById('declas-text').textContent = result;
+    showStep('declas');
+    return;
+  }
+  cur = step+1;
+  if(cur > TOTAL){ submit(); return; }
+  showStep(cur);
+}
+
+function restart(){
+  cur = 1;
+  document.querySelectorAll('input[type=radio]').forEach(r=>{ r.checked=false; r.closest('.ri')?.classList.remove('sel'); });
+  document.querySelectorAll('input[type=checkbox]').forEach(c=>{ c.checked=false; c.closest('.ci')?.classList.remove('sel'); });
+  document.querySelectorAll('input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea').forEach(i=>i.value='');
+  showStep(1);
+}
+
+/* --- ELIMINATÓRIOS (somente localização e disponibilidade) --- */
+function checkElim(step){
+  if(step === 2){
+    const pres = document.querySelector('input[name="pres"]:checked')?.value;
+    if(pres === 'nao') return 'Esta vaga é 100% presencial no Bairro da Paz, Salvador/BA. Não temos opção remota ou em outra localidade.';
+    const disp = document.querySelector('input[name="disp"]:checked')?.value;
+    if(disp === 'nao') return 'A disponibilidade de segunda a sábado é necessária para esta posição de atendimento.';
+    const inicio = document.querySelector('input[name="inicio"]:checked')?.value;
+    if(inicio === '>60d') return 'Precisamos de alguém disponível em até 60 dias — nossa inauguração é em 01/07/2026.';
+  }
+  if(step === 5){
+    const ctps = document.querySelector('input[name="ctps"]:checked')?.value;
+    if(ctps === 'nao-clt') return 'Esta vaga é exclusivamente no regime CLT (carteira assinada). Não temos modelo PJ para esta posição.';
+  }
+  return null;
+}
+
+/* --- VALIDAÇÃO --- */
+function validate(step){
+  let ok = true;
+  function req(id, errId, fn){
+    const el = document.getElementById(id);
+    const err = document.getElementById(errId);
+    const valid = fn ? fn(el) : (el && el.value.trim().length > 0);
+    if(!valid){ el?.classList.add('err2'); err?.classList.add('on'); ok=false; }
+    else { el?.classList.remove('err2'); err?.classList.remove('on'); }
+  }
+  function radio(name, errId){
+    const sel = document.querySelector(`input[name="${name}"]:checked`);
+    const err = document.getElementById(errId);
+    if(!sel){ err?.classList.add('on'); ok=false; }
+    else { err?.classList.remove('on'); }
+  }
+
+  if(step===1){
+    req('nome','err-nome');
+    req('email','err-email', el=>el && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value));
+    req('wpp','err-wpp', el=>el && el.value.replace(/\D/g,'').length >= 10);
+    req('cidade','err-cidade');
+    req('bairro','err-bairro');
+    req('idade','err-idade', el=>el && parseInt(el.value)>=18 && parseInt(el.value)<=70);
+    req('escolaridade','err-esc', el=>el && el.value!=='');
+  }
+  if(step===2){
+    radio('pres','err-pres');
+    radio('disp','err-disp');
+    radio('inicio','err-inicio');
+  }
+  if(step===3){
+    radio('atend','err-atend');
+    radio('agenda','err-agenda');
+  }
+  if(step===4){
+    req('caso1','err-caso1', el=>el && el.value.trim().length >= 30);
+    radio('rotina','err-rotina');
+    radio('duvida','err-duvida');
+  }
+  if(step===5){
+    req('m1','err-m1', el=>el && el.value.trim().length >= 20);
+    req('m2','err-m2', el=>el && el.value.trim().length >= 20);
+    req('exp-salario','err-salario');
+    radio('ctps','err-ctps');
+    radio('fonte','err-fonte');
+  }
+  return ok;
+}
+
+/* --- SUBMIT --- */
+function submit(){
+  if(!validate(5)) return;
+  const nome = document.getElementById('nome')?.value || 'candidata';
+  const primeiro = nome.trim().split(' ')[0];
+  document.getElementById('ok-name').textContent = primeiro + ', candidatura recebida!';
+  showStep('ok');
+}
+
+/* --- RADIO / CHECK VISUAL --- */
+document.addEventListener('change', e=>{
+  if(e.target.type==='radio'){
+    const group = e.target.name;
+    document.querySelectorAll(`input[name="${group}"]`).forEach(r=>{
+      r.closest('.ri')?.classList.toggle('sel', r.checked);
+    });
+  }
+  if(e.target.type==='checkbox'){
+    e.target.closest('.ci')?.classList.toggle('sel', e.target.checked);
+  }
+});
+
+/* --- CONTADORES --- */
+function counter(id, cid, max){
+  const el = document.getElementById(id);
+  const cc = document.getElementById(cid);
+  if(!el||!cc) return;
+  el.addEventListener('input',()=>{
+    const n = el.value.length;
+    cc.textContent = n+' / '+max;
+    cc.className = 'char-c'+(n>=max?' full':n>=max*.8?' near':'');
+  });
+}
+counter('caso1','cc-caso1',500);
+counter('m1','cc-m1',400);
+counter('m2','cc-m2',400);
+
+/* --- MÁSCARA TELEFONE --- */
+document.getElementById('wpp')?.addEventListener('input',function(){
+  let v = this.value.replace(/\D/g,'');
+  if(v.length>11) v=v.slice(0,11);
+  if(v.length>6) v=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+  else if(v.length>2) v=`(${v.slice(0,2)}) ${v.slice(2)}`;
+  else if(v.length>0) v=`(${v}`;
+  this.value=v;
+});
+</script>
+</body>
+</html>

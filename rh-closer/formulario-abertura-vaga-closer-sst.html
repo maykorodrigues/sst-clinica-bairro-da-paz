@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulário de Abertura de Vaga — Closer SST Card</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a2e;
+    background: #f8f9fc;
+    line-height: 1.55;
+  }
+
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 48px 52px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid #1987c3;
+    padding-bottom: 16px;
+    margin-bottom: 28px;
+  }
+  .logo-area h1 {
+    font-size: 18pt;
+    font-weight: 700;
+    color: #1987c3;
+    letter-spacing: -0.3px;
+  }
+  .logo-area p {
+    font-size: 9pt;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+  .badge-status {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    color: #856404;
+    font-size: 8.5pt;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    text-align: center;
+  }
+
+  /* Alert */
+  .alert {
+    background: #fff8e1;
+    border-left: 4px solid #f59e0b;
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 9.5pt;
+    color: #78350f;
+    margin-bottom: 24px;
+  }
+
+  /* Sections */
+  h2 {
+    font-size: 11.5pt;
+    font-weight: 700;
+    color: #1987c3;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 1px solid #dbeafe;
+    padding-bottom: 5px;
+    margin-top: 28px;
+    margin-bottom: 12px;
+  }
+  h3 {
+    font-size: 10.5pt;
+    font-weight: 600;
+    color: #374151;
+    margin-top: 18px;
+    margin-bottom: 8px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+    font-size: 10pt;
+  }
+  thead tr {
+    background: #1987c3;
+    color: #fff;
+  }
+  thead th {
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 9.5pt;
+  }
+  tbody tr:nth-child(even) { background: #f0f7ff; }
+  tbody tr:hover { background: #e0f0ff; }
+  td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+  }
+  td:first-child { font-weight: 500; color: #374151; width: 38%; }
+
+  /* Faixa total */
+  .faixa-total {
+    background: #1987c3;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 10.5pt;
+    font-weight: 600;
+    margin: 10px 0 18px;
+  }
+
+  /* Ordered list */
+  ol {
+    padding-left: 20px;
+    margin-bottom: 12px;
+  }
+  ol li {
+    margin-bottom: 8px;
+    font-size: 10pt;
+  }
+  ol li strong { color: #1987c3; }
+
+  /* Metas / critério */
+  .criterio-box {
+    background: #f0fdf4;
+    border-left: 4px solid #22c55e;
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 9.5pt;
+    margin-top: 10px;
+    margin-bottom: 14px;
+  }
+  .criterio-box ul { padding-left: 18px; }
+  .criterio-box li { margin-bottom: 3px; }
+
+  /* Checklist */
+  .checklist { list-style: none; padding: 0; margin-bottom: 14px; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 10pt;
+    padding: 5px 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .checklist li .box {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #9ca3af;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 36px;
+    padding-top: 14px;
+    border-top: 2px solid #dbeafe;
+    display: flex;
+    justify-content: space-between;
+    font-size: 8.5pt;
+    color: #9ca3af;
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; }
+    .page { padding: 28px 36px; max-width: 100%; }
+    h2 { page-break-after: avoid; }
+    table { page-break-inside: avoid; }
+    .alert, .faixa-total, .criterio-box { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-area">
+      <h1>SST Clínica &nbsp;·&nbsp; SST Card</h1>
+      <p>Formulário de Abertura de Vaga — Closer / Vendedor Líder &nbsp;|&nbsp; Filial Bairro da Paz, Salvador/BA</p>
+    </div>
+    <div class="badge-status">⏳ Rascunho<br>Aguardando aprovação<br>Rogério</div>
+  </div>
+
+  <div class="alert">
+    ⚠️ <strong>Status:</strong> Rascunho — aguardando aprovação do Rogério sobre comissão antes de divulgar publicamente. Criado em 21/05/2026.
+  </div>
+
+  <!-- 1. DADOS DA EMPRESA -->
+  <h2>1 · Dados da Empresa</h2>
+  <table>
+    <tbody>
+      <tr><td>Razão Social</td><td>SST Clínica (a confirmar CNPJ matriz vs filial)</td></tr>
+      <tr><td>Nome fantasia</td><td>SST Clínica / SST Card</td></tr>
+      <tr><td>Local de trabalho</td><td><strong>Filial Bairro da Paz — Salvador/BA</strong> (clínica + prospecção de campo no bairro)</td></tr>
+      <tr><td>Endereço matriz (apoio)</td><td>Simões Filho/BA</td></tr>
+      <tr><td>Exibir nome na divulgação</td><td>☒ Sim &nbsp;&nbsp; ☐ Não</td></tr>
+      <tr><td>Repor vendedor existente?</td><td>☐ Sim &nbsp;&nbsp; ☒ Não — vaga nova (abertura da 2ª filial)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 2. DADOS DA VAGA -->
+  <h2>2 · Dados da Vaga</h2>
+  <table>
+    <tbody>
+      <tr><td>Quantidade de vagas</td><td>01 (uma)</td></tr>
+      <tr><td>Cargo</td><td><strong>Closer / Vendedor Líder — SST Card</strong></td></tr>
+      <tr><td>Departamento</td><td>Comercial</td></tr>
+      <tr><td>Reporta para</td><td>Rogério Ferreira (sponsor) / Mayko Rodrigues (advisor)</td></tr>
+      <tr><td>Modelo de contratação</td><td><strong>PJ — Pessoa Jurídica (MEI ou ME)</strong></td></tr>
+      <tr><td>Modalidade</td><td>Presencial</td></tr>
+      <tr><td>Carga horária</td><td>8h/dia · Segunda a Sexta + Sábado meio expediente (44h/semana)</td></tr>
+      <tr><td>Início desejado</td><td>Imediato (até 02/06/2026)</td></tr>
+      <tr><td>Período de adaptação</td><td>60 dias (avaliação ao fim)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 3. REMUNERAÇÃO -->
+  <h2>3 · Remuneração</h2>
+  <div class="alert">
+    ⚠️ <strong>Pendente aprovação Rogério antes de divulgar.</strong> Valores abaixo são proposta de Mayko com base no break-even SST Card (430 membros / R$26k custo operacional).
+  </div>
+  <table>
+    <thead>
+      <tr><th>Componente</th><th>Valor de referência</th><th>Observação</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Pró-labore fixo</td><td><strong>R$ 2.000,00 / mês</strong></td><td>Pago via NF da PJ</td></tr>
+      <tr><td>Comissão — Cartão Individual (R$34,90)</td><td>R$ 20 por adesão</td><td>Pago após D+30 (cliente ativo)</td></tr>
+      <tr><td>Comissão — Família 4 (R$65)</td><td>R$ 40 por adesão</td><td>Pago após D+30</td></tr>
+      <tr><td>Comissão — Família 10 (R$199,90)</td><td>R$ 80 por adesão</td><td>Pago após D+30</td></tr>
+      <tr><td>Comissão — Reativação Tenex</td><td>R$ 5 por contrato renegociado</td><td>Pago após 1ª mensalidade recebida</td></tr>
+      <tr><td>Bônus mensal por meta</td><td>+ R$ 500</td><td>Se ≥ 40 adesões novas no mês</td></tr>
+      <tr><td>Ajuda de custo (deslocamento)</td><td>R$ 300 / mês</td><td>Para prospecção de campo no bairro</td></tr>
+    </tbody>
+  </table>
+  <div class="faixa-total">
+    💰 Faixa total esperada: R$ 2.800 – R$ 5.500 / mês (entre piso e meta + bônus)
+  </div>
+
+  <!-- 4. ATIVIDADES -->
+  <h2>4 · Atividades Principais</h2>
+  <ol>
+    <li><strong>Fechamento de leads qualificados:</strong> atender leads encaminhados pelo SDR (Raquel) e financeiro/atendimento (Karine), conduzir conversa consultiva e fechar adesão ao SST Card.</li>
+    <li><strong>Conversão consultiva no balcão:</strong> abordar pacientes que vêm fazer consulta avulsa ou exame, identificar perfil de uso recorrente e oferecer migração para SST Card.</li>
+    <li><strong>Prospecção ativa de campo no Bairro da Paz:</strong> rotina diária — comércio local, associações de bairro, igrejas, pontos de ônibus, eventos comunitários. Meta: ≥30 contatos qualificados/semana.</li>
+    <li><strong>Liderança técnica de embaixadores:</strong> treinar, acompanhar e cobrar resultado da rede de embaixadores (vizinhos, comerciantes, líderes comunitários — R$15–30 por cartão).</li>
+    <li><strong>Reativação de carteira inativa:</strong> trabalhar a base Tenex (761 contas em atraso) com script de perdão de dívida + migração SST Card. Meta: 20% reativados em 90 dias.</li>
+    <li><strong>Reporte diário:</strong> atualizar dashboard de adesões no playbook web e participar da matinal 9h. Justificar bloqueadores no mesmo dia.</li>
+    <li><strong>Feedback de produto:</strong> levar para Rogério/Mayko as objeções e padrões do público — input para ajuste de pricing e mix.</li>
+  </ol>
+
+  <!-- 5. REQUISITOS -->
+  <h2>5 · Requisitos do Candidato</h2>
+
+  <h3>Obrigatórios (eliminatórios)</h3>
+  <table>
+    <thead><tr><th>Requisito</th><th>Detalhe</th></tr></thead>
+    <tbody>
+      <tr><td>Experiência em vendas porta-a-porta</td><td>≥2 anos vendendo cartão de benefícios, plano popular, seguro funeral, plano odontológico ou similares</td></tr>
+      <tr><td>Conhecimento do público C/D</td><td>Já vendeu para informais com renda 0–2 SM</td></tr>
+      <tr><td>Localização</td><td>Mora em Salvador ou se compromete a se mudar. Preferência: Bairro da Paz, Mussurunga, São Cristóvão, Periperi</td></tr>
+      <tr><td>Aceita PJ</td><td>Tem CNPJ ativo (MEI ou ME) ou se compromete a abrir em até 10 dias</td></tr>
+      <tr><td>Disponibilidade</td><td>Segunda a Sábado, presencial</td></tr>
+      <tr><td>Idade mínima</td><td>21 anos</td></tr>
+      <tr><td>Comunicação</td><td>Fluência verbal, tom acolhedor, sabe explicar produto sem jargão</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Desejáveis (somam ponto)</h3>
+  <table>
+    <thead><tr><th>Critério</th><th>Por quê</th></tr></thead>
+    <tbody>
+      <tr><td>Já vendeu Cartão Tenex, Cartão de Todos, Dr. Família ou Mais Saúde</td><td>Conhece o pricing/oferta do mercado</td></tr>
+      <tr><td>CNH B + veículo próprio (carro ou moto)</td><td>Reduz tempo de deslocamento no campo</td></tr>
+      <tr><td>Rede de contatos local (Bairro da Paz, comércio, associações)</td><td>Acelera ramp-up nos primeiros 30 dias</td></tr>
+      <tr><td>Experiência em liderança de equipe pequena (até 5 pessoas)</td><td>Vira coordenador da filial em 6 meses</td></tr>
+      <tr><td>Fluência em ferramentas digitais (WhatsApp Business, planilhas, CRM básico)</td><td>Reduz curva de aprendizagem</td></tr>
+      <tr><td>Background em saúde ou bem-estar (téc. enfermagem, ACS, farmácia popular)</td><td>Aumenta confiança do paciente</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Indiferentes</h3>
+  <table>
+    <tbody>
+      <tr><td>Sexo</td><td>☒ Indiferente</td></tr>
+      <tr><td>Fumante</td><td>☒ Indiferente</td></tr>
+      <tr><td>Estado civil</td><td>☒ Indiferente</td></tr>
+      <tr><td>Tatuagens visíveis</td><td>☒ Indiferente</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 6. METAS -->
+  <h2>6 · Metas — Primeiros 90 Dias</h2>
+  <table>
+    <thead><tr><th>Período</th><th>Meta</th><th>KPI principal</th></tr></thead>
+    <tbody>
+      <tr><td>Mês 1 (adaptação)</td><td>15 adesões + 30 reativações Tenex</td><td>Ramp-up — aprender produto e território</td></tr>
+      <tr><td>Mês 2</td><td>30 adesões + 50 reativações</td><td>Velocidade de vendas + autonomia</td></tr>
+      <tr><td>Mês 3</td><td>40 adesões + ≥5 embaixadores ativos</td><td>Liderança + escala</td></tr>
+    </tbody>
+  </table>
+  <div class="criterio-box">
+    <strong>Critério de continuidade (fim do mês 2):</strong>
+    <ul>
+      <li>≥ 25 adesões acumuladas até dia 60 → <strong>segue</strong></li>
+      <li>15–24 adesões → ajuste de plano + 30 dias de prova</li>
+      <li>&lt; 15 adesões → desligamento</li>
+    </ul>
+  </div>
+
+  <!-- 7. SELEÇÃO -->
+  <h2>7 · Processo Seletivo</h2>
+  <table>
+    <thead><tr><th>Etapa</th><th>Onde</th><th>Duração</th></tr></thead>
+    <tbody>
+      <tr><td>1. Triagem por formulário online</td><td>formulario-qualificacao-closer.html (link enviado)</td><td>10 min do candidato</td></tr>
+      <tr><td>2. Entrevista comportamental (Mayko + Rogério)</td><td>Vídeo ou presencial — clínica matriz</td><td>45 min</td></tr>
+      <tr><td>3. Dinâmica prática — pitch SST Card</td><td>Presencial — clínica matriz</td><td>30 min</td></tr>
+      <tr><td>4. Validação de referências (ex-empregadores)</td><td>Telefone</td><td>1–2 dias</td></tr>
+      <tr><td>5. Proposta + assinatura contrato PJ</td><td>Presencial</td><td>1h</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8. CONTATO -->
+  <h2>8 · Dados de Contato para o Candidato</h2>
+  <table>
+    <tbody>
+      <tr><td>Responsável recrutamento</td><td>Mayko Rodrigues</td></tr>
+      <tr><td>E-mail</td><td>contato@sucessodetodos.com.br</td></tr>
+      <tr><td>WhatsApp candidato</td><td>A definir — usar número operacional Karine/Raquel</td></tr>
+      <tr><td>Local de entrevista</td><td>Clínica matriz SST — Simões Filho/BA (ou Bairro da Paz se já operando)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 9. CHECKLIST -->
+  <h2>9 · Checklist de Publicação</h2>
+  <ul class="checklist">
+    <li><span class="box"></span> Rogério aprovou pró-labore + comissão (data: ___/___/2026)</li>
+    <li><span class="box"></span> CNPJ matriz definido para contrato PJ</li>
+    <li><span class="box"></span> Conta de embaixadores configurada (sistema Blingo?)</li>
+    <li><span class="box"></span> WhatsApp dedicado para receber currículos (não usar o de Karine/Raquel)</li>
+    <li><span class="box"></span> PDF da divulgacao-vaga-closer.html gerado</li>
+    <li><span class="box"></span> Pipeline no Notion criado para acompanhar candidatos</li>
+    <li><span class="box"></span> Mensagem-padrão para grupos WhatsApp Salvador escrita</li>
+  </ul>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>SST Clínica / SST Card · Filial Bairro da Paz · Salvador/BA</span>
+    <span>Criado em 21/05/2026 · Consultor: Mayko Rodrigues</span>
+  </div>
+
+</div>
+</body>
+</html>

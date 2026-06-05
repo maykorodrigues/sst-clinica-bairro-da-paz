@@ -1,0 +1,609 @@
+{
+  "version": "6",
+  "id": "typebot-qual-lead-bp-v1",
+  "name": "SST Card — Qualificação de Lead Bairro da Paz",
+  "icon": "🏥",
+  "selectedThemeTemplateId": null,
+  "isArchived": false,
+  "isClosed": false,
+  "groups": [
+    {
+      "id": "grp-start",
+      "title": "Início — Boas-vindas",
+      "graphCoordinates": { "x": 0, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-start",
+          "type": "start",
+          "label": "Início"
+        },
+        {
+          "id": "blk-bv-1",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Olá! 👋 Sou a Karol, assistente virtual da SST Clínica." }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-bv-2",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Estamos abrindo nossa nova unidade no Bairro da Paz e quero te contar sobre o SST Card — um benefício de saúde completo por menos de R$1,40 por dia. 🎉" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-bv-3",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "São só 4 perguntas rápidas para eu te apresentar a melhor opção para você e sua família. Topa?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-inp-topa",
+          "type": "inputs/choice",
+          "items": [
+            { "id": "item-sim", "content": "Sim, pode perguntar! 😊" },
+            { "id": "item-nao", "content": "Agora não" }
+          ],
+          "options": {
+            "isMultipleChoice": false,
+            "buttonLabel": "Enviar"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-nao",
+      "title": "Saída — Não quer agora",
+      "graphCoordinates": { "x": 400, "y": 400 },
+      "blocks": [
+        {
+          "id": "blk-nao-1",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Sem problema! Se mudar de ideia ou quiser saber mais sobre o SST Card, é só chamar. Cuide-se! 🙏" }]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-q1",
+      "title": "P1 — Bairro / Comunidade",
+      "graphCoordinates": { "x": 400, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-q1-txt",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Ótimo! Vamos lá 👍" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-q1-pergunta",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "**1 de 4 →** Em qual bairro ou comunidade você mora?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-q1-opcoes",
+          "type": "inputs/choice",
+          "items": [
+            { "id": "q1-a", "content": "Bairro da Paz" },
+            { "id": "q1-b", "content": "Cajazeiras" },
+            { "id": "q1-c", "content": "Mussurunga" },
+            { "id": "q1-d", "content": "Outro bairro de Salvador" }
+          ],
+          "options": {
+            "isMultipleChoice": false,
+            "buttonLabel": "Confirmar",
+            "variableId": "var-bairro"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-q2",
+      "title": "P2 — Tamanho da Família",
+      "graphCoordinates": { "x": 800, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-q2-pergunta",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "**2 de 4 →** Quantas pessoas moram com você (contando você)?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-q2-opcoes",
+          "type": "inputs/choice",
+          "items": [
+            { "id": "q2-a", "content": "Só eu (1 pessoa)" },
+            { "id": "q2-b", "content": "2 a 4 pessoas" },
+            { "id": "q2-c", "content": "5 ou mais pessoas" }
+          ],
+          "options": {
+            "isMultipleChoice": false,
+            "buttonLabel": "Confirmar",
+            "variableId": "var-familia"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-q3",
+      "title": "P3 — Uso do SUS",
+      "graphCoordinates": { "x": 1200, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-q3-pergunta",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "**3 de 4 →** Você ou alguém da sua família costuma usar o SUS (UPA, posto de saúde, fila de espera)?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-q3-opcoes",
+          "type": "inputs/choice",
+          "items": [
+            { "id": "q3-a", "content": "Sim, com frequência" },
+            { "id": "q3-b", "content": "Às vezes" },
+            { "id": "q3-c", "content": "Raramente / não preciso" }
+          ],
+          "options": {
+            "isMultipleChoice": false,
+            "buttonLabel": "Confirmar",
+            "variableId": "var-sus"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-q4",
+      "title": "P4 — Maior Dificuldade",
+      "graphCoordinates": { "x": 1600, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-q4-pergunta",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "**4 de 4 →** Qual é a sua maior dificuldade com saúde hoje?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-q4-opcoes",
+          "type": "inputs/choice",
+          "items": [
+            { "id": "q4-a", "content": "😤 Demora e fila no SUS" },
+            { "id": "q4-b", "content": "💸 Consulta particular é cara demais" },
+            { "id": "q4-c", "content": "😰 Não tenho plano de saúde" },
+            { "id": "q4-d", "content": "🔬 Exames e laboratório são caros" }
+          ],
+          "options": {
+            "isMultipleChoice": false,
+            "buttonLabel": "Confirmar",
+            "variableId": "var-dor"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-interesse",
+      "title": "Verificar Interesse",
+      "graphCoordinates": { "x": 2000, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-int-texto",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Entendi perfeitamente! 💙" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-int-pitch",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "O SST Card resolve exatamente isso. Por *R$39,90/mês* você tem:" }]
+              },
+              {
+                "type": "p",
+                "children": [{ "text": "✅ Consultas médicas presenciais\n✅ Laboratório com desconto especial\n✅ Telemedicina (médico pelo celular)\n✅ Auxílio funeral\n✅ Assistência veterinária\n\nE mais *3 dependentes na saúde* incluídos! Taxa única de adesão: R$35." }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-int-pergunta",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Você gostaria que um de nossos consultores te ligasse para tirar dúvidas sem compromisso?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-int-opcoes",
+          "type": "inputs/choice",
+          "items": [
+            { "id": "int-sim", "content": "Sim, quero saber mais! 🙋" },
+            { "id": "int-nao", "content": "Por enquanto não" }
+          ],
+          "options": {
+            "isMultipleChoice": false,
+            "buttonLabel": "Responder",
+            "variableId": "var-interesse"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-captura-lead",
+      "title": "Captura — Nome e WhatsApp",
+      "graphCoordinates": { "x": 2400, "y": 0 },
+      "blocks": [
+        {
+          "id": "blk-cap-nome-perg",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Perfeito! Qual é o seu nome?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-cap-nome-inp",
+          "type": "inputs/text",
+          "options": {
+            "labels": { "placeholder": "Digite seu nome aqui..." },
+            "variableId": "var-nome"
+          }
+        },
+        {
+          "id": "blk-cap-fone-perg",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "E qual é o seu WhatsApp com DDD?" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-cap-fone-inp",
+          "type": "inputs/phone",
+          "options": {
+            "labels": {
+              "placeholder": "(71) 9 0000-0000",
+              "invalidMessage": "Por favor, informe um número válido 😊"
+            },
+            "defaultCountryCode": "BR",
+            "variableId": "var-whatsapp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-webhook",
+      "title": "Enviar Lead para n8n",
+      "graphCoordinates": { "x": 2800, "y": 0 },
+      "blocks": [
+        {
+          "id": "blk-webhook",
+          "type": "integrations/webhook",
+          "options": {
+            "url": "SEU_N8N_URL/webhook/sst-bp-lead-novo",
+            "method": "POST",
+            "body": [
+              { "key": "nome", "value": "{{var-nome}}" },
+              { "key": "whatsapp", "value": "{{var-whatsapp}}" },
+              { "key": "bairro", "value": "{{var-bairro}}" },
+              { "key": "familia", "value": "{{var-familia}}" },
+              { "key": "usa_sus", "value": "{{var-sus}}" },
+              { "key": "maior_dor", "value": "{{var-dor}}" },
+              { "key": "interesse", "value": "{{var-interesse}}" },
+              { "key": "origem", "value": "typebot-qualificacao-bp" },
+              { "key": "timestamp", "value": "{{NOW}}" }
+            ],
+            "responseVariableId": "var-webhook-resp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-confirmacao-lead-quente",
+      "title": "Confirmação — Lead Quente",
+      "graphCoordinates": { "x": 3200, "y": 0 },
+      "blocks": [
+        {
+          "id": "blk-conf-q1",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Anotado! ✅" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-conf-q2",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "{{var-nome}}, nosso consultor vai entrar em contato com você em breve pelo WhatsApp {{var-whatsapp}}. 📱" }]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-conf-q3",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Enquanto isso, se tiver alguma dúvida, pode chamar a gente diretamente:\n👉 wa.me/557XXXXXXXXX\n\nAté logo! 🙏" }]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-lead-frio",
+      "title": "Confirmação — Sem Interesse por Agora",
+      "graphCoordinates": { "x": 2400, "y": 300 },
+      "blocks": [
+        {
+          "id": "blk-frio-wh",
+          "type": "integrations/webhook",
+          "options": {
+            "url": "SEU_N8N_URL/webhook/sst-bp-lead-novo",
+            "method": "POST",
+            "body": [
+              { "key": "nome", "value": "Anônimo" },
+              { "key": "whatsapp", "value": "" },
+              { "key": "bairro", "value": "{{var-bairro}}" },
+              { "key": "familia", "value": "{{var-familia}}" },
+              { "key": "usa_sus", "value": "{{var-sus}}" },
+              { "key": "maior_dor", "value": "{{var-dor}}" },
+              { "key": "interesse", "value": "nao" },
+              { "key": "origem", "value": "typebot-qualificacao-bp" },
+              { "key": "timestamp", "value": "{{NOW}}" }
+            ]
+          }
+        },
+        {
+          "id": "blk-frio-msg",
+          "type": "bubbles/text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Sem problema! Se mudar de ideia, pode voltar aqui a qualquer momento. 😊\n\nA SST Clínica Bairro da Paz abre em breve — será um prazer te atender. Cuide-se! 🙏" }]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-start-topa",
+      "from": { "groupId": "grp-start", "blockId": "blk-inp-topa", "itemId": "item-sim" },
+      "to": { "groupId": "grp-q1" }
+    },
+    {
+      "id": "edge-start-nao",
+      "from": { "groupId": "grp-start", "blockId": "blk-inp-topa", "itemId": "item-nao" },
+      "to": { "groupId": "grp-nao" }
+    },
+    {
+      "id": "edge-q1-q2",
+      "from": { "groupId": "grp-q1", "blockId": "blk-q1-opcoes" },
+      "to": { "groupId": "grp-q2" }
+    },
+    {
+      "id": "edge-q2-q3",
+      "from": { "groupId": "grp-q2", "blockId": "blk-q2-opcoes" },
+      "to": { "groupId": "grp-q3" }
+    },
+    {
+      "id": "edge-q3-q4",
+      "from": { "groupId": "grp-q3", "blockId": "blk-q3-opcoes" },
+      "to": { "groupId": "grp-q4" }
+    },
+    {
+      "id": "edge-q4-interesse",
+      "from": { "groupId": "grp-q4", "blockId": "blk-q4-opcoes" },
+      "to": { "groupId": "grp-interesse" }
+    },
+    {
+      "id": "edge-interesse-sim",
+      "from": { "groupId": "grp-interesse", "blockId": "blk-int-opcoes", "itemId": "int-sim" },
+      "to": { "groupId": "grp-captura-lead" }
+    },
+    {
+      "id": "edge-interesse-nao",
+      "from": { "groupId": "grp-interesse", "blockId": "blk-int-opcoes", "itemId": "int-nao" },
+      "to": { "groupId": "grp-lead-frio" }
+    },
+    {
+      "id": "edge-captura-webhook",
+      "from": { "groupId": "grp-captura-lead", "blockId": "blk-cap-fone-inp" },
+      "to": { "groupId": "grp-webhook" }
+    },
+    {
+      "id": "edge-webhook-confirmacao",
+      "from": { "groupId": "grp-webhook", "blockId": "blk-webhook" },
+      "to": { "groupId": "grp-confirmacao-lead-quente" }
+    }
+  ],
+  "variables": [
+    { "id": "var-bairro",       "name": "bairro" },
+    { "id": "var-familia",      "name": "familia" },
+    { "id": "var-sus",          "name": "usa_sus" },
+    { "id": "var-dor",          "name": "maior_dor" },
+    { "id": "var-interesse",    "name": "interesse" },
+    { "id": "var-nome",         "name": "nome" },
+    { "id": "var-whatsapp",     "name": "whatsapp" },
+    { "id": "var-webhook-resp", "name": "webhook_response" }
+  ],
+  "settings": {
+    "general": {
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": false,
+      "isHideQueryParamsEnabled": true,
+      "isNewResultOnRefreshEnabled": false,
+      "rememberUser": {
+        "isEnabled": false
+      }
+    },
+    "typingEmulation": {
+      "enabled": true,
+      "speed": 300,
+      "maxDelay": 1.5
+    }
+  },
+  "theme": {
+    "general": {
+      "font": {
+        "type": "Google",
+        "family": "Inter"
+      },
+      "background": {
+        "type": "Color",
+        "content": "#0f172a"
+      }
+    },
+    "chat": {
+      "container": {
+        "maxWidth": "600px",
+        "maxHeight": "100%",
+        "backgroundColor": "#1e293b",
+        "blur": 0,
+        "borderRadius": "12px"
+      },
+      "hostBubbles": {
+        "backgroundColor": "#1987c3",
+        "color": "#ffffff",
+        "fontSize": "16px",
+        "borderRadius": "12px"
+      },
+      "guestBubbles": {
+        "backgroundColor": "#334155",
+        "color": "#f8fafc",
+        "fontSize": "16px",
+        "borderRadius": "12px"
+      },
+      "inputs": {
+        "backgroundColor": "#1e293b",
+        "color": "#f8fafc",
+        "placeholderColor": "#64748b",
+        "fontSize": "16px",
+        "borderRadius": "8px"
+      },
+      "buttons": {
+        "backgroundColor": "#1987c3",
+        "color": "#ffffff",
+        "fontSize": "16px",
+        "borderRadius": "8px"
+      }
+    }
+  },
+  "_setup_notes": {
+    "substituir_antes_de_publicar": [
+      "SEU_N8N_URL — trocar pela URL real do n8n (ex: https://n8n.clinicalucrativa.ia.br)",
+      "wa.me/557XXXXXXXXX — trocar pelo número WhatsApp Business do Bairro da Paz"
+    ],
+    "como_importar": [
+      "1. Acessar Typebot self-hosted (Easypanel)",
+      "2. Criar novo typebot → Import → selecionar este arquivo JSON",
+      "3. Publicar o typebot",
+      "4. Copiar o link público do bot",
+      "5. Gerar QR Code do link para panfleto e faixa"
+    ],
+    "como_usar_o_link": [
+      "Panfleto: imprimir QR Code do link do Typebot",
+      "Faixa: imprimir QR Code ao lado do número WhatsApp",
+      "Instagram: link na bio + stories com 'Arrasta pra cima'",
+      "WhatsApp: enviar link no grupo de moradores"
+    ],
+    "integracao_n8n_a9": [
+      "Este Typebot envia um POST para SEU_N8N_URL/webhook/sst-bp-lead-novo",
+      "O workflow n8n-typebot-bp-chatwoot.json (A9) deve receber esse webhook",
+      "A9 classifica o lead (quente/morno/frio) e notifica o Closer no Chatwoot"
+    ],
+    "classificacao_de_leads": {
+      "quente": "interesse=sim → Closer recebe alerta imediato no WhatsApp",
+      "morno":  "interesse=nao mas respondeu todas as perguntas → cadência D+1/D+3/D+7",
+      "frio":   "saiu no início (não quis responder) → lista de transmissão mensal"
+    },
+    "tema": "Dark mode — paleta SST Card (azul #1987c3, fundo #0f172a). Ajustar cores no Typebot se necessário."
+  }
+}

@@ -1,0 +1,463 @@
+{
+  "name": "SST Clínica — Funil 1 Anti No-Show (Cron D-3 + Callbacks)",
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "staticData": null,
+  "tags": ["sst-clinica", "noshow", "funil1", "madip"],
+
+  "nodes": [
+
+    {
+      "id": "nn01-schedule",
+      "name": "Cron 08h — Disparo D-3",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "triggerAtHour": 8,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      }
+    },
+
+    {
+      "id": "nn02-data",
+      "name": "Calcular Data D-3 e Alternativas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [240, 0],
+      "parameters": {
+        "jsCode": "// Calcula a data-alvo (hoje + 3 dias) e 3 datas alternativas para remarcação\nconst fmt = (d) => {\n  const dia  = String(d.getDate()).padStart(2, '0');\n  const mes  = String(d.getMonth() + 1).padStart(2, '0');\n  const ano  = d.getFullYear();\n  return `${dia}/${mes}/${ano}`;\n};\n\nconst hoje = new Date();\nconst d3   = new Date(hoje); d3.setDate(hoje.getDate() + 3);\nconst op1  = new Date(hoje); op1.setDate(hoje.getDate() + 4);\nconst op2  = new Date(hoje); op2.setDate(hoje.getDate() + 5);\nconst op3  = new Date(hoje); op3.setDate(hoje.getDate() + 6);\n\nreturn [{ json: {\n  data_alvo : fmt(d3),\n  data_op1  : fmt(op1),\n  data_op2  : fmt(op2),\n  data_op3  : fmt(op3)\n}}];"
+      }
+    },
+
+    {
+      "id": "nn03-sheets-ler",
+      "name": "Ler Agenda — Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [480, 0],
+      "parameters": {
+        "operation": "getAll",
+        "documentId": {
+          "__rl": true,
+          "value": "SEU_SHEETS_ID_AQUI",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Agenda",
+          "mode": "name"
+        },
+        "filtersUI": {},
+        "options": { "headerRow": 1 }
+      }
+    },
+
+    {
+      "id": "nn04-filtrar",
+      "name": "Filtrar Pacientes D-3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 0],
+      "parameters": {
+        "jsCode": "// Colunas esperadas no Google Sheets:\n// nome_paciente | telefone | nome_medico | especialidade | data_consulta | hora_consulta | status\n//\n// status válidos: '' (vazio) | 'disparo_d3_enviado' | 'confirmado' | 'remarcado' | 'solicita_ligacao'\n//\n// Só dispara para quem: data == D-3, tem telefone, e status está vazio\n\nconst { data_alvo, data_op1, data_op2, data_op3 } = $('Calcular Data D-3 e Alternativas').first().json;\nconst agenda = $input.all();\n\nconst pacientes = agenda\n  .filter(item => {\n    const j = item.json;\n    const statusOk = !j.status || j.status.trim() === '';\n    return j.data_consulta === data_alvo && j.telefone && statusOk;\n  })\n  .map(item => ({\n    json: {\n      ...item.json,\n      data_op1,\n      data_op2,\n      data_op3\n    }\n  }));\n\nif (pacientes.length === 0) {\n  return [{ json: { total: 0, mensagem: `Nenhum agendamento D-3 para ${data_alvo}` } }];\n}\n\nreturn pacientes;"
+      }
+    },
+
+    {
+      "id": "nn05-if-tem",
+      "name": "Tem Pacientes D-3?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [960, 0],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": false, "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "cond-tem-pacientes",
+              "leftValue": "={{ $json.nome_paciente }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+
+    {
+      "id": "nn06-sem",
+      "name": "Sem Pacientes — Encerrar",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [960, 200],
+      "parameters": {}
+    },
+
+    {
+      "id": "nn07-loop",
+      "name": "Loop por Paciente",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [1200, 0],
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      }
+    },
+
+    {
+      "id": "nn08-link",
+      "name": "Montar Mensagem + Link Typebot",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1440, 0],
+      "parameters": {
+        "jsCode": "// CONFIGURAR: substituir pela URL pública do Typebot publicado\nconst TYPEBOT_BASE = 'https://typebot.seudominio.com/funil1-noshow';\n\nconst p = $input.first().json;\n\n// Telefone no formato internacional (55 + DDD + número, sem espaços/traços)\nconst telLimpo = String(p.telefone).replace(/\\D/g, '');\nconst telIntl  = telLimpo.startsWith('55') ? telLimpo : `55${telLimpo}`;\n\n// URL do Typebot com variáveis como query params\nconst params = new URLSearchParams({\n  nome_paciente : p.nome_paciente,\n  nome_medico   : p.nome_medico,\n  especialidade : p.especialidade,\n  data_consulta : p.data_consulta,\n  hora_consulta : p.hora_consulta,\n  telefone      : telIntl,\n  data_op1      : p.data_op1,\n  data_op2      : p.data_op2,\n  data_op3      : p.data_op3\n}).toString();\n\nconst link = `${TYPEBOT_BASE}?${params}`;\n\nconst mensagem =\n`Olá, ${p.nome_paciente}! 👋\n\nSua consulta com *${p.nome_medico}* (${p.especialidade}) está marcada para:\n\n📅 *${p.data_consulta}* às *${p.hora_consulta}*\n📍 SST Clínica — Simões Filho/BA\n\nConfirme ou remarcue em segundos:\n🔗 ${link}\n\n— SST Clínica 💙`;\n\nreturn [{ json: {\n  ...p,\n  telefone_intl : telIntl,\n  link_typebot  : link,\n  mensagem_wpp  : mensagem\n}}];"
+      }
+    },
+
+    {
+      "id": "nn09-wpp",
+      "name": "Enviar WhatsApp — Evolution API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1680, 0],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE_CLINICA }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey",       "value": "={{ $env.EVOLUTION_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.telefone_intl }}\",\n  \"text\": {{ JSON.stringify($json.mensagem_wpp) }},\n  \"delay\": 1200\n}",
+        "options": { "timeout": 15000 }
+      }
+    },
+
+    {
+      "id": "nn10-sheets-update",
+      "name": "Atualizar Status — disparo_d3_enviado",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [1920, 0],
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "SEU_SHEETS_ID_AQUI",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Agenda",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone" : "={{ $('Montar Mensagem + Link Typebot').item.json.telefone }}",
+            "status"   : "disparo_d3_enviado"
+          },
+          "matchingColumns": ["telefone"],
+          "schema": [
+            { "id": "telefone", "displayName": "telefone", "required": false, "defaultMatch": true, "canBeUsedToMatch": true },
+            { "id": "status",   "displayName": "status",   "required": false, "defaultMatch": false }
+          ]
+        },
+        "options": {}
+      }
+    },
+
+    {
+      "id": "nn11-wait",
+      "name": "Aguardar 3s entre mensagens",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [2160, 0],
+      "webhookId": "wait-noshow-d3-loop",
+      "parameters": {
+        "resume": "timeInterval",
+        "amount": 3,
+        "unit": "seconds"
+      }
+    },
+
+    {
+      "id": "nn12-wh-confirmado",
+      "name": "Webhook — Paciente Confirmou",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 500],
+      "webhookId": "sst-noshow-confirmado",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-noshow-confirmado",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson",
+        "options": {}
+      }
+    },
+
+    {
+      "id": "nn13-sheets-confirmado",
+      "name": "Sheets — Marcar Confirmado",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [240, 500],
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "value": "SEU_SHEETS_ID_AQUI", "mode": "id" },
+        "sheetName":  { "__rl": true, "value": "Agenda", "mode": "name" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone" : "={{ $json.body.telefone }}",
+            "status"   : "confirmado"
+          },
+          "matchingColumns": ["telefone"],
+          "schema": [
+            { "id": "telefone", "displayName": "telefone", "required": false, "defaultMatch": true, "canBeUsedToMatch": true },
+            { "id": "status",   "displayName": "status",   "required": false, "defaultMatch": false }
+          ]
+        },
+        "options": {}
+      }
+    },
+
+    {
+      "id": "nn14-notif-confirmado",
+      "name": "WhatsApp Débora — Confirmação Recebida",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [480, 500],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE_CLINICA }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey",       "value": "={{ $env.EVOLUTION_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $env.TELEFONE_DEBORA }}\",\n  \"text\": \"✅ *Confirmação recebida*\\n\\nPaciente: *{{ $json.body.nome }}*\\nConsulta: {{ $json.body.data }} às {{ $json.body.hora }}\\nMédico: {{ $json.body.medico }}\\n\\nNenhuma ação necessária.\",\n  \"delay\": 500\n}",
+        "options": { "timeout": 10000 }
+      }
+    },
+
+    {
+      "id": "nn15-wh-remarcado",
+      "name": "Webhook — Paciente Remarcou",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 720],
+      "webhookId": "sst-noshow-remarcado",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-noshow-remarcado",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson",
+        "options": {}
+      }
+    },
+
+    {
+      "id": "nn16-sheets-remarcado",
+      "name": "Sheets — Atualizar Data Remarcada",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [240, 720],
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "value": "SEU_SHEETS_ID_AQUI", "mode": "id" },
+        "sheetName":  { "__rl": true, "value": "Agenda", "mode": "name" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone"       : "={{ $json.body.telefone }}",
+            "status"         : "remarcado",
+            "data_consulta"  : "={{ $json.body.data_nova }}",
+            "data_remarcada" : "={{ $json.body.data_nova }}"
+          },
+          "matchingColumns": ["telefone"],
+          "schema": [
+            { "id": "telefone",       "displayName": "telefone",       "required": false, "defaultMatch": true, "canBeUsedToMatch": true },
+            { "id": "status",         "displayName": "status",         "required": false, "defaultMatch": false },
+            { "id": "data_consulta",  "displayName": "data_consulta",  "required": false, "defaultMatch": false },
+            { "id": "data_remarcada", "displayName": "data_remarcada", "required": false, "defaultMatch": false }
+          ]
+        },
+        "options": {}
+      }
+    },
+
+    {
+      "id": "nn17-wh-ligar",
+      "name": "Webhook — Solicita Ligação",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 940],
+      "webhookId": "sst-noshow-ligar",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-noshow-ligar",
+        "responseMode": "onReceived",
+        "responseData": "firstEntryJson",
+        "options": {}
+      }
+    },
+
+    {
+      "id": "nn18-sheets-ligar",
+      "name": "Sheets — Marcar Solicita Ligação",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [240, 940],
+      "parameters": {
+        "operation": "update",
+        "documentId": { "__rl": true, "value": "SEU_SHEETS_ID_AQUI", "mode": "id" },
+        "sheetName":  { "__rl": true, "value": "Agenda", "mode": "name" },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefone" : "={{ $json.body.telefone }}",
+            "status"   : "solicita_ligacao"
+          },
+          "matchingColumns": ["telefone"],
+          "schema": [
+            { "id": "telefone", "displayName": "telefone", "required": false, "defaultMatch": true, "canBeUsedToMatch": true },
+            { "id": "status",   "displayName": "status",   "required": false, "defaultMatch": false }
+          ]
+        },
+        "options": {}
+      }
+    },
+
+    {
+      "id": "nn19-alerta-debora",
+      "name": "WhatsApp Débora — LIGAR AGORA",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [480, 940],
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE_CLINICA }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey",       "value": "={{ $env.EVOLUTION_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $env.TELEFONE_DEBORA }}\",\n  \"text\": \"📞 *LIGAR AGORA*\\n\\nPaciente quer remarcar por telefone:\\n\\n👤 {{ $json.body.nome }}\\n📱 {{ $json.body.telefone }}\\n🩺 {{ $json.body.medico }} ({{ $json.body.especialidade }})\\n\\nLigue agora e ofereça 3 datas disponíveis.\",\n  \"delay\": 500\n}",
+        "options": { "timeout": 10000 }
+      }
+    }
+
+  ],
+
+  "connections": {
+    "Cron 08h — Disparo D-3": {
+      "main": [
+        [{ "node": "Calcular Data D-3 e Alternativas", "type": "main", "index": 0 }]
+      ]
+    },
+    "Calcular Data D-3 e Alternativas": {
+      "main": [
+        [{ "node": "Ler Agenda — Google Sheets", "type": "main", "index": 0 }]
+      ]
+    },
+    "Ler Agenda — Google Sheets": {
+      "main": [
+        [{ "node": "Filtrar Pacientes D-3", "type": "main", "index": 0 }]
+      ]
+    },
+    "Filtrar Pacientes D-3": {
+      "main": [
+        [{ "node": "Tem Pacientes D-3?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Tem Pacientes D-3?": {
+      "main": [
+        [{ "node": "Loop por Paciente", "type": "main", "index": 0 }],
+        [{ "node": "Sem Pacientes — Encerrar", "type": "main", "index": 0 }]
+      ]
+    },
+    "Loop por Paciente": {
+      "main": [
+        [{ "node": "Montar Mensagem + Link Typebot", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Montar Mensagem + Link Typebot": {
+      "main": [
+        [{ "node": "Enviar WhatsApp — Evolution API", "type": "main", "index": 0 }]
+      ]
+    },
+    "Enviar WhatsApp — Evolution API": {
+      "main": [
+        [{ "node": "Atualizar Status — disparo_d3_enviado", "type": "main", "index": 0 }]
+      ]
+    },
+    "Atualizar Status — disparo_d3_enviado": {
+      "main": [
+        [{ "node": "Aguardar 3s entre mensagens", "type": "main", "index": 0 }]
+      ]
+    },
+    "Aguardar 3s entre mensagens": {
+      "main": [
+        [{ "node": "Loop por Paciente", "type": "main", "index": 0 }]
+      ]
+    },
+    "Webhook — Paciente Confirmou": {
+      "main": [
+        [{ "node": "Sheets — Marcar Confirmado", "type": "main", "index": 0 }]
+      ]
+    },
+    "Sheets — Marcar Confirmado": {
+      "main": [
+        [{ "node": "WhatsApp Débora — Confirmação Recebida", "type": "main", "index": 0 }]
+      ]
+    },
+    "Webhook — Paciente Remarcou": {
+      "main": [
+        [{ "node": "Sheets — Atualizar Data Remarcada", "type": "main", "index": 0 }]
+      ]
+    },
+    "Webhook — Solicita Ligação": {
+      "main": [
+        [{ "node": "Sheets — Marcar Solicita Ligação", "type": "main", "index": 0 }]
+      ]
+    },
+    "Sheets — Marcar Solicita Ligação": {
+      "main": [
+        [{ "node": "WhatsApp Débora — LIGAR AGORA", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}
