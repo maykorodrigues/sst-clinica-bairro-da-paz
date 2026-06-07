@@ -4,18 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## O que é este projeto
 
-Consultoria comercial ativa para **Rogério Ferreira** (SST Clínica / SST Card), focada em estruturar e executar a máquina de vendas da 2ª filial (Bairro da Paz, Salvador/BA). O produto central é o **SST Card** — benefício de saúde (R$39,90–79,90/mês + taxa de adesão R$40,00) voltado a trabalhadores informais de baixa renda.
+Consultoria comercial ativa para **Rogério Ferreira** (SST Clínica / SST Card), focada em estruturar e executar a máquina de vendas da 2ª filial (Bairro da Paz, Salvador/BA). O produto central é o **SST Card** — benefício de saúde (R$39,90–R$64,90/mês + taxa de adesão R$35,00) voltado a trabalhadores informais de baixa renda.
 
 O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório em Markdown, espelhado no Notion e executado via WhatsApp + n8n.
 
-**Status do Projeto (02/06/2026):**
+**Status do Projeto (07/06/2026):**
 - ✅ **Advisory assinado** em 01/05/2026 (contrato R$30k validado)
 - ✅ **Bairro da Paz** — contrato assinado, inauguração oficial **01/07/2026**
+- ✅ **Precificação redefinida** (02/06): Individual R$39,90 + Família R$64,90 + Adesão R$35 — ver Decisões Estratégicas no `RETOMADA.md`
+- ✅ **Grande Automação MADIP** — 9 automações mapeadas (05/06); A1–A5 com JSONs prontos, A6–A9 até 13/06 — ver `02-cadencias/GRANDE-AUTOMACAO-MADIP.md`
 - 🔄 **Campanha Perdão de Dívida** — 761 contas Tenex em atraso (foco operacional atual)
-- 🔄 **Transição PJ equipe** — reunião realizada 29/05; contratos Lucas/Karine/Raquel em andamento (detalhes em `processo-comercial-7dias/transicao-pj-equipe-sst.md`)
-- 🔄 **VISA Salvador + alvará** — entrada prevista até 30/05 (marco crítico para inauguração 01/07)
-- 🔄 **Funil 1 anti-noshow (lab MADIP)** — Typebot + n8n prontos em `02-cadencias/`, aguardando implantação
-- 👤 **RH Closer** — candidato Roni entrevistado em 22/05; resultado pendente em `rh-closer/`
+- 🔄 **Transição PJ equipe** — contratos Lucas/Karine/Raquel em andamento (`processo-comercial-7dias/transicao-pj-equipe-sst.md`)
+- 🔄 **VISA Salvador + alvará** — entrada prevista 30/05 (marco crítico para inauguração 01/07)
+- 👤 **RH Closer** — candidato Roni avaliando; resultado pendente em `rh-closer/`
+- 👤 **RH Clínica** — processo seletivo coordenadora clínica em `rh-clinica/`
 - 📊 **Playbook web** — https://playbook.ssfcard.ia.br (Vercel + Cloudflare)
 
 **Leia sempre `RETOMADA.md` antes de agir** — é o "estado do projeto": decisões tomadas, documentos criados e próximos passos. Não repita o que já está lá.
@@ -29,7 +31,7 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | `reuniao-10-04-2026.md` | Ata da reunião-chave com Rogério (deal R$30k) |
 | `CONTRATO-ADVISORY-ROGERIO-01-2026.md` | Contrato de advisory assinado (versão .html para impressão) |
 | `RMA-MAIO-2026.md` | Relatório Mensal de Atividades (versão .html/.pptx para apresentação) |
-| `estrategia_comercial/viabilidade_card.md` | Modelo financeiro, break-even (430 membros), CAC, pricing |
+| `estrategia_comercial/viabilidade_card.md` | Modelo financeiro, break-even (364 contratos, atualizado 02/06), CAC, pricing |
 | `estrategia_comercial/plano_lancamento.md` | Plano 90 dias em 3 fases com budget (R$4.150 mês 1) |
 | `processo-comercial-7dias/00-plano-execucao-7dias.md` | Playbook diário do sprint — o documento operacional principal |
 | `processo-comercial-7dias/RESUMO-EXECUTIVO-SST.md` | 5 movimentos críticos em 72h (prioridades do sprint) |
@@ -55,6 +57,11 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | `perfil-raquel-agentamento.md` | Perfil Raquel (marketing) — 20 anos, SDR sem saber |
 | `perfil-lucas-cs.md` | Perfil Lucas (Customer Success) |
 | `sessao-agentamento-*.md` | Relatórios das sessões de capacitação (17/04/2026) |
+| `gerar_rmar_sst.py` | Script Python (python-pptx) que gera o RMAR PPTX a partir do template `rmar-temp.pptx` — editar `ADIMPLENCIA` e variáveis no cabeçalho |
+| `RMAR-SST-Card-Bairro-da-Paz-MAIO-2026.pptx` | RMAR PPTX gerado pelo script acima — versão mais recente do relatório mensal |
+| `99_Arquivo_Geral/IA_Logs/` | Logs diários JSON das sessões Claude (um arquivo por dia `log_YYYY-MM-DD.json`) — referência histórica |
+| `Matinais-Maio/` | PDFs das matinais de maio impressas/enviadas (cartão bolso, roteiro, script perdão dívida) |
+| `WhatsApp Ptt *.srt/.txt` | Transcrições de áudios de Rogério (Whisper CLI `--language Portuguese --model turbo`) — arquivo mais recente: 13/05/2026 |
 
 ## Personas-chave
 
@@ -64,15 +71,23 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | **Karine** | Comercial/Financeiro | Gargalo central — tudo passa por ela. Motivação real: aprender para o negócio próprio (buffet) |
 | **Raquel** | Marketing | 20 anos, logística, funciona como SDR. Cadência atual: 2 toques → abandonar (precisa de 7) |
 | **Lucas** | Customer Success/Onboarding | Afastado por saúde — consultoria preparou apresentação CS em `lucas-cs/` |
-| **Closer (a contratar)** | Fechamento Bairro da Paz | Perfil hunter PJ, processo seletivo ativo em `rh-closer/` |
+| **Closer (a contratar)** | Fechamento Bairro da Paz | Perfil hunter PJ, processo seletivo ativo em `rh-closer/`; candidato Roni avaliando |
 | **Aline Souza** | Gestora lab. MADIP | Frente secundária de consultoria — sessões em `aline-laboratorio/` |
 
 ## Modelo financeiro de referência
 
-- **Break-even:** 430 membros ativos (R$26k/mês de custo operacional)
-- **Ticket médio:** R$61/membro (mix assinatura + uso)
-- **Potencial Tenex (legado):** 761 contas em atraso → R$6k/mês de recuperação se 20% reativarem
-- **Gap lab:** conversão 33% → 60% = +R$55k/mês potencial
+**Precificação atual (decisão 02/06/2026):**
+- **Individual:** R$39,90/mês (titular com todos os benefícios + 3 dependentes com acesso à saúde)
+- **Família Premium:** R$64,90/mês (4 pessoas com todos os benefícios)
+- **Taxa de Adesão:** R$35,00 por contrato
+- **Benefícios:** telemedicina + auxílio funeral + assistência veterinária + medicina com custos reduzidos
+
+**Números-chave:**
+- **Break-even:** ~~430 membros~~ → **364 contratos** (~mês 3,5) — ticket médio subiu para R$71,40
+- **Capital de giro necessário:** R$28.000–35.000 (primeiros 3 meses)
+- **Potencial Tenex (legado):** 761 contas em atraso → R$6k/mês se 20% reativarem
+- **Gap lab MADIP:** conversão 33% → 60% = +R$55k/mês potencial
+- **Pitch âncora:** *"R$25 a mais e todo mundo tem todos os benefícios"* (cross-sell R$39,90 → R$64,90)
 
 ## Convenções de documentos
 
@@ -188,18 +203,32 @@ Para editar KPIs e metas: abrir `gerar_apresentacao.py` e editar os valores na s
 
 Localização: `processo-comercial-7dias/02-cadencias/`
 
-| Arquivo JSON | O que faz |
-|---|---|
-| `n8n-sst-group-parser-v2.json` | **Versão atual** — lê mensagens de grupo Chatwoot → Claude → extrai dados → salva no Notion (parciais) |
-| `n8n-sst-group-parser.json` | Versão anterior (manter como referência) |
-| `n8n-noshow-cadencia.json` | Cadência automática para pacientes no-show do laboratório |
-| `n8n-noshow-webhook-resposta.json` | Webhook de resposta para a cadência de no-show |
-| `n8n-funil1-cron-anti-noshow-sst-clinica.json` | **Funil 1 anti-noshow** — cron dispara WhatsApp em D-3/D-1/D+1 em torno da consulta; par com Typebot JSON abaixo |
-| `typebot-funil1-anti-noshow-sst-clinica.json` | Typebot do Funil 1 — bot de confirmação/reagendamento; importar no Typebot self-hosted (Easypanel) |
-| `rh-closer/n8n-workflow-candidatura-closer.json` | Recebe candidatura do Typebot → notifica Rogério + Mayko via WhatsApp |
-| `pesquisa-satisfacao-sponsor/n8n-workflow-satisfacao-rogerio.json` | Semáforo pós-pesquisa → decide se Mayko liga antes do vencimento |
+Localização principal: `processo-comercial-7dias/02-cadencias/`
 
-Setup do group-parser: ver `02-cadencias/SETUP-sst-group-parser.md` (requer variáveis de ambiente: URL Chatwoot, API key, Notion token).
+**Plano mestre das 9 automações:** `02-cadencias/GRANDE-AUTOMACAO-MADIP.md`  
+**Guia de implantação interativo:** `02-cadencias/guia-implantacao-automacoes.html` (publicado em playbook.ssfcard.ia.br, dark theme, checklists localStorage)
+
+| # | Arquivo JSON | O que faz | Estado |
+|---|---|---|---|
+| A1 | `n8n-sst-group-parser-v2.json` | **Versão atual** — lê mensagens grupo Chatwoot → Claude → extrai dados → salva Notion (parciais) | ✅ Pronto |
+| — | `n8n-sst-group-parser.json` | Versão anterior (referência) | — |
+| A2 | `n8n-dashboard-diario-sst.json` | Cron 15h45 → lê Notion "Parciais SST Card" → consolida Karine/Lucas/Raquel → envia WhatsApp grupo | ✅ Pronto |
+| A3 | `n8n-cobranca-d3-d7-d15.json` | Cron 9h → lê Sheets "Cobranças" → calcula fase → envia WhatsApp individual → atualiza Sheets | ✅ Pronto |
+| A4 | `n8n-funil1-cron-anti-noshow-sst-clinica.json` | **Funil 1 anti-noshow** — cron dispara WhatsApp D-3/D-1/D+1 em torno da consulta | ✅ Pronto |
+| A5 | `typebot-funil1-anti-noshow-sst-clinica.json` | Typebot do Funil 1 — bot de confirmação/reagendamento; importar no Typebot self-hosted (Easypanel) | ✅ Pronto |
+| A6 | `n8n-onboarding-novos-membros.json` | Onboarding novo membro D+0→D+30 via WhatsApp | ✅ Pronto (implantar 10/06) |
+| A7 | `n8n-reativacao-cancelados.json` | Cadência reativação de cancelados | ✅ Pronto (implantar 15/06) |
+| A8 | `typebot-qualificacao-lead-bp.json` | Typebot qualificação lead Bairro da Paz — importar no Typebot (10/06) | ✅ Pronto |
+| A9 | `n8n-typebot-bp-chatwoot.json` | Webhook Typebot BP → Chatwoot (implantar 13/06) | ✅ Pronto |
+| — | `n8n-noshow-cadencia.json` | Cadência no-show laboratório (versão anterior A4) | referência |
+| — | `n8n-noshow-webhook-resposta.json` | Webhook de resposta cadência no-show | referência |
+| — | `rh-closer/n8n-workflow-candidatura-closer.json` | Recebe candidatura Typebot → notifica Rogério + Mayko via WhatsApp | ✅ |
+| — | `pesquisa-satisfacao-sponsor/n8n-workflow-satisfacao-rogerio.json` | Semáforo pós-pesquisa → decide se Mayko liga antes do vencimento | ✅ |
+
+**Variáveis de ambiente necessárias (configurar antes de implantar):**
+`ANTHROPIC_API_KEY` · `NOTION_TOKEN` · `NOTION_PARCIAIS_DB_ID` · `NOTION_CLINICA_DB_ID` · `CHATWOOT_API_KEY` · `EVOLUTION_API_URL` · `EVOLUTION_API_KEY` · `EVOLUTION_INSTANCE` · `SST_CARD_GROUP_CHAT_ID` · `SHEETS_COBRANCA_ID` · `SHEETS_AGENDA_ID`
+
+Setup do group-parser: ver `02-cadencias/SETUP-sst-group-parser.md`.
 
 ---
 
@@ -218,6 +247,19 @@ python scripts/validar_csv.py planilha-tenex.csv
 python scripts/auditar_yaml.py vault-sst/
 python scripts/gerar_notas_md.py dados-limpos.csv -o vault-sst/00_Inbox/
 ```
+
+**`gerar_rmar_sst.py`** — raiz do projeto — gera o RMAR PPTX do SST Card a partir do template `rmar-temp.pptx`:
+
+```powershell
+# Instalar dependência (uma vez)
+pip install python-pptx lxml
+
+# Gerar RMAR do mês
+python gerar_rmar_sst.py
+# Saída: RMAR-SST-Card-Bairro-da-Paz-MAIO-2026.pptx
+```
+
+Para atualizar os dados mensais: editar a variável `ADIMPLENCIA` e `MES_REFERENCIA` no cabeçalho do script. Paleta SST Card embutida (azul `#1987c3`).
 
 ---
 
@@ -254,6 +296,7 @@ Referência completa: `.claude/skills/cerebro-ia-clinica-lucrativa/SKILL.md`.
 | Pasta | Descrição | CLAUDE.md Local |
 |-------|-----------|---|
 | `rh-closer/` | Processo seletivo closer PJ Bairro da Paz (Typebot + kit entrevista + scoring) | `rh-closer/CLAUDE.md` |
+| `rh-clinica/` | Processo seletivo coordenadora clínica (formulário abertura vaga + qualificação HTML + Typebot JSON) | — |
 | `aline-laboratorio/` | Consultoria laboratório MADIP (Aline Souza) — sessões mensais + Funil 1 anti-noshow | `aline-laboratorio/CLAUDE.md` |
 | `pesquisa-satisfacao-sponsor/` | Pesquisa de satisfação do Rogério (Typebot JSON + n8n semáforo); sem CLAUDE.md local | — |
 | `estrategia_comercial/` | Modelos financeiros, plano de lançamento, implementação 2ª filial | Documentado neste CLAUDE.md |
