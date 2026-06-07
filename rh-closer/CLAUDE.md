@@ -2,7 +2,7 @@
 title: CLAUDE.md — RH Closer SST Card (Bairro da Paz)
 tags: [sst, rh, closer, bairro-da-paz, em-progresso]
 criado: 2026-05-21
-atualizado: 2026-05-22
+atualizado: 2026-06-07
 related:
   - "[[../CLAUDE]]"
   - "[[../RETOMADA]]"
@@ -18,9 +18,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Propósito deste diretório
 
-Processo seletivo para **Closer (Vendedor Líder) — SST Card / Filial Bairro da Paz**. Vínculo PJ, função no fundo do funil (fechamento), produto SST Card (R$34,90–R$199,90/mês).
+Processo seletivo para **Closer (Vendedor Líder) — SST Card / Filial Bairro da Paz**. Vínculo PJ, função no fundo do funil (fechamento), produto SST Card (R$39,90–R$64,90/mês + adesão R$35).
 
 Responsáveis: **Rogério Ferreira** (sponsor) + **Mayko Rodrigues** (consultoria).
+
+**Status atual (07/06/2026):**
+- 👤 **Roni** — entrevistado em 22/05/2026 às 14h; resultado ainda pendente (avaliando)
+- ✅ **Comissão CONFIRMADA por Rogério (03/06/2026):**
+  - Por adesão: R$20 (representa 57% da taxa de R$35)
+  - Por reativação Tenex: R$5
+  - Escada progressiva: 80 vendas = R$15–16/adesão · 120 vendas = R$2.000 em comissão
+  - Meta inicial: 100 vendas/mês = R$4.000 total (R$2.000 fixo + R$2.000 comissão)
+  - **Sem teto de comissão** — política para atrair hunter
+- ⚠️ Se Roni não avançar: publicar `divulgacao-vaga-closer.html` nos canais (score <60 → NO-GO)
 
 **Antes de agir:** ler `../RETOMADA.md` para o estado atual do processo seletivo (candidato em pipeline, pendências, datas).
 
@@ -155,7 +165,7 @@ Para usar: abrir no navegador e compartilhar via link local ou hospedar temporar
 
 ## Regras de manipulação
 
-1. Toda mudança de comissão/pró-labore em qualquer arquivo **exige aprovação do Rogério antes de divulgar** — o valor oficial é o de `formulario-abertura-vaga-closer-sst.md`.
+1. A comissão foi **confirmada por Rogério em 03/06/2026** (R$20/adesão, R$5/Tenex, escada progressiva — detalhes no status acima). Qualquer alteração futura exige nova aprovação. O valor oficial para divulgação está em `formulario-abertura-vaga-closer-sst.md`.
 2. Não publicar `divulgacao-vaga-closer.html` em canais públicos sem confirmação de Rogério.
 3. Criar `scoring-[nome]-[data].md` dentro de 30 min após cada entrevista — usar o template acima.
 4. Após contratação: atualizar `RETOMADA.md` (seção "Documentos criados") e registrar em `02-areas/historico-acoes.md` do vault raiz.
