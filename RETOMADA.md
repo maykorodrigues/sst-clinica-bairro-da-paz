@@ -4,7 +4,7 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 03/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+> Última atualização: 07/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
 
 ---
 
