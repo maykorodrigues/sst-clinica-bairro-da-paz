@@ -10,7 +10,7 @@ Subprojeto especializado da frente de **Advisory Laboratório/Clínica** para SS
 
 **Este é um diretório de consultoria, não uma base de código** — contém documentação estratégica, perfis de stakeholders, sessões de diagnóstico, briefings operacionais e propostas de advisory.
 
-**Status atual (02/05/2026):** ✅ **Advisory CONTRATADO** — contrato iniciado 01/05/2026. Piloto de 30/04 concluído. Fase de execução plena em andamento.
+**Status atual (07/06/2026):** ✅ **Advisory CONTRATADO** — contrato iniciado 01/05/2026. Execução plena em andamento. Funil 1 anti-noshow com JSONs prontos em `../processo-comercial-7dias/02-cadencias/` (aguardando implantação). Funções da equipe lab formalizadas em 29/05: Débora=agenda, Ilana=lab, Aline=relacionamento médico.
 
 > **Ao abrir esta pasta:** Verifique se existem `sessao-acompanhamento-aline-30-04-2026.md` e `sessao-acompanhamento-aline-01-05-2026.md` — esses registros do piloto/go-no-go são críticos para entender o estado atual antes de agir.
 
@@ -147,27 +147,34 @@ Usar `sessao-acompanhamento-aline-DD-MM-AAAA.md` para documentar:
 
 ---
 
-## Estado Atual e Próximos Passos (02/05/2026)
+## Estado Atual e Próximos Passos (07/06/2026)
 
 **Fase concluída (29/04–01/05):**
 - ✅ Reunião Aline + Mayko (29/04) — scripts e dashboard alinhados
 - ✅ Treinamento Ilana no Script 1 (29/04)
-- ❓ n8n automação D+1/D+3/D+7 — verificar se TI entregou
 - ✅ Piloto 30/04 executado — ver `sessao-acompanhamento-aline-30-04-2026.md`
 - ✅ Go/No-Go 01/05 — Advisory aprovado para execução plena
 
-**Fase atual (01/05+):**
-- [ ] Acompanhar conversão diária (meta: 50% mês 1, 60% mês 2, 70% mês 3)
-- [ ] Registrar `sessao-acompanhamento-aline-DD-MM-AAAA.md` a cada sessão
-- [ ] Validar se n8n está disparando D+1/D+3/D+7 (verificar com TI)
-- [ ] Ilana: monitorar engajamento com Script 1 de acolhimento
-- [ ] Comissão: confirmar com Rogério estrutura aprovada (R$15/venda + R$200 bônus meta)
+**Fase concluída (maio–jun):**
+- ✅ Reunião diagnóstico 15/05 — Aline alavanca (+20,53pp S1→S2), Débora bloqueador crítico
+- ✅ Funil 1 anti-noshow (Typebot + n8n) — JSONs prontos em `../processo-comercial-7dias/02-cadencias/`
+- ✅ Funções formalizadas em 29/05: Débora=agenda, Ilana=lab, Aline=relacionamento médico
+- ✅ Grande Automação MADIP — 9 automações mapeadas (05/06), A4/A5 cobrem anti-noshow
 
-**Dados ainda não coletados (lacunas do diagnóstico 23/04):**
-- [ ] Comissão exata de jan/fev 2026 (% por meta ou por conversão?)
-- [ ] Ticket médio real de exame de laboratório
-- [ ] Volume real de pacientes/dia no laboratório
-- [ ] Custo de contratar 1 recepcionista adicional
+**Últimos dados de conversão (27/05):**
+| Atendente | Conversão | Status |
+|---|---|---|
+| Atendente anônima | 38,43% | 🟢 Identificar e replicar |
+| Aline | 12,72% | 🟡 Abaixo do padrão |
+| Débora | 0% | 🔴 CRÍTICO — linha vermelha |
+| **Total** | ~18% | 🔴 Meta: 40% |
+
+**Fase atual (jun/2026):**
+- [ ] Implantar Funil 1 anti-noshow (JSONs em `02-cadencias/` — usar `guia-implantacao-automacoes.html`)
+- [ ] Acompanhar resultado Débora — GO/NO-GO: ≥20% mantém, <10% por 3 dias → reallocation
+- [ ] Identificar atendente anônima 38% e replicar comportamento para equipe
+- [ ] Reunião com Ronivaldo para formalizar funções (Rogério solicitou após áudio 29/05)
+- [ ] Acompanhar conversão diária (meta: 40% jun → 60% jul → 70% ago)
 
 ---
 
@@ -257,4 +264,4 @@ Antes de editar ou criar um documento neste diretório:
 
 ---
 
-Última atualização: 02/05/2026
+Última atualização: 07/06/2026
