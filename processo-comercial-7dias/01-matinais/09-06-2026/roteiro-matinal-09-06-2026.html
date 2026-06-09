@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matinal SST Card — 09/06/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1987c3;
+    --azul-escuro: #0c4a6e;
+    --verde: #16a34a;
+    --vermelho: #dc2626;
+    --laranja: #d97706;
+    --roxo: #7c3aed;
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; line-height: 1.6; }
+
+  .header { background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 100%); padding: 32px 24px 28px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 0, transparent 50%) center / 20px 20px; }
+  .header-badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; position: relative; }
+  .header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; line-height: 1.1; margin-bottom: 8px; position: relative; }
+  .header-sub { font-size: 13px; opacity: 0.75; position: relative; }
+  .countdown { margin-top: 16px; display: inline-flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; position: relative; }
+  .countdown-num { font-size: 22px; font-weight: 900; color: #fff; }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  .secao { margin-bottom: 20px; }
+  .secao-titulo { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .secao-titulo::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .destaque-rmar { background: linear-gradient(135deg, #1e1b4b, #312e81); border: 1px solid #6366f1; border-radius: 12px; padding: 20px 22px; margin-bottom: 20px; }
+  .destaque-rmar h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: #a5b4fc; margin-bottom: 8px; }
+  .destaque-rmar p { font-size: 14px; color: #c7d2fe; line-height: 1.5; }
+  .rmar-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .pill { border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700; }
+  .pill-verde { background: #16a34a; color: white; }
+  .pill-azul { background: var(--azul); color: white; }
+  .pill-roxo { background: #7c3aed; color: white; }
+  .pill-laranja { background: var(--laranja); color: white; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; }
+  .card-pessoa { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .card-nome { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; }
+  .card-cargo { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .nome-karine { color: var(--azul); }
+  .nome-raquel { color: var(--roxo); }
+  .nome-lucas { color: var(--laranja); }
+  .nome-rogerio { color: var(--verde); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--surface2); color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 10px; text-align: left; }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .ok { color: #4ade80; font-weight: 700; }
+  .alerta { color: #fbbf24; font-weight: 700; }
+  .critico { color: #f87171; font-weight: 700; }
+  .neutro { color: var(--muted); }
+
+  .meta-bloco { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--azul); border-radius: 0 10px 10px 0; padding: 14px 16px; margin-bottom: 10px; }
+  .meta-bloco.verde { border-left-color: var(--verde); }
+  .meta-bloco.roxo { border-left-color: var(--roxo); }
+  .meta-bloco.laranja { border-left-color: var(--laranja); }
+  .meta-pessoa { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .meta-lista { list-style: none; }
+  .meta-lista li { font-size: 13px; color: #c9d1d9; padding: 3px 0; padding-left: 16px; position: relative; }
+  .meta-lista li::before { content: '▸'; position: absolute; left: 0; color: var(--muted); }
+  .meta-num { font-weight: 700; color: var(--text); }
+
+  .pergunta { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+  .pergunta-num { background: var(--azul); color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; flex-shrink: 0; margin-top: 2px; }
+  .pergunta-num.crit { background: var(--vermelho); }
+  .pergunta-texto { font-size: 14px; color: var(--text); }
+  .pergunta-detalhe { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  .tag { display: inline-block; border-radius: 5px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+  .tag-ok { background: rgba(22,163,74,0.2); color: #4ade80; border: 1px solid rgba(22,163,74,0.4); }
+  .tag-pend { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.35); }
+  .tag-crit { background: rgba(220,38,38,0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.35); }
+
+  .foco { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+  .foco-header { background: var(--azul-escuro); padding: 10px 16px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #93c5fd; }
+  .foco-body { padding: 14px 16px; }
+  .foco-item { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; align-items: flex-start; }
+  .foco-item:last-child { border-bottom: none; }
+  .foco-resp { font-weight: 700; min-width: 64px; color: var(--muted); font-size: 12px; margin-top: 1px; }
+
+  .inau { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; display: flex; gap: 16px; align-items: center; margin-bottom: 20px; }
+  .inau-num { font-family: 'Barlow Condensed', sans-serif; font-size: 52px; font-weight: 900; color: var(--azul); line-height: 1; flex-shrink: 0; }
+  .inau-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+  .inau-text { font-size: 14px; color: #c9d1d9; margin-top: 4px; }
+
+  .roteiro-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .roteiro-item:last-child { border-bottom: none; }
+  .roteiro-min { background: var(--azul); color: white; border-radius: 6px; padding: 3px 9px; font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .roteiro-min.verde { background: var(--verde); }
+  .roteiro-min.laranja { background: var(--laranja); }
+  .roteiro-min.roxo { background: var(--roxo); }
+  .roteiro-texto { font-size: 14px; color: var(--text); }
+  .roteiro-texto strong { color: white; }
+  .roteiro-texto .citacao { color: #93c5fd; font-style: italic; font-size: 13px; display: block; margin-top: 4px; }
+
+  .automacao-bloco { background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.3); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; }
+  .automacao-bloco h3 { font-size: 13px; font-weight: 700; color: #a5b4fc; margin-bottom: 10px; }
+
+  .footer { text-align: center; font-size: 11px; color: var(--muted); margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Matinal · Terça-feira · Semana 2</div>
+  <h1>09 de Junho de 2026</h1>
+  <p class="header-sub">SST Card · Simões Filho/BA · Advisor: Mayko Rodrigues</p>
+  <div class="countdown">
+    <span class="countdown-num">22</span>&nbsp;dias para a inauguração do <strong>Bairro da Paz</strong> · 01/07
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- DESTAQUE: RESULTADO ONTEM -->
+  <div class="destaque-rmar">
+    <h2>Resultado domingo 08/06 — equipe em ritmo.</h2>
+    <p>Domingo teve abordagens reais em campo. <strong>Karine:</strong> 24 contatos, 14 retornos (58%), 4 interessadas, 1 cartão fechado (Josefa). <strong>Lucas:</strong> 37 mensagens, 11 agendamentos clínica, 3 app ativadas. <strong>Raquel:</strong> 24 contatos particulares capturados para follow-up direto esta semana.</p>
+    <div class="rmar-pills">
+      <span class="pill pill-azul">Karine: 1 SST ✅</span>
+      <span class="pill pill-verde">Lucas: 11 agendamentos + 3 app</span>
+      <span class="pill pill-roxo">Raquel: 24 contatos</span>
+      <span class="pill pill-laranja">Equipe: operação de campo domingo</span>
+    </div>
+  </div>
+
+  <!-- CONTAGEM INAUGURAÇÃO -->
+  <div class="inau">
+    <div>
+      <div class="inau-num">22</div>
+      <div class="inau-label">dias</div>
+    </div>
+    <div>
+      <div class="inau-label">Meta crítica</div>
+      <div class="inau-text"><strong>Inauguração Bairro da Paz — 01/07/2026</strong><br>
+      Obra: até 13/06 (4 dias úteis) · Piloto: 15–27/06 · Automações A6/A8: 10/06</div>
+    </div>
+  </div>
+
+  <!-- RESULTADO BASE -->
+  <div class="secao">
+    <div class="secao-titulo">Planejado (08/06) vs Executado (Ontem)</div>
+
+    <div class="card">
+      <div class="card-pessoa">
+        <div>
+          <div class="card-nome nome-karine">Karine</div>
+          <div class="card-cargo">Comercial · Fechamento · CLT</div>
+        </div>
+        <span class="tag tag-ok">1 cartão ✅</span>
+      </div>
+      <table>
+        <tr><th>Métrica</th><th>Planejado 08/06</th><th>Executado Ontem</th><th>Status</th></tr>
+        <tr><td>Reconciliação</td><td>≥30 contatos</td><td>24 contatos</td><td class="alerta">🟡 80% meta</td></tr>
+        <tr><td>Conversão reconciliação</td><td>—</td><td>14 retornos (58%)</td><td class="ok">🟢 Excelente taxa</td></tr>
+        <tr><td>Interessadas</td><td>—</td><td>4 qualificadas</td><td class="ok">🟢 Potencial aberto</td></tr>
+        <tr><td>Cartões fechados</td><td>1–2</td><td>1 (Josefa Heloina)</td><td class="ok">✅ Atingido</td></tr>
+        <tr><td>Valor</td><td>—</td><td>Prata/Ouro (a confirmar)</td><td class="neutro">Em validação</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-pessoa">
+        <div>
+          <div class="card-nome nome-lucas">Lucas</div>
+          <div class="card-cargo">Customer Success · Estágio</div>
+        </div>
+        <span class="tag tag-ok">11 agendamentos ✅</span>
+      </div>
+      <table>
+        <tr><th>Métrica</th><th>Planejado 08/06</th><th>Executado Ontem</th><th>Status</th></tr>
+        <tr><td>Agendamentos clínica</td><td>≥10</td><td>11</td><td class="ok">🟢 Acima meta</td></tr>
+        <tr><td>Ativações app</td><td>≥5</td><td>3</td><td class="alerta">🟡 60% meta</td></tr>
+        <tr><td>Mensagens totais</td><td>≥40</td><td>37</td><td class="alerta">🟡 93% meta</td></tr>
+        <tr><td>Conversão msgs</td><td>—</td><td>37 msgs → 14 ações (38%)</td><td class="ok">🟢 Padrão bom</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-pessoa">
+        <div>
+          <div class="card-nome nome-raquel">Raquel</div>
+          <div class="card-cargo">SDR · Campo + Instagram · CLT</div>
+        </div>
+        <span class="tag tag-pend">24 contatos levantados</span>
+      </div>
+      <table>
+        <tr><th>Métrica</th><th>Planejado 08/06</th><th>Executado Ontem</th><th>Status</th></tr>
+        <tr><td>Abordagens/campo</td><td>≥25</td><td>Colhidos 24 contatos</td><td class="alerta">🟡 Validar detalhes</td></tr>
+        <tr><td>Leads para Karine</td><td>≥3</td><td>A converter esta semana</td><td class="pend">⏳ Em andamento</td></tr>
+        <tr><td>Instagram</td><td>1 post/reel</td><td>Não confirmado</td><td class="pend">⏳ Validar</td></tr>
+        <tr><td>Contatos particulares</td><td>Base pipeline</td><td>24 nomes + WhatsApp documentados</td><td class="ok">🟢 Pronto p/ follow-up</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- METAS DE HOJE -->
+  <div class="secao">
+    <div class="secao-titulo">Metas de hoje — 09/06/2026 (Terça)</div>
+
+    <div class="meta-bloco">
+      <div class="meta-pessoa" style="color: var(--azul)">Karine — Comercial/Fechamento</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">≥25 contatos</span> — reconciliação + cobrança somadas</li>
+        <li><span class="meta-num">≥1–2 cartões</span> — fechar Josefa e converter 1 das 4 interessadas ontem</li>
+        <li>Dar feedback dos 4 interessadas — entender bloqueadores (preço, plano, timing)</li>
+        <li>Relatório parcial às 14h no grupo WhatsApp</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco roxo">
+      <div class="meta-pessoa" style="color: var(--roxo)">Raquel — SDR/Campo</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">Follow-up dos 24 contatos</span> — iniciar chamadas/WhatsApp com particulares ontem</li>
+        <li><span class="meta-num">≥3 qualificações</span> — passar interessadas para Karine</li>
+        <li><span class="meta-num">1 post Instagram ou reel</span> — depoimento de cliente ou SST Card em ação</li>
+        <li>Reportar às 14h: quantos dos 24 entraram em contato + quantos responderam</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco laranja">
+      <div class="meta-pessoa" style="color: var(--laranja)">Lucas — Customer Success</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">≥10 agendamentos</span> — manter ritmo de ontem</li>
+        <li><span class="meta-num">≥5 ativações app</span> — subir de 3 para 5 hoje</li>
+        <li><span class="meta-num">≥40 mensagens</span> — subir de 37 para 40+</li>
+        <li>Validar NPS dos agendados (meta: média 8 em 10)</li>
+        <li>Relatório às 14h no grupo</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco verde">
+      <div class="meta-pessoa" style="color: var(--verde)">Rogério — Gestor Geral</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">Confirmar VISA/alvará</span> — status oficial hoje</li>
+        <li><span class="meta-num">GO/NO-GO Roni</span> — comunicar decisão (22 dias para inauguração)</li>
+        <li><span class="meta-num">Aprovação salário atendente CLT</span> — autorizar publicação rh-clinica/</li>
+        <li>Agendar RMAR call esta semana (17h hoje ou amanhã) — apresentação formal</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ROTEIRO DA REUNIÃO -->
+  <div class="secao">
+    <div class="secao-titulo">Roteiro — 15 minutos (08h00–08h15)</div>
+    <div class="card" style="padding:0; overflow:hidden; border:none; background:transparent;">
+      <div class="roteiro-item">
+        <div class="roteiro-min">00–02</div>
+        <div class="roteiro-texto">
+          <strong>Abertura + contexto ontem</strong>
+          <span class="citacao">"Bom dia. Domingo trabalhamos em operação de campo real. Karine: 1 cartão + 4 interessadas. Lucas: 11 agendamentos. Raquel: 24 contatos capturados. Hoje é para consolidar esses dados. Vamos."</span>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min">02–08</div>
+        <div class="roteiro-texto">
+          <strong>Rogério responde 2 perguntas críticas</strong>
+          <span class="citacao">1. VISA/alvará — status hoje? 2. Roni GO/NO-GO — anúncio hoje (22 dias para inauguração).</span>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min laranja">08–13</div>
+        <div class="roteiro-texto">
+          <strong>Metas de hoje por pessoa</strong>
+          <span class="citacao">Karine ≥25 contatos + 1–2 cartões | Raquel: follow-up dos 24 + 3 qualificações | Lucas: ≥10 agendamentos + 5 app + 40 msgs | Rogério: VISA + Roni + aprovação atendente</span>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min verde">13–15</div>
+        <div class="roteiro-texto">
+          <strong>Encerramento</strong>
+          <span class="citacao">"22 dias. Cada cartão que a gente fecha agora é uma célula do Bairro da Paz. Vamos."</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERGUNTAS ROGÉRIO CRÍTICAS -->
+  <div class="secao">
+    <div class="secao-titulo">2 perguntas críticas — Rogério responde hoje</div>
+
+    <div class="pergunta">
+      <div class="pergunta-num crit">1</div>
+      <div>
+        <div class="pergunta-texto"><strong>VISA/Alvará Salvador — qual é o status oficial HOJE?</strong></div>
+        <div class="pergunta-detalhe">Vencimento: 30/05 (já passou +10 dias) · Sem alvará = 01/07 EM RISCO CRÍTICO · Precisa de: data de entrada, previsão de liberação, plano B se atraso · <span class="tag tag-crit">Bloqueador máximo</span></div>
+      </div>
+    </div>
+
+    <div class="pergunta">
+      <div class="pergunta-num crit">2</div>
+      <div>
+        <div class="pergunta-texto"><strong>Roni (closer) — GO ou NO-GO definitivo HOJE?</strong></div>
+        <div class="pergunta-detalhe">Entrevista foi 22/05 · 18 dias avaliando · Se GO: quando começa | Se NO-GO: publicar vaga HOJE e abrir pipeline novo · Comissão já confirmada (R$20/adesão) · <span class="tag tag-crit">Urgente</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LAB MADIP -->
+  <div class="secao">
+    <div class="secao-titulo">Lab MADIP — acompanhamento conversão</div>
+    <div class="card">
+      <table>
+        <tr><th>Atendente</th><th>Conversão (últimas 3 dias)</th><th>Status</th></tr>
+        <tr>
+          <td>Atendente anônima</td>
+          <td>38,43%</td>
+          <td class="ok">🟢 Replicar comportamento</td>
+        </tr>
+        <tr>
+          <td>Aline</td>
+          <td>12,72%</td>
+          <td class="alerta">🟡 Coaching + script</td>
+        </tr>
+        <tr>
+          <td>Débora</td>
+          <td>0%</td>
+          <td class="critico">🔴 CRÍTICO — GO/NO-GO até amanhã</td>
+        </tr>
+        <tr>
+          <td><strong>Total</strong></td>
+          <td><strong>~18%</strong></td>
+          <td class="critico">🔴 Meta junho: 40%</td>
+        </tr>
+      </table>
+      <p style="font-size:12px; color: var(--muted); margin-top:10px;">Débora: se continuar &lt;10% hoje e amanhã, realocação de função (decisão até 11/06).</p>
+    </div>
+  </div>
+
+  <!-- AUTOMAÇÕES -->
+  <div class="secao">
+    <div class="secao-titulo">Automações da semana — prazos críticos</div>
+    <div class="automacao-bloco">
+      <h3>Grande Automação MADIP — A6 a A9</h3>
+      <table>
+        <tr><th>#</th><th>Automação</th><th>Prazo</th><th>Status</th></tr>
+        <tr>
+          <td><strong>A6</strong></td>
+          <td>Onboarding D+0→D+30 (WhatsApp)</td>
+          <td class="alerta">10/06 (quinta)</td>
+          <td class="alerta">🟡 Implantar</td>
+        </tr>
+        <tr>
+          <td><strong>A8</strong></td>
+          <td>Typebot qualificação Bairro da Paz</td>
+          <td class="alerta">10/06 (quinta)</td>
+          <td class="alerta">🟡 Importar Typebot</td>
+        </tr>
+        <tr>
+          <td><strong>A9</strong></td>
+          <td>Webhook Typebot BP → Chatwoot</td>
+          <td class="critico">13/06 (sábado)</td>
+          <td class="critico">🔴 Aguarda A8</td>
+        </tr>
+      </table>
+      <p style="font-size:12px; color: var(--muted); margin-top:10px;">Guia passo-a-passo: <code>02-cadencias/guia-implantacao-automacoes.html</code> (abrir no celular durante implantação)</p>
+    </div>
+  </div>
+
+  <!-- FOCO DO DIA -->
+  <div class="secao">
+    <div class="secao-titulo">Foco operacional 09/06</div>
+    <div class="foco">
+      <div class="foco-header">Prioridades do dia</div>
+      <div class="foco-body">
+        <div class="foco-item">
+          <span class="foco-resp" style="color:var(--verde)">ROGÉRIO</span>
+          <span><strong>VISA oficial</strong> · Roni decisão · Aprovação salário atendente · RMAR call (17h hoje ou amanhã)</span>
+        </div>
+        <div class="foco-item">
+          <span class="foco-resp" style="color:var(--azul)">KARINE</span>
+          <span>≥25 contatos · Fechar Josefa + 1 das 4 interessadas · Feedback bloqueadores · Relatório 14h</span>
+        </div>
+        <div class="foco-item">
+          <span class="foco-resp" style="color:var(--roxo)">RAQUEL</span>
+          <span>Follow-up 24 contatos · 3 qualificações → Karine · 1 post Instagram · Relatório 14h</span>
+        </div>
+        <div class="foco-item">
+          <span class="foco-resp" style="color:var(--laranja)">LUCAS</span>
+          <span>≥10 agendamentos · ≥5 app + ≥40 msgs · NPS colhido · Relatório 14h</span>
+        </div>
+        <div class="foco-item">
+          <span class="foco-resp" style="color:#a5b4fc">MAYKO</span>
+          <span>Validar resultado ontem · Monitorar lab MADIP (Débora) · Implantar A6/A8 até quinta (10/06) · Agendar RMAR call</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANTADA DO DIA -->
+  <div class="card" style="border-color: #fbbf24; background: rgba(251,191,36,0.05);">
+    <div class="secao-titulo" style="margin-bottom:8px;">Cantada do dia</div>
+    <p style="font-size:16px; font-weight:700; color:#fbbf24; font-style:italic; line-height:1.4;">
+      "Domingo teve 24 contatos novos. Segunda tem 1 cartão. Terça tem que ter 2. Isso é curva, não é sorte."
+    </p>
+  </div>
+
+  <div class="footer">
+    Matinal SST Card · 09/06/2026 · Mayko Rodrigues Advisor<br>
+    Documentos: RETOMADA.md | Automações: 02-cadencias/guia-implantacao-automacoes.html
+  </div>
+
+</div>
+</body>
+</html>
