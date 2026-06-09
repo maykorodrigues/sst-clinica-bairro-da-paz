@@ -4,7 +4,62 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 07/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+> Última atualização: 08/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+
+---
+
+## Sessão 09/06/2026 — Matinal domingo + RMAR executado + CLAUDE.md v2.0
+
+### Documentos criados e commitados
+
+| Arquivo | Conteúdo | Git Commit | Status |
+|---|---|---|---|
+| `processo-comercial-7dias/01-matinais/09-06-2026/roteiro-matinal-09-06-2026.html` | Matinal terça 09/06: resultado ontem (Karine 1 cartão, Lucas 11 agendamentos, Raquel 24 contatos), metas hoje, 2 perguntas críticas Rogério | be2318e | ✅ Pronto |
+| `RMAR-SST-Card-Bairro-da-Paz-ABRIL-MAIO-2026.pptx` | ✅ GERADO via script Python — RMAR com dados reais de abril (24 adesões) e maio (35 adesões, +45%) · 2 meses comparativos | ec217eb | ✅ Pronto para apresentação |
+| `CLAUDE.md` | ✅ v2.0 com 7 novas seções: Fluxo Operacional Matinal, Fluxo RMAR, Tarefas Periódicas, Contatos Chave, Troubleshooting, Referência Rápida | 405b64a | ✅ Committed |
+| `gerar_rmar_sst.py` | Script executado: 2 meses (04/2026 + 05/2026), metodologias documentadas | ec217eb | ✅ Executado 09/06 |
+
+### Pendências para retomada
+
+- [ ] **Inserir "Cantada do dia"** na matinal 09/06 (será feito após reiniciar)
+- [ ] **Agendar RMAR call** com Rogério (17h hoje ou amanhã 10/06)
+- [ ] **Validar Google Calendar**: Sessão comportamental Aline (amanhã 10/06) + Entrevista Rogério (amanhã 10/06)
+- [ ] **Implementar automações** A6 (onboarding) e A8 (Typebot BP) até quinta 10/06
+
+### Status Rogério (aguardando respostas críticas hoje)
+
+| Pergunta | Prazo | Status |
+|----------|-------|--------|
+| VISA/alvará Salvador — status oficial? | 09/06 | 🔴 Aguardando resposta |
+| Roni (closer) — GO ou NO-GO? | 09/06 | 🔴 Aguardando resposta (18+ dias de decisão) |
+| Aprovação salário atendente CLT | ASAP | 🔴 Aguardando resposta |
+
+### Dados extraídos do WhatsApp (Clube SSTCARD)
+
+**Abril/2026 (Boom, Karine 17/04):**
+- 376 titulares | 335 pagantes | 41 inadimplentes → adimplência 89,1%
+- 24 novas adesões orgânicas | 4 cancelamentos (1,06% churn)
+- 0 reativações Tenex (campanha não iniciada)
+- Receita novos membros: ~R$1.608
+
+**Maio/2026 (WhatsApp parciais + PDF Raquel):**
+- 25 novas adesões + 10 reativações Tenex = 35 total
+- Canal: 17 WhatsApp/Instagram + 8 presencial
+- Receita: R$1.673 (+4% vs abril)
+- Marketing Raquel: 370 pessoas abordadas, 50 interessados, 14,7k views Instagram
+- 03/06 (junho): 3 cartões Prata adicionais da Karine (não entram no RMAR maio)
+
+### Pendências críticas abertas (08/06)
+
+| Pendência | Responsável | Prazo | Status |
+|---|---|---|---|
+| VISA/Alvará Salvador | Rogério | Vencido (30/05) | 🔴 Urgente |
+| Closer Roni — GO/NO-GO | Rogério | Vencido (25/05) | 🔴 17 dias sem decisão |
+| Arquiteta — obra prazo 13/06 | Rogério/Arquiteta | 13/06 (5 dias) | 🔴 Crítico |
+| Automação A6 onboarding | Mayko | 10/06 (quinta) | 🟡 Pronto, implantar |
+| Automação A8 Typebot BP | Mayko | 10/06 (quinta) | 🟡 Pronto, implantar |
+| RH Clínica — aprovação salário atendente | Rogério | 30/06 | 🟡 Aguardando |
+| RMAR — call de apresentação | Rogério + Mayko | Esta semana | 🟡 Arquivo pronto |
 
 ---
 
