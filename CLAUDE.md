@@ -8,17 +8,19 @@ Consultoria comercial ativa para **Rogério Ferreira** (SST Clínica / SST Card)
 
 O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório em Markdown, espelhado no Notion e executado via WhatsApp + n8n.
 
-**Status do Projeto (07/06/2026):**
+**Status do Projeto (09/06/2026):**
 - ✅ **Advisory assinado** em 01/05/2026 (contrato R$30k validado)
-- ✅ **Bairro da Paz** — contrato assinado, inauguração oficial **01/07/2026**
+- ✅ **Bairro da Paz** — contrato assinado, inauguração oficial **01/07/2026** (22 dias)
 - ✅ **Precificação redefinida** (02/06): Individual R$39,90 + Família R$64,90 + Adesão R$35 — ver Decisões Estratégicas no `RETOMADA.md`
 - ✅ **Grande Automação MADIP** — 9 automações mapeadas (05/06); A1–A5 com JSONs prontos, A6–A9 até 13/06 — ver `02-cadencias/GRANDE-AUTOMACAO-MADIP.md`
-- 🔄 **Campanha Perdão de Dívida** — 761 contas Tenex em atraso (foco operacional atual)
+- ✅ **RMAR Abril-Maio** — gerado 09/06 via `gerar_rmar_sst.py` com dados reais (24 adesões abr → 35 mai, +45%)
+- 🔄 **Campanha Perdão de Dívida** — 761 contas Tenex em atraso (foco operacional)
 - 🔄 **Transição PJ equipe** — contratos Lucas/Karine/Raquel em andamento (`processo-comercial-7dias/transicao-pj-equipe-sst.md`)
-- 🔄 **VISA Salvador + alvará** — entrada prevista 30/05 (marco crítico para inauguração 01/07)
-- 👤 **RH Closer** — candidato Roni avaliando; resultado pendente em `rh-closer/`
-- 👤 **RH Clínica** — processo seletivo coordenadora clínica em `rh-clinica/`
+- 🔄 **VISA Salvador + alvará** — entrada prevista 30/05 (CRÍTICO — aguardando confirmação Rogério)
+- 👤 **RH Closer** — candidato Roni avaliando; GO/NO-GO pendente (18+ dias de decisão)
+- 👤 **RH Clínica** — processo seletivo coordenadora clínica em `rh-clinica/` (aprovação salário pendente Rogério)
 - 📊 **Playbook web** — https://playbook.ssfcard.ia.br (Vercel + Cloudflare)
+- 🧠 **Memory system** — `.claude/projects/.../memory/` — consulte MEMORY.md para contexto persistente
 
 **Leia sempre `RETOMADA.md` antes de agir** — é o "estado do projeto": decisões tomadas, documentos criados e próximos passos. Não repita o que já está lá.
 
@@ -143,6 +145,172 @@ Usar sempre português. Datas no formato DD/MM/AAAA.
 3. Usar o frontmatter padrão
 4. Linkar bidirecionalmente para documentos relacionados
 5. Após criar: atualizar `RETOMADA.md` (seção "Documentos criados") e registrar ação em `02-areas/historico-acoes.md` no vault raiz
+
+---
+
+## Fluxo Operacional: Matinal Diária
+
+**Quando:** Diariamente após resultado real de venda (tipicamente 14h–15h)
+
+**O que é:** Documento HTML (dark theme, Barlow font) com:
+- Resultado planejado vs executado
+- 2–5 perguntas críticas para Rogério
+- Metas do dia (Karine, Lucas, Raquel, Rogério, Mayko)
+- Status das automações n8n
+- Lab MADIP conversão (se aplicável)
+- Foco operacional por responsável
+- "Cantada do dia" (motivação/contexto)
+
+**Workflow:**
+1. **08h–09h:** Reunião matinal ao vivo (15 min)
+2. **Capturar resultados** do dia anterior via WhatsApp grupo SST Card
+3. **Gerar HTML matinal** — copiar template da última matinal e atualizar dados
+4. **Template base:** `processo-comercial-7dias/01-matinais/09-06-2026/roteiro-matinal-09-06-2026.html`
+5. **Criar pasta:** `processo-comercial-7dias/01-matinais/DD-MM-YYYY/`
+6. **Nomear arquivo:** `roteiro-matinal-DD-MM-YYYY.html`
+7. **Deploy:** `git add` → `git commit -m "Matinal DD/MM/YYYY"` → `git push origin master` → Vercel deploy automático (<1 min)
+8. **Compartilhar:** URL `https://playbook.ssfcard.ia.br/processo-comercial-7dias/01-matinais/DD-MM-YYYY/roteiro-matinal-DD-MM-YYYY.html`
+
+**Dados chave a atualizar por pessoa:**
+- **Karine:** contatos, fechamentos, reconciliação, cobrança
+- **Lucas:** ativações clínica, ativações app, mensagens totais
+- **Raquel:** abordagens, leads qualificados, posts Instagram
+- **Lab MADIP:** conversão % por atendente (se aplicável)
+
+---
+
+## Fluxo RMAR: Geração e Apresentação
+
+**Quando:** Mensalmente (últimos dias úteis do mês ou primeiros dias do mês seguinte)
+
+**O que é:** Apresentação PPTX com dados reais de adesões, reativações, receita, adimplência, churn (comparação 2 meses)
+
+**Workflow:**
+
+1. **Preparar dados:**
+   - Coletar adesões novas do período (Karine WhatsApp, PDF Raquel, etc.)
+   - Coletar reativações Tenex (n8n logs ou relatório Perdão de Dívida)
+   - Calcular receita: (adesões × preço médio) + (taxa adesão × qtd)
+   - Adimplência: pagantes / ativos do mês
+   - Churn: cancelamentos / base inicial
+
+2. **Atualizar script Python** (`gerar_rmar_sst.py`):
+   ```python
+   MES_REFERENCIA = "05/2026"  # Atualizar mês
+   ADIMPLENCIA = [
+       ["04/2026", "376", "335", "89,10%"],  # dados históricos
+       ["05/2026",  "35",  "28", "80,00%"],  # novo mês
+   ]
+   CHURN = [
+       ["04/2026", "376",  "4", "1,06%"],
+       ["05/2026",  "35",  "0", "0,00%"],
+   ]
+   GRAFICOS = {
+       4: {'categories': ['04/2026', '05/2026'], 'series': {...}},  # Adesões
+       # ... atualizar valores nos gráficos
+   }
+   ```
+
+3. **Executar geração:**
+   ```powershell
+   cd C:\Users\mayko\meu-cerebro\01-projetos\consultoria-comercial\clientes\SST_Clinica_Bairro_da_Paz
+   python gerar_rmar_sst.py
+   # Saída: RMAR-SST-Card-Bairro-da-Paz-ABRIL-MAIO-2026.pptx (ou novo nome)
+   ```
+
+4. **Agendar call com Rogério:**
+   - Envio: "Rogério, o RMAR de [mês] está pronto. Quer apresentar hoje 17h ou amanhã?"
+   - Guardar link Notion com dados brutos: https://www.notion.so/... (hub SST Clínica)
+   - Preparar notas do apresentador se houver pontos polêmicos
+
+5. **Após apresentação:**
+   - Atualizar `RETOMADA.md` com decisões do Rogério
+   - Registrar em `02-areas/historico-acoes.md` (vault raiz)
+   - Arquivar versão anterior do PPTX em `99_Arquivo_Geral/` se necessário
+
+**Dependências Python:**
+```powershell
+pip install python-pptx lxml
+```
+
+---
+
+## Tarefas Periódicas
+
+| Tarefa | Frequência | Quando | Responsável | Onde |
+|--------|-----------|--------|------------|------|
+| Matinal diária | Diário | 08h–09h (reunião) + 14h–15h (compilar) | Mayko | `01-matinais/DD-MM-YYYY/` |
+| RMAR mensais | Mensal | Últimos dias úteis / 1º dia mês seguinte | Mayko | `gerar_rmar_sst.py` → PPTX |
+| Relatório diário parcial (14h) | Diário | 14h no grupo WhatsApp | Karine/Lucas/Raquel | grupo SST Card |
+| Checklist deploy matinal | Diário | Após criação HTML | Mayko | `git push origin master` |
+| Atualizar RETOMADA.md | Semanal / evento | Sexta 16h ou evento crítico | Mayko | RETOMADA.md |
+| Implantar automação n8n | Conforme prazo | 10/06 (A6/A8), 13/06 (A9), 15/06 (A7) | Mayko | `02-cadencias/` → n8n prod |
+| Memory sync (.claude/.../memory/) | Semanal | Sexta 17h | Mayko | memory/MEMORY.md |
+| Reunião lab MADIP | Semanal | Seg–Ter (Aline) | Mayko + Aline | `aline-laboratorio/CLAUDE.md` |
+| Conferir Notion CRM | Diário | 09h antes matinal | Mayko/Karine | https://notion.so/337ad3c0037381b39091fb40594bbedc |
+
+---
+
+## Contatos Chave
+
+| Pessoa | Função | Telefone/WhatsApp | Email | Onde localizar |
+|--------|--------|----------|-------|---|
+| **Rogério Ferreira** | Dono/Sponsor | rogeriorsf15@gmail.com | rogeriorsf15@gmail.com | Pode estar em reuniões; WhatsApp prioritário |
+| **Karine** | Comercial/Financeiro | +55 71 8255-5752 | — | Grupo WhatsApp SST Card |
+| **Lucas** | Customer Success | +55 71 9271-2271 | — | Grupo SST Card + Google Meet |
+| **Raquel** | Marketing/SDR | — | — | Matinais + campo |
+| **Aline Souza** | Lab MADIP | — | — | Reuniões lab seg–ter |
+
+**Grup WhatsApp:** "SST Card · Simões Filho/BA" (privado)  
+**Notion Hub:** https://www.notion.so/33ead3c0037381b093b3d0c0a41d3c4b  
+**Google Calendar:** SST Card · Simões Filho/BA (agendamentos ativos)
+
+---
+
+## Troubleshooting
+
+### Problema: n8n workflow não importa (erro de formato)
+**Solução:**
+1. Verificar se arquivo `.json` está aberto em UTF-8 (não UTF-16)
+2. Validar JSON online: https://jsonlint.com/
+3. Se erro de variáveis: copiar template de workflow já importado e adaptar (usar copiar/colar dentro n8n, não importar arquivo novo)
+
+### Problema: Vercel deploy não atualiza (cache)
+**Solução:**
+1. `git status` para verificar changes
+2. `git add processo-comercial-7dias/01-matinais/DD-MM-YYYY/roteiro-matinal-DD-MM-YYYY.html`
+3. `git commit -m "Matinal DD/MM"` 
+4. `git push origin master` (não push para branch, sempre master)
+5. Esperar 1–2 min, recarregar playbook.ssfcard.ia.br com Ctrl+Shift+R (hard refresh)
+
+### Problema: Python script "ModuleNotFoundError: No module named 'pptx'"
+**Solução:**
+```powershell
+pip install python-pptx lxml
+# Ou se em environment específico:
+python -m pip install python-pptx lxml
+```
+
+### Problema: HTML matinal aparece com caracteres quebrados (ç, ã, etc.)
+**Solução:**
+- Verificar `<meta charset="UTF-8">` no `<head>` do HTML
+- Salvar arquivo como UTF-8 (não ANSI)
+- Se editor padrão: abrir com VS Code e reselecionar "UTF-8" na barra status
+
+### Problema: Notion database não sincroniza com n8n (webhook silencioso)
+**Solução:**
+1. Verificar token Notion: https://www.notion.so/my-integrations (não expirou?)
+2. Verificar NOTION_TOKEN em variáveis n8n
+3. Verificar ID da database (copiar URL Notion completa: `/[ID]?v=[view-id]`, ID = alfanuméricos até `?`)
+4. Testar webhook n8n manualmente: abrir workflow → "Test" → disparar manualmente
+5. Ver logs n8n: Executions → filtro para errors
+
+### Problema: WhatsApp não envia (Evolution API timeout)
+**Solução:**
+1. Verificar se n8n tem acesso à URL Evolution: `EVOLUTION_API_URL` (ex: `https://api.evolution.ia.br`)
+2. Verificar instância Evolution: `EVOLUTION_INSTANCE` (ex: `sst-card-prod`)
+3. Testar call simples em Postman: GET `${EVOLUTION_API_URL}/instance/fetch` com header `apikey: ${EVOLUTION_API_KEY}`
+4. Se erro 500: evolução pode estar down; contatar suporte
 
 ---
 
@@ -305,3 +473,62 @@ Referência completa: `.claude/skills/cerebro-ia-clinica-lucrativa/SKILL.md`.
 | `lucas-cs/` | Apresentação CS (Python PPTX) — **repositório git aninhado**, não incluir em `git add` | — |
 
 Leia o CLAUDE.md local antes de trabalhar em qualquer subprojeto.
+
+---
+
+## Referência Rápida de Comandos
+
+### Git
+```powershell
+# Status
+git status
+
+# Commitar matinal
+git add processo-comercial-7dias/01-matinais/DD-MM-YYYY/roteiro-matinal-DD-MM-YYYY.html
+git commit -m "Matinal DD/MM/YYYY — Karine: X, Lucas: Y, Raquel: Z"
+git push origin master
+
+# Revert (se push acidentalmente)
+git revert HEAD
+git push origin master
+```
+
+### Python — RMAR
+```powershell
+# Gerar RMAR depois de atualizar dados
+cd C:\Users\mayko\meu-cerebro\01-projetos\consultoria-comercial\clientes\SST_Clinica_Bairro_da_Paz
+python gerar_rmar_sst.py
+# Saída: RMAR-SST-Card-Bairro-da-Paz-[PERIODO].pptx
+```
+
+### Python — Vault/CSV (Tenex)
+```powershell
+# Validar CSV antes de importar
+python .claude/skills/cerebro-ia-clinica-lucrativa/scripts/validar_csv.py arquivo.csv
+
+# Gerar notas markdown
+python .claude/skills/cerebro-ia-clinica-lucrativa/scripts/gerar_notas_md.py dados-limpos.csv -o vault-sst/00_Inbox/
+```
+
+### Vercel (manual, se necessário)
+```powershell
+# Setup (primeira vez)
+npm i -g vercel
+vercel login
+
+# Deploy manual
+cd C:\Users\mayko\meu-cerebro\01-projetos\consultoria-comercial\clientes\SST_Clinica_Bairro_da_Paz
+vercel deploy --prod  # Requer confirmação
+
+# Normalmente: git push origin master (CI automático)
+```
+
+---
+
+## Observações Finais
+
+1. **Memory system:** Não descarta informações de sessão anterior. Se trabalhar em múltiplas sessões, cheque `.claude/projects/.../memory/MEMORY.md` para contexto persistente.
+2. **RETOMADA.md é a fonte da verdade:** Sempre consulte antes de assumir estado do projeto. Atualize após mudanças significativas.
+3. **WhatsApp grupo é canal oficial:** Matinais, parciais, decisões são comunicadas ali. Manter histórico organizado.
+4. **Notion é auditoria:** Todos os leads devem estar em https://www.notion.so/33ead3c0037381b093b3d0c0a41d3c4b (hub SST Clínica) com status e owner.
+5. **Playbook Vercel = broadcast:** Qualquer mudança em HTML/JSON faz deploy automático. Validar antes de push.
