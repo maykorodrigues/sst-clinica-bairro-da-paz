@@ -57,13 +57,15 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | `perfil-rogerio-diretor.md` | Como trabalhar com Rogério (perfil comportamental + proposta) |
 | `perfil-karine-entrevista-nov2025.md` | Perfil Karine (vendas/financeiro) — âncora motivacional: buffet |
 | `perfil-raquel-agentamento.md` | Perfil Raquel (marketing) — 20 anos, SDR sem saber |
-| `perfil-lucas-cs.md` | Perfil Lucas (Customer Success) |
+| `perfil-lucas-agentamento.md` | Perfil Lucas (Customer Success) |
 | `sessao-agentamento-*.md` | Relatórios das sessões de capacitação (17/04/2026) |
 | `gerar_rmar_sst.py` | Script Python (python-pptx) que gera o RMAR PPTX a partir do template `rmar-temp.pptx` — editar `ADIMPLENCIA` e variáveis no cabeçalho |
-| `RMAR-SST-Card-Bairro-da-Paz-MAIO-2026.pptx` | RMAR PPTX gerado pelo script acima — versão mais recente do relatório mensal |
+| `rmar-slides-preview/` | PNGs dos 18 slides do template RMAR + PPTX original (fevereiro/2025) — referência visual ao editar `gerar_rmar_sst.py` |
+| `RMAR-SST-Card-Bairro-da-Paz-ABRIL-MAIO-2026.pptx` | RMAR PPTX gerado pelo script — versão mais recente (gerada 09/06/2026) |
 | `99_Arquivo_Geral/IA_Logs/` | Logs diários JSON das sessões Claude (um arquivo por dia `log_YYYY-MM-DD.json`) — referência histórica |
 | `Matinais-Maio/` | PDFs das matinais de maio impressas/enviadas (cartão bolso, roteiro, script perdão dívida) |
-| `WhatsApp Ptt *.srt/.txt` | Transcrições de áudios de Rogério (Whisper CLI `--language Portuguese --model turbo`) — arquivo mais recente: 13/05/2026 |
+| `WhatsApp Ptt *.srt/.txt` | Transcrições de áudios de Rogério (Whisper CLI `--language Portuguese --model turbo`) — arquivo mais recente: 08/06/2026 |
+| `aline-laboratorio/audio-rogerio-crise-aline-08-06-2026.md` | Transcrição do áudio de Rogério sobre crise na MADIP (08/06) — ver contexto em `aline-laboratorio/CLAUDE.md` |
 
 ## Personas-chave
 
