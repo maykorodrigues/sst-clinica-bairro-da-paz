@@ -72,48 +72,71 @@ IDENTIDADE  →  FONTE  →  PROPÓSITO  →  POTENCIAL  →  DESTINO  →  VIS�
 
 **Princípio:** *"Identidade traz funcionalidade. Assumir a identidade de sucesso te fará agir como o melhor dos melhores."*
 
-**Objetivo:** Estabelecer a base de quem Aline É, independente de aprovação.
+**O que foi trabalhado:**
+- Ser Trino (Espírito / Alma / Corpo) — integridade redefinida
+- Autoresponsabilidade vs. Culpa (analogia de Adão)
+- Ferramenta de Identidade: pessoas admiradas → Aline = **superadora e batalhadora**
+- Autoimagem e aprovação — a voz interna como referência principal
+- **Novo diagnóstico:** Aline é "tarefeira" — executora forte, foco fraco
 
-**Ferramentas utilizadas:**
-- Ferramenta Identidade Pra Sempre (SER / FAZER / TER)
-- Roteiro pastoral: Ef 2:10, Lc 16:10, Is 43:1
-- Exercício Cajado de Moisés (3 afirmações diárias)
+**Identidade revelada:** *superadora e batalhadora que faz o melhor para quem depende dela*
 
-**Comprometimentos gerados:**
-→ Ver `sessao-coaching-comportamental-aline-10-06-2026.md` (seção Pós-Sessão)
+**Comprometimentos assumidos:**
+1. Feedback 360° com ≥5 pessoas (acima / par / liderados) — 3 perguntas padrão
+2. Preencher Folha de Identidade (pessoas admiradas + características + resultados)
 
 **Checagem S1 → S2:**
-- [ ] Aline praticando o Cajado de Moisés diariamente?
+- [ ] Feedback 360° coletado? (mínimo 5 pessoas)
+- [ ] Folha de Identidade preenchida?
 - [ ] Algum episódio de "crise de aprovação" na semana?
 - [ ] Conversão da semana: ___% (baseline para S2)
 
 ---
 
-### SESSÃO 2 — FONTE DE VALOR | ~17/06/2026
+### SESSÃO 2 — FONTE DE VALOR + FOCO | ~17/06/2026
 
 **Princípio:** *"Ser fonte de valor é ter a crença de que você é o único responsável pelo resultado no seu trabalho."*
 
-**Objetivo:** Migrar Aline de "preciso que Rogério esteja aqui" para "eu sou a causa dos meus resultados".
+**Contexto pós-S1:** A S1 revelou dois padrões simultâneos em Aline:
+1. **Aprovação externa** — já trabalhado em S1 (identidade de superadora)
+2. **"Tarefeira"** — executa muito, foca pouco — novo ponto crítico para esta sessão
+
+**Objetivo duplo da S2:**
+- Consolidar FONTE: "eu sou responsável pelos meus resultados"
+- Iniciar FOCO: "decidir é escolher — o que vou PRIORIZAR esta semana?"
+
+**Abertura — revisão das tarefas de casa:**
+> *"Aline, me mostra o feedback das 5 pessoas. O que foi mais surpreendente que você ouviu? Tem algo que bateu com o que já sabia? Tem algo que chocou?"*
+
+> *"E a Folha de Identidade — quem você colocou? O que essas pessoas têm em você que você ainda não usa todo dia?"*
 
 **Desbloqueio central:**
-> *"Aline, na semana passada falamos de quem você É. Hoje vamos falar de quem você CAUSA. Porque você sabe que os seus resultados dependem de você — não de mim, não de Rogério, não da equipe. De você."*
+> *"Semana passada falamos de quem você É. Hoje vamos falar de quem você CAUSA. Tudo que existe no mundo é criação de pessoas iguais a você — você é fonte."*
 
-**Pergunta-âncora:**
-> *"Em que momento da sua vida você produziu um resultado que surpreendeu até você mesma — sem ninguém pedindo, sem cobrança?"*
+**Pergunta-âncora sobre autoresponsabilidade:**
+> *"Em que momento desta semana você poderia ter culpado alguém pelo resultado — mas escolheu se perguntar 'o que EU posso fazer diferente'?"*
+
+**Pergunta-âncora sobre foco:**
+> *"Se você só pudesse fazer 1 coisa hoje para mover a conversão do laboratório — só 1 — o que seria?"*
+
+**Conceito: Decisão = Cisão**
+> *"Decidir vem de 'cisão' — cortar. Você não pode fazer tudo ao mesmo tempo e fazer bem. O que você vai CORTAR esta semana para fazer 1 coisa com excelência?"*
 
 **Atividade:**
-- Listar 5 resultados que Aline gerou **sozinha**, sem supervisão direta
-- Para cada resultado: "O que YOU fez para isso acontecer?"
+- Listar 5 resultados que Aline gerou sozinha, sem supervisão
+- Para cada um: "O que EU fiz para isso acontecer?" (sem citar equipe ou Rogério)
+- Definir **1 prioridade da semana** (só 1, escrita e visível)
 
 **Entregável:**
-> Contrato pessoal (1 página): *"Eu, Aline Souza, declaro que sou responsável pela conversão do laboratório MADIP. Não como obrigação — como protagonista."*
+> Contrato pessoal: *"Eu, Aline Souza, declaro que sou responsável pela conversão do laboratório. Esta semana minha 1 prioridade é: _______."*
 
 **Versículos:**
-- **2 Co 9:8** — *"Deus é poderoso para fazer com que toda graça abunde em vós, para que, tendo sempre em tudo toda suficiência, sejais ricos em toda boa obra"*
 - **Fl 4:13** — *"Tudo posso naquele que me fortalece"*
+- **Pv 4:25** — *"Dirige os teus olhos para o que está diante de ti — fixa a vista no que está à tua frente"*
 
 **Checagem S2 → S3:**
-- [ ] Contrato assinado e visível (na carteira, no espelho)?
+- [ ] Contrato assinado e visível?
+- [ ] A "1 prioridade da semana" foi respeitada?
 - [ ] Episódio de vítima na semana? Como ela reagiu?
 - [ ] Conversão semana: ___%
 
@@ -238,7 +261,7 @@ IDENTIDADE  →  FONTE  →  PROPÓSITO  →  POTENCIAL  →  DESTINO  →  VIS�
 
 | Sessão | Data | Status | Conversão semana | Episódios crise | Entregável |
 |---|---|---|---|---|---|
-| S1 — Identidade | 10/06/2026 | 🔄 Realizada | _% | _ | Cajado de Moisés |
+| S1 — Identidade | 10/06/2026 | ✅ Concluída | _% | _ | Feedback 360° + Folha de Identidade |
 | S2 — Fonte | ~17/06 | ⬜ | _% | _ | Contrato pessoal |
 | S3 — Propósito | ~24/06 | ⬜ | _% | _ | Declaração de propósito |
 | S4 — Potencial | ~01/07 | ⬜ | _% | _ | Mapa de potencial |

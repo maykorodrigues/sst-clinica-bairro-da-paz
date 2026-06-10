@@ -199,32 +199,62 @@ Não é uma reunião operacional. É uma sessão de **reestruturação de identi
 
 ---
 
-## 📋 PÓS-SESSÃO (registrar aqui após a call)
+## 📋 PÓS-SESSÃO — Registrado via Notion (10/06/2026)
+
+> Fonte: ata automática da reunião no Notion (link: https://app.notion.com/p/37bad3c0037380f6b4cae82a5876fd36)
 
 ### Como ela chegou
-- Estado emocional: ___
-- Primeira coisa que falou: ___
+- Sessão iniciada com **oração** — contexto espiritual e transformacional estabelecido desde o início
+- Aline também chamada de **"Lili"** na sessão
 
-### Insights da sessão
+### Conceitos trabalhados
 
-| Pilar | O que ela disse | Interpretação |
-|---|---|---|
-| SER | | |
-| FAZER | | |
-| TER | | |
-| Pertencimento | | |
+| Tema | O que foi explorado |
+|---|---|
+| **Ser Trino** (Espírito / Alma / Corpo) | Integridade = ser uno consigo mesmo e com os próprios valores — não só "não roubar" |
+| **A alma como elo** | Espírito sabe o que fazer → Corpo executa → Alma (emoção/mentalidade) é o elo. Sem trabalhar a alma, repete-se o ciclo: saber mas não fazer |
+| **Autoresponsabilidade vs. Culpa** | Analogia de Adão: culpar os outros paralisa. Autoresponsabilidade gera aprendizado. *"Não é sobre culpa — é sobre o que eu preciso fazer melhor"* |
+| **Foco vs. Dispersão** | Aline identificada como **"tarefeira"** — executora forte, mas dispersa energia em múltiplas tarefas simultâneas. Decisão = "cisão": escolher o que fazer é escolher o que deixar de fazer |
+
+### Diagnóstico comportamental atualizado (Ferramenta Identidade aplicada)
+
+**Pessoas que Aline admira:**
+1. **Ela mesma** — já se reconhece como referência
+2. **Seu pai** — batalhador, trabalhador
+3. **Cristiano Ronaldo** — superador, determinado
+
+> *"A gente só consegue ver nos outros aquilo que passa pela gente."*
+
+**Identidade revelada:** Aline é uma **superadora e batalhadora** — faz o melhor para sua família e para quem depende dela.
+
+### Perfil comportamental (nova informação)
+
+| Dimensão | Diagnóstico |
+|---|---|
+| **Ponto forte** | Execução e ação — altamente realizadora |
+| **Ponto de melhoria** | Falta de foco — faz muitas coisas ao mesmo tempo, não prioriza o que move resultado |
+| **O que deve começar** | Perguntar mais às pessoas ao redor; praticar escuta ativa e feedback |
+| **Autoimagem** | Dependência de aprovação externa — humor e produtividade sujeitos à opinião dos outros |
 
 ### Crença limitante identificada
-> ___
+> *"Preciso da aprovação de quem está acima de mim para funcionar."*  
+> Trabalho: a voz interna de Aline deve ser a mais alta — não a dos outros.
 
-### Comprometimentos que ela verbalizou
-1. ___
-2. ___
-3. ___
+### Comprometimentos assumidos por Aline
+
+- [ ] **Feedback 360°:** Pedir feedback para ≥5 pessoas em 3 níveis (acima, par, liderados/família) com 3 perguntas:
+  - O que faço bem e devo continuar?
+  - O que devo parar de fazer?
+  - O que deveria começar a fazer?
+- [ ] **Folha de Identidade:** Preencher listando pessoas admiradas, o que as caracteriza e os resultados que obtêm
+- [ ] **Próxima sessão:** Mesma hora, mesmo canal, com as duas tarefas cumpridas
+
+### Encerramento
+Coach reforçou: *brilhar e gerar resultados é uma forma de glorificar a Deus* — Mateus 5.
 
 ### Decisão / Escalação
-- [ ] Comunicar algo para Rogério? (somente se crítico — manter confidencialidade)
-- [ ] Próxima sessão agendada? Data: ___
+- [ ] **Rogério:** Não comunicar — confidencialidade mantida
+- [ ] **Próxima sessão:** ~17/06/2026 · 07h · Google Meet (mesmo link)
 
 ---
 
