@@ -4,7 +4,88 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 08/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+> Última atualização: 11/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+
+---
+
+## Sessão 11/06/2026 — Entrevista Closer Safira (Fase 1 comportamental)
+
+### Resultado
+- **Safira Letícia Souza Pereira** entrevistada via Meet (14h) por Mayko + Rogério — metodologia 4 perguntas poderosas.
+- **Decisão: aprovada na fase comportamental → 2ª rodada presencial.** Score parcial 59/100 (simulação não testada).
+- 🟢 Fortes: comunicação de trator, público C/D igual ao SST (vinha de consignado INSS), mindset de crescimento (quer virar gestora).
+- 🟡 Atenção: zero números de venda validados, sem simulação, motivação muito ancorada em dinheiro (fit "bom samaritano" a testar).
+
+### Documentos criados
+| Arquivo | Conteúdo |
+|---|---|
+| `rh-closer/scoring-safira-11-06-2026.md` | Ficha de scoring parcial + decisão + mensagem Rogério |
+| `rh-closer/roteiro-fase2-presencial-closer.md` | Roteiro fase 2: simulação Dona Maria + STAR + checklist competências |
+
+### Próximos passos closer
+- [ ] Enviar mensagem-resumo ao Rogério (template no scoring)
+- [ ] Agendar fase 2 presencial (Bairro da Paz / Simões Filho)
+- [ ] Na fase 2: simulação Dona Maria + validar números STAR + confirmar perfil hunter + testar fit cuidado
+- [ ] Validar 2 referências de ex-gestores (corte ≥8/10)
+
+> **Nota:** Safira é candidata **alternativa/paralela ao Roni** (sem GO/NO-GO há 18+ dias). Decidir com Rogério se Safira substitui ou compete com Roni no funil.
+
+---
+
+## Sessão 11/06/2026 — Reunião Estratégica Rogério + Decisão BPO/Contabilidade
+
+**Reunião ao vivo (09:30 BRT)** — pauta: estratégia B2B para inauguração + decisão de gestão financeira/BPO + agentização IA + coaching Aline.
+
+### Decisão BPO/Contabilidade (FECHADA)
+
+Rogério avaliou 3 propostas do fornecedor Moisés (Orizon):
+
+| Proposta | Valor | Decisão |
+|---|---|---|
+| Contabilidade Estratégica (folha, tributário, relatórios, distribuição de lucro) | ~R$ 697/mês | ✅ **Fechar** |
+| Abertura de CNPJ filial Bairro da Paz (Certificado A1 + abertura) | R$ 1.200 em 2x | ✅ **Fechar** |
+| BPO Financeiro completo (conciliação, notas, AP/AR) | R$ 2.000/mês | ⏸️ **Adiado** |
+
+**Modelo recomendado (Mayko) e aprovado:** não terceirizar o financeiro inteiro agora — pilotar gestão interna com **Conta Azul ou Bling (~R$60–360/mês)** + pessoa de confiança (**Hailani**) + agente de IA CFO **"Marco"** (em desenvolvimento por Mayko, integração via Open Cloud com Conta Azul/Bling/Asaas). Referência: experiência anterior com 10 unidades onde 1 pessoa interna + software online (Agiliza) resolveu a gestão centralizada.
+
+Também decidido: avaliar abertura de **CNPJs separados** para odontologia, clínica e SST Card (cartão).
+
+➡️ Itens 113–117 do `processo-comercial-7dias/05-bairro-da-paz/checklist-mestre-inauguracao-01-07-2026.md` (seção 5.2) atualizados com esta decisão.
+
+### Estratégia B2B para Inauguração (Clube SST Card)
+
+Parcerias Ouro/Prata/Bronze com odontologia, estética, academias, PET e nutrição: parceiro dá desconto exclusivo ao portador do SST Card + paga comissão (financia o vendedor B2B) + dono recebe SST Card grátis no período de teste. Meta mínima: **100 vidas/mês**. Rogério chega como autoridade médica selecionando os melhores parceiros da região — conceito de "economia compartilhada local", todos presentes na inauguração.
+
+### Ações registradas no Notion (database criado)
+
+🔗 https://app.notion.com/p/a35e4f2e3a2044d7a36a9245018987a1 — **"📋 Ações & Próximos Passos — Reunião 11/06"** (dentro do hub 2ª Filial Bairro da Paz), 11 itens com Responsável/Status/Categoria/Prazo.
+
+**Mayko Rodrigues:**
+| Ação | Prazo |
+|---|---|
+| Preparar playbook + configurar CRM para visitas B2B do Rogério | 13/06 |
+| Concluir automações de CRM, disparos e marketing | 14/06 |
+| Finalizar agente IA CFO "Marco" (Conta Azul/Bling/Asaas) | 30/06 |
+
+**Rogério:**
+| Ação | Prazo |
+|---|---|
+| Falar com Lucas sobre processo B2B na região | 13/06 |
+| Agendar reunião com Mayko + Hailani (gestão financeira) | 13/06 |
+| Fechar contabilidade estratégica + abrir CNPJ filial BP | 16/06 |
+| Adiar BPO, pilotar gestão interna (Conta Azul/Bling) | 16/06 |
+| Realizar visitas a 4-5 empresas/segmento no Bairro da Paz | 30/06 |
+| Abrir CNPJs separados (odonto/clínica/cartão) | 30/06 |
+| SST Card grátis em teste para parceiros B2B | 30/06 |
+
+**Equipe Cartão:**
+| Ação | Prazo |
+|---|---|
+| Entregar relatório RMA pendente | 13/06 |
+
+### Coaching Aline — sessão 2 (avanço)
+
+Sessão sobre identidade/autopercepção: Aline teve momento de ressignificação ("agora eu entendi"), usando referência Cristiano Ronaldo + figura do pai. Risco: alta chance de regressão sem reforço. Próxima sessão (~7h, semana seguinte): **autorresponsabilidade**.
 
 ---
 

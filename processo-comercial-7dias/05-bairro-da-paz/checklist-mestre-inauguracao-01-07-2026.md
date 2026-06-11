@@ -330,12 +330,14 @@ related: [[RETOMADA]] [[cronograma-inauguracao-01-07-2026]] [[plano_lancamento]]
 
 ## 5.2 Abertura jurídica e fiscal
 
+> ✅ **Decisão tomada na reunião estratégica de 11/06/2026** — ver `RETOMADA.md` seção "Sessão 11/06/2026". Rogério vai fechar **Contabilidade Estratégica (~R$697/mês, fornecedor Moisés/Orizon)** + **Abertura de CNPJ da filial Bairro da Paz (R$1.200 em 2x)**. BPO Financeiro completo (R$2.000/mês) **adiado** — gestão interna piloto via Conta Azul/Bling + pessoa de confiança (Hailani).
+
 | # | Ação | Resp. | Prazo | Status |
 |---|------|-------|-------|--------|
-| 113 | Confirmar CNPJ da filial aberto (ou opera sob CNPJ Simões Filho?) | Rogério | **HOJE** | ⬜ |
-| 114 | Alinhar com contador impactos jurídicos da abertura da filial | Rogério | 05/06 | ⬜ |
-| 115 | Confirmar regime tributário adequado para a filial | Contador | 10/06 | ⬜ |
-| 116 | Emissão de NF ou recibo para serviços médicos (modelo definido) | Contador | 13/06 | ⬜ |
+| 113 | Confirmar CNPJ da filial aberto (ou opera sob CNPJ Simões Filho?) | Rogério | 16/06 | 🔄 Decisão tomada 11/06 — abrir CNPJ próprio da filial (e CNPJs separados odonto/clínica/cartão) |
+| 114 | Alinhar com contador impactos jurídicos da abertura da filial | Rogério | 16/06 | 🔄 Decisão tomada 11/06 — fechar Contabilidade Estratégica (~R$697/mês, Moisés/Orizon) |
+| 115 | Confirmar regime tributário adequado para a filial | Contador (Orizon/Moisés) | 20/06 | ⬜ Depende da contratação acima (item 114) |
+| 116 | Emissão de NF ou recibo para serviços médicos (modelo definido) | Contador (Orizon/Moisés) | 20/06 | ⬜ Depende da contratação acima (item 114) |
 | 117 | Modelo contratual de adesão SST Card para Bairro da Paz (1 página) | Rogério | 13/06 | ⬜ |
 
 ## 5.3 Sistema de comissões e pagamentos
