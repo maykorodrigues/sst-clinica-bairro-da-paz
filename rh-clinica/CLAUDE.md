@@ -36,7 +36,7 @@ Diferença em relação ao `../rh-closer/`:
 | Vínculo | PJ — pró-labore + comissão | **CLT — salário fixo + bônus** |
 | Função no funil | Fechamento (vendas) | **Recepção, agenda, onboarding SST Card** |
 | Perfil ideal | Hunter experiente | **Entrada com potencial de crescimento** |
-| Prazo contratação | Em avaliação (Roni) | Até 30/06/2026 |
+| Prazo contratação | Fase 2 com Safira (candidata única) | Até 30/06/2026 |
 
 ---
 

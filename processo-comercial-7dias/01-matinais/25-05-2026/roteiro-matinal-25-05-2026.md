@@ -9,6 +9,8 @@ criado: 2026-05-25
 
 > Duração: 15 min (08h00–08h15) | Participantes: Rogério, Karine, Lucas, Raquel
 
+> [!note] Correção factual (11/06/2026): as menções a "Roni" como candidato/aprovação de closer neste registro histórico estão incorretas. Roni é funcionário do RH (irmão/indicação do Rogério). A candidata à vaga de Closer é Safira Letícia Souza Pereira (Fase 1 aprovada 11/06).
+
 ---
 
 ## ⏱️ Roteiro (15 minutos)

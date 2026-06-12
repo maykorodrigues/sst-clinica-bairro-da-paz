@@ -10,6 +10,9 @@ related: [[RETOMADA]] [[cronograma-inauguracao-01-07-2026]] [[plano_lancamento]]
 ## 🗓️ Meta: 01/07/2026 | 28 dias corridos
 
 > Consolidado em 03/06/2026. Cobre CINCO frentes: Infraestrutura/Arquitetura · Pessoas/RH · Marketing e Vendas · Processos Financeiros · Ferramentas e Tecnologia.
+
+> [!warning] CORREÇÃO FACTUAL (11/06/2026)
+> As linhas que citam "Closer Roni / decisão GO-NO-GO Roni" estão **incorretas** (registro histórico). **Roni é funcionário do RH** (irmão/indicação do Rogério), não candidato a closer. A candidata única à vaga de Closer Bairro da Paz é **Safira Letícia Souza Pereira** — aprovada na Fase 1 em 11/06, agora em Fase 2 (avaliação de competências, presencial). Ver `rh-closer/scoring-safira-11-06-2026.md`.
 > Ao final: mapa de skills do Claude Code para cada frente.
 
 ---

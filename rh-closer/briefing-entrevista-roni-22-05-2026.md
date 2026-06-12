@@ -1,18 +1,25 @@
 ---
 title: Briefing Entrevista — Roni · Closer SST Card · 22/05/2026 14h
-tags: [sst, rh, closer, entrevista, roni, em-progresso]
+tags: [sst, rh, closer, entrevista, roni, arquivado, correcao-factual]
 aliases: [briefing-roni, entrevista-roni-22-05]
 criado: 2026-05-21
-atualizado: 2026-05-21
-status: pendente-execucao
+atualizado: 2026-06-11
+status: arquivado-premissa-incorreta
 related:
   - "[[CLAUDE]]"
   - "[[kit-entrevista-closer-sst]]"
-  - "[[formulario-abertura-vaga-closer-sst]]"
+  - "[[scoring-safira-11-06-2026]]"
   - "[[../perfil-rogerio-diretor]]"
 ---
 
-# Briefing Entrevista — Roni · Closer SST Card
+> [!warning] CORREÇÃO FACTUAL (11/06/2026) — ARQUIVO ARQUIVADO
+> **Roni NÃO é candidato a closer.** Ele é **funcionário do RH da SST** (irmão e indicação do Rogério) que apoia as funções de Recursos Humanos. Este briefing foi criado em 21/05 com a premissa equivocada de que Roni seria entrevistado para a vaga de closer — premissa incorreta.
+>
+> A **única e principal candidata** à vaga de Closer Bairro da Paz é **Safira Letícia Souza Pereira** (entrevistada e aprovada na Fase 1 em 11/06). Ver `scoring-safira-11-06-2026.md` e `roteiro-fase2-presencial-closer.md`.
+>
+> Este arquivo é mantido apenas como **registro histórico**. Não usar como referência operacional.
+
+# Briefing Entrevista — Roni · Closer SST Card  ⚠️ (premissa incorreta — ver nota acima)
 
 | Campo | Detalhe |
 |---|---|

@@ -10,6 +10,9 @@ related: [[RETOMADA]]
 ## 🗓️ Data-alvo: **01/07/2026** | Contingência: 15/07/2026
 
 > Decisão tomada por Rogério em 22/05/2026 — Cenário 2 (com VISA Salvador).
+
+> [!warning] CORREÇÃO FACTUAL (11/06/2026)
+> As linhas abaixo que citam "entrevista Roni / fechar Roni" como candidato a closer estão **incorretas** e mantidas apenas como registro histórico. **Roni é funcionário do RH** (irmão/indicação do Rogério), não candidato. A candidata única à vaga de Closer é **Safira Letícia Souza Pereira** — aprovada na Fase 1 em 11/06, em Fase 2 (competências). Ver `rh-closer/scoring-safira-11-06-2026.md`.
 > O gargalo que define tudo: dar entrada na VISA até 30/05.
 
 ---

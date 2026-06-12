@@ -17,7 +17,8 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 - 🔄 **Campanha Perdão de Dívida** — 761 contas Tenex em atraso (foco operacional)
 - 🔄 **Transição PJ equipe** — contratos Lucas/Karine/Raquel em andamento (`processo-comercial-7dias/transicao-pj-equipe-sst.md`)
 - 🔄 **VISA Salvador + alvará** — entrada prevista 30/05 (CRÍTICO — aguardando confirmação Rogério)
-- 👤 **RH Closer** — candidato Roni avaliando; GO/NO-GO pendente (18+ dias de decisão)
+- 👤 **RH Closer Bairro da Paz** — **Safira Letícia Souza Pereira** é a única e principal candidata. Aprovada na fase comportamental (11/06) → aguarda fase 2 (competências, presencial com Rogério). Possível futura gestora. Ver `rh-closer/scoring-safira-11-06-2026.md`
+- ℹ️ **Roni** — funcionário do RH da SST (irmão e indicação do Rogério); apoia as funções de Recursos Humanos. **NÃO é candidato a closer** (registro histórico de 22/05 foi um mal-entendido)
 - 👤 **RH Clínica** — processo seletivo coordenadora clínica em `rh-clinica/` (aprovação salário pendente Rogério)
 - 📊 **Playbook web** — https://playbook.ssfcard.ia.br (Vercel + Cloudflare)
 - 🧠 **Memory system** — `.claude/projects/.../memory/` — consulte MEMORY.md para contexto persistente
@@ -75,7 +76,8 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | **Karine** | Comercial/Financeiro | Gargalo central — tudo passa por ela. Motivação real: aprender para o negócio próprio (buffet) |
 | **Raquel** | Marketing | 20 anos, logística, funciona como SDR. Cadência atual: 2 toques → abandonar (precisa de 7) |
 | **Lucas** | Customer Success/Onboarding | Afastado por saúde — consultoria preparou apresentação CS em `lucas-cs/` |
-| **Closer (a contratar)** | Fechamento Bairro da Paz | Perfil hunter PJ, processo seletivo ativo em `rh-closer/`; candidato Roni avaliando |
+| **Safira Letícia Souza Pereira** | Closer Bairro da Paz (candidata única) | Perfil hunter PJ; aprovada na fase comportamental 11/06, aguarda fase 2 (competências). Possível futura gestora. `rh-closer/` |
+| **Roni** | Funcionário do RH (irmão/indicação do Rogério) | Apoia funções de Recursos Humanos. **Não é candidato a closer.** |
 | **Aline Souza** | Gestora lab. MADIP | Frente secundária de consultoria — sessões em `aline-laboratorio/` |
 
 ## Modelo financeiro de referência

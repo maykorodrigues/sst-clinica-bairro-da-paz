@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Rogério · Fase 2 Closer — Safira | SST Card</title>
+<style>
+  :root{
+    --azul:#1987c3; --azul-esc:#0f5d8a; --azul-claro:#e8f4fb;
+    --verde:#27ae60; --verde-bg:#e8f8f0;
+    --vermelho:#e74c3c; --vermelho-bg:#fdeceb;
+    --amarelo:#f39c12; --amarelo-bg:#fef6e7;
+    --cinza:#5a6675; --cinza-claro:#f4f6f8; --borda:#dce3ea;
+    --texto:#1f2b38;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'Barlow','Segoe UI',system-ui,sans-serif;
+    background:#eef2f6;color:var(--texto);line-height:1.55;
+    padding:0 0 60px;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:0 14px}
+
+  /* HEADER */
+  header{
+    background:linear-gradient(135deg,var(--azul) 0%,var(--azul-esc) 100%);
+    color:#fff;padding:26px 18px 30px;text-align:center;
+    border-radius:0 0 22px 22px;box-shadow:0 6px 18px rgba(15,93,138,.25);
+  }
+  header .tag{display:inline-block;background:rgba(255,255,255,.18);
+    padding:4px 14px;border-radius:30px;font-size:12px;font-weight:600;
+    letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+  header h1{font-size:22px;font-weight:800;line-height:1.25}
+  header h1 span{color:#ffe08a}
+  header .sub{font-size:14px;opacity:.92;margin-top:8px}
+  header .meta{margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  header .meta div{background:rgba(255,255,255,.14);padding:6px 12px;border-radius:10px;font-size:12.5px;font-weight:600}
+
+  /* CARDS */
+  .card{background:#fff;border-radius:16px;padding:18px 18px 20px;margin:16px 0;
+    box-shadow:0 2px 10px rgba(31,43,56,.06);border:1px solid var(--borda)}
+  .card h2{font-size:17px;color:var(--azul-esc);font-weight:800;
+    display:flex;align-items:center;gap:9px;margin-bottom:4px}
+  .card h2 .n{background:var(--azul);color:#fff;width:28px;height:28px;
+    border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:800;flex-shrink:0}
+  .time{font-size:12px;color:var(--cinza);font-weight:700;margin-left:auto;
+    background:var(--cinza-claro);padding:3px 10px;border-radius:20px}
+
+  .intro{font-size:14.5px;color:var(--cinza);margin:10px 0}
+
+  /* SAFIRA CARD */
+  .perfil{background:var(--azul-claro);border-radius:14px;padding:14px 16px;margin-top:6px}
+  .perfil .nome{font-size:18px;font-weight:800;color:var(--azul-esc)}
+  .perfil ul{list-style:none;margin-top:8px}
+  .perfil li{padding:4px 0 4px 24px;position:relative;font-size:14px}
+  .perfil li::before{content:'✓';position:absolute;left:0;color:var(--verde);font-weight:800}
+
+  /* FALAS */
+  .diga{background:var(--azul-claro);border-left:4px solid var(--azul);
+    border-radius:0 12px 12px 0;padding:12px 15px;margin:12px 0;font-size:14.5px}
+  .diga .lbl{font-size:11px;font-weight:800;color:var(--azul);text-transform:uppercase;
+    letter-spacing:1px;display:block;margin-bottom:5px}
+  .diga em{color:var(--texto);font-style:italic}
+
+  /* OBSERVE / CHECKLIST */
+  .obs-tit{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;
+    color:var(--cinza);margin:14px 0 6px}
+  label.chk{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;margin:6px 0;
+    background:var(--cinza-claro);border-radius:10px;cursor:pointer;font-size:14px;
+    border:1px solid transparent;transition:.15s;user-select:none}
+  label.chk:active{transform:scale(.99)}
+  label.chk input{width:20px;height:20px;margin-top:1px;accent-color:var(--azul);flex-shrink:0}
+  label.chk.killer{background:var(--amarelo-bg);border-color:#f5c97a;font-weight:600}
+  label.chk input:checked + span{color:var(--azul-esc);font-weight:600}
+
+  /* PERGUNTAS */
+  .q{padding:9px 12px;margin:7px 0;background:#fff;border:1px solid var(--borda);
+    border-radius:10px;font-size:14px}
+  .q b{color:var(--azul-esc)}
+  .q .why{display:block;font-size:12px;color:var(--cinza);margin-top:3px}
+
+  /* SINAIS */
+  .sinais{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .sinal{flex:1;min-width:200px;border-radius:12px;padding:11px 14px;font-size:13px}
+  .sinal.v{background:var(--verde-bg);border:1px solid #aee5c6}
+  .sinal.r{background:var(--vermelho-bg);border:1px solid #f3b6af}
+  .sinal .h{font-weight:800;font-size:12.5px;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+  .sinal.v .h{color:var(--verde)} .sinal.r .h{color:var(--vermelho)}
+  .sinal ul{list-style:none;font-size:13px} .sinal li{padding:2px 0 2px 16px;position:relative}
+  .sinal.v li::before{content:'▸';position:absolute;left:0;color:var(--verde)}
+  .sinal.r li::before{content:'▸';position:absolute;left:0;color:var(--vermelho)}
+
+  /* SIMULAÇÃO destaque */
+  .sim{border:2px solid var(--azul);box-shadow:0 4px 16px rgba(25,135,195,.18)}
+  .sim h2{color:var(--azul)}
+  .star-badge{display:inline-block;background:#ffe08a;color:#8a6d00;font-size:11px;
+    font-weight:800;padding:3px 10px;border-radius:20px;margin-left:6px}
+  .precos{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+  .precos th{background:var(--azul);color:#fff;padding:8px;text-align:left;font-size:12.5px}
+  .precos td{padding:8px;border-bottom:1px solid var(--borda)}
+  .precos tr:nth-child(even){background:var(--cinza-claro)}
+  .precos .preco{font-weight:800;color:var(--azul-esc);white-space:nowrap}
+  .ancora{background:var(--verde-bg);border-radius:10px;padding:10px 14px;font-size:13.5px;
+    margin:8px 0;border:1px dashed var(--verde)}
+  .ancora b{color:var(--verde)}
+  .objecao{background:var(--vermelho-bg);border-radius:10px;padding:10px 14px;margin:8px 0;
+    font-size:14px;border-left:4px solid var(--vermelho)}
+  .objecao .num{font-weight:800;color:var(--vermelho)}
+  .killer-box{background:#2b1a14;color:#ffd9d2;border-radius:12px;padding:14px 16px;
+    margin-top:14px;font-size:14px}
+  .killer-box b{color:#ff8a7a}
+
+  /* SCORING */
+  .score-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--borda)}
+  .score-row .dim{flex:1;font-size:14px}
+  .score-row .dim small{display:block;color:var(--cinza);font-size:11.5px}
+  .stars{display:flex;gap:3px;flex-shrink:0}
+  .stars .s{font-size:24px;color:#d4dde5;cursor:pointer;transition:.1s;line-height:1}
+  .stars .s.on{color:#f5b417}
+  .peso{font-size:10px;color:#fff;background:var(--cinza);border-radius:5px;
+    padding:1px 6px;font-weight:700;flex-shrink:0}
+
+  /* DECISÃO */
+  .decisao{display:grid;grid-template-columns:1fr;gap:10px;margin-top:8px}
+  .opt{border-radius:12px;padding:13px 16px;border:2px solid var(--borda);cursor:pointer;
+    display:flex;align-items:center;gap:12px;font-size:14.5px;transition:.15s}
+  .opt .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--cinza);flex-shrink:0}
+  .opt b{font-weight:800}
+  .opt.go:hover,.opt.go.sel{background:var(--verde-bg);border-color:var(--verde)}
+  .opt.go.sel .dot{background:var(--verde);border-color:var(--verde)}
+  .opt.mid:hover,.opt.mid.sel{background:var(--amarelo-bg);border-color:var(--amarelo)}
+  .opt.mid.sel .dot{background:var(--amarelo);border-color:var(--amarelo)}
+  .opt.no:hover,.opt.no.sel{background:var(--vermelho-bg);border-color:var(--vermelho)}
+  .opt.no.sel .dot{background:var(--vermelho);border-color:var(--vermelho)}
+
+  textarea{width:100%;border:1px solid var(--borda);border-radius:10px;padding:11px;
+    font-family:inherit;font-size:14px;resize:vertical;min-height:90px;margin-top:6px}
+
+  .btn-print{position:fixed;bottom:16px;right:16px;background:var(--azul);color:#fff;
+    border:none;border-radius:50px;padding:13px 22px;font-size:14px;font-weight:700;
+    box-shadow:0 4px 14px rgba(25,135,195,.4);cursor:pointer;z-index:50;font-family:inherit}
+  .btn-print:active{transform:scale(.96)}
+
+  .note{font-size:12.5px;color:var(--cinza);background:var(--cinza-claro);
+    border-radius:10px;padding:10px 13px;margin-top:10px}
+
+  footer{text-align:center;color:var(--cinza);font-size:12px;margin-top:24px;padding:0 14px}
+
+  @media print{
+    body{background:#fff}
+    .btn-print{display:none}
+    .card{box-shadow:none;break-inside:avoid;page-break-inside:avoid}
+    header{border-radius:0}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">SST Card · Bairro da Paz</div>
+  <h1>Guia de Entrevista — <span>Fase 2</span><br>Avaliação de Competências</h1>
+  <div class="sub">Candidata a Closer: <b>Safira Letícia Souza Pereira</b></div>
+  <div class="meta">
+    <div>👤 Conduzido por: Rogério</div>
+    <div>⏱️ ~60 min</div>
+    <div>📍 Presencial</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- COMO USAR -->
+  <div class="card" style="background:var(--azul-esc);color:#fff;border:none">
+    <h2 style="color:#fff"><span class="n" style="background:#fff;color:var(--azul-esc)">★</span> Como usar este guia</h2>
+    <p style="font-size:14.5px;margin-top:8px">Rogério, este é seu roteiro de bolso. Siga na ordem. Onde estiver <b style="color:#ffe08a">"VOCÊ DIZ"</b>, leia em voz alta. Onde tiver caixinha, marque tocando na tela. No fim, dê as estrelas e escolha GO / 2ª rodada / NÃO. Tudo salva sozinho neste celular.</p>
+    <div class="note" style="background:rgba(255,255,255,.12);color:#eaf4fb;margin-top:12px">
+      🎯 <b>O que decide a contratação hoje:</b> a Fase 1 (comportamental) já mostrou que ela tem energia, cultura e vontade de crescer. <b>Falta o que não dá pra fingir:</b> vê-la <b>vendendo ao vivo</b> e os <b>números reais</b> de venda dela.
+    </div>
+  </div>
+
+  <!-- QUEM É SAFIRA -->
+  <div class="card">
+    <h2><span class="n">i</span> Quem é a Safira (Fase 1 — aprovada)</h2>
+    <div class="perfil">
+      <div class="nome">Safira Letícia Souza Pereira · 36 anos</div>
+      <ul>
+        <li>Mais de 10 anos em vendas — última experiência: <b>empréstimo consignado INSS</b> (público idoso/aposentado = mesmo público do SST Card)</li>
+        <li>Empresa anterior fechou há ~2 semanas (por isso está disponível)</li>
+        <li>Sonho: virar <b>gestora comercial</b> + fazer faculdade de gestão — encaixa no nosso plano de crescimento</li>
+        <li>Comunicação excelente, muita energia, foca em soluções</li>
+      </ul>
+    </div>
+    <div class="sinais">
+      <div class="sinal v">
+        <div class="h">✅ Já validado (Fase 1)</div>
+        <ul><li>Cultura e fome de crescer</li><li>Público C/D igual ao nosso</li><li>Energia comercial</li></ul>
+      </div>
+      <div class="sinal r">
+        <div class="h">⚠️ Validar HOJE</div>
+        <ul><li>Números reais de venda</li><li>Vender ao vivo + fechar</li><li>É caçadora (porta fria)?</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 1 -->
+  <div class="card">
+    <h2><span class="n">1</span> Reconexão <span class="time">5 min</span></h2>
+    <div class="diga">
+      <span class="lbl">Você diz</span>
+      <em>"Safira, que bom te receber pessoalmente. Hoje é a parte mais prática: quero te ver na ação. Vou te mostrar onde a clínica está nascendo e a gente vai simular o dia a dia real do Bairro da Paz."</em>
+    </div>
+    <div class="obs-tit">Observe enquanto conversa</div>
+    <label class="chk"><input type="checkbox"><span>Chegou no horário e bem apresentada</span></label>
+    <label class="chk"><input type="checkbox"><span>A energia ao vivo bate com a do vídeo</span></label>
+    <label class="chk"><input type="checkbox"><span>Faz perguntas sobre o produto/operação por conta própria</span></label>
+  </div>
+
+  <!-- BLOCO 2 -->
+  <div class="card">
+    <h2><span class="n">2</span> Números reais <span class="time">15 min</span></h2>
+    <p class="intro">Na Fase 1 ela falou "10 anos" mas <b>não deu um número.</b> Aqui você puxa os números — não aceite resposta vaga, peça valor, peça exemplo.</p>
+    <div class="diga">
+      <span class="lbl">Você diz</span>
+      <em>"Pega o seu melhor período no consignado. Me conta: onde e quando, qual era a <b>meta</b>, qual foi o <b>resultado de verdade</b>, e o que você fez de diferente pra chegar lá."</em>
+    </div>
+    <div class="obs-tit">Pergunte uma a uma</div>
+    <div class="q"><b>"Qual era o ticket médio que você fechava?"</b><span class="why">Vê se ela conhece os próprios números</span></div>
+    <div class="q"><b>"Quantos clientes você abordava por dia? Como chegava neles?"</b><span class="why">🔑 Descobre se é CAÇADORA ou só atendia quem chegava</span></div>
+    <div class="q"><b>"De cada 10 pessoas que você abordava, quantas fechavam?"</b><span class="why">Vê se ela mede a própria performance</span></div>
+    <div class="q"><b>"Conta uma venda que você insistiu uma, duas, cinco vezes até fechar."</b><span class="why">Persistência real (com detalhes, não história vaga)</span></div>
+    <div class="q"><b>"Conta uma venda que você achava certa e perdeu. Por quê?"</b><span class="why">Autocrítica — cuidado se ela só culpa o cliente</span></div>
+    <div class="sinais">
+      <div class="sinal v"><div class="h">✅ Bom sinal</div><ul><li>Solta números com naturalidade</li><li>Abordava muita gente/dia, ia atrás</li><li>Assume erros próprios</li></ul></div>
+      <div class="sinal r"><div class="h">🚩 Alerta</div><ul><li>Não cita NENHUM número</li><li>"Os clientes vinham até mim"</li><li>Só histórias perfeitas</li></ul></div>
+    </div>
+  </div>
+
+  <!-- BLOCO 3 - SIMULAÇÃO -->
+  <div class="card sim">
+    <h2><span class="n">3</span> Simulação de venda <span class="star-badge">★ TESTE MAIS IMPORTANTE</span> <span class="time">20 min</span></h2>
+    <p class="intro">Aqui você vira o <b>cliente</b>. Tudo antes pode ser conversa — vender ao vivo, não. <b>É este bloco que mais decide.</b></p>
+    <div class="diga">
+      <span class="lbl">Você diz (monta a cena)</span>
+      <em>"Agora vamos simular. Eu sou a <b>Dona Maria, 47 anos, costureira, moro no Bairro da Paz, tenho 3 filhos</b>. Acabei de fazer uma consulta de R$80 aqui e estou saindo. Você precisa me oferecer o SST Card. Tem 10 minutos. Pode começar."</em>
+    </div>
+    <table class="precos">
+      <tr><th>Plano</th><th>Preço</th><th>O que cobre</th></tr>
+      <tr><td><b>Individual</b></td><td class="preco">R$ 39,90/mês</td><td>Titular com todos os benefícios + 3 dependentes com acesso à saúde</td></tr>
+      <tr><td><b>Família</b></td><td class="preco">R$ 64,90/mês</td><td>4 pessoas com todos os benefícios</td></tr>
+      <tr><td><b>Adesão</b></td><td class="preco">R$ 35,00</td><td>Taxa única por contrato</td></tr>
+    </table>
+    <div class="ancora">💡 Benefícios: telemedicina + auxílio funeral + assistência veterinária + medicina com custo reduzido.<br><b>Âncoras que ela deveria usar:</b> "R$1,33 por dia" · "R$25 a mais e todo mundo tem todos os benefícios" (puxar do individual pra família).</div>
+
+    <div class="obs-tit">Jogue estas 3 objeções no meio (você, como Dona Maria)</div>
+    <div class="objecao"><span class="num">1.</span> 💰 <b>"Ah, R$40 por mês? Não tenho, tô apertada."</b></div>
+    <div class="objecao"><span class="num">2.</span> 🤔 <b>"E se eu pagar e não usar?"</b></div>
+    <div class="objecao"><span class="num">3.</span> 🏥 <b>"Mas posso ir no posto de graça."</b></div>
+
+    <div class="obs-tit">Marque o que ela fez</div>
+    <label class="chk"><input type="checkbox"><span>Cumprimentou pelo nome, com calor humano</span></label>
+    <label class="chk"><input type="checkbox"><span>Perguntou da vida/família ANTES de jogar o preço</span></label>
+    <label class="chk"><input type="checkbox"><span>Usou número do dia a dia (R$1,33/dia)</span></label>
+    <label class="chk"><input type="checkbox"><span>Falou do SUS sem desmerecer, mostrando a diferença</span></label>
+    <label class="chk"><input type="checkbox"><span>Respondeu cada objeção com empatia e história</span></label>
+    <label class="chk killer"><input type="checkbox"><span>⭐ PEDIU pra fechar na hora (não aceitou "vou pensar" parada)</span></label>
+    <label class="chk killer"><input type="checkbox"><span>⭐ Tentou fechar a FAMÍLIA (R$64,90), não só o individual</span></label>
+    <div class="killer-box">
+      🔴 <b>Regra de ouro:</b> se ela <b>não pediu pra fechar</b> ou aceitou "vou pensar" sem reagir — é vendedora de balcão, não closer. Por melhor que ela fale.
+    </div>
+  </div>
+
+  <!-- BLOCO 4 -->
+  <div class="card">
+    <h2><span class="n">4</span> Caçadora & propósito <span class="time">10 min</span></h2>
+    <p class="intro">Dois pontos que a Fase 1 deixou em aberto: ela aguenta prospecção fria? E o propósito sustenta quando o dinheiro demora?</p>
+    <div class="q"><b>"Se eu te der uma lista de 100 pessoas do Bairro da Paz que nunca ouviram falar da gente, como você trabalha? Quanto espera fechar?"</b><span class="why">Bom: faz conta na hora ("de 100, umas 3 fecham")</span></div>
+    <div class="q"><b>"Você se sente bem batendo de porta em porta, abordando na rua quem nunca te viu? Já fez isso?"</b><span class="why">Closer de campo precisa disso</span></div>
+    <div class="q"><b>"Os primeiros meses a comissão demora a engordar enquanto monta a base. O que te faz continuar batendo na porta nesse período?"</b><span class="why">Ela disse que a motivação é dinheiro — veja se há algo além</span></div>
+    <div class="q"><b>"A gente fala que é o 'bom samaritano' do bairro. Vendo uma família que precisa mas tá no aperto, como você conduz?"</b><span class="why">Testa o lado cuidado, não só o número</span></div>
+    <div class="sinais">
+      <div class="sinal v"><div class="h">✅ Bom sinal</div><ul><li>Junta dinheiro COM propósito</li><li>Topa ir a campo, porta fria</li><li>Encara o "não" como parte do jogo</li></ul></div>
+      <div class="sinal r"><div class="h">🚩 Alerta</div><ul><li>Só dinheiro, nada de propósito</li><li>Evita prospecção fria</li><li>Desanima com rejeição</li></ul></div>
+    </div>
+  </div>
+
+  <!-- BLOCO 5 -->
+  <div class="card">
+    <h2><span class="n">5</span> A proposta <span class="time">10 min</span></h2>
+    <p class="intro">Apresente os números e meça a reação. Conecte com o sonho dela.</p>
+    <label class="chk"><input type="checkbox"><span><b>PJ:</b> R$2.000 pró-labore + comissão sem teto</span></label>
+    <label class="chk"><input type="checkbox"><span><b>Comissão:</b> R$20 por adesão · R$5 por reativação Tenex · escada (80 vendas = R$15–16/adesão)</span></label>
+    <label class="chk"><input type="checkbox"><span><b>Meta:</b> 100 vendas/mês ≈ R$4.000 total (R$2.000 fixo + R$2.000 comissão)</span></label>
+    <label class="chk"><input type="checkbox"><span><b>Carreira:</b> bater meta 3 meses → caminho pra Coordenadora de Filial</span></label>
+    <div class="diga">
+      <span class="lbl">Você diz (conecta com o sonho dela)</span>
+      <em>"Lembra que você falou que quer ser gestora e fazer faculdade de gestão? Esse cargo é exatamente o trampolim — a faculdade da prática, com remuneração que paga a teórica."</em>
+    </div>
+    <div class="note">👀 <b>Meça:</b> ela se anima com a parte de crescimento ou só com o número? Pergunta sobre teto e garantias?</div>
+  </div>
+
+  <!-- SCORING -->
+  <div class="card">
+    <h2><span class="n">★</span> Placar — dê as estrelas</h2>
+    <p class="intro">Toque nas estrelas (1 a 5) para cada item. A simulação vale dobro.</p>
+    <div class="score-row">
+      <div class="dim">Experiência real <small>tinha números, fatos?</small></div>
+      <span class="peso">x3</span>
+      <div class="stars" data-w="3">★★★★★</div>
+    </div>
+    <div class="score-row">
+      <div class="dim">Simulação de venda <small>pediu fechamento, contornou objeções</small></div>
+      <span class="peso">x4</span>
+      <div class="stars" data-w="4">★★★★★</div>
+    </div>
+    <div class="score-row">
+      <div class="dim">Perfil caçadora <small>topa porta fria, aguenta o "não"</small></div>
+      <span class="peso">x2</span>
+      <div class="stars" data-w="2">★★★★★</div>
+    </div>
+    <div class="score-row">
+      <div class="dim">Propósito / cuidado <small>não é só dinheiro</small></div>
+      <span class="peso">x2</span>
+      <div class="stars" data-w="2">★★★★★</div>
+    </div>
+    <div class="score-row">
+      <div class="dim">Energia e postura <small>presença, comunicação</small></div>
+      <span class="peso">x1</span>
+      <div class="stars" data-w="1">★★★★★</div>
+    </div>
+    <div style="text-align:center;margin-top:18px">
+      <div style="font-size:13px;color:var(--cinza);font-weight:700">PONTUAÇÃO</div>
+      <div id="total" style="font-size:42px;font-weight:800;color:var(--azul-esc)">—</div>
+      <div id="rec" style="font-size:14px;font-weight:700"></div>
+    </div>
+  </div>
+
+  <!-- DECISÃO -->
+  <div class="card">
+    <h2><span class="n">✓</span> Decisão</h2>
+    <div class="decisao">
+      <div class="opt go" data-d="go"><span class="dot"></span><div><b>CONTRATAR (GO)</b> — vendeu bem + tem números. Fechar proposta esta semana.</div></div>
+      <div class="opt mid" data-d="mid"><span class="dot"></span><div><b>SEGURAR</b> — gostei, mas quero conferir 2 referências de chefes antes.</div></div>
+      <div class="opt no" data-d="no"><span class="dot"></span><div><b>NÃO seguir</b> — não vendeu / sem números. Abrir nova busca.</div></div>
+    </div>
+    <div class="obs-tit" style="margin-top:18px">Anotações livres</div>
+    <textarea id="notas" placeholder="O que mais te chamou atenção? Frases dela na simulação, números que ela deu, dúvidas..."></textarea>
+  </div>
+
+  <div class="note">📲 Depois da entrevista, manda pro Mayko: a <b>decisão</b> + a <b>pontuação</b> + 2 frases do que pesou. Ele fecha a ficha e prepara a proposta (se GO) ou a nova divulgação (se NÃO).</div>
+
+  <footer>
+    SST Card · Bairro da Paz — Guia de Fase 2 · Candidata Safira · 12/06/2026<br>
+    Preparado por Mayko Rodrigues (advisor comercial) para condução do Rogério.
+  </footer>
+</div>
+
+<button class="btn-print" onclick="window.print()">🖨️ Salvar PDF</button>
+
+<script>
+  // Persistência simples no localStorage
+  const KEY='guia-fase2-safira';
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}};
+  const save=(d)=>localStorage.setItem(KEY,JSON.stringify(d));
+  let state=load();
+
+  // Checkboxes
+  document.querySelectorAll('input[type=checkbox]').forEach((c,i)=>{
+    c.id='c'+i; if(state[c.id])c.checked=true;
+    c.addEventListener('change',()=>{state[c.id]=c.checked;save(state)});
+  });
+
+  // Estrelas
+  function renderStars(box){
+    const v=state['st_'+box.dataset.idx]||0;
+    box.innerHTML='';
+    for(let i=1;i<=5;i++){
+      const s=document.createElement('span');
+      s.className='s'+(i<=v?' on':'');s.textContent='★';s.dataset.v=i;
+      s.addEventListener('click',()=>{state['st_'+box.dataset.idx]=i;save(state);renderStars(box);calc()});
+      box.appendChild(s);
+    }
+  }
+  document.querySelectorAll('.stars').forEach((b,i)=>{b.dataset.idx=i;renderStars(b)});
+
+  // Cálculo: soma(estrela*peso) -> normaliza pra 100 (max = 5*12pesos=60)
+  function calc(){
+    const boxes=document.querySelectorAll('.stars');let sum=0,maxw=0,any=false;
+    boxes.forEach(b=>{const w=+b.dataset.w;const v=state['st_'+b.dataset.idx]||0;if(v)any=true;sum+=v*w;maxw+=5*w});
+    const t=document.getElementById('total'),r=document.getElementById('rec');
+    if(!any){t.textContent='—';r.textContent='';return}
+    const score=Math.round(sum/maxw*100);
+    t.textContent=score;
+    if(score>=75){r.textContent='✅ Forte — caminho de CONTRATAR';r.style.color='#27ae60'}
+    else if(score>=60){r.textContent='🟡 Bom — vale conferir referências';r.style.color='#f39c12'}
+    else{r.textContent='🔴 Abaixo — provável NÃO seguir';r.style.color='#e74c3c'}
+  }
+  calc();
+
+  // Decisão
+  document.querySelectorAll('.opt').forEach(o=>{
+    if(state.decisao===o.dataset.d)o.classList.add('sel');
+    o.addEventListener('click',()=>{
+      document.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+      o.classList.add('sel');state.decisao=o.dataset.d;save(state);
+    });
+  });
+
+  // Notas
+  const ta=document.getElementById('notas');
+  if(state.notas)ta.value=state.notas;
+  ta.addEventListener('input',()=>{state.notas=ta.value;save(state)});
+</script>
+</body>
+</html>

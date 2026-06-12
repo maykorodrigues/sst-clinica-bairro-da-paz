@@ -22,15 +22,19 @@ Processo seletivo para **Closer (Vendedor Líder) — SST Card / Filial Bairro d
 
 Responsáveis: **Rogério Ferreira** (sponsor) + **Mayko Rodrigues** (consultoria).
 
-**Status atual (07/06/2026):**
-- 👤 **Roni** — entrevistado em 22/05/2026 às 14h; resultado ainda pendente (avaliando)
+**Status atual (11/06/2026):**
+- ✅ **Safira Letícia Souza Pereira** é a **única e principal candidata** à vaga de Closer Bairro da Paz.
+  - Entrevista comportamental (Fase 1) em **11/06/2026** — **APROVADA** culturalmente (score parcial 59/100, simulação não testada).
+  - Próximo passo: **Fase 2 presencial (avaliação de competências)** conduzida por Rogério no local, com a candidata — ver `roteiro-fase2-presencial-closer.md` e `scoring-safira-11-06-2026.md`.
+  - Possível **futura gestora** da operação se passar na fase de competências.
+- ℹ️ **Roni** — funcionário do RH da SST (irmão e indicação do Rogério), apoia as funções de Recursos Humanos. **NÃO é candidato a closer.** O registro histórico de "entrevista Roni 22/05" foi um mal-entendido (ver `briefing-entrevista-roni-22-05-2026.md` com nota de correção).
 - ✅ **Comissão CONFIRMADA por Rogério (03/06/2026):**
   - Por adesão: R$20 (representa 57% da taxa de R$35)
   - Por reativação Tenex: R$5
   - Escada progressiva: 80 vendas = R$15–16/adesão · 120 vendas = R$2.000 em comissão
   - Meta inicial: 100 vendas/mês = R$4.000 total (R$2.000 fixo + R$2.000 comissão)
   - **Sem teto de comissão** — política para atrair hunter
-- ⚠️ Se Roni não avançar: publicar `divulgacao-vaga-closer.html` nos canais (score <60 → NO-GO)
+- ⚠️ Se Safira não passar na Fase 2: publicar `divulgacao-vaga-closer.html` nos canais para abrir novo pipeline.
 
 **Antes de agir:** ler `../RETOMADA.md` para o estado atual do processo seletivo (candidato em pipeline, pendências, datas).
 

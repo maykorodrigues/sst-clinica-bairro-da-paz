@@ -28,7 +28,7 @@ tags: [em-progresso]
 - [ ] Na fase 2: simulação Dona Maria + validar números STAR + confirmar perfil hunter + testar fit cuidado
 - [ ] Validar 2 referências de ex-gestores (corte ≥8/10)
 
-> **Nota:** Safira é candidata **alternativa/paralela ao Roni** (sem GO/NO-GO há 18+ dias). Decidir com Rogério se Safira substitui ou compete com Roni no funil.
+> **✅ CORREÇÃO FACTUAL (11/06):** Safira é a **única e principal candidata** à vaga de Closer Bairro da Paz — não há competição no funil. **Roni NÃO é candidato a closer**: ele é funcionário do RH da SST (irmão e indicação do Rogério) que apoia as funções de Recursos Humanos. Todo registro anterior que tratava "Roni" como candidato/entrevista de closer foi um mal-entendido e está corrigido nos `.md` vivos do projeto.
 
 ---
 
@@ -112,7 +112,7 @@ Sessão sobre identidade/autopercepção: Aline teve momento de ressignificaçã
 | Pergunta | Prazo | Status |
 |----------|-------|--------|
 | VISA/alvará Salvador — status oficial? | 09/06 | 🔴 Aguardando resposta |
-| Roni (closer) — GO ou NO-GO? | 09/06 | 🔴 Aguardando resposta (18+ dias de decisão) |
+| Closer Bairro da Paz — Safira (candidata única) | Fase 2 | ✅ Aprovada na Fase 1 (11/06); agendar Fase 2 presencial. ~~Roni não é candidato — é RH~~ |
 | Aprovação salário atendente CLT | ASAP | 🔴 Aguardando resposta |
 
 ### Dados extraídos do WhatsApp (Clube SSTCARD)
@@ -135,7 +135,7 @@ Sessão sobre identidade/autopercepção: Aline teve momento de ressignificaçã
 | Pendência | Responsável | Prazo | Status |
 |---|---|---|---|
 | VISA/Alvará Salvador | Rogério | Vencido (30/05) | 🔴 Urgente |
-| Closer Roni — GO/NO-GO | Rogério | Vencido (25/05) | 🔴 17 dias sem decisão |
+| Closer Bairro da Paz — Safira Fase 2 | Rogério + Mayko | Agendar (presencial) | 🟢 Fase 1 aprovada 11/06 (Roni não é candidato — é RH) |
 | Arquiteta — obra prazo 13/06 | Rogério/Arquiteta | 13/06 (5 dias) | 🔴 Crítico |
 | Automação A6 onboarding | Mayko | 10/06 (quinta) | 🟡 Pronto, implantar |
 | Automação A8 Typebot BP | Mayko | 10/06 (quinta) | 🟡 Pronto, implantar |
@@ -150,7 +150,7 @@ Sessão sobre identidade/autopercepção: Aline teve momento de ressignificaçã
 
 | Marco | Prazo | Status |
 |---|---|---|
-| Fechar closer (Roni ou divulgação) | até 25/05 | 🔄 Em andamento |
+| Fechar closer (Safira — candidata única) | Fase 2 | 🟢 Fase 1 aprovada 11/06 |
 | Contratos PJ equipe assinados | até 23/05 | 🔄 Em andamento |
 | Dar entrada VISA + alvará prefeitura | até 30/05 | ⏳ Pendente |
 | Arquiteta finaliza obra | até 13/06 | ⏳ Pendente |
