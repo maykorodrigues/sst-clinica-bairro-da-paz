@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matinal SST Card — 11/06/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1987c3;
+    --azul-escuro: #0c4a6e;
+    --verde: #16a34a;
+    --vermelho: #dc2626;
+    --laranja: #d97706;
+    --roxo: #7c3aed;
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; line-height: 1.6; }
+
+  .header { background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 100%); padding: 32px 24px 28px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 0, transparent 50%) center / 20px 20px; }
+  .header-badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; position: relative; }
+  .header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; line-height: 1.1; margin-bottom: 8px; position: relative; }
+  .header-sub { font-size: 13px; opacity: 0.75; position: relative; }
+  .countdown { margin-top: 16px; display: inline-flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; position: relative; }
+  .countdown-num { font-size: 22px; font-weight: 900; color: #fff; }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  .secao { margin-bottom: 20px; }
+  .secao-titulo { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .secao-titulo::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .destaque-rmar { background: linear-gradient(135deg, #1e1b4b, #312e81); border: 1px solid #6366f1; border-radius: 12px; padding: 20px 22px; margin-bottom: 20px; }
+  .destaque-rmar h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: #a5b4fc; margin-bottom: 8px; }
+  .destaque-rmar p { font-size: 14px; color: #c7d2fe; line-height: 1.5; }
+  .rmar-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .pill { border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700; }
+  .pill-verde { background: #16a34a; color: white; }
+  .pill-azul { background: var(--azul); color: white; }
+  .pill-roxo { background: #7c3aed; color: white; }
+  .pill-laranja { background: var(--laranja); color: white; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; }
+  .card-pessoa { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .card-nome { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; }
+  .card-cargo { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .nome-karine { color: var(--azul); }
+  .nome-raquel { color: var(--roxo); }
+  .nome-lucas { color: var(--laranja); }
+  .nome-rogerio { color: var(--verde); }
+  .nome-mayko { color: #a5b4fc; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--surface2); color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 10px; text-align: left; }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .ok { color: #4ade80; font-weight: 700; }
+  .alerta { color: #fbbf24; font-weight: 700; }
+  .critico { color: #f87171; font-weight: 700; }
+  .neutro { color: var(--muted); }
+
+  .meta-bloco { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--azul); border-radius: 0 10px 10px 0; padding: 14px 16px; margin-bottom: 10px; }
+  .meta-bloco.verde { border-left-color: var(--verde); }
+  .meta-bloco.roxo { border-left-color: var(--roxo); }
+  .meta-bloco.laranja { border-left-color: var(--laranja); }
+  .meta-bloco.indigo { border-left-color: #a5b4fc; }
+  .meta-pessoa { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .meta-lista { list-style: none; }
+  .meta-lista li { font-size: 13px; color: #c9d1d9; padding: 3px 0; padding-left: 16px; position: relative; }
+  .meta-lista li::before { content: '▸'; position: absolute; left: 0; color: var(--muted); }
+  .meta-num { font-weight: 700; color: var(--text); }
+
+  .pergunta { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+  .pergunta-num { background: var(--azul); color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; flex-shrink: 0; margin-top: 2px; }
+  .pergunta-num.crit { background: var(--vermelho); }
+  .pergunta-texto { font-size: 14px; color: var(--text); }
+  .pergunta-detalhe { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  .tag { display: inline-block; border-radius: 5px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+  .tag-ok { background: rgba(22,163,74,0.2); color: #4ade80; border: 1px solid rgba(22,163,74,0.4); }
+  .tag-pend { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.35); }
+  .tag-crit { background: rgba(220,38,38,0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.35); }
+
+  .foco { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+  .foco-header { background: var(--azul-escuro); padding: 10px 16px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #93c5fd; }
+  .foco-body { padding: 14px 16px; }
+  .foco-item { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; align-items: flex-start; }
+  .foco-item:last-child { border-bottom: none; }
+  .foco-resp { font-weight: 700; min-width: 64px; color: var(--muted); font-size: 12px; margin-top: 1px; }
+
+  .inau { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; display: flex; gap: 16px; align-items: center; margin-bottom: 20px; }
+  .inau-num { font-family: 'Barlow Condensed', sans-serif; font-size: 52px; font-weight: 900; color: var(--azul); line-height: 1; flex-shrink: 0; }
+  .inau-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+  .inau-text { font-size: 14px; color: #c9d1d9; margin-top: 4px; }
+
+  .roteiro-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .roteiro-item:last-child { border-bottom: none; }
+  .roteiro-min { background: var(--azul); color: white; border-radius: 6px; padding: 3px 9px; font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .roteiro-min.verde { background: var(--verde); }
+  .roteiro-min.laranja { background: var(--laranja); }
+  .roteiro-min.roxo { background: var(--roxo); }
+  .roteiro-texto { font-size: 14px; color: var(--text); }
+  .roteiro-texto strong { color: white; }
+  .roteiro-texto .citacao { color: #93c5fd; font-style: italic; font-size: 13px; display: block; margin-top: 4px; }
+
+  .automacao-bloco { background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.3); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; }
+  .automacao-bloco h3 { font-size: 13px; font-weight: 700; color: #a5b4fc; margin-bottom: 10px; }
+
+  .footer { text-align: center; font-size: 11px; color: var(--muted); margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Matinal · Quinta-feira · Semana 3</div>
+  <h1>11 de Junho de 2026</h1>
+  <p class="header-sub">SST Card · Simões Filho/BA · Advisor: Mayko Rodrigues</p>
+  <div class="countdown">
+    <span class="countdown-num">20</span>&nbsp;dias para a inauguração do <strong>Bairro da Paz</strong> · 01/07
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- DESTAQUE: REUNIÃO ESTRATÉGICA DE HOJE -->
+  <div class="destaque-rmar">
+    <h2>Dia decisivo — 3 frentes fecharam hoje com Rogério</h2>
+    <p>Reunião estratégica (09h30) destravou o financeiro: <strong>contabilidade + abertura de CNPJ da filial fechadas</strong> com a Orizon, BPO completo adiado (gestão interna piloto via Conta Azul/Bling + Hailani + agente IA "Marco"). Saiu também a <strong>estratégia B2B "Clube SST Card"</strong> para a inauguração (parcerias Ouro/Prata/Bronze, meta 100 vidas/mês). E à tarde (14h), <strong>Safira Letícia</strong> foi aprovada na Fase 1 (comportamental) para Closer Bairro da Paz.</p>
+    <div class="rmar-pills">
+      <span class="pill pill-verde">BPO/Contabilidade ✅ Fechado</span>
+      <span class="pill pill-azul">Closer Safira: Fase 1 ✅</span>
+      <span class="pill pill-roxo">B2B Clube SST Card 🚀</span>
+      <span class="pill pill-laranja">Coaching Aline: avanço</span>
+    </div>
+  </div>
+
+  <!-- CONTAGEM INAUGURAÇÃO -->
+  <div class="inau">
+    <div>
+      <div class="inau-num">20</div>
+      <div class="inau-label">dias</div>
+    </div>
+    <div>
+      <div class="inau-label">Meta crítica</div>
+      <div class="inau-text"><strong>Inauguração Bairro da Paz — 01/07/2026</strong><br>
+      Obra: até 13/06 (2 dias úteis) · Contabilidade/CNPJ: até 16/06 · Piloto: 15–27/06 · Automações A6/A8: atrasadas desde 10/06</div>
+    </div>
+  </div>
+
+  <!-- ONTEM (10/06) -->
+  <div class="secao">
+    <div class="secao-titulo">Ontem (10/06) — Sessão Coaching Aline (S1)</div>
+    <div class="card">
+      <div class="card-pessoa">
+        <div>
+          <div class="card-nome" style="color:#fbbf24">Aline Souza — S1 realizada</div>
+          <div class="card-cargo">Programa Empoderamento Comportamental · 7 sessões</div>
+        </div>
+        <span class="tag tag-ok">Ressignificação ✅</span>
+      </div>
+      <p style="font-size:13px; color:#c9d1d9;">Diagnóstico: padrão "tarefeira" + necessidade de aprovação. Momento de virada usando referência Cristiano Ronaldo + figura do pai — Aline relatou "agora eu entendi". Risco: alta chance de regressão sem reforço. Próxima sessão (S2, 17/06): <strong>Fonte de Valor / autorresponsabilidade</strong> — tema mais desafiador.</p>
+      <p style="font-size:12px; color:var(--muted); margin-top:8px;">Sem reporte de campo (contatos/fechamentos) de Karine, Lucas e Raquel em 10/06 — dia sem matinal registrada. Metas de hoje retomam a base de 09/06.</p>
+    </div>
+  </div>
+
+  <!-- DECISÃO BPO/CONTABILIDADE -->
+  <div class="secao">
+    <div class="secao-titulo">Decisão BPO/Contabilidade — FECHADA hoje</div>
+    <div class="card">
+      <table>
+        <tr><th>Proposta (Orizon/Moisés)</th><th>Valor</th><th>Decisão</th></tr>
+        <tr><td>Contabilidade Estratégica (folha, tributário, relatórios, distribuição de lucro)</td><td>~R$ 697/mês</td><td class="ok">✅ Fechar</td></tr>
+        <tr><td>Abertura CNPJ filial Bairro da Paz (Certificado A1 + abertura)</td><td>R$ 1.200 em 2x</td><td class="ok">✅ Fechar</td></tr>
+        <tr><td>BPO Financeiro completo (conciliação, notas, AP/AR)</td><td>R$ 2.000/mês</td><td class="alerta">⏸️ Adiado</td></tr>
+      </table>
+      <p style="font-size:13px; color:#c9d1d9; margin-top:10px;">Modelo aprovado: gestão interna piloto com <strong>Conta Azul/Bling</strong> (~R$60–360/mês) + Hailani (pessoa de confiança) + agente IA CFO <strong>"Marco"</strong> (Mayko, integração Conta Azul/Bling/Asaas). Avaliar depois CNPJs separados por unidade de negócio (odonto/clínica/cartão).</p>
+    </div>
+  </div>
+
+  <!-- B2B CLUBE SST CARD -->
+  <div class="secao">
+    <div class="secao-titulo">Estratégia B2B — Clube SST Card (inauguração)</div>
+    <div class="card">
+      <p style="font-size:13px; color:#c9d1d9;">Parcerias <strong>Ouro/Prata/Bronze</strong> com odontologia, estética, academias, PET e nutrição do Bairro da Paz: parceiro dá desconto exclusivo ao portador do SST Card + paga comissão (financia o vendedor B2B) + dono recebe SST Card grátis em teste. <strong>Meta mínima: 100 vidas/mês.</strong> Rogério visita 4–5 empresas/segmento como "autoridade médica" — conceito de economia compartilhada local, todos os parceiros presentes na inauguração.</p>
+    </div>
+  </div>
+
+  <!-- CLOSER SAFIRA -->
+  <div class="secao">
+    <div class="secao-titulo">Closer Bairro da Paz — Safira Letícia Souza Pereira</div>
+    <div class="card">
+      <div class="card-pessoa">
+        <div>
+          <div class="card-nome" style="color:#4ade80">Safira Letícia Souza Pereira</div>
+          <div class="card-cargo">36 anos · ex-consignado INSS (público idoso = público SST Card)</div>
+        </div>
+        <span class="tag tag-ok">Fase 1 aprovada</span>
+      </div>
+      <p style="font-size:13px; color:#c9d1d9;">Entrevista comportamental (14h, via Meet) → <strong>aprovada culturalmente</strong> (score parcial 59/100, simulação não testada). Fortes: comunicação de trator, público C/D, mindset de crescimento (quer virar gestora). Atenção: zero números validados, motivação ancorada em dinheiro.</p>
+      <p style="font-size:12px; color:var(--muted); margin-top:8px;">Próximo: Fase 2 presencial (Bairro da Paz/Simões Filho) — simulação Dona Maria + validação STAR + 2 referências. Roteiro pronto em <code>rh-closer/roteiro-fase2-presencial-closer.md</code>.</p>
+    </div>
+  </div>
+
+  <!-- METAS DE HOJE -->
+  <div class="secao">
+    <div class="secao-titulo">Metas de hoje — 11/06/2026 (Quinta)</div>
+
+    <div class="meta-bloco">
+      <div class="meta-pessoa" style="color: var(--azul)">Karine — Comercial/Fechamento</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">≥25 contatos</span> — reconciliação + cobrança somadas (retomar ritmo de 08/06)</li>
+        <li><span class="meta-num">≥1–2 cartões</span> — converter interessadas pendentes</li>
+        <li>Relatório parcial às 14h no grupo WhatsApp</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco roxo">
+      <div class="meta-pessoa" style="color: var(--roxo)">Raquel — SDR/Campo</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">Follow-up</span> dos contatos levantados nos últimos dias</li>
+        <li><span class="meta-num">≥3 qualificações</span> — passar interessadas para Karine</li>
+        <li>1 post Instagram ou reel</li>
+        <li>Reportar às 14h no grupo</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco laranja">
+      <div class="meta-pessoa" style="color: var(--laranja)">Lucas — Customer Success</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">≥10 agendamentos</span> clínica — manter ritmo</li>
+        <li><span class="meta-num">≥5 ativações app</span></li>
+        <li>Relatório às 14h no grupo</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco verde">
+      <div class="meta-pessoa" style="color: var(--verde)">Rogério — Gestor Geral</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">Confirmar VISA/alvará</span> — status oficial (12 dias de atraso)</li>
+        <li>Falar com Lucas sobre processo B2B na região (prazo 13/06)</li>
+        <li>Agendar reunião com Mayko + Hailani — gestão financeira (prazo 13/06)</li>
+        <li>Enviar mensagem-resumo + agendar Fase 2 presencial com Safira</li>
+        <li>Aprovação salário atendente CLT — vaga rh-clinica/ travada</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco indigo">
+      <div class="meta-pessoa" style="color: #a5b4fc">Mayko — Advisor</div>
+      <ul class="meta-lista">
+        <li>Preparar playbook + configurar CRM para visitas B2B do Rogério (prazo 13/06)</li>
+        <li>Implantar automações A6 (onboarding) e A8 (Typebot BP) — atrasadas desde 10/06</li>
+        <li>Concluir automações de CRM, disparos e marketing (prazo 14/06)</li>
+        <li>Avançar agente IA CFO "Marco" (prazo 30/06)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ROTEIRO DA REUNIÃO -->
+  <div class="secao">
+    <div class="secao-titulo">Roteiro — 15 minutos (08h00–08h15)</div>
+    <div class="card" style="padding:0; overflow:hidden; border:none; background:transparent;">
+      <div class="roteiro-item">
+        <div class="roteiro-min">00–03</div>
+        <div class="roteiro-texto">
+          <strong>Abertura + recap de ontem</strong>
+          <span class="citacao">"Bom dia. Ontem foi dia de coaching com a Aline — sessão forte, identidade e autopercepção. Hoje tem reunião estratégica às 09h30 que vai destravar financeiro e definir a frente B2B da inauguração. Vamos."</span>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min">03–08</div>
+        <div class="roteiro-texto">
+          <strong>Rogério responde 2 perguntas críticas</strong>
+          <span class="citacao">1. VISA/alvará — status hoje, 12 dias de atraso. 2. Quando entra a reunião com Hailani sobre gestão financeira?</span>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min laranja">08–13</div>
+        <div class="roteiro-texto">
+          <strong>Metas de hoje por pessoa</strong>
+          <span class="citacao">Karine ≥25 contatos + 1–2 cartões | Raquel: follow-up + 3 qualificações | Lucas: ≥10 agendamentos + 5 app | Rogério: VISA + B2B com Lucas + Hailani + Safira Fase 2 | Mayko: A6/A8 + playbook B2B</span>
+        </div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min verde">13–15</div>
+        <div class="roteiro-texto">
+          <strong>Encerramento</strong>
+          <span class="citacao">"20 dias. Hoje destravamos financeiro, B2B e closer no mesmo dia — agora é executar cada frente sem perder o ritmo de campo."</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERGUNTAS ROGÉRIO CRÍTICAS -->
+  <div class="secao">
+    <div class="secao-titulo">2 perguntas críticas — Rogério responde hoje</div>
+
+    <div class="pergunta">
+      <div class="pergunta-num crit">1</div>
+      <div>
+        <div class="pergunta-texto"><strong>VISA/Alvará Salvador — qual é o status oficial HOJE?</strong></div>
+        <div class="pergunta-detalhe">Vencimento: 30/05 (já passou +12 dias) · Sem alvará = 01/07 EM RISCO CRÍTICO · Precisa de: data de entrada, previsão de liberação, plano B se atraso · <span class="tag tag-crit">Bloqueador máximo</span></div>
+      </div>
+    </div>
+
+    <div class="pergunta">
+      <div class="pergunta-num crit">2</div>
+      <div>
+        <div class="pergunta-texto"><strong>Aprovação salário atendente CLT — autoriza publicação da vaga hoje?</strong></div>
+        <div class="pergunta-detalhe">Vaga `rh-clinica/` travada à espera dessa aprovação · Prazo de contratação 30/06 · <span class="tag tag-pend">Urgente</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LAB MADIP -->
+  <div class="secao">
+    <div class="secao-titulo">Lab MADIP — acompanhamento conversão</div>
+    <div class="card">
+      <table>
+        <tr><th>Atendente</th><th>Conversão (última leitura)</th><th>Status</th></tr>
+        <tr>
+          <td>Atendente anônima</td>
+          <td>38,43%</td>
+          <td class="ok">🟢 Replicar comportamento</td>
+        </tr>
+        <tr>
+          <td>Aline</td>
+          <td>12,72%</td>
+          <td class="alerta">🟡 Coaching em andamento (S1 concluída 10/06)</td>
+        </tr>
+        <tr>
+          <td>Débora</td>
+          <td>0%</td>
+          <td class="critico">🔴 CRÍTICO — decisão de realocação pendente</td>
+        </tr>
+        <tr>
+          <td><strong>Total</strong></td>
+          <td><strong>~18%</strong></td>
+          <td class="critico">🔴 Meta junho: 40%</td>
+        </tr>
+      </table>
+      <p style="font-size:12px; color: var(--muted); margin-top:10px;">Validar nova leitura de conversão na próxima reunião lab (semana de 15/06).</p>
+    </div>
+  </div>
+
+  <!-- AUTOMAÇÕES -->
+  <div class="secao">
+    <div class="secao-titulo">Automações da semana — prazos críticos</div>
+    <div class="automacao-bloco">
+      <h3>Grande Automação MADIP — A6 a A9</h3>
+      <table>
+        <tr><th>#</th><th>Automação</th><th>Prazo</th><th>Status</th></tr>
+        <tr>
+          <td><strong>A6</strong></td>
+          <td>Onboarding D+0→D+30 (WhatsApp)</td>
+          <td class="critico">10/06 (atrasado 1 dia)</td>
+          <td class="critico">🔴 Implantar hoje</td>
+        </tr>
+        <tr>
+          <td><strong>A8</strong></td>
+          <td>Typebot qualificação Bairro da Paz</td>
+          <td class="critico">10/06 (atrasado 1 dia)</td>
+          <td class="critico">🔴 Importar Typebot hoje</td>
+        </tr>
+        <tr>
+          <td><strong>A9</strong></td>
+          <td>Webhook Typebot BP → Chatwoot</td>
+          <td class="alerta">13/06 (sábado)</td>
+          <td class="alerta">🟡 Aguarda A8</td>
+        </tr>
+      </table>
+      <p style="font-size:12px; color: var(--muted); margin-top:10px;">Guia passo-a-passo: <code>02-cadencias/guia-implantacao-automacoes.html</code> (abrir no celular durante implantação)</p>
+    </div>
+  </div>
+
+  <!-- FOCO DO DIA -->
+  <div class="secao">
+    <div class="secao-titulo">Foco operacional 11/06</div>
+    <div class="foco">
+      <div class="foco-header">Prioridades do dia</div>
+      <div class="foco-body">
+        <div class="foco-item">
+          <span class="foco-resp" style="color:var(--verde)">ROGÉRIO</span>
+          <span><strong>VISA oficial</strong> · Falar com Lucas (B2B) · Agendar reunião Hailani · Resumo + Fase 2 Safira · Aprovação atendente CLT</span>
+        </div>
+        <div class="foco-item">
+          <span class="foco-resp" style="color:var(--azul)">KARINE</span>
+          <span>≥25 contatos · 1–2 cartões · Relatório 14h</span>
+        </div>
+        <div class="foco-item">
+          <span class="foco-resp" style="color:var(--roxo)">RAQUEL</span>
+          <span>Follow-up contatos · 3 qualificações → Karine · 1 post Instagram · Relatório 14h</span>
+        </div>
+        <div class="foco-item">
+          <span class="foco-resp" style="color:var(--laranja)">LUCAS</span>
+          <span>≥10 agendamentos · ≥5 app · Relatório 14h</span>
+        </div>
+        <div class="foco-item">
+          <span class="foco-resp" style="color:#a5b4fc">MAYKO</span>
+          <span>Implantar A6/A8 (atrasadas) · Playbook + CRM B2B · Marco (IA CFO) · Acompanhar BPO/contabilidade e Safira Fase 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANTADA DO DIA -->
+  <div class="card" style="border-color: #fbbf24; background: rgba(251,191,36,0.05);">
+    <div class="secao-titulo" style="margin-bottom:8px;">Cantada do dia</div>
+    <p style="font-size:16px; font-weight:700; color:#fbbf24; font-style:italic; line-height:1.4;">
+      "Hoje destravamos o financeiro, a frente B2B e o closer no mesmo dia. 20 dias para a inauguração — agora é decisão virando execução."
+    </p>
+  </div>
+
+  <div class="footer">
+    Matinal SST Card · 11/06/2026 · Mayko Rodrigues Advisor<br>
+    Documentos: RETOMADA.md | Automações: 02-cadencias/guia-implantacao-automacoes.html
+  </div>
+
+</div>
+</body>
+</html>
