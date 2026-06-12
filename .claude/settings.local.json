@@ -24,7 +24,14 @@
       "Bash(gcloud calendar events create *)",
       "mcp__claude_ai_Notion__notion-fetch",
       "mcp__claude_ai_Notion__notion-update-page",
-      "mcp__claude_ai_Notion__notion-create-pages"
+      "mcp__claude_ai_Notion__notion-create-pages",
+      "Bash(whisper \"C:\\\\Users\\\\mayko\\\\Downloads\\\\WhatsApp Ptt 2026-05-29 at 09.21.18.ogg\" \"C:\\\\Users\\\\mayko\\\\Downloads\\\\WhatsApp Ptt 2026-05-29 at 09.25.28.ogg\" \"C:\\\\Users\\\\mayko\\\\Downloads\\\\WhatsApp Ptt 2026-05-29 at 09.27.34.ogg\" \"C:\\\\Users\\\\mayko\\\\Downloads\\\\WhatsApp Ptt 2026-05-29 at 09.28.31.ogg\" --language Portuguese --model small --output_format txt --output_dir \"C:\\\\Users\\\\mayko\\\\Downloads\\\\transcricoes\\\\29-05\")",
+      "Bash(Select-String \"^\\\\[\")",
+      "Bash(whisper *)",
+      "Bash(git add *)",
+      "Bash(python gerar_rmar_sst.py)",
+      "Bash(grep -E \"\\\\.\\(txt|vtt|json\\)$\")",
+      "Bash(git push *)"
     ]
   },
   "hooks": {

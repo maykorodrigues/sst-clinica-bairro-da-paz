@@ -1,3 +1,4 @@
 vercel-deploy.log
 
 .vercel
+__pycache__/
