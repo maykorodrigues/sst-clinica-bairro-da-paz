@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linha do Tempo — Conversão Laboratório MADIP | SST Clínica</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --azul: #1987c3;
+            --azul-claro: #3fb0ee;
+            --verde: #27ae60;
+            --amarelo: #f1c40f;
+            --vermelho: #e74c3c;
+            --bg: #0d1117;
+            --bg-card: #161b22;
+            --bg-card-2: #1c2330;
+            --borda: #283041;
+            --txt: #e6edf3;
+            --txt-dim: #8b98a9;
+        }
+
+        body {
+            font-family: 'Barlow', 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--txt);
+            line-height: 1.5;
+            padding: 24px 16px 60px;
+        }
+
+        .container { max-width: 960px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            padding: 28px 20px;
+            background: linear-gradient(135deg, #11243a 0%, #0d1117 100%);
+            border: 1px solid var(--borda);
+            border-radius: 14px;
+            margin-bottom: 28px;
+        }
+        header .tag {
+            display: inline-block;
+            background: rgba(25,135,195,0.18);
+            color: var(--azul-claro);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        header h1 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        header h1 span { color: var(--azul-claro); }
+        header .sub { color: var(--txt-dim); font-size: 15px; }
+        header .periodo { color: var(--txt-dim); font-size: 13px; margin-top: 10px; }
+
+        /* KPIs topo */
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .kpi {
+            background: var(--bg-card);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            padding: 18px 14px;
+            text-align: center;
+        }
+        .kpi .num { font-size: 28px; font-weight: 800; color: var(--azul-claro); }
+        .kpi .num.verde { color: var(--verde); }
+        .kpi .num.amarelo { color: var(--amarelo); }
+        .kpi .lbl { font-size: 12px; color: var(--txt-dim); margin-top: 4px; }
+
+        h2 {
+            font-size: 19px;
+            font-weight: 700;
+            margin: 34px 0 16px;
+            padding-left: 12px;
+            border-left: 4px solid var(--azul);
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--borda);
+            border-radius: 14px;
+            padding: 22px;
+        }
+        .chart-wrap { position: relative; height: 340px; }
+        .chart-note { font-size: 12px; color: var(--txt-dim); margin-top: 14px; line-height: 1.6; }
+
+        /* Marcos cards */
+        .marcos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+        .marco {
+            background: var(--bg-card);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            padding: 18px;
+            border-top: 4px solid var(--azul);
+        }
+        .marco.win { border-top-color: var(--verde); }
+        .marco.alert { border-top-color: var(--vermelho); }
+        .marco .data { font-size: 12px; color: var(--txt-dim); font-weight: 600; }
+        .marco .v { font-size: 26px; font-weight: 800; margin: 6px 0; }
+        .marco .v.verde { color: var(--verde); }
+        .marco .v.azul { color: var(--azul-claro); }
+        .marco .v.vermelho { color: var(--vermelho); }
+        .marco .desc { font-size: 13px; color: var(--txt-dim); }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 28px; }
+        .timeline:before {
+            content: ""; position: absolute; left: 7px; top: 6px; bottom: 6px;
+            width: 2px; background: var(--borda);
+        }
+        .tl-item { position: relative; margin-bottom: 20px; }
+        .tl-item:before {
+            content: ""; position: absolute; left: -27px; top: 4px;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: var(--azul); border: 3px solid var(--bg);
+        }
+        .tl-item.win:before { background: var(--verde); }
+        .tl-item.alert:before { background: var(--vermelho); }
+        .tl-item.neutral:before { background: var(--txt-dim); }
+        .tl-data {
+            font-size: 13px; font-weight: 700; color: var(--azul-claro);
+            margin-bottom: 3px;
+        }
+        .tl-item.win .tl-data { color: var(--verde); }
+        .tl-item.alert .tl-data { color: var(--vermelho); }
+        .tl-txt { font-size: 14px; color: var(--txt); }
+        .tl-txt b { color: #fff; }
+        .tl-sub { font-size: 12px; color: var(--txt-dim); margin-top: 2px; }
+
+        .pill {
+            display: inline-block; font-size: 11px; font-weight: 700;
+            padding: 2px 9px; border-radius: 12px; margin-left: 6px;
+        }
+        .pill.semanal { background: rgba(25,135,195,0.18); color: var(--azul-claro); }
+        .pill.diario { background: rgba(241,196,15,0.15); color: var(--amarelo); }
+        .pill.acum { background: rgba(39,174,96,0.15); color: var(--verde); }
+
+        .insight {
+            background: var(--bg-card-2);
+            border-left: 4px solid var(--azul);
+            border-radius: 8px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+            font-size: 14px;
+        }
+        .insight.verde { border-left-color: var(--verde); }
+        .insight.vermelho { border-left-color: var(--vermelho); }
+        .insight b { color: #fff; }
+
+        .footer {
+            text-align: center; margin-top: 40px; padding-top: 20px;
+            border-top: 1px solid var(--borda);
+            font-size: 12px; color: var(--txt-dim);
+        }
+
+        @media (max-width: 680px) {
+            .kpis { grid-template-columns: repeat(2, 1fr); }
+            .marcos { grid-template-columns: 1fr; }
+            header h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="tag">📈 Evolução de Resultados · Laboratório MADIP</span>
+            <h1>Linha do Tempo da <span>Conversão</span></h1>
+            <p class="sub">SST Clínica — Frente Advisory Laboratório (Aline Souza)</p>
+            <p class="periodo">Período: Fevereiro → Junho 2026 · Atualizado em 13/06/2026</p>
+        </header>
+
+        <!-- KPIs RESUMO -->
+        <div class="kpis">
+            <div class="kpi">
+                <div class="num">&lt;33%</div>
+                <div class="lbl">Baseline histórico<br>(1,5 ano sem método)</div>
+            </div>
+            <div class="kpi">
+                <div class="num verde">52,9%</div>
+                <div class="lbl">Acumulado Junho<br>(01–13/06, por valor)</div>
+            </div>
+            <div class="kpi">
+                <div class="num amarelo">+20pp</div>
+                <div class="lbl">Salto desde o<br>baseline</div>
+            </div>
+            <div class="kpi">
+                <div class="num">70%</div>
+                <div class="lbl">Meta do mês<br>(faltam ~17pp)</div>
+            </div>
+        </div>
+
+        <!-- GRÁFICO -->
+        <h2>📊 Curva de evolução da conversão</h2>
+        <div class="chart-card">
+            <div class="chart-wrap">
+                <canvas id="grafico"></canvas>
+            </div>
+            <p class="chart-note">
+                <b style="color:var(--txt)">Métrica:</b> conversão geral do laboratório (valor convertido ÷ valor orçado), consolidada por mês/quinzena.
+                A meta (70%) e o baseline histórico (33%) aparecem como linhas de referência.
+                Os dados diários de junho oscilam mais que a média mensal — ver detalhamento abaixo.
+            </p>
+        </div>
+
+        <!-- MARCOS -->
+        <h2>🏆 Marcos da jornada</h2>
+        <div class="marcos">
+            <div class="marco win">
+                <div class="data">FEV/2026 · prova de conceito</div>
+                <div class="v verde">37%</div>
+                <div class="desc">Rogério implanta comissão → salto imediato vs. 1,5 ano travado em ≤33%.</div>
+            </div>
+            <div class="marco">
+                <div class="data">ABR/2026 · pico pré-MADIP</div>
+                <div class="v azul">48%</div>
+                <div class="desc">Melhor mês antes da transição. Ilana atinge 64,95% (qtd).</div>
+            </div>
+            <div class="marco win">
+                <div class="data">13/05 · melhor dia da quinzena</div>
+                <div class="v verde">59,9%</div>
+                <div class="desc">Pico diário de valor convertido com método aplicado.</div>
+            </div>
+            <div class="marco win">
+                <div class="data">20/05 · destaque Ilana</div>
+                <div class="v verde">71,5%</div>
+                <div class="desc">Atendimento individual bate a meta de 70% — prova que é possível.</div>
+            </div>
+            <div class="marco alert">
+                <div class="data">27/05 · queda de processo</div>
+                <div class="v vermelho">~18%</div>
+                <div class="desc">Aline 12,7% · Débora 0% · sem ligações/mensagens. "Pulando processo não há resultado."</div>
+            </div>
+            <div class="marco win">
+                <div class="data">01–13/06 · recuperação</div>
+                <div class="v azul">52,9%</div>
+                <div class="desc">R$14.397 convertidos de R$27.225 orçados. Rumo aos 70%.</div>
+            </div>
+        </div>
+
+        <!-- INSIGHTS -->
+        <h2>🔍 Leitura dos dados</h2>
+        <div class="insight verde">
+            <b>O método funciona quando é seguido.</b> Os picos (13/05 com 59,9%, 20/05 com 71,5% da Ilana) acontecem exatamente nos dias de ligação ativa + follow-up. Conversão é consequência de processo, não de sorte.
+        </div>
+        <div class="insight vermelho">
+            <b>Quando o processo cai, o número desaba.</b> Em 27/05 a própria Aline registrou 12,7% e admitiu não ter feito ligações nem mensagens. A queda não foi do mercado — foi de execução.
+        </div>
+        <div class="insight">
+            <b>A tendência de junho é de alta consistente.</b> Saímos de um vale no fim de maio e o acumulado da 1ª quinzena de junho já está em 52,9%. Faltam ~17pp para a meta de 70%, com a 2ª quinzena inteira pela frente.
+        </div>
+
+        <!-- TIMELINE DETALHADA -->
+        <h2>📅 Detalhamento dia a dia (grupo WhatsApp)</h2>
+        <div class="timeline">
+            <div class="tl-item neutral">
+                <div class="tl-data">07/05/2026</div>
+                <div class="tl-txt">Criação do grupo <b>"SST Clínica Conversão Laboratório"</b> — início do acompanhamento diário de orçamentos, retornos e fechamentos.</div>
+            </div>
+            <div class="tl-item win">
+                <div class="tl-data">12–18/05 <span class="pill semanal">semanal</span></div>
+                <div class="tl-txt"><b>40,48%</b> de conversão na semana.</div>
+                <div class="tl-sub">Melhor dia: 13/05 com 59,9% de valor convertido.</div>
+            </div>
+            <div class="tl-item win">
+                <div class="tl-data">20/05 <span class="pill diario">diário</span></div>
+                <div class="tl-txt">Ilana converte <b>71,5%</b> — reconhecimento público no grupo.</div>
+            </div>
+            <div class="tl-item alert">
+                <div class="tl-data">25–27/05 <span class="pill diario">diário</span></div>
+                <div class="tl-txt">Parciais individuais (27/05): Ilana <b>38,4%</b> · Aline <b>12,7%</b> · Débora <b>0%</b> → total ~18%.</div>
+                <div class="tl-sub">Bloqueador declarado: pacientes comparam preço de outros laboratórios + sem ligações/mensagens no período. Mayko envia template padrão de parcial.</div>
+            </div>
+            <div class="tl-item neutral">
+                <div class="tl-data">29/05</div>
+                <div class="tl-txt">Funções formalizadas: Débora = agenda · Ilana = lab · Aline = relacionamento médico.</div>
+            </div>
+            <div class="tl-item win">
+                <div class="tl-data">09/06 <span class="pill acum">acumulado</span></div>
+                <div class="tl-txt">Aline parabeniza a equipe — "faltam apenas <b>10,72%</b> para a meta de 70%".</div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-data">10/06 <span class="pill acum">acumulado</span></div>
+                <div class="tl-txt">Conversão acumulada em <b>55,56%</b> · 37 orçamentos ainda em aberto.</div>
+                <div class="tl-sub">Força-tarefa de retorno dos orçamentos pendentes priorizando os de maior valor.</div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-data">11/06 <span class="pill diario">parcial manhã</span></div>
+                <div class="tl-txt"><b>42,27%</b> — 7 conversões de 11 orçamentos no turno da manhã.</div>
+            </div>
+            <div class="tl-item">
+                <div class="tl-data">12/06 <span class="pill diario">parcial 17h</span></div>
+                <div class="tl-txt"><b>48,74%</b> — R$1.026 convertidos de R$2.105 orçados.</div>
+            </div>
+            <div class="tl-item win">
+                <div class="tl-data">13/06 <span class="pill acum">acumulado</span></div>
+                <div class="tl-txt">Quinzena fecha em <b>52,88%</b> — R$14.397 de R$27.225. Faltam R$4.660 (17,12pp) para os 70%.</div>
+                <div class="tl-sub">Rogério: "Houve uma grande plantação… as colheitas começaram a chegar. Vamos chegar ao primeiro propósito: 70%."</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Linha do Tempo — Conversão Laboratório MADIP · SST Clínica</p>
+            <p>Fonte: grupo WhatsApp "SST Clínica Conversão Laboratório" (07/05–13/06/2026) + histórico advisory</p>
+            <p>Gerado pela consultoria · Mayko Rodrigues</p>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('grafico');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Baseline', 'Fev', 'Mar', 'Abr', 'Mai S1', 'Mai S2', 'Jun (01-13)'],
+                datasets: [
+                    {
+                        label: 'Conversão geral (%)',
+                        data: [33, 37, 47, 48, 40, 43, 52.9],
+                        borderColor: '#3fb0ee',
+                        backgroundColor: 'rgba(63,176,238,0.12)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#3fb0ee',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    },
+                    {
+                        label: 'Meta (70%)',
+                        data: [70, 70, 70, 70, 70, 70, 70],
+                        borderColor: '#27ae60',
+                        borderWidth: 2,
+                        borderDash: [6, 6],
+                        fill: false,
+                        pointRadius: 0
+                    },
+                    {
+                        label: 'Baseline histórico (33%)',
+                        data: [33, 33, 33, 33, 33, 33, 33],
+                        borderColor: '#e74c3c',
+                        borderWidth: 1.5,
+                        borderDash: [3, 4],
+                        fill: false,
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#e6edf3', font: { family: 'Barlow', size: 13 }, usePointStyle: true }
+                    },
+                    tooltip: {
+                        callbacks: { label: (c) => `${c.dataset.label}: ${c.parsed.y}%` }
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 0, max: 80,
+                        ticks: { color: '#8b98a9', callback: (v) => v + '%' },
+                        grid: { color: 'rgba(40,48,65,0.6)' }
+                    },
+                    x: {
+                        ticks: { color: '#8b98a9', font: { family: 'Barlow', size: 12 } },
+                        grid: { color: 'rgba(40,48,65,0.3)' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
