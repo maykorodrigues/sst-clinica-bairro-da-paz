@@ -4,7 +4,21 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 11/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+> Última atualização: 14/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+
+---
+
+## Sessão 14/06/2026 — Manutenção do CLAUDE.md (documentação)
+
+Revisão do `CLAUDE.md` do projeto via `/init` — correções factuais entre o documentado e o estado real do diretório. **Commit `ed67da3`, pushed para `origin/master`.**
+
+| Correção | Detalhe |
+|---|---|
+| `rh-clinica/` | Coluna "CLAUDE.md Local" corrigida de `—` → `rh-clinica/CLAUDE.md` (o arquivo já existia) |
+| Template matinal | Referência fixa `09-06-2026` trocada por "copiar a mais recente" (hoje `11-06-2026`) |
+| Pastas mapeadas | Adicionadas ao mapa de Projetos Secundários: `05-agentamento-karine-ia/`, `Coaching-Emocional/`, `analise_mercado/`, `docs/` |
+
+Verificado também que o `.gitignore` (linha 4, `__pycache__/`) **ignora corretamente** o `__pycache__/` do projeto — nenhum `.pyc` rastreado.
 
 ---
 
