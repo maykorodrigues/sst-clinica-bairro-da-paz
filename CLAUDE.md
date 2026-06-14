@@ -169,7 +169,7 @@ Usar sempre português. Datas no formato DD/MM/AAAA.
 1. **08h–09h:** Reunião matinal ao vivo (15 min)
 2. **Capturar resultados** do dia anterior via WhatsApp grupo SST Card
 3. **Gerar HTML matinal** — copiar template da última matinal e atualizar dados
-4. **Template base:** `processo-comercial-7dias/01-matinais/09-06-2026/roteiro-matinal-09-06-2026.html`
+4. **Template base:** copiar a matinal mais recente em `processo-comercial-7dias/01-matinais/` (atualmente `11-06-2026/roteiro-matinal-11-06-2026.html`)
 5. **Criar pasta:** `processo-comercial-7dias/01-matinais/DD-MM-YYYY/`
 6. **Nomear arquivo:** `roteiro-matinal-DD-MM-YYYY.html`
 7. **Deploy:** `git add` → `git commit -m "Matinal DD/MM/YYYY"` → `git push origin master` → Vercel deploy automático (<1 min)
@@ -468,13 +468,16 @@ Referência completa: `.claude/skills/cerebro-ia-clinica-lucrativa/SKILL.md`.
 | Pasta | Descrição | CLAUDE.md Local |
 |-------|-----------|---|
 | `rh-closer/` | Processo seletivo closer PJ Bairro da Paz (Typebot + kit entrevista + scoring) | `rh-closer/CLAUDE.md` |
-| `rh-clinica/` | Processo seletivo coordenadora clínica (formulário abertura vaga + qualificação HTML + Typebot JSON) | — |
+| `rh-clinica/` | Processo seletivo coordenadora clínica (formulário abertura vaga + qualificação HTML + Typebot JSON) | `rh-clinica/CLAUDE.md` |
 | `aline-laboratorio/` | Consultoria laboratório MADIP (Aline Souza) — sessões mensais + Funil 1 anti-noshow | `aline-laboratorio/CLAUDE.md` |
+| `05-agentamento-karine-ia/` | Agentização da Karine (cobrança/vendas com IA) — roadmap, prompts WhatsApp, workflow n8n cobrança, dashboard, integrações Chatwoot/Notion | — |
+| `Coaching-Emocional/` | Material de apoio do programa de coaching (Método CIS, ferramentas de identidade/metas) — usado nas sessões de coaching (ver `aline-laboratorio/`); só PDFs/imagem, sem notas | — |
 | `pesquisa-satisfacao-sponsor/` | Pesquisa de satisfação do Rogério (Typebot JSON + n8n semáforo); sem CLAUDE.md local | — |
 | `estrategia_comercial/` | Modelos financeiros, plano de lançamento, implementação 2ª filial | Documentado neste CLAUDE.md |
 | `processo-comercial-7dias/` | Sprint operacional (scripts, cadências n8n, prompts IA, matinais, transição PJ) | Documentado neste CLAUDE.md |
 | `vault-sst/` | Pipeline Obsidian de leads (Inbox → Pipeline 01–06 → Dashboards Dataview DQL) | Documentado neste CLAUDE.md |
 | `lucas-cs/` | Apresentação CS (Python PPTX) — **repositório git aninhado**, não incluir em `git add` | — |
+| `analise_mercado/` · `docs/` | Anexos de referência (checklist arquiteta; PPTX original RMAR fev/2025) — só arquivos, não notas | — |
 
 Leia o CLAUDE.md local antes de trabalhar em qualquer subprojeto.
 
