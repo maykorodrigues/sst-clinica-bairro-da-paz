@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Rogério · Entrevista Comportamental — Vanesca | SST Card</title>
+<style>
+  :root{
+    --azul:#1987c3; --azul-esc:#0f5d8a; --azul-claro:#e8f4fb;
+    --verde:#27ae60; --verde-bg:#e8f8f0;
+    --vermelho:#e74c3c; --vermelho-bg:#fdeceb;
+    --amarelo:#f39c12; --amarelo-bg:#fef6e7;
+    --cinza:#5a6675; --cinza-claro:#f4f6f8; --borda:#dce3ea;
+    --texto:#1f2b38;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'Barlow','Segoe UI',system-ui,sans-serif;
+    background:#eef2f6;color:var(--texto);line-height:1.55;
+    padding:0 0 60px;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:0 14px}
+
+  header{
+    background:linear-gradient(135deg,var(--azul) 0%,var(--azul-esc) 100%);
+    color:#fff;padding:26px 18px 30px;text-align:center;
+    border-radius:0 0 22px 22px;box-shadow:0 6px 18px rgba(15,93,138,.25);
+  }
+  header .tag{display:inline-block;background:rgba(255,255,255,.18);
+    padding:4px 14px;border-radius:30px;font-size:12px;font-weight:600;
+    letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+  header h1{font-size:22px;font-weight:800;line-height:1.25}
+  header h1 span{color:#ffe08a}
+  header .sub{font-size:14px;opacity:.92;margin-top:8px}
+  header .meta{margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  header .meta div{background:rgba(255,255,255,.14);padding:6px 12px;border-radius:10px;font-size:12.5px;font-weight:600}
+  .meet{display:inline-block;margin-top:14px;background:#fff;color:var(--azul-esc);
+    padding:11px 22px;border-radius:50px;font-weight:800;font-size:15px;text-decoration:none;
+    box-shadow:0 4px 12px rgba(0,0,0,.18)}
+
+  .card{background:#fff;border-radius:16px;padding:18px 18px 20px;margin:16px 0;
+    box-shadow:0 2px 10px rgba(31,43,56,.06);border:1px solid var(--borda)}
+  .card h2{font-size:17px;color:var(--azul-esc);font-weight:800;
+    display:flex;align-items:center;gap:9px;margin-bottom:4px}
+  .card h2 .n{background:var(--azul);color:#fff;width:28px;height:28px;
+    border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:800;flex-shrink:0}
+  .time{font-size:12px;color:var(--cinza);font-weight:700;margin-left:auto;
+    background:var(--cinza-claro);padding:3px 10px;border-radius:20px}
+
+  .perfil{background:var(--azul-claro);border-radius:14px;padding:14px 16px;margin-top:6px}
+  .perfil .nome{font-size:18px;font-weight:800;color:var(--azul-esc)}
+  .perfil ul{list-style:none;margin-top:8px}
+  .perfil li{padding:4px 0 4px 24px;position:relative;font-size:14px}
+  .perfil li::before{content:'•';position:absolute;left:6px;color:var(--azul);font-weight:800}
+
+  .diga{background:var(--azul-claro);border-left:4px solid var(--azul);
+    border-radius:0 12px 12px 0;padding:12px 15px;margin:12px 0;font-size:14.5px}
+  .diga .lbl{font-size:11px;font-weight:800;color:var(--azul);text-transform:uppercase;
+    letter-spacing:1px;display:block;margin-bottom:5px}
+  .diga em{color:var(--texto);font-style:italic}
+
+  .obs-tit{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;
+    color:var(--cinza);margin:14px 0 6px}
+  label.chk{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;margin:6px 0;
+    background:var(--cinza-claro);border-radius:10px;cursor:pointer;font-size:14px;
+    border:1px solid transparent;transition:.15s;user-select:none}
+  label.chk:active{transform:scale(.99)}
+  label.chk input{width:20px;height:20px;margin-top:1px;accent-color:var(--azul);flex-shrink:0}
+  label.chk.killer{background:var(--amarelo-bg);border-color:#f5c97a;font-weight:600}
+  label.chk input:checked + span{color:var(--azul-esc);font-weight:600}
+
+  .q{padding:9px 12px;margin:7px 0;background:#fff;border:1px solid var(--borda);
+    border-radius:10px;font-size:14px}
+  .q b{color:var(--azul-esc)}
+  .q .why{display:block;font-size:12px;color:var(--cinza);margin-top:3px}
+
+  .sinais{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .sinal{flex:1;min-width:200px;border-radius:12px;padding:11px 14px;font-size:13px}
+  .sinal.v{background:var(--verde-bg);border:1px solid #aee5c6}
+  .sinal.r{background:var(--vermelho-bg);border:1px solid #f3b6af}
+  .sinal .h{font-weight:800;font-size:12.5px;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+  .sinal.v .h{color:var(--verde)} .sinal.r .h{color:var(--vermelho)}
+  .sinal ul{list-style:none;font-size:13px} .sinal li{padding:2px 0 2px 16px;position:relative}
+  .sinal.v li::before{content:'▸';position:absolute;left:0;color:var(--verde)}
+  .sinal.r li::before{content:'▸';position:absolute;left:0;color:var(--vermelho)}
+
+  .sim{border:2px solid var(--azul);box-shadow:0 4px 16px rgba(25,135,195,.18)}
+  .sim h2{color:var(--azul)}
+  .star-badge{display:inline-block;background:#ffe08a;color:#8a6d00;font-size:11px;
+    font-weight:800;padding:3px 10px;border-radius:20px;margin-left:6px}
+  .precos{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+  .precos th{background:var(--azul);color:#fff;padding:8px;text-align:left;font-size:12.5px}
+  .precos td{padding:8px;border-bottom:1px solid var(--borda)}
+  .precos tr:nth-child(even){background:var(--cinza-claro)}
+  .precos .preco{font-weight:800;color:var(--azul-esc);white-space:nowrap}
+  .ancora{background:var(--verde-bg);border-radius:10px;padding:10px 14px;font-size:13.5px;
+    margin:8px 0;border:1px dashed var(--verde)}
+  .ancora b{color:var(--verde)}
+  .objecao{background:var(--vermelho-bg);border-radius:10px;padding:10px 14px;margin:8px 0;
+    font-size:14px;border-left:4px solid var(--vermelho)}
+  .objecao .num{font-weight:800;color:var(--vermelho)}
+  .killer-box{background:#2b1a14;color:#ffd9d2;border-radius:12px;padding:14px 16px;
+    margin-top:14px;font-size:14px}
+  .killer-box b{color:#ff8a7a}
+
+  .score-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--borda)}
+  .score-row .dim{flex:1;font-size:14px}
+  .score-row .dim small{display:block;color:var(--cinza);font-size:11.5px}
+  .stars{display:flex;gap:3px;flex-shrink:0}
+  .stars .s{font-size:24px;color:#d4dde5;cursor:pointer;transition:.1s;line-height:1}
+  .stars .s.on{color:#f5b417}
+  .peso{font-size:10px;color:#fff;background:var(--cinza);border-radius:5px;
+    padding:1px 6px;font-weight:700;flex-shrink:0}
+  .total-box{text-align:center;margin-top:16px;background:var(--azul-claro);border-radius:14px;padding:16px}
+  .total-box .big{font-size:42px;font-weight:800;color:var(--azul-esc);line-height:1}
+  .total-box .lbl{font-size:12px;color:var(--cinza);text-transform:uppercase;letter-spacing:1px}
+  .total-box #rec{font-weight:700;margin-top:8px;font-size:14.5px}
+
+  .decisao{display:grid;grid-template-columns:1fr;gap:10px;margin-top:8px}
+  .opt{border-radius:12px;padding:13px 16px;border:2px solid var(--borda);cursor:pointer;
+    display:flex;align-items:center;gap:12px;font-size:14.5px;transition:.15s}
+  .opt .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--cinza);flex-shrink:0}
+  .opt b{font-weight:800}
+  .opt.go:hover,.opt.go.sel{background:var(--verde-bg);border-color:var(--verde)}
+  .opt.go.sel .dot{background:var(--verde);border-color:var(--verde)}
+  .opt.mid:hover,.opt.mid.sel{background:var(--amarelo-bg);border-color:var(--amarelo)}
+  .opt.mid.sel .dot{background:var(--amarelo);border-color:var(--amarelo)}
+  .opt.no:hover,.opt.no.sel{background:var(--vermelho-bg);border-color:var(--vermelho)}
+  .opt.no.sel .dot{background:var(--vermelho);border-color:var(--vermelho)}
+
+  textarea{width:100%;border:1px solid var(--borda);border-radius:10px;padding:11px;
+    font-family:inherit;font-size:14px;resize:vertical;min-height:90px;margin-top:6px}
+
+  .btn-print{position:fixed;bottom:16px;right:16px;background:var(--azul);color:#fff;
+    border:none;border-radius:50px;padding:13px 22px;font-size:14px;font-weight:700;
+    box-shadow:0 4px 14px rgba(25,135,195,.4);cursor:pointer;z-index:50;font-family:inherit}
+  .btn-print:active{transform:scale(.96)}
+
+  .note{font-size:12.5px;color:var(--cinza);background:var(--cinza-claro);
+    border-radius:10px;padding:10px 13px;margin-top:10px}
+
+  footer{text-align:center;color:var(--cinza);font-size:12px;margin-top:24px;padding:0 14px}
+
+  @media print{
+    body{background:#fff}
+    .btn-print,.meet{display:none}
+    .card{box-shadow:none;break-inside:avoid;page-break-inside:avoid}
+    header{border-radius:0}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">SST Card · Bairro da Paz</div>
+  <h1>Entrevista <span>Comportamental</span><br>Fase 1 — Closer</h1>
+  <div class="sub">Candidata: <b>Vanesca Nascimento dos Santos</b></div>
+  <div class="meta">
+    <div>👤 Conduz: Rogério</div>
+    <div>⏱️ 30 min</div>
+    <div>💻 Google Meet</div>
+    <div>🎓 Perfil júnior</div>
+  </div>
+  <a class="meet" href="https://meet.google.com/ybj-uono-fyp" target="_blank">🎥 Entrar no Meet</a>
+</header>
+
+<div class="wrap">
+
+  <!-- COMO USAR -->
+  <div class="card" style="background:var(--azul-esc);color:#fff;border:none">
+    <h2 style="color:#fff"><span class="n" style="background:#fff;color:var(--azul-esc)">★</span> Como usar este guia</h2>
+    <p style="font-size:14.5px;margin-top:8px">Rogério, este é seu roteiro de bolso para os 30 min. Siga na ordem. Onde estiver <b style="color:#ffe08a">"VOCÊ DIZ"</b>, leia em voz alta. Marque as caixinhas tocando na tela. No fim, dê as estrelas e escolha GO / 2ª conversa / NÃO. Tudo salva sozinho neste aparelho.</p>
+    <div class="note" style="background:rgba(255,255,255,.12);color:#eaf4fb;margin-top:12px">
+      🎯 <b>Atenção — perfil diferente:</b> a Vanesca <b>nunca vendeu cartão/plano de saúde</b> (foi o que ela marcou no formulário). Então hoje <b>não</b> estamos validando experiência. Estamos olhando se ela tem o <b>talento bruto</b> pra virar closer: fome, comunicação, empatia e jogo de cintura. <b>O Bloco 3 (simulação) decide.</b>
+    </div>
+  </div>
+
+  <!-- QUEM É -->
+  <div class="card">
+    <h2><span class="n">i</span> Quem é a Vanesca</h2>
+    <div class="perfil">
+      <div class="nome">Vanesca Nascimento dos Santos · 26 anos</div>
+      <ul>
+        <li>Mora no <b>Bairro da Paz, Salvador</b> — conhece o território e o público (ponto a favor)</li>
+        <li>No formulário declarou: <b>"nunca vendi esse tipo de produto"</b> (cartão/plano popular)</li>
+        <li>Cadastro feito em 27/05 — formulário ficou incompleto a partir daí</li>
+        <li>Contato: <b>+55 71 99704-7864</b> · vanescanascimento24@gmail.com</li>
+      </ul>
+    </div>
+    <div class="sinais">
+      <div class="sinal v">
+        <div class="h">✅ A favor</div>
+        <ul><li>É do bairro — fala a língua do cliente</li><li>Idade/energia pra campo</li><li>Pode ser moldada do zero</li></ul>
+      </div>
+      <div class="sinal r">
+        <div class="h">⚠️ Validar HOJE</div>
+        <ul><li>Tem talento de venda mesmo sem experiência?</li><li>Aceita PJ + comissão (renda variável)?</li><li>Topa porta fria no campo?</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 1 -->
+  <div class="card">
+    <h2><span class="n">1</span> Quebra-gelo + contexto <span class="time">4 min</span></h2>
+    <div class="diga">
+      <span class="lbl">Você diz</span>
+      <em>"Oi Vanesca, tudo bem? Obrigado por entrar. Deixa eu te contar rapidinho: a SST tem clínica popular e acabou de abrir a 2ª unidade no Bairro da Paz, onde você mora. Lançamos o SST Card — um cartão de saúde a partir de R$39,90/mês que dá consulta e exame baratos pra quem não tem plano. Estou procurando alguém pra ser a vendedora líder dessa operação. Antes de tudo: me conta um pouco da sua história — não currículo, história mesmo. Como foi sua relação com trabalho e com vender até hoje?"</em>
+    </div>
+    <div class="obs-tit">Observe enquanto ela fala</div>
+    <label class="chk"><input type="checkbox"><span>Olha na câmera, comunica com energia e clareza</span></label>
+    <label class="chk"><input type="checkbox"><span>Conta história com vida (não só lista empregos)</span></label>
+    <label class="chk"><input type="checkbox"><span>Demonstra que conhece e gosta do bairro</span></label>
+  </div>
+
+  <!-- BLOCO 2 -->
+  <div class="card">
+    <h2><span class="n">2</span> Atitude, fome e realidade <span class="time">7 min</span></h2>
+    <p class="intro" style="font-size:13.5px;color:var(--cinza);margin:6px 0">Ela não tem histórico de venda do produto. Então buscamos <b>atitude e potencial</b>, não números de cartão. Pergunte sobre <b>qualquer</b> coisa que ela já vendeu, persuadiu ou batalhou.</p>
+    <div class="q"><b>1.</b> "Me conta uma vez que você convenceu alguém de alguma coisa difícil — pode ser no trabalho, na família, vendendo qualquer produtinho. O que você fez?"<span class="why">Valida persuasão natural</span></div>
+    <div class="q"><b>2.</b> "Você já trabalhou com meta? Como você se sente quando falta pouco pra bater e o tempo tá acabando?"<span class="why">Tolerância a pressão / fome</span></div>
+    <div class="q"><b>3.</b> "Essa vaga é PJ: tem um fixo de R$2.000 + comissão por venda, sem teto. Quem vende mais, ganha mais — mas a renda varia. Isso te empolga ou te assusta?"<span class="why">ELIMINATÓRIO de modelo — precisa topar variável</span></div>
+    <div class="q"><b>4.</b> "O trabalho é de campo: bater porta, abordar gente na rua e na clínica, no Bairro da Paz. Você se vê fazendo isso todo dia?"<span class="why">ELIMINATÓRIO — é caçadora ou só balcão?</span></div>
+    <div class="sinais">
+      <div class="sinal v">
+        <div class="h">✅ Sinais bons</div>
+        <ul><li>Conta caso real de persuasão</li><li>Empolga com comissão sem teto</li><li>Topa campo/porta fria na hora</li></ul>
+      </div>
+      <div class="sinal r">
+        <div class="h">🚩 Sinais de alerta</div>
+        <ul><li>Quer só salário fixo garantido</li><li>Recua na ideia de abordar na rua</li><li>Nenhuma história de iniciativa</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 3 — SIMULAÇÃO -->
+  <div class="card sim">
+    <h2><span class="n">3</span> Simulação: venda pra Dona Maria <span class="star-badge">DECIDE</span></h2>
+    <span class="time" style="margin-left:0;display:inline-block;margin-top:6px">12 min</span>
+    <div class="diga">
+      <span class="lbl">Você diz</span>
+      <em>"Agora vamos brincar de uma coisa. Eu vou ser a <b>Dona Maria</b>: 47 anos, costureira, moro aqui no Bairro da Paz, tenho 3 filhos e não tenho plano de saúde. Acabei de sair de uma consulta avulsa de R$80 na clínica. Você é a vendedora e quer me oferecer o SST Card. Não precisa saber tudo do produto — quero ver seu jeito de vender. Pode começar quando quiser."</em>
+    </div>
+    <table class="precos">
+      <tr><th>Plano</th><th>Preço</th><th>Cobre</th></tr>
+      <tr><td>Individual</td><td class="preco">R$39,90/mês</td><td>Titular + 3 dependentes na saúde</td></tr>
+      <tr><td>Família Premium</td><td class="preco">R$64,90/mês</td><td>4 pessoas com todos os benefícios</td></tr>
+      <tr><td>Adesão (única)</td><td class="preco">R$35,00</td><td>Pago uma vez na entrada</td></tr>
+    </table>
+    <div class="ancora">💡 <b>Âncora que ela pode usar:</b> "É menos de <b>R$1,40 por dia</b> pra família inteira ter consulta e exame barato sem depender de fila."</div>
+    <p class="obs-tit">Jogue estas 3 objeções no meio (uma de cada vez)</p>
+    <div class="objecao"><span class="num">Objeção 1 — dinheiro:</span> "Ah, mais uma mensalidade? Tô apertada, não sei se cabe."</div>
+    <div class="objecao"><span class="num">Objeção 2 — desconfiança:</span> "E se eu pagar e nunca usar? Vou jogar dinheiro fora."</div>
+    <div class="objecao"><span class="num">Objeção 3 — SUS:</span> "Mas eu posso ir no posto de graça, né?"</div>
+    <p class="obs-tit">Marque o que ela fizer</p>
+    <label class="chk"><input type="checkbox"><span>Cumprimentou pelo nome, com calor humano</span></label>
+    <label class="chk"><input type="checkbox"><span>Perguntou da vida/necessidade ANTES de empurrar preço</span></label>
+    <label class="chk"><input type="checkbox"><span>Usou número do dia a dia (ex.: R$1,40/dia)</span></label>
+    <label class="chk"><input type="checkbox"><span>Respondeu cada objeção com empatia, sem travar</span></label>
+    <label class="chk killer"><input type="checkbox"><span>⭐ PEDIU O FECHAMENTO ("vamos fazer agora?") — não aceitou "vou pensar" calada</span></label>
+    <label class="chk"><input type="checkbox"><span>Tentou subir pra família, não só individual</span></label>
+    <div class="killer-box">
+      <b>Leitura para júnior:</b> ela <u>não precisa</u> ser perfeita. O que importa é o <b>instinto</b>: ela tem brilho no olho, improvisa, não desiste na objeção e <b>tenta fechar</b>? Isso se treina e vira closer. Se ela travou, ficou só explicando preço e nunca pediu a venda — é sinal de que falta o talento bruto, mesmo sendo simpática.
+    </div>
+  </div>
+
+  <!-- BLOCO 4 -->
+  <div class="card">
+    <h2><span class="n">4</span> Propósito + ambição <span class="time">4 min</span></h2>
+    <div class="q"><b>1.</b> "Aqui a gente se vê como o 'bom samaritano' do bairro — ajudar quem não tem plano a cuidar da saúde. O que isso te diz?"<span class="why">Conexão com propósito</span></div>
+    <div class="q"><b>2.</b> "Quando você vê uma pessoa que precisa muito mas diz que não tem como pagar, o que passa na sua cabeça?"<span class="why">Empatia real vs. pieguice</span></div>
+    <div class="q"><b>3.</b> "Onde você quer estar daqui a 2 anos?"<span class="why">Ambição — quem cresce vira coordenador da filial</span></div>
+    <div class="sinais">
+      <div class="sinal v"><div class="h">✅</div><ul><li>Liga venda a ajudar gente</li><li>Quer crescer com plano</li></ul></div>
+      <div class="sinal r"><div class="h">🚩</div><ul><li>Só fala em dinheiro</li><li>Discurso decorado de RH</li></ul></div>
+    </div>
+  </div>
+
+  <!-- BLOCO 5 -->
+  <div class="card">
+    <h2><span class="n">5</span> Fechamento da conversa <span class="time">3 min</span></h2>
+    <div class="diga">
+      <span class="lbl">Você diz</span>
+      <em>"Vanesca, gostei de te conhecer. Vou conversar com a equipe e te dou retorno até amanhã. Se for pra frente, o próximo passo é um teste de campo de meio período aqui no Bairro da Paz, antes de fechar. Faz sentido pra você? Tem alguma dúvida pra mim?"</em>
+    </div>
+    <div class="obs-tit">Pergunte de volta</div>
+    <label class="chk"><input type="checkbox"><span>"Qual sua expectativa de quanto quer ganhar no 1º mês?"</span></label>
+    <label class="chk"><input type="checkbox"><span>"Você tem outras seleções rolando agora?"</span></label>
+    <label class="chk"><input type="checkbox"><span>"O que te faria dizer não pra essa vaga?"</span></label>
+  </div>
+
+  <!-- SCORING -->
+  <div class="card">
+    <h2><span class="n">★</span> Sua avaliação (régua de júnior)</h2>
+    <p class="intro" style="font-size:13px;color:var(--cinza);margin:6px 0">Dê de 1 a 5 estrelas. Para perfil júnior, <b>simulação e atitude pesam mais que experiência.</b></p>
+
+    <div class="score-row">
+      <div class="dim">Talento na simulação <small>improvisou, contornou objeção, pediu o fechamento</small></div>
+      <span class="peso">x4</span>
+      <div class="stars" data-w="4"></div>
+    </div>
+    <div class="score-row">
+      <div class="dim">Energia e fome <small>vontade, garra, brilho no olho</small></div>
+      <span class="peso">x3</span>
+      <div class="stars" data-w="3"></div>
+    </div>
+    <div class="score-row">
+      <div class="dim">Empatia e comunicação <small>conexão com o público C/D do bairro</small></div>
+      <span class="peso">x3</span>
+      <div class="stars" data-w="3"></div>
+    </div>
+    <div class="score-row">
+      <div class="dim">Capacidade de aprender <small>raciocina, faz conta, pega rápido</small></div>
+      <span class="peso">x2</span>
+      <div class="stars" data-w="2"></div>
+    </div>
+    <div class="score-row">
+      <div class="dim">Fit cultural <small>propósito, "bom samaritano"</small></div>
+      <span class="peso">x2</span>
+      <div class="stars" data-w="2"></div>
+    </div>
+    <div class="score-row">
+      <div class="dim">Encaixe no modelo <small>topa PJ + comissão + campo/porta fria</small></div>
+      <span class="peso">x1</span>
+      <div class="stars" data-w="1"></div>
+    </div>
+
+    <div class="total-box">
+      <div class="lbl">Score final</div>
+      <div class="big"><span id="total">—</span><span style="font-size:20px;color:var(--cinza)">/100</span></div>
+      <div id="rec"></div>
+    </div>
+    <div class="note">📏 <b>Régua júnior:</b> ≥70 = GO, contratar e treinar · 55–69 = 2ª conversa / teste de campo · &lt;55 = NÃO seguir (educado).</div>
+  </div>
+
+  <!-- DECISÃO -->
+  <div class="card">
+    <h2><span class="n">✓</span> Decisão</h2>
+    <div class="decisao">
+      <div class="opt go" data-d="go"><div class="dot"></div><div><b>GO</b> — tem talento bruto, contratar e treinar</div></div>
+      <div class="opt mid" data-d="mid"><div class="dot"></div><div><b>2ª conversa</b> — gostei, quero ver no teste de campo</div></div>
+      <div class="opt no" data-d="no"><div class="dot"></div><div><b>NÃO</b> — falta perfil de vendas, retorno educado</div></div>
+    </div>
+    <div class="obs-tit">Anotações (o que te marcou)</div>
+    <textarea id="notas" placeholder="Frases dela, momentos da simulação, sua impressão..."></textarea>
+  </div>
+
+  <footer>SST Card · Bairro da Paz · Guia de entrevista comportamental — uso interno · 15/06/2026</footer>
+</div>
+
+<button class="btn-print" onclick="window.print()">🖨️ Salvar PDF</button>
+
+<script>
+  const KEY='guia-entrevista-vanesca';
+  const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}};
+  const save=(d)=>localStorage.setItem(KEY,JSON.stringify(d));
+  let state=load();
+
+  document.querySelectorAll('input[type=checkbox]').forEach((c,i)=>{
+    c.id='c'+i; if(state[c.id])c.checked=true;
+    c.addEventListener('change',()=>{state[c.id]=c.checked;save(state)});
+  });
+
+  function renderStars(box){
+    const v=state['st_'+box.dataset.idx]||0;
+    box.innerHTML='';
+    for(let i=1;i<=5;i++){
+      const s=document.createElement('span');
+      s.className='s'+(i<=v?' on':'');s.textContent='★';s.dataset.v=i;
+      s.addEventListener('click',()=>{state['st_'+box.dataset.idx]=i;save(state);renderStars(box);calc()});
+      box.appendChild(s);
+    }
+  }
+  document.querySelectorAll('.stars').forEach((b,i)=>{b.dataset.idx=i;renderStars(b)});
+
+  function calc(){
+    const boxes=document.querySelectorAll('.stars');let sum=0,maxw=0,any=false;
+    boxes.forEach(b=>{const w=+b.dataset.w;const v=state['st_'+b.dataset.idx]||0;if(v)any=true;sum+=v*w;maxw+=5*w});
+    const t=document.getElementById('total'),r=document.getElementById('rec');
+    if(!any){t.textContent='—';r.textContent='';return}
+    const score=Math.round(sum/maxw*100);
+    t.textContent=score;
+    if(score>=70){r.textContent='✅ GO — contratar e treinar';r.style.color='#27ae60'}
+    else if(score>=55){r.textContent='🟡 2ª conversa / teste de campo';r.style.color='#f39c12'}
+    else{r.textContent='🔴 Abaixo — provável NÃO';r.style.color='#e74c3c'}
+  }
+  calc();
+
+  document.querySelectorAll('.opt').forEach(o=>{
+    if(state.decisao===o.dataset.d)o.classList.add('sel');
+    o.addEventListener('click',()=>{
+      document.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+      o.classList.add('sel');state.decisao=o.dataset.d;save(state);
+    });
+  });
+
+  const ta=document.getElementById('notas');
+  if(state.notas)ta.value=state.notas;
+  ta.addEventListener('input',()=>{state.notas=ta.value;save(state)});
+</script>
+</body>
+</html>
