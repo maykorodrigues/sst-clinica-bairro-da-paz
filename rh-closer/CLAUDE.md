@@ -2,7 +2,7 @@
 title: CLAUDE.md — RH Closer SST Card (Bairro da Paz)
 tags: [sst, rh, closer, bairro-da-paz, em-progresso]
 criado: 2026-05-21
-atualizado: 2026-06-07
+atualizado: 2026-06-15
 related:
   - "[[../CLAUDE]]"
   - "[[../RETOMADA]]"
@@ -22,11 +22,12 @@ Processo seletivo para **Closer (Vendedor Líder) — SST Card / Filial Bairro d
 
 Responsáveis: **Rogério Ferreira** (sponsor) + **Mayko Rodrigues** (consultoria).
 
-**Status atual (11/06/2026):**
-- ✅ **Safira Letícia Souza Pereira** é a **única e principal candidata** à vaga de Closer Bairro da Paz.
-  - Entrevista comportamental (Fase 1) em **11/06/2026** — **APROVADA** culturalmente (score parcial 59/100, simulação não testada).
-  - Próximo passo: **Fase 2 presencial (avaliação de competências)** conduzida por Rogério no local, com a candidata — ver `roteiro-fase2-presencial-closer.md` e `scoring-safira-11-06-2026.md`.
-  - Possível **futura gestora** da operação se passar na fase de competências.
+**Status atual (15/06/2026):**
+- 🔀 **O processo deixou de ser candidata única.** Agora há **pipeline com 2+ candidatas** e a etapa decisiva passa a ser um **teste de campo com 2–3 candidatos** (cruzar Safira + Vanesca + eventual 3ª).
+- 👤 **Safira Letícia Souza Pereira** — entrevista comportamental (Fase 1) em **11/06/2026** — **APROVADA** culturalmente (score parcial 59/100, simulação não testada). Pendente avaliação de competências (números reais + venda ao vivo) — ver `roteiro-fase2-presencial-closer.md` e `scoring-safira-11-06-2026.md`. Possível **futura gestora** se aprovada.
+- 👤 **Vanesca Nascimento dos Santos** (26 anos, **mora no próprio Bairro da Paz** — perfil local que Rogério prefere; vanescanascimento24@gmail.com · 71 99704-7864) — formulário de qualificação em 27/05, entrevista comportamental em **15/06/2026** (remota por Mayko, Rogério presente; fase **não eliminatória**). Forte em empatia/atendimento (vocação enfermagem→medicina) e **passou pela simulação de vendas Dona Maria** (contornou objeções de custo e SUS, técnica consultiva). Aceita PJ R$2.000 + comissão sem teto; meta R$5.000 a motiva. ⚠️ No formulário declarou **"nunca vendi esse tipo de produto"** — sem experiência prévia em cartão/plano popular (perfil júnior treinável, não hunter). **Score oficial 63/100** (régua júnior, Rogério ao vivo no guia de bolso) → 🟡 2ª conversa / teste de campo. O que segurou: na simulação **não pediu o fechamento** e **confundiu a tabela de preços**. Ver `scoring-vanesca-15-06-2026.md`. Fonte: [nota de reunião Notion](https://app.notion.com/p/380ad3c0037380349cd9d063b0689183) + guia `guia-rogerio-entrevista-vanesca.html`.
+- 🎯 **Próxima etapa comum:** teste de campo (rua) com 2–3 candidatos — roteiro padronizado e comparável em `roteiro-teste-de-campo-closer.md` + **guia de bolso HTML** `guia-rogerio-teste-de-campo.html` (placar ao vivo com contadores +/−, seletor de candidata, estrelas e localStorage — mesmo padrão do guia da entrevista). Itens de ação da reunião 15/06: (1) Rogério explicar o teste de campo à Vanesca; (2) Rogério + equipe deliberar; (3) Rogério enviar links de oportunidade às pessoas que aguardavam no local. Materiais de apoio: `guia-rogerio-entrevista-vanesca.html`.
+- 🗂️ **Base Notion de candidatos** (criada 15/06): [👥 RH — Candidatos Vendas SST Card (Sênior & Júnior)](https://app.notion.com/p/8a821b224afb4a42aa7f126b8efe7918) — sob o hub SST. Trilha **Sênior** (Safira, hunter/possível gestora) × **Júnior** (Vanesca, treinável). Registrar todo novo candidato aqui (status, score, nível, próximo passo) além do `scoring-[nome]-[data].md`.
 - ℹ️ **Roni** — funcionário do RH da SST (irmão e indicação do Rogério), apoia as funções de Recursos Humanos. **NÃO é candidato a closer.** O registro histórico de "entrevista Roni 22/05" foi um mal-entendido (ver `briefing-entrevista-roni-22-05-2026.md` com nota de correção).
 - ✅ **Comissão CONFIRMADA por Rogério (03/06/2026):**
   - Por adesão: R$20 (representa 57% da taxa de R$35)
@@ -34,7 +35,7 @@ Responsáveis: **Rogério Ferreira** (sponsor) + **Mayko Rodrigues** (consultori
   - Escada progressiva: 80 vendas = R$15–16/adesão · 120 vendas = R$2.000 em comissão
   - Meta inicial: 100 vendas/mês = R$4.000 total (R$2.000 fixo + R$2.000 comissão)
   - **Sem teto de comissão** — política para atrair hunter
-- ⚠️ Se Safira não passar na Fase 2: publicar `divulgacao-vaga-closer.html` nos canais para abrir novo pipeline.
+- ⚠️ Se nenhuma candidata passar no teste de campo: publicar `divulgacao-vaga-closer.html` nos canais para reabrir pipeline.
 
 **Antes de agir:** ler `../RETOMADA.md` para o estado atual do processo seletivo (candidato em pipeline, pendências, datas).
 
