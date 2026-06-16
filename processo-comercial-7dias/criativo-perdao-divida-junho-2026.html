@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criativo — Campanha Perdão de Dívida SST Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --azul:#1987c3; --azul-escuro:#0c4a6e; --verde:#16a34a; --amarelo:#fbbf24; }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#0d1117; font-family:'Barlow',sans-serif; display:flex; flex-direction:column; align-items:center; gap:28px; padding:30px 16px; }
+  .nota{ color:#8b949e; font-size:13px; max-width:1080px; text-align:center; line-height:1.6; }
+  .nota b{ color:#e6edf3; }
+
+  /* CARD 1080x1080 (feed/story) */
+  .card{ width:1080px; max-width:100%; aspect-ratio:1/1; background:linear-gradient(150deg,#0c4a6e 0%, #1987c3 60%, #0ea5b7 100%); border-radius:24px; position:relative; overflow:hidden; color:#fff; padding:72px 64px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 20px 60px rgba(0,0,0,.5); }
+  .card::before{ content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg, rgba(255,255,255,.04) 0, rgba(255,255,255,.04) 2px, transparent 0, transparent 60px); }
+  .topo{ position:relative; display:flex; justify-content:space-between; align-items:center; }
+  .logo{ font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:34px; letter-spacing:1px; }
+  .logo span{ color:var(--amarelo); }
+  .selo{ background:var(--amarelo); color:#0c4a6e; font-weight:900; font-size:20px; padding:10px 22px; border-radius:40px; transform:rotate(4deg); }
+
+  .miolo{ position:relative; }
+  .tarja{ display:inline-block; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.35); border-radius:40px; padding:8px 22px; font-weight:700; font-size:22px; letter-spacing:2px; text-transform:uppercase; margin-bottom:24px; }
+  .titulo{ font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:104px; line-height:.95; margin-bottom:8px; }
+  .titulo em{ color:var(--amarelo); font-style:normal; }
+  .desconto{ font-family:'Barlow Condensed',sans-serif; font-weight:900; font-size:160px; line-height:.9; color:var(--amarelo); text-shadow:0 6px 0 rgba(0,0,0,.2); }
+  .desconto small{ font-size:62px; }
+  .sub{ font-size:34px; font-weight:600; max-width:760px; line-height:1.25; margin-top:6px; }
+  .sub b{ font-weight:900; color:var(--amarelo); }
+
+  .rodape{ position:relative; }
+  .beneficios{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:26px; }
+  .ben{ background:rgba(255,255,255,.12); border-radius:14px; padding:12px 20px; font-size:22px; font-weight:700; }
+  .cta{ background:var(--amarelo); color:#0c4a6e; font-weight:900; font-size:38px; text-align:center; padding:24px; border-radius:18px; letter-spacing:.5px; }
+  .prazo{ text-align:center; margin-top:18px; font-size:26px; font-weight:700; }
+  .prazo span{ color:var(--amarelo); }
+
+  /* Copy block */
+  .copybox{ width:1080px; max-width:100%; background:#161b22; border:1px solid #30363d; border-radius:16px; padding:28px 32px; color:#e6edf3; }
+  .copybox h3{ font-size:13px; letter-spacing:2px; text-transform:uppercase; color:#8b949e; margin-bottom:14px; }
+  .copybox pre{ white-space:pre-wrap; font-family:'Barlow',sans-serif; font-size:16px; line-height:1.65; color:#c9d1d9; }
+  @media print{ body{ background:#fff; } .nota,.copybox{ display:none; } }
+</style>
+</head>
+<body>
+
+  <div class="nota">
+    <b>Como usar:</b> abra no navegador → tire um print (ou Ctrl+P → salvar PDF) do quadrado azul → envie no status/feed e nos disparos.
+    Formato 1080×1080 (feed e story). A copy de WhatsApp está no bloco cinza abaixo (não aparece na imagem).
+  </div>
+
+  <!-- CRIATIVO -->
+  <div class="card">
+    <div class="topo">
+      <div class="logo">SST <span>CARD</span></div>
+      <div class="selo">só até 30/06</div>
+    </div>
+
+    <div class="miolo">
+      <div class="tarja">Campanha Perdão de Dívida</div>
+      <div class="titulo">QUITE SUA<br><em>PENDÊNCIA</em></div>
+      <div class="desconto"><small>com</small> 50%<small> OFF</small></div>
+      <div class="sub">Pague <b>à vista pela metade</b> e reative na hora seu cartão de saúde.</div>
+    </div>
+
+    <div class="rodape">
+      <div class="beneficios">
+        <div class="ben">🩺 Telemedicina</div>
+        <div class="ben">🕊️ Auxílio funeral</div>
+        <div class="ben">💊 Custo reduzido</div>
+        <div class="ben">🐾 Assist. veterinária</div>
+      </div>
+      <div class="cta">CHAMA NO WHATSAPP E QUITE HOJE 👉</div>
+      <div class="prazo">A campanha encerra <span>30 de junho</span> — não vai se repetir esse ano.</div>
+    </div>
+  </div>
+
+  <!-- COPY WHATSAPP -->
+  <div class="copybox">
+    <h3>Copy 1 — Abertura (toque OFERTA)</h3>
+    <pre>Oi {{nome}}! 👋 Aqui é da SST Card. Tenho uma notícia boa pra você: abrimos uma *Campanha de Perdão de Dívida* só até *30/06*.
+
+Sua pendência hoje é de R${{valor_divida}}. Na campanha você *quita à vista por R${{valor_a_vista_50}}* (50% de desconto) e seu cartão de saúde volta a funcionar — telemedicina, auxílio funeral e atendimento com custo reduzido.
+
+Quer aproveitar? Respondo aqui mesmo. 😊</pre>
+  </div>
+
+  <div class="copybox">
+    <h3>Copy 2 — Lembrete (toque LEMBRETE, +3 dias)</h3>
+    <pre>{{nome}}, passando pra lembrar 🙌 A *Campanha de Perdão de Dívida* da SST Card encerra *30/06*. Você ainda consegue quitar tudo por *R${{valor_a_vista_50}} à vista* (metade do valor) e reativar seu cartão na hora.
+
+É rápido — quer que eu já te envie o Pix?</pre>
+  </div>
+
+  <div class="copybox">
+    <h3>Copy 3 — Última chamada (toque ULTIMA, +3 dias)</h3>
+    <pre>{{nome}}, *última chamada*. ⏳ A campanha de 50% encerra dia 30/06 e não vai se repetir esse ano. Depois disso a pendência volta ao valor cheio (R${{valor_divida}}).
+
+Quita hoje por *R${{valor_a_vista_50}}* e zera tudo. Me responde *SIM* que eu finalizo agora com você.</pre>
+  </div>
+
+  <div class="copybox">
+    <h3>Copy 4 — Status/Broadcast (lista de transmissão, sem nome)</h3>
+    <pre>📣 SST CARD — PERDÃO DE DÍVIDA (só até 30/06)
+
+Está com a mensalidade atrasada? Volte a ter seu cartão de saúde quitando *à vista com 50% de desconto*.
+
+✅ Telemedicina • Auxílio funeral • Consultas com custo reduzido
+⏳ Só até 30 de junho — depois volta ao valor cheio.
+
+Chama aqui e regularize hoje 👉</pre>
+  </div>
+
+</body>
+</html>

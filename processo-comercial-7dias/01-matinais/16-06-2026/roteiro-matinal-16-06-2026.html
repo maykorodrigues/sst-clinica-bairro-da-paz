@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matinal SST Card — 16/06/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1987c3; --azul-escuro: #0c4a6e; --verde: #16a34a; --vermelho: #dc2626;
+    --laranja: #d97706; --roxo: #7c3aed; --bg: #0d1117; --surface: #161b22;
+    --surface2: #21262d; --border: #30363d; --text: #e6edf3; --muted: #8b949e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 100%); padding: 32px 24px 28px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 0, transparent 50%) center / 20px 20px; }
+  .header-badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; position: relative; }
+  .header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; line-height: 1.1; margin-bottom: 8px; position: relative; }
+  .header-sub { font-size: 13px; opacity: 0.75; position: relative; }
+  .countdown { margin-top: 16px; display: inline-flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; position: relative; }
+  .countdown-num { font-size: 22px; font-weight: 900; color: #fff; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  .secao { margin-bottom: 20px; }
+  .secao-titulo { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .secao-titulo::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* BARRA DE META */
+  .meta-hero { background: linear-gradient(135deg, #0c4a6e, #1987c3); border: 1px solid #1987c3; border-radius: 14px; padding: 22px 24px; margin-bottom: 20px; }
+  .meta-hero h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+  .meta-hero .sub { font-size: 13px; color: #cfe6f5; margin-bottom: 16px; }
+  .barra { background: rgba(0,0,0,0.3); border-radius: 30px; height: 34px; overflow: hidden; position: relative; }
+  .barra-fill { background: linear-gradient(90deg, #16a34a, #4ade80); height: 100%; width: 13%; border-radius: 30px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 12px; font-weight: 900; color: #052e16; }
+  .barra-labels { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; font-weight: 700; }
+  .barra-labels .atual { color: #4ade80; }
+  .barra-labels .gap { color: #fbbf24; }
+  .barra-labels .meta { color: #fff; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--surface2); color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 10px; text-align: left; }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .ok { color: #4ade80; font-weight: 700; }
+  .alerta { color: #fbbf24; font-weight: 700; }
+  .critico { color: #f87171; font-weight: 700; }
+  .neutro { color: var(--muted); }
+
+  .meta-bloco { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--azul); border-radius: 0 10px 10px 0; padding: 14px 16px; margin-bottom: 10px; }
+  .meta-bloco.verde { border-left-color: var(--verde); }
+  .meta-bloco.roxo { border-left-color: var(--roxo); }
+  .meta-bloco.laranja { border-left-color: var(--laranja); }
+  .meta-bloco.indigo { border-left-color: #a5b4fc; }
+  .meta-pessoa { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .meta-lista { list-style: none; }
+  .meta-lista li { font-size: 13px; color: #c9d1d9; padding: 3px 0; padding-left: 16px; position: relative; }
+  .meta-lista li::before { content: '▸'; position: absolute; left: 0; color: var(--muted); }
+  .meta-num { font-weight: 700; color: var(--text); }
+
+  .pergunta { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+  .pergunta-num { background: var(--azul); color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; flex-shrink: 0; margin-top: 2px; }
+  .pergunta-num.crit { background: var(--vermelho); }
+  .pergunta-texto { font-size: 14px; color: var(--text); }
+  .pergunta-detalhe { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .tag { display: inline-block; border-radius: 5px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+  .tag-crit { background: rgba(220,38,38,0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.35); }
+
+  .frente { background: rgba(25,135,195,0.06); border: 1px solid rgba(25,135,195,0.3); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .frente h3 { font-size: 14px; font-weight: 700; color: #93c5fd; margin-bottom: 6px; }
+  .frente p { font-size: 13px; color: #c9d1d9; }
+
+  .roteiro-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .roteiro-item:last-child { border-bottom: none; }
+  .roteiro-min { background: var(--azul); color: white; border-radius: 6px; padding: 3px 9px; font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .roteiro-min.verde { background: var(--verde); }
+  .roteiro-min.laranja { background: var(--laranja); }
+  .roteiro-texto { font-size: 14px; color: var(--text); }
+  .roteiro-texto strong { color: white; }
+  .roteiro-texto .citacao { color: #93c5fd; font-style: italic; font-size: 13px; display: block; margin-top: 4px; }
+
+  .footer { text-align: center; font-size: 11px; color: var(--muted); margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Matinal · Terça · Semana do Piloto</div>
+  <h1>16 de Junho de 2026</h1>
+  <p class="header-sub">SST Card · Simões Filho/BA · Advisor: Mayko Rodrigues</p>
+  <div class="countdown">
+    <span class="countdown-num">15</span>&nbsp;dias para a inauguração do <strong>Bairro da Paz</strong> · 01/07
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- META DA QUINZENA -->
+  <div class="meta-hero">
+    <h2>🎯 Meta da 2ª quinzena: R$ 20.000 arrecadados até 30/06</h2>
+    <p class="sub">Rogério (áudio 15/06): "pelo menos pagar a despesa do mês". Esticada: R$ 40.000 (dobrar). Recebido na quinzena até agora: <strong>R$ 2.600</strong>.</p>
+    <div class="barra">
+      <div class="barra-fill">R$ 2.600</div>
+    </div>
+    <div class="barra-labels">
+      <span class="atual">▲ R$ 2.600 (13%)</span>
+      <span class="gap">faltam R$ 17.400</span>
+      <span class="meta">Meta R$ 20.000</span>
+    </div>
+  </div>
+
+  <!-- DE ONDE SAI O DINHEIRO -->
+  <div class="secao">
+    <div class="secao-titulo">De onde sai o dinheiro (situação Asaas — este mês)</div>
+    <div class="card">
+      <table>
+        <tr><th>Fonte</th><th>Disponível</th><th>Caixa realista</th><th>Ação</th></tr>
+        <tr><td>🟠 Boletos aguardando (226)</td><td>R$ 8.532</td><td class="ok">~R$ 5.100</td><td>Lembrete D+0/3/7 — só falta pagar</td></tr>
+        <tr><td>🔴 Vencidas recentes (32)</td><td>R$ 1.217</td><td class="ok">~R$ 670</td><td>Cobrança ativa + 2ª via</td></tr>
+        <tr><td>🔵 Confirmadas (liquidando)</td><td>R$ 2.069</td><td class="ok">~R$ 2.069</td><td>Já entra</td></tr>
+        <tr><td>⚡ Base Tenex (761) — perdão 50% à vista</td><td>alto</td><td class="ok">~R$ 8.000</td><td>Disparo em massa (caixa imediato)</td></tr>
+        <tr><td>🆕 Novas adesões (Karine)</td><td>—</td><td class="ok">~R$ 2.000</td><td>Adesão R$35 + 1ª mensalidade</td></tr>
+        <tr><td><strong>TOTAL realista da quinzena</strong></td><td></td><td class="ok"><strong>~R$ 18–20k</strong></td><td>Atinge a meta com execução agressiva</td></tr>
+      </table>
+      <p style="font-size:12px; color: var(--muted); margin-top:10px;">Maior alavanca: <strong>Tenex à vista + 226 boletos parados</strong> = ~R$ 13k de caixa novo. É aí que a energia da quinzena vai.</p>
+    </div>
+  </div>
+
+  <!-- AS 4 FRENTES -->
+  <div class="secao">
+    <div class="secao-titulo">Campanha Perdão de Dívida — 4 frentes</div>
+    <div class="frente">
+      <h3>1 · Marketing/Comunicação + Disparos</h3>
+      <p>Exportar base Tenex + 226 Asaas → Notion → Workflow de disparo n8n (50→100→150/dia, aquecendo o número). Criativo "50% à vista até 30/06" no status e nos disparos. <strong>JSON pronto: <code>02-cadencias/n8n-perdao-divida-disparo-massa.json</code></strong></p>
+    </div>
+    <div class="frente">
+      <h3>2 · SDR / Qualificadora de Cobrança</h3>
+      <p>Webhook Chatwoot classifica respostas (quer pagar / negocia / recusa). Typebot de quitação gera 2ª via na hora. Karine só recebe os <strong>quentes</strong>. Follow-up D+3/D+5 automático.</p>
+    </div>
+    <div class="frente">
+      <h3>3 · CRM / Closer — Karine</h3>
+      <p>Fecha os qualificados. Meta/dia: 15 contatos quentes → ≥4 quitações à vista + ≥3 renegociações + ≥2 adesões. Pipeline limpo no Notion (até "Recuperado").</p>
+    </div>
+    <div class="frente">
+      <h3>4 · Plataforma Marcos (CFO)</h3>
+      <p>Conectar Marcos ao Asaas → relatório diário de caixa no WhatsApp do Rogério às 18h ("entrou X, faltam Y para os R$ 20k"). Prazo de finalização: 30/06.</p>
+    </div>
+  </div>
+
+  <!-- METAS DO DIA POR PESSOA -->
+  <div class="secao">
+    <div class="secao-titulo">Foco do dia 16/06</div>
+
+    <div class="meta-bloco indigo">
+      <div class="meta-pessoa" style="color: #a5b4fc">Mayko — Advisor</div>
+      <ul class="meta-lista">
+        <li>Importar <span class="meta-num">3 workflows n8n</span> (disparo perdão + webhook + follow-up) e validar credenciais</li>
+        <li>Subir <span class="meta-num">criativo da campanha</span> + apresentar plano dos R$20k ao Rogério</li>
+        <li>Avançar <span class="meta-num">Marcos-CFO → Asaas</span> (caixa diário automático)</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco verde">
+      <div class="meta-pessoa" style="color: var(--verde)">Rogério — Gestor / Sponsor</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">Aprovar a oferta</span> da campanha: quitação 50% à vista (1 decisão — destrava o disparo)</li>
+        <li>Liberar a <span class="meta-num">base Tenex 761</span> (export Lucas) + acesso Asaas</li>
+        <li>Seguir destravando <span class="meta-num">VISA/alvará</span> e obra (pré-condições do piloto BP)</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco">
+      <div class="meta-pessoa" style="color: var(--azul)">Karine — Comercial/Cobrança</div>
+      <ul class="meta-lista">
+        <li>Trabalhar os <span class="meta-num">226 boletos aguardando</span> (já têm contato no Asaas) — meta ≥4 quitações</li>
+        <li>Cobrar as <span class="meta-num">32 vencidas</span> com 2ª via</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco laranja">
+      <div class="meta-pessoa" style="color: var(--laranja)">Lucas — Customer Success</div>
+      <ul class="meta-lista">
+        <li>Exportar a <span class="meta-num">base Tenex 761</span> (nome, WhatsApp, valor, parcelas) em CSV</li>
+        <li>Apoiar onboarding/reativação dos que quitarem</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco roxo">
+      <div class="meta-pessoa" style="color: var(--roxo)">Raquel — SDR/Campo</div>
+      <ul class="meta-lista">
+        <li>Publicar o <span class="meta-num">criativo da campanha</span> no status/feed</li>
+        <li>Disparar a <span class="meta-num">lista de transmissão</span> (Copy 4) para inadimplentes</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ROTEIRO DA REUNIÃO -->
+  <div class="secao">
+    <div class="secao-titulo">Roteiro — 15 minutos (08h00–08h15)</div>
+    <div class="card" style="padding:0; overflow:hidden; border:none; background:transparent;">
+      <div class="roteiro-item">
+        <div class="roteiro-min">00–03</div>
+        <div class="roteiro-texto"><strong>Abertura + leitura do caixa</strong>
+          <span class="citacao">"Rogério, recebi seu áudio. A 2ª quinzena está em R$ 2.600 e a meta é R$ 20k. Faltam R$ 17.400 — e eu já tenho o plano de onde tirar."</span></div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min">03–08</div>
+        <div class="roteiro-texto"><strong>Rogério decide a oferta + libera base</strong>
+          <span class="citacao">1. Aprova quitação 50% à vista? 2. Libera base Tenex 761 (Lucas) + acesso Asaas?</span></div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min laranja">08–13</div>
+        <div class="roteiro-texto"><strong>As 4 frentes + metas do dia</strong>
+          <span class="citacao">Mayko: workflows + criativo + Marcos | Karine: 226 boletos | Lucas: export Tenex | Raquel: status + transmissão</span></div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min verde">13–15</div>
+        <div class="roteiro-texto"><strong>Encerramento</strong>
+          <span class="citacao">"Simões Filho é o laboratório. O que provar aqui na cobrança, a gente leva pronto pro Bairro da Paz."</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERGUNTAS CRÍTICAS -->
+  <div class="secao">
+    <div class="secao-titulo">Decisões que Rogério toma hoje</div>
+    <div class="pergunta">
+      <div class="pergunta-num crit">1</div>
+      <div>
+        <div class="pergunta-texto"><strong>Aprova a oferta de quitação à vista com 50% de desconto?</strong></div>
+        <div class="pergunta-detalhe">É o gatilho que gera caixa imediato. Sem o "sim" dele, o disparo não sai. <span class="tag tag-crit">Destrava tudo</span></div>
+      </div>
+    </div>
+    <div class="pergunta">
+      <div class="pergunta-num crit">2</div>
+      <div>
+        <div class="pergunta-texto"><strong>Libera a base Tenex 761 (export do Lucas) e acesso ao Asaas?</strong></div>
+        <div class="pergunta-detalhe">Sem a base limpa (WhatsApp + valor), o disparo em massa não roda. <span class="tag tag-crit">Insumo da campanha</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANTADA DO DIA -->
+  <div class="card" style="border-color: #fbbf24; background: rgba(251,191,36,0.05);">
+    <div class="secao-titulo" style="margin-bottom:8px;">Cantada do dia</div>
+    <p style="font-size:16px; font-weight:700; color:#fbbf24; font-style:italic; line-height:1.4;">
+      "R$ 2.600 não é o problema — é o ponto de partida. Já temos R$ 9,7 mil em boleto parado e 761 portas pra bater. Os R$ 20k não vão cair: a gente vai buscar, um SIM de cada vez."
+    </p>
+  </div>
+
+  <div class="footer">
+    Matinal SST Card · 16/06/2026 · Mayko Rodrigues Advisor<br>
+    Plano completo: processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md
+  </div>
+
+</div>
+</body>
+</html>
