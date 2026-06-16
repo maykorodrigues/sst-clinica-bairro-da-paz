@@ -1,0 +1,185 @@
+{
+  "name": "SST — Quitação 1: Buscar Dívida no Asaas (por CPF)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-quitacao-buscar",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "qb000001-0001-0001-0001-100000000001",
+      "name": "Webhook — Typebot busca",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "sst-quitacao-buscar",
+      "notes": "Recebe { cpf } do Typebot. Rota: /webhook/sst-quitacao-buscar. responseMode = responseNode (responde via 'Responder ao Typebot')."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza o CPF (só dígitos)\nconst body = $input.first().json.body || $input.first().json;\nconst cpf = String(body.cpf || '').replace(/\\D/g, '');\nreturn [{ json: { cpf } }];"
+      },
+      "id": "qb000002-0002-0002-0002-100000000002",
+      "name": "Normalizar CPF",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300],
+      "notes": "Remove pontos/traços do CPF para casar com o cpfCnpj do Asaas."
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ASAAS_API_URL }}/customers",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "cpfCnpj", "value": "={{ $json.cpf }}" }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "access_token", "value": "={{ $env.ASAAS_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "qb000003-0003-0003-0003-100000000003",
+      "name": "Asaas — Buscar Cliente por CPF",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [680, 300],
+      "notes": "GET /v3/customers?cpfCnpj={cpf}. Retorna data[] com os clientes. Pega o primeiro id."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "id": "cond-tem-cliente",
+              "leftValue": "={{ $json.data && $json.data.length }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "qb000004-0004-0004-0004-100000000004",
+      "name": "Cliente Encontrado?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [900, 300],
+      "notes": "true = achou cliente -> busca cobranças vencidas | false = responde encontrado:false"
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ASAAS_API_URL }}/payments",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "customer", "value": "={{ $json.data[0].id }}" },
+            { "name": "status", "value": "OVERDUE" },
+            { "name": "limit", "value": "100" }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "access_token", "value": "={{ $env.ASAAS_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "qb000005-0005-0005-0005-100000000005",
+      "name": "Asaas — Cobranças Vencidas",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1140, 200],
+      "notes": "GET /v3/payments?customer={id}&status=OVERDUE. Soma os valores em aberto."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Soma a dívida vencida e calcula a quitação com 50% de desconto\nconst resp = $input.first().json;\nconst cobrancas = resp.data || [];\nconst clienteNode = $('Asaas — Buscar Cliente por CPF').first().json.data[0];\n\nlet total = 0;\nfor (const c of cobrancas) {\n  total += Number(c.value || 0);\n}\n\nconst valorDivida = total.toFixed(2);\nconst valorAVista = (total * 0.5).toFixed(2);\nconst encontrado = total > 0 ? 'true' : 'false';\n\nconst fmt = (n) => Number(n).toFixed(2).replace('.', ',');\n\nreturn [{ json: {\n  data: {\n    encontrado,\n    nome: (clienteNode.name || 'Cliente').split(' ')[0],\n    nome_completo: clienteNode.name || '',\n    customer_id: clienteNode.id,\n    qtd_cobrancas: cobrancas.length,\n    valor_divida: fmt(valorDivida),\n    valor_a_vista_50: fmt(valorAVista),\n    valor_divida_num: valorDivida,\n    valor_a_vista_num: valorAVista\n  }\n} }];"
+      },
+      "id": "qb000006-0006-0006-0006-100000000006",
+      "name": "Calcular Dívida + 50%",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1360, 200],
+      "notes": "Soma value das cobranças OVERDUE, calcula metade, formata em pt-BR (vírgula). Monta o objeto data para o Typebot."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "qb000007-0007-0007-0007-100000000007",
+      "name": "Responder ao Typebot (achou)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1580, 200],
+      "notes": "Retorna { data: { encontrado, nome, valor_divida, valor_a_vista_50 } } — campos mapeados no webhook do Typebot."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ data: { encontrado: 'false', nome: '', valor_divida: '0,00', valor_a_vista_50: '0,00' } }) }}",
+        "options": {}
+      },
+      "id": "qb000008-0008-0008-0008-100000000008",
+      "name": "Responder ao Typebot (não achou)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1140, 420],
+      "notes": "CPF sem cliente no Asaas -> encontrado:false. O Typebot encaminha para a Karine."
+    }
+  ],
+  "connections": {
+    "Webhook — Typebot busca": { "main": [[{ "node": "Normalizar CPF", "type": "main", "index": 0 }]] },
+    "Normalizar CPF": { "main": [[{ "node": "Asaas — Buscar Cliente por CPF", "type": "main", "index": 0 }]] },
+    "Asaas — Buscar Cliente por CPF": { "main": [[{ "node": "Cliente Encontrado?", "type": "main", "index": 0 }]] },
+    "Cliente Encontrado?": {
+      "main": [
+        [{ "node": "Asaas — Cobranças Vencidas", "type": "main", "index": 0 }],
+        [{ "node": "Responder ao Typebot (não achou)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Asaas — Cobranças Vencidas": { "main": [[{ "node": "Calcular Dívida + 50%", "type": "main", "index": 0 }]] },
+    "Calcular Dívida + 50%": { "main": [[{ "node": "Responder ao Typebot (achou)", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1", "timezone": "America/Sao_Paulo", "maxExecutionTime": 60 },
+  "versionId": "qb000000-ffff-ffff-ffff-100000000001",
+  "id": "asaas-quitacao-buscar-sst-v1",
+  "meta": { "templateCredsSetupCompleted": true, "instanceId": "sst-clinica" },
+  "tags": [ { "name": "sst" }, { "name": "asaas" }, { "name": "perdao-divida" }, { "name": "quitacao" } ],
+  "_setup_notes": {
+    "objetivo": "Webhook 1 de 3 do Typebot de quitação. Recebe CPF, busca cliente e cobranças vencidas no Asaas, soma a dívida e devolve o valor com 50% de desconto para o Typebot exibir.",
+    "rota": "POST {n8n}/webhook/sst-quitacao-buscar",
+    "entrada": "{ cpf }",
+    "saida": "{ data: { encontrado: 'true'|'false', nome, valor_divida (pt-BR), valor_a_vista_50 (pt-BR) } }",
+    "variaveis_necessarias": [
+      "ASAAS_API_URL — base da API (produção: https://api.asaas.com/v3 | sandbox: https://sandbox.asaas.com/api/v3)",
+      "ASAAS_API_KEY — chave de API do Asaas (Configurações > Integrações > API). Header: access_token"
+    ],
+    "observacoes": [
+      "Se houver mais de 1 cliente para o mesmo CPF, usa o primeiro (data[0]).",
+      "Considera apenas cobranças com status OVERDUE. Para incluir as 'aguardando pagamento' (PENDING), duplicar o nó e somar também.",
+      "O desconto é fixo em 50% (multiplicação por 0.5). Para mudar, editar 'total * 0.5' no nó Calcular."
+    ],
+    "como_testar": [
+      "1. Importar e ativar o workflow",
+      "2. POST manual (Postman): { \"cpf\": \"12345678900\" } na URL do webhook",
+      "3. Conferir retorno com encontrado/valor_divida/valor_a_vista_50",
+      "4. Testar CPF inexistente -> encontrado:false"
+    ]
+  }
+}

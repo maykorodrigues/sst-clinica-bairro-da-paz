@@ -1,0 +1,158 @@
+{
+  "name": "SST — Quitação 2: Gerar 2ª via Pix no Asaas (50% à vista)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-quitacao-gerar-2via",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "qg000001-0001-0001-0001-100000000001",
+      "name": "Webhook — Typebot gerar 2ª via",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "sst-quitacao-gerar-2via",
+      "notes": "Recebe { cpf, nome, valor_cobrar (pt-BR), tipo:'PIX' }. Rota: /webhook/sst-quitacao-gerar-2via."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza entrada: CPF só dígitos, valor para número (ponto decimal), vencimento = hoje+3\nconst body = $input.first().json.body || $input.first().json;\nconst cpf = String(body.cpf || '').replace(/\\D/g, '');\n// valor_cobrar pode vir como '123,45' (pt-BR) -> 123.45\nconst valor = Number(String(body.valor_cobrar || '0').replace(/\\./g, '').replace(',', '.'));\n\nconst d = new Date();\nd.setDate(d.getDate() + 3);\nconst dueDate = d.toISOString().split('T')[0];\n\nreturn [{ json: { cpf, nome: body.nome || 'Cliente', valor, dueDate } }];"
+      },
+      "id": "qg000002-0002-0002-0002-100000000002",
+      "name": "Normalizar Entrada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300],
+      "notes": "CPF -> dígitos; valor pt-BR -> número; dueDate = hoje + 3 dias (prazo do Pix da campanha)."
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ASAAS_API_URL }}/customers",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [ { "name": "cpfCnpj", "value": "={{ $json.cpf }}" } ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "access_token", "value": "={{ $env.ASAAS_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "qg000003-0003-0003-0003-100000000003",
+      "name": "Asaas — Buscar Cliente",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [680, 300],
+      "notes": "Recupera o customer id pelo CPF para vincular a nova cobrança."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.ASAAS_API_URL }}/payments",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "access_token", "value": "={{ $env.ASAAS_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"customer\": \"{{ $json.data[0].id }}\",\n  \"billingType\": \"PIX\",\n  \"value\": {{ $('Normalizar Entrada').first().json.valor }},\n  \"dueDate\": \"{{ $('Normalizar Entrada').first().json.dueDate }}\",\n  \"description\": \"Campanha Perdão de Dívida SST Card — quitação à vista com 50% de desconto\",\n  \"externalReference\": \"perdao-divida-2026-06\"\n}",
+        "options": {}
+      },
+      "id": "qg000004-0004-0004-0004-100000000004",
+      "name": "Asaas — Criar Cobrança Pix",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [900, 300],
+      "notes": "POST /v3/payments billingType=PIX, value=valor com desconto, dueDate=hoje+3. Retorna o id da cobrança e invoiceUrl."
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.ASAAS_API_URL }}/payments/{{ $json.id }}/pixQrCode",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "access_token", "value": "={{ $env.ASAAS_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "qg000005-0005-0005-0005-100000000005",
+      "name": "Asaas — Buscar QR Code Pix",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1140, 300],
+      "notes": "GET /v3/payments/{id}/pixQrCode. Retorna payload (copia-e-cola) e encodedImage (QR base64)."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta a resposta para o Typebot com o Pix copia-e-cola e o link da fatura\nconst qr = $input.first().json;\nconst pagamento = $('Asaas — Criar Cobrança Pix').first().json;\n\nreturn [{ json: {\n  data: {\n    pix_copia_cola: qr.payload || '(indisponível — use o link da fatura)',\n    link_fatura: pagamento.invoiceUrl || pagamento.bankSlipUrl || '',\n    payment_id: pagamento.id || '',\n    valor: pagamento.value || 0,\n    qr_base64: qr.encodedImage || ''\n  }\n} }];"
+      },
+      "id": "qg000006-0006-0006-0006-100000000006",
+      "name": "Montar Resposta Pix",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1360, 300],
+      "notes": "Combina o QR (payload) com o invoiceUrl da cobrança. Monta data para o Typebot."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "qg000007-0007-0007-0007-100000000007",
+      "name": "Responder ao Typebot",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1580, 300],
+      "notes": "Retorna { data: { pix_copia_cola, link_fatura } } — campos mapeados no webhook do Typebot."
+    }
+  ],
+  "connections": {
+    "Webhook — Typebot gerar 2ª via": { "main": [[{ "node": "Normalizar Entrada", "type": "main", "index": 0 }]] },
+    "Normalizar Entrada": { "main": [[{ "node": "Asaas — Buscar Cliente", "type": "main", "index": 0 }]] },
+    "Asaas — Buscar Cliente": { "main": [[{ "node": "Asaas — Criar Cobrança Pix", "type": "main", "index": 0 }]] },
+    "Asaas — Criar Cobrança Pix": { "main": [[{ "node": "Asaas — Buscar QR Code Pix", "type": "main", "index": 0 }]] },
+    "Asaas — Buscar QR Code Pix": { "main": [[{ "node": "Montar Resposta Pix", "type": "main", "index": 0 }]] },
+    "Montar Resposta Pix": { "main": [[{ "node": "Responder ao Typebot", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1", "timezone": "America/Sao_Paulo", "maxExecutionTime": 60 },
+  "versionId": "qg000000-ffff-ffff-ffff-100000000001",
+  "id": "asaas-quitacao-gerar-2via-sst-v1",
+  "meta": { "templateCredsSetupCompleted": true, "instanceId": "sst-clinica" },
+  "tags": [ { "name": "sst" }, { "name": "asaas" }, { "name": "perdao-divida" }, { "name": "quitacao" } ],
+  "_setup_notes": {
+    "objetivo": "Webhook 2 de 3 do Typebot de quitação. Cria uma cobrança Pix no Asaas com o valor já com 50% de desconto e devolve o Pix copia-e-cola + link da fatura para o Typebot exibir na hora.",
+    "rota": "POST {n8n}/webhook/sst-quitacao-gerar-2via",
+    "entrada": "{ cpf, nome, valor_cobrar (pt-BR, ex '64,90'), tipo:'PIX' }",
+    "saida": "{ data: { pix_copia_cola, link_fatura, payment_id, qr_base64 } }",
+    "variaveis_necessarias": [
+      "ASAAS_API_URL — base da API (https://api.asaas.com/v3)",
+      "ASAAS_API_KEY — chave da API do Asaas (header access_token)"
+    ],
+    "observacoes": [
+      "valor_cobrar deve vir já com o desconto (o Typebot envia valor_a_vista_50). Este workflow NÃO recalcula desconto.",
+      "dueDate = hoje + 3 dias. Para Pix à vista imediato, manter prazo curto cria urgência.",
+      "O Asaas confirma o pagamento por webhook próprio (PAYMENT_RECEIVED). Para reativar o cartão automático, criar um 4º workflow que escute esse evento do Asaas (fora do escopo do Typebot).",
+      "Se o cliente não existir no Asaas, a criação falha — por isso o Typebot só chega aqui após o Webhook 1 confirmar encontrado:true."
+    ],
+    "como_testar": [
+      "1. Usar sandbox: ASAAS_API_URL=https://sandbox.asaas.com/api/v3",
+      "2. POST { cpf, nome, valor_cobrar: '32,45', tipo:'PIX' }",
+      "3. Conferir retorno pix_copia_cola + link_fatura",
+      "4. Abrir o link_fatura no navegador para validar a cobrança"
+    ]
+  }
+}

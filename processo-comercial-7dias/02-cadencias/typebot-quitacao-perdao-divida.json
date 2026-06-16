@@ -1,0 +1,391 @@
+{
+  "version": "6",
+  "id": "typebot-quitacao-perdao-divida-v1",
+  "name": "SST Card — Quitação Perdão de Dívida (2ª via na hora)",
+  "icon": "💳",
+  "selectedThemeTemplateId": null,
+  "isArchived": false,
+  "isClosed": false,
+  "groups": [
+    {
+      "id": "grp-start",
+      "title": "Início — Identificação da campanha",
+      "graphCoordinates": { "x": 0, "y": 100 },
+      "blocks": [
+        { "id": "blk-start", "type": "start", "label": "Início" },
+        {
+          "id": "blk-bv-1",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Oi! 👋 Aqui é a Karol, da SST Card." }] } ] }
+        },
+        {
+          "id": "blk-bv-2",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Tenho uma novidade boa: abrimos a *Campanha de Perdão de Dívida* — você pode quitar sua pendência *à vista com 50% de desconto* e reativar seu cartão de saúde na hora. ⏳ Só até *30/06*." }] } ] }
+        },
+        {
+          "id": "blk-bv-3",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Quer que eu calcule agora quanto fica a sua quitação com o desconto?" }] } ] }
+        },
+        {
+          "id": "blk-inp-topa",
+          "type": "inputs/choice",
+          "items": [
+            { "id": "item-sim", "content": "Sim, quero ver! 😊" },
+            { "id": "item-nao", "content": "Agora não" }
+          ],
+          "options": { "isMultipleChoice": false, "buttonLabel": "Enviar" }
+        }
+      ]
+    },
+    {
+      "id": "grp-nao",
+      "title": "Saída — Não quer agora",
+      "graphCoordinates": { "x": 400, "y": 460 },
+      "blocks": [
+        {
+          "id": "blk-nao-wh",
+          "type": "integrations/webhook",
+          "options": {
+            "url": "SEU_N8N_URL/webhook/sst-quitacao-evento",
+            "method": "POST",
+            "body": [
+              { "key": "evento", "value": "recusou_inicio" },
+              { "key": "cpf", "value": "{{cpf}}" },
+              { "key": "origem", "value": "typebot-quitacao-pd" },
+              { "key": "timestamp", "value": "{{NOW}}" }
+            ]
+          }
+        },
+        {
+          "id": "blk-nao-msg",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Tudo bem! A campanha fica de pé até *30/06*. Se mudar de ideia, é só voltar aqui que eu calculo seu desconto na hora. Cuide-se! 🙏" }] } ] }
+        }
+      ]
+    },
+    {
+      "id": "grp-identifica",
+      "title": "Identificação — CPF",
+      "graphCoordinates": { "x": 400, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-id-txt",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Perfeito! Para localizar sua pendência, me informa o *CPF do titular do cartão* (só números)." }] } ] }
+        },
+        {
+          "id": "blk-id-inp",
+          "type": "inputs/text",
+          "options": {
+            "labels": { "placeholder": "000.000.000-00", "button": "Confirmar" },
+            "variableId": "var-cpf"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-busca-divida",
+      "title": "Buscar dívida no Asaas (n8n)",
+      "graphCoordinates": { "x": 800, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-busca-msg",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Só um instante que já localizo aqui... 🔎" }] } ] }
+        },
+        {
+          "id": "blk-busca-wh",
+          "type": "integrations/webhook",
+          "options": {
+            "url": "SEU_N8N_URL/webhook/sst-quitacao-buscar",
+            "method": "POST",
+            "body": [
+              { "key": "cpf", "value": "{{cpf}}" },
+              { "key": "origem", "value": "typebot-quitacao-pd" },
+              { "key": "timestamp", "value": "{{NOW}}" }
+            ],
+            "responseVariableMapping": [
+              { "bodyPath": "data.nome", "variableId": "var-nome" },
+              { "bodyPath": "data.valor_divida", "variableId": "var-valor-divida" },
+              { "bodyPath": "data.valor_a_vista_50", "variableId": "var-valor-vista" },
+              { "bodyPath": "data.encontrado", "variableId": "var-encontrado" }
+            ],
+            "responseVariableId": "var-busca-resp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-roteia-busca",
+      "title": "Encontrou a dívida?",
+      "graphCoordinates": { "x": 1200, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-roteia-condicao",
+          "type": "logic/condition",
+          "items": [
+            {
+              "id": "cond-encontrou",
+              "content": {
+                "comparisons": [
+                  { "id": "cmp-1", "variableId": "var-encontrado", "comparisonOperator": "Equal to", "value": "true" }
+                ],
+                "logicalOperator": "AND"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "grp-nao-encontrou",
+      "title": "Não localizou — encaminhar Karine",
+      "graphCoordinates": { "x": 1200, "y": 460 },
+      "blocks": [
+        {
+          "id": "blk-ne-wh",
+          "type": "integrations/webhook",
+          "options": {
+            "url": "SEU_N8N_URL/webhook/sst-quitacao-evento",
+            "method": "POST",
+            "body": [
+              { "key": "evento", "value": "cpf_nao_localizado" },
+              { "key": "cpf", "value": "{{cpf}}" },
+              { "key": "origem", "value": "typebot-quitacao-pd" },
+              { "key": "timestamp", "value": "{{NOW}}" }
+            ]
+          }
+        },
+        {
+          "id": "blk-ne-msg",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Não consegui localizar uma pendência com esse CPF. 😕 Pode ser cadastro em outro nome ou já estar quitado.\n\nVou pedir para a *Karine* te chamar pessoalmente para verificar, tá? Em instantes ela fala com você. 🙏" }] } ] }
+        }
+      ]
+    },
+    {
+      "id": "grp-oferta",
+      "title": "Apresentar oferta com valor real",
+      "graphCoordinates": { "x": 1600, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-of-1",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Achei aqui, {{nome}}! 🙌" }] } ] }
+        },
+        {
+          "id": "blk-of-2",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Sua pendência hoje é de *R$ {{valor_divida}}*.\n\nNa Campanha de Perdão de Dívida, você quita *à vista por R$ {{valor_a_vista_50}}* — metade do valor. 🎉\n\nAssim que o pagamento entrar, seu cartão volta a funcionar: telemedicina, auxílio funeral e consultas com custo reduzido." }] } ] }
+        },
+        {
+          "id": "blk-of-3",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Como você prefere resolver?" }] } ] }
+        },
+        {
+          "id": "blk-of-opcoes",
+          "type": "inputs/choice",
+          "items": [
+            { "id": "op-vista", "content": "💚 Quitar à vista (Pix com 50% off)" },
+            { "id": "op-parcelar", "content": "💳 Quero parcelar" },
+            { "id": "op-reativar", "content": "🔄 Reativar meu plano (mensalidade)" },
+            { "id": "op-depois", "content": "Não consigo agora" }
+          ],
+          "options": { "isMultipleChoice": false, "buttonLabel": "Escolher", "variableId": "var-escolha" }
+        }
+      ]
+    },
+    {
+      "id": "grp-gera-2via",
+      "title": "Gerar 2ª via Pix (à vista) no Asaas",
+      "graphCoordinates": { "x": 2000, "y": 0 },
+      "blocks": [
+        {
+          "id": "blk-2via-msg",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Boa escolha! 💚 Tô gerando seu Pix com o desconto agora mesmo..." }] } ] }
+        },
+        {
+          "id": "blk-2via-wh",
+          "type": "integrations/webhook",
+          "options": {
+            "url": "SEU_N8N_URL/webhook/sst-quitacao-gerar-2via",
+            "method": "POST",
+            "body": [
+              { "key": "cpf", "value": "{{cpf}}" },
+              { "key": "nome", "value": "{{nome}}" },
+              { "key": "valor_cobrar", "value": "{{valor_a_vista_50}}" },
+              { "key": "tipo", "value": "PIX" },
+              { "key": "origem", "value": "typebot-quitacao-pd" },
+              { "key": "timestamp", "value": "{{NOW}}" }
+            ],
+            "responseVariableMapping": [
+              { "bodyPath": "data.pix_copia_cola", "variableId": "var-pix-copia" },
+              { "bodyPath": "data.link_fatura", "variableId": "var-link-fatura" }
+            ],
+            "responseVariableId": "var-2via-resp"
+          }
+        },
+        {
+          "id": "blk-2via-link",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Prontinho, {{nome}}! ✅\n\n*Valor com desconto: R$ {{valor_a_vista_50}}*\n\n🔗 Link da fatura (Pix/cartão/boleto):\n{{link_fatura}}\n\n📋 Pix copia e cola:\n{{pix_copia_cola}}\n\nAssim que o pagamento for confirmado, seu cartão é reativado automaticamente. 💙" }] } ] }
+        },
+        {
+          "id": "blk-2via-fim",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Qualquer dúvida na hora de pagar, é só me chamar aqui. Obrigada por continuar com a gente! 🙏" }] } ] }
+        }
+      ]
+    },
+    {
+      "id": "grp-negociar",
+      "title": "Parcelar / Reativar — encaminhar Karine",
+      "graphCoordinates": { "x": 2000, "y": 320 },
+      "blocks": [
+        {
+          "id": "blk-neg-wh",
+          "type": "integrations/webhook",
+          "options": {
+            "url": "SEU_N8N_URL/webhook/sst-quitacao-evento",
+            "method": "POST",
+            "body": [
+              { "key": "evento", "value": "quer_negociar" },
+              { "key": "escolha", "value": "{{escolha}}" },
+              { "key": "cpf", "value": "{{cpf}}" },
+              { "key": "nome", "value": "{{nome}}" },
+              { "key": "valor_divida", "value": "{{valor_divida}}" },
+              { "key": "origem", "value": "typebot-quitacao-pd" },
+              { "key": "timestamp", "value": "{{NOW}}" }
+            ]
+          }
+        },
+        {
+          "id": "blk-neg-msg",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Perfeito, {{nome}}! 👍 Para montar a melhor condição de *{{escolha}}* pra você, a *Karine* vai te chamar pessoalmente aqui no WhatsApp em instantes.\n\nFica tranquilo(a) que a gente resolve juntos. 💙" }] } ] }
+        }
+      ]
+    },
+    {
+      "id": "grp-depois",
+      "title": "Não consegue agora — nutrir",
+      "graphCoordinates": { "x": 2000, "y": 600 },
+      "blocks": [
+        {
+          "id": "blk-dep-wh",
+          "type": "integrations/webhook",
+          "options": {
+            "url": "SEU_N8N_URL/webhook/sst-quitacao-evento",
+            "method": "POST",
+            "body": [
+              { "key": "evento", "value": "nao_pode_agora" },
+              { "key": "cpf", "value": "{{cpf}}" },
+              { "key": "nome", "value": "{{nome}}" },
+              { "key": "valor_divida", "value": "{{valor_divida}}" },
+              { "key": "valor_a_vista_50", "value": "{{valor_a_vista_50}}" },
+              { "key": "origem", "value": "typebot-quitacao-pd" },
+              { "key": "timestamp", "value": "{{NOW}}" }
+            ]
+          }
+        },
+        {
+          "id": "blk-dep-msg",
+          "type": "bubbles/text",
+          "content": { "richText": [ { "type": "p", "children": [{ "text": "Sem problema, {{nome}}. 🙏 Só lembrando: o desconto de 50% (R$ {{valor_a_vista_50}}) vale *só até 30/06* e não se repete esse ano.\n\nQuando der, é só voltar aqui que eu gero seu Pix na hora. Tô na torcida pra te ter de volta! 💙" }] } ] }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    { "id": "edge-start-sim", "from": { "groupId": "grp-start", "blockId": "blk-inp-topa", "itemId": "item-sim" }, "to": { "groupId": "grp-identifica" } },
+    { "id": "edge-start-nao", "from": { "groupId": "grp-start", "blockId": "blk-inp-topa", "itemId": "item-nao" }, "to": { "groupId": "grp-nao" } },
+    { "id": "edge-id-busca", "from": { "groupId": "grp-identifica", "blockId": "blk-id-inp" }, "to": { "groupId": "grp-busca-divida" } },
+    { "id": "edge-busca-roteia", "from": { "groupId": "grp-busca-divida", "blockId": "blk-busca-wh" }, "to": { "groupId": "grp-roteia-busca" } },
+    { "id": "edge-roteia-encontrou", "from": { "groupId": "grp-roteia-busca", "blockId": "blk-roteia-condicao", "itemId": "cond-encontrou" }, "to": { "groupId": "grp-oferta" } },
+    { "id": "edge-roteia-naoencontrou", "from": { "groupId": "grp-roteia-busca", "blockId": "blk-roteia-condicao" }, "to": { "groupId": "grp-nao-encontrou" } },
+    { "id": "edge-oferta-vista", "from": { "groupId": "grp-oferta", "blockId": "blk-of-opcoes", "itemId": "op-vista" }, "to": { "groupId": "grp-gera-2via" } },
+    { "id": "edge-oferta-parcelar", "from": { "groupId": "grp-oferta", "blockId": "blk-of-opcoes", "itemId": "op-parcelar" }, "to": { "groupId": "grp-negociar" } },
+    { "id": "edge-oferta-reativar", "from": { "groupId": "grp-oferta", "blockId": "blk-of-opcoes", "itemId": "op-reativar" }, "to": { "groupId": "grp-negociar" } },
+    { "id": "edge-oferta-depois", "from": { "groupId": "grp-oferta", "blockId": "blk-of-opcoes", "itemId": "op-depois" }, "to": { "groupId": "grp-depois" } }
+  ],
+  "variables": [
+    { "id": "var-cpf", "name": "cpf" },
+    { "id": "var-nome", "name": "nome" },
+    { "id": "var-valor-divida", "name": "valor_divida" },
+    { "id": "var-valor-vista", "name": "valor_a_vista_50" },
+    { "id": "var-encontrado", "name": "encontrado" },
+    { "id": "var-escolha", "name": "escolha" },
+    { "id": "var-pix-copia", "name": "pix_copia_cola" },
+    { "id": "var-link-fatura", "name": "link_fatura" },
+    { "id": "var-busca-resp", "name": "busca_response" },
+    { "id": "var-2via-resp", "name": "segunda_via_response" }
+  ],
+  "settings": {
+    "general": {
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": false,
+      "isHideQueryParamsEnabled": true,
+      "isNewResultOnRefreshEnabled": false,
+      "rememberUser": { "isEnabled": false }
+    },
+    "typingEmulation": { "enabled": true, "speed": 300, "maxDelay": 1.5 }
+  },
+  "theme": {
+    "general": {
+      "font": { "type": "Google", "family": "Inter" },
+      "background": { "type": "Color", "content": "#0f172a" }
+    },
+    "chat": {
+      "container": { "maxWidth": "600px", "maxHeight": "100%", "backgroundColor": "#1e293b", "blur": 0, "borderRadius": "12px" },
+      "hostBubbles": { "backgroundColor": "#1987c3", "color": "#ffffff", "fontSize": "16px", "borderRadius": "12px" },
+      "guestBubbles": { "backgroundColor": "#334155", "color": "#f8fafc", "fontSize": "16px", "borderRadius": "12px" },
+      "inputs": { "backgroundColor": "#1e293b", "color": "#f8fafc", "placeholderColor": "#64748b", "fontSize": "16px", "borderRadius": "8px" },
+      "buttons": { "backgroundColor": "#16a34a", "color": "#ffffff", "fontSize": "16px", "borderRadius": "8px" }
+    }
+  },
+  "_setup_notes": {
+    "objetivo": "Bot de autoatendimento da Campanha de Perdão de Dívida. Identifica o cliente pelo CPF, busca a pendência no Asaas (via n8n), apresenta a oferta de 50% à vista e GERA A 2ª VIA (Pix copia-e-cola + link da fatura) na hora. Encaminha à Karine só os casos de negociação/parcelamento.",
+    "substituir_antes_de_publicar": [
+      "SEU_N8N_URL — trocar pela URL real do n8n (ex: https://n8n.clinicalucrativa.ia.br) em TODOS os webhooks (4 ocorrências)"
+    ],
+    "tres_webhooks_n8n_necessarios": {
+      "1_buscar": {
+        "rota": "POST SEU_N8N_URL/webhook/sst-quitacao-buscar",
+        "recebe": "{ cpf }",
+        "faz": "Consulta Asaas/base por CPF, soma a dívida em aberto, calcula 50%",
+        "retorna_json": "{ data: { encontrado: 'true'|'false', nome, valor_divida, valor_a_vista_50 } }"
+      },
+      "2_gerar_2via": {
+        "rota": "POST SEU_N8N_URL/webhook/sst-quitacao-gerar-2via",
+        "recebe": "{ cpf, nome, valor_cobrar, tipo: 'PIX' }",
+        "faz": "Cria/atualiza cobrança no Asaas com o valor com desconto (POST /v3/payments billingType=PIX) e busca o QR Pix (GET /v3/payments/{id}/pixQrCode)",
+        "retorna_json": "{ data: { pix_copia_cola, link_fatura } }"
+      },
+      "3_evento": {
+        "rota": "POST SEU_N8N_URL/webhook/sst-quitacao-evento",
+        "recebe": "{ evento, cpf, nome, valor_divida, escolha, ... }",
+        "faz": "Registra o evento no Notion CRM cobrança e, se evento ∈ {quer_negociar, cpf_nao_localizado}, notifica a KARINE no Chatwoot/WhatsApp (lead quente)",
+        "eventos": ["recusou_inicio", "cpf_nao_localizado", "quer_negociar", "nao_pode_agora"]
+      }
+    },
+    "regra_de_ouro": "A IA/bot resolve sozinho quem quer pagar à vista (gera o Pix). A Karine só é acionada nos eventos de negociação ou CPF não localizado — protege o tempo dela e foca no que é quente.",
+    "como_importar": [
+      "1. Acessar Typebot self-hosted (Easypanel)",
+      "2. Novo typebot → Import → este JSON",
+      "3. Trocar SEU_N8N_URL nos 4 webhooks",
+      "4. Publicar e copiar o link público",
+      "5. Usar o link nas mensagens de disparo (n8n-perdao-divida-disparo-massa.json) e no criativo"
+    ],
+    "integracao_campanha": "Casado com n8n-perdao-divida-disparo-massa.json (disparo) e com o Webhook Chatwoot de classificação (05-agentamento-karine-ia/03-workflow-n8n-cobranca.md). O link deste Typebot é o CTA das copies de WhatsApp.",
+    "asaas_api_refs": [
+      "Criar cobrança: POST https://api.asaas.com/v3/payments (header access_token)",
+      "QR Code Pix: GET https://api.asaas.com/v3/payments/{id}/pixQrCode → retorna payload (copia-e-cola) e encodedImage",
+      "Buscar por CPF: GET https://api.asaas.com/v3/customers?cpfCnpj={cpf} → pega customer id → GET /v3/payments?customer={id}&status=OVERDUE"
+    ],
+    "tema": "Dark mode SST Card (azul #1987c3). Botões em verde #16a34a para reforçar ação positiva de quitação."
+  }
+}

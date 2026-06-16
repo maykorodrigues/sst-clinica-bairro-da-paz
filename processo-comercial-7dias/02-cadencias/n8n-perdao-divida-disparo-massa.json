@@ -1,0 +1,217 @@
+{
+  "name": "SST — Campanha Perdão de Dívida (Disparo em Massa)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "pd000001-0001-0001-0001-100000000001",
+      "name": "Disparo Manual (Karine clica)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 200],
+      "notes": "Karine/Mayko executa manualmente quando quiser disparar o lote do dia. Para automatizar, conecte o Cron abaixo."
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 10 * * 1-6"
+            }
+          ]
+        }
+      },
+      "id": "pd000002-0002-0002-0002-100000000002",
+      "name": "Cron 10h Seg–Sab (opcional)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 380],
+      "notes": "Opcional: dispara o lote diário às 10h (melhor taxa de abertura). Desative durante o aquecimento do número."
+    },
+    {
+      "parameters": {
+        "operation": "readAllRows",
+        "documentId": {
+          "value": "={{ $env.SHEETS_COBRANCA_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "Perdao_Divida",
+          "mode": "name"
+        },
+        "options": {
+          "headerRow": 1
+        }
+      },
+      "id": "pd000003-0003-0003-0003-100000000003",
+      "name": "Ler Base Tenex/Inadimplentes",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [480, 300],
+      "notes": "Aba 'Perdao_Divida'. Colunas: nome, whatsapp, valor_divida, parcelas_atraso, valor_a_vista_50, link_pix, fase_pd, data_ultimo_contato, status, nao_contatar"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Campanha Perdão de Dívida — filtra elegíveis e calcula próxima fase\n// Aquecimento: AJUSTE o LIMITE_DIA conforme o dia da campanha (50 -> 100 -> 150)\nconst LIMITE_DIA = 50;\n\nconst hoje = new Date();\nhoje.setHours(0, 0, 0, 0);\n\nconst elegiveis = [];\nconst logs = [];\n\nfor (const item of $input.all()) {\n  const row = item.json;\n\n  // Blacklist\n  if (row.nao_contatar === 'TRUE' || row.nao_contatar === true) { continue; }\n\n  // Já recuperado/recusou definitivo -> não dispara\n  if (['recuperado', 'pago', 'recusou_final', 'encerrado'].includes((row.status||'').toLowerCase())) { continue; }\n\n  // Dias desde o último contato\n  let diasDesdeContato = 999;\n  if (row.data_ultimo_contato) {\n    const ult = new Date(row.data_ultimo_contato);\n    ult.setHours(0,0,0,0);\n    diasDesdeContato = Math.floor((hoje - ult) / (1000*60*60*24));\n  }\n\n  const faseAtual = (row.fase_pd || '').toUpperCase();\n  let faseProxima = null;\n\n  // Cadência de 3 toques: OFERTA (T0) -> LEMBRETE (T+3) -> ULTIMA (T+6)\n  if (!faseAtual)                                  faseProxima = 'OFERTA';\n  else if (faseAtual === 'OFERTA' && diasDesdeContato >= 3)  faseProxima = 'LEMBRETE';\n  else if (faseAtual === 'LEMBRETE' && diasDesdeContato >= 3) faseProxima = 'ULTIMA';\n  else continue; // ainda dentro do intervalo ou já no fim da cadência\n\n  elegiveis.push({ ...row, faseProxima });\n}\n\nlogs.push(`Elegíveis hoje: ${elegiveis.length} | Limite: ${LIMITE_DIA}`);\nconsole.log(logs.join(' | '));\n\nreturn elegiveis.slice(0, LIMITE_DIA).map(r => ({ json: r }));"
+      },
+      "id": "pd000004-0004-0004-0004-100000000004",
+      "name": "Filtrar Elegíveis + Limite Aquecimento",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [720, 300],
+      "notes": "AQUECIMENTO DO NÚMERO: editar LIMITE_DIA — dia 1=50, dia 2=100, dia 3+=150. Cadência 3 toques (OFERTA/LEMBRETE/ULTIMA)."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta a mensagem do toque correto da campanha de perdão de dívida\nconst row = $input.first().json;\nconst nome = (row.nome || 'tudo bem').split(' ')[0];\nconst aVista = parseFloat(row.valor_a_vista_50 || 0).toFixed(2).replace('.', ',');\nconst divida = parseFloat(row.valor_divida || 0).toFixed(2).replace('.', ',');\nconst pix = row.link_pix || 'me chama aqui que te mando o Pix';\nconst fase = row.faseProxima;\n\nconst msgs = {\n  OFERTA: `Oi ${nome}! 👋 Aqui é da SST Card. Tenho uma notícia boa pra você: abrimos uma *Campanha de Perdão de Dívida* só até *30/06*.\\n\\nSua pendência hoje é de R$${divida}. Na campanha você *quita à vista por R$${aVista}* (50% de desconto) e seu cartão de saúde volta a funcionar — telemedicina, auxílio funeral e atendimento com custo reduzido.\\n\\nQuer aproveitar? Respondo aqui mesmo. 😊`,\n\n  LEMBRETE: `${nome}, passando pra lembrar 🙌 A *Campanha de Perdão de Dívida* da SST Card encerra *30/06*. Você ainda consegue quitar tudo por *R$${aVista} à vista* (metade do valor) e reativar seu cartão na hora.\\n\\nÉ rápido: ${pix}. Quer que eu já te envie?`,\n\n  ULTIMA: `${nome}, *última chamada*. ⏳ A campanha de 50% encerra dia 30/06 e não vai se repetir esse ano. Depois disso a pendência volta ao valor cheio (R$${divida}).\\n\\nQuita hoje por *R$${aVista}* e zera tudo. Me responde *SIM* que eu finalizo agora com você.`\n};\n\nreturn [{ json: { ...row, mensagem: msgs[fase] || msgs.OFERTA } }];"
+      },
+      "id": "pd000005-0005-0005-0005-100000000005",
+      "name": "Montar Mensagem da Campanha",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 300],
+      "notes": "3 toques: OFERTA (50% à vista), LEMBRETE (urgência prazo), ULTIMA (última chamada). Edite a copy aqui."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.EVOLUTION_API_URL }}/message/sendText/{{ $env.EVOLUTION_INSTANCE }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $env.EVOLUTION_API_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.whatsapp }}\",\n  \"text\": {{ JSON.stringify($json.mensagem) }},\n  \"delay\": 2500\n}",
+        "options": {}
+      },
+      "id": "pd000006-0006-0006-0006-100000000006",
+      "name": "Enviar WhatsApp (Evolution)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1200, 300],
+      "notes": "Número formato 5571XXXXXXXXX (sem traços/@). Delay 2,5s interno + cooldown 60s a seguir."
+    },
+    {
+      "parameters": {
+        "unit": "seconds",
+        "amount": 60
+      },
+      "id": "pd000007-0007-0007-0007-100000000007",
+      "name": "Cooldown 60s",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1440, 300],
+      "notes": "Cooldown anti-bloqueio. Durante o aquecimento, pode aumentar para 90s."
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "value": "={{ $env.SHEETS_COBRANCA_ID }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "value": "Perdao_Divida",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fase_pd": "={{ $json.faseProxima }}",
+            "data_ultimo_contato": "={{ new Date().toISOString().split('T')[0] }}",
+            "status": "mensagem_enviada"
+          },
+          "matchingColumns": ["whatsapp"],
+          "schema": []
+        },
+        "options": {}
+      },
+      "id": "pd000008-0008-0008-0008-100000000008",
+      "name": "Atualizar Fase no Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.3,
+      "position": [1680, 300],
+      "notes": "Marca fase_pd, data_ultimo_contato e status na linha. Permite que o próximo toque seja calculado corretamente."
+    }
+  ],
+  "connections": {
+    "Disparo Manual (Karine clica)": {
+      "main": [[{ "node": "Ler Base Tenex/Inadimplentes", "type": "main", "index": 0 }]]
+    },
+    "Cron 10h Seg–Sab (opcional)": {
+      "main": [[{ "node": "Ler Base Tenex/Inadimplentes", "type": "main", "index": 0 }]]
+    },
+    "Ler Base Tenex/Inadimplentes": {
+      "main": [[{ "node": "Filtrar Elegíveis + Limite Aquecimento", "type": "main", "index": 0 }]]
+    },
+    "Filtrar Elegíveis + Limite Aquecimento": {
+      "main": [[{ "node": "Montar Mensagem da Campanha", "type": "main", "index": 0 }]]
+    },
+    "Montar Mensagem da Campanha": {
+      "main": [[{ "node": "Enviar WhatsApp (Evolution)", "type": "main", "index": 0 }]]
+    },
+    "Enviar WhatsApp (Evolution)": {
+      "main": [[{ "node": "Cooldown 60s", "type": "main", "index": 0 }]]
+    },
+    "Cooldown 60s": {
+      "main": [[{ "node": "Atualizar Fase no Sheets", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Sao_Paulo",
+    "maxExecutionTime": 7200
+  },
+  "versionId": "pd000000-ffff-ffff-ffff-100000000001",
+  "id": "perdao-divida-disparo-massa-sst-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "sst-clinica"
+  },
+  "tags": [
+    { "name": "sst" },
+    { "name": "cobranca" },
+    { "name": "perdao-divida" },
+    { "name": "campanha" }
+  ],
+  "_setup_notes": {
+    "objetivo": "Disparo escalonado da Campanha de Perdão de Dívida (quitação 50% à vista) para base Tenex/inadimplentes. Meta: R$17.400 na 2ª quinzena de junho/2026.",
+    "variaveis_necessarias": [
+      "SHEETS_COBRANCA_ID — ID da planilha (mesma do workflow de cobrança; nova aba 'Perdao_Divida')",
+      "EVOLUTION_API_URL — URL base da Evolution API",
+      "EVOLUTION_API_KEY — chave da Evolution API",
+      "EVOLUTION_INSTANCE — nome da instância WhatsApp da SST"
+    ],
+    "colunas_aba_Perdao_Divida": [
+      "nome (texto)",
+      "whatsapp (texto — 5571XXXXXXXXX sem traços)",
+      "valor_divida (número — valor cheio em atraso)",
+      "parcelas_atraso (número)",
+      "valor_a_vista_50 (número — metade do valor; quitação à vista)",
+      "link_pix (texto — link/copia-e-cola Pix ou 2ª via Asaas; opcional)",
+      "fase_pd (texto: vazio / OFERTA / LEMBRETE / ULTIMA)",
+      "data_ultimo_contato (data YYYY-MM-DD)",
+      "status (texto: vazio / mensagem_enviada / em_negociacao / recuperado / recusou_final)",
+      "nao_contatar (texto: TRUE bloqueia)"
+    ],
+    "aquecimento_numero": [
+      "Dia 1: LIMITE_DIA = 50 (editar no nó 'Filtrar Elegíveis')",
+      "Dia 2: LIMITE_DIA = 100",
+      "Dia 3 em diante: LIMITE_DIA = 150 (teto recomendado)",
+      "Nunca disparar 761 de uma vez — risco de banimento do número."
+    ],
+    "como_testar": [
+      "1. Criar 3 linhas com whatsapp = seu número, fase_pd vazia, datas escalonadas",
+      "2. Executar manualmente -> recebe a mensagem OFERTA",
+      "3. Mudar data_ultimo_contato para 3 dias atrás e fase_pd=OFERTA -> recebe LEMBRETE",
+      "4. Repetir -> recebe ULTIMA",
+      "5. Confirmar atualização das colunas no Sheets"
+    ],
+    "fluxo_resposta": "As respostas dos clientes são tratadas pelo Workflow 2 (Webhook Chatwoot — Processar Resposta) em 05-agentamento-karine-ia/03-workflow-n8n-cobranca.md, que classifica e notifica a Karine apenas nos contatos quentes (quem quer pagar)."
+  }
+}
