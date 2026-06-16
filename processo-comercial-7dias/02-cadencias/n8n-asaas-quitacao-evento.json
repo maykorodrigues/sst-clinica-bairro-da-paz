@@ -41,7 +41,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"parent\": { \"database_id\": \"{{ $env.NOTION_COBRANCA_DB_ID }}\" },\n  \"properties\": {\n    \"Nome\": { \"title\": [ { \"text\": { \"content\": {{ JSON.stringify($json.nome) }} } } ] },\n    \"CPF\": { \"rich_text\": [ { \"text\": { \"content\": {{ JSON.stringify($json.cpf) }} } } ] },\n    \"Evento\": { \"select\": { \"name\": {{ JSON.stringify($json.evento) }} } },\n    \"Origem\": { \"rich_text\": [ { \"text\": { \"content\": {{ JSON.stringify($json.origem) }} } } ] },\n    \"Valor Dívida\": { \"rich_text\": [ { \"text\": { \"content\": {{ JSON.stringify($json.valor_divida) }} } } ] }\n  }\n}",
+        "jsonBody": "={\n  \"parent\": { \"database_id\": \"{{ $env.NOTION_COBRANCA_DB_ID }}\" },\n  \"properties\": {\n    \"Nome\": { \"title\": [ { \"text\": { \"content\": {{ JSON.stringify($json.nome) }} } } ] },\n    \"CPF\": { \"rich_text\": [ { \"text\": { \"content\": {{ JSON.stringify($json.cpf) }} } } ] },\n    \"Evento\": { \"select\": { \"name\": {{ JSON.stringify($json.evento) }} } },\n    \"Escolha\": { \"rich_text\": [ { \"text\": { \"content\": {{ JSON.stringify($json.escolha) }} } } ] },\n    \"Valor Dívida\": { \"rich_text\": [ { \"text\": { \"content\": {{ JSON.stringify($json.valor_divida) }} } } ] },\n    \"Valor à Vista\": { \"rich_text\": [ { \"text\": { \"content\": {{ JSON.stringify($json.valor_a_vista_50) }} } } ] },\n    \"Lead Quente\": { \"checkbox\": {{ $json.ehQuente }} },\n    \"Origem\": { \"rich_text\": [ { \"text\": { \"content\": {{ JSON.stringify($json.origem) }} } } ] }\n  }\n}",
         "options": {}
       },
       "id": "qe000003-0003-0003-0003-100000000003",
@@ -49,7 +49,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [700, 200],
-      "notes": "Cria página no DB de cobrança do Notion. AJUSTAR os nomes das propriedades (Nome/CPF/Evento/Origem/Valor Dívida) conforme o schema real do seu database."
+      "notes": "Cria página no DB 'Eventos Quitação — Perdão de Dívida' (ID 65a6dcc6c95f4e23bd14dd1798f2391a). Propriedades já alinhadas ao schema real: Nome/CPF/Evento(select)/Escolha/Valor Dívida/Valor à Vista/Lead Quente(checkbox)/Origem."
     },
     {
       "parameters": {
@@ -153,13 +153,21 @@
       "recusou_inicio": "Notion apenas (registro estatístico)"
     },
     "variaveis_necessarias": [
-      "NOTION_TOKEN — token da integração Notion",
-      "NOTION_COBRANCA_DB_ID — ID do database de cobrança/eventos no Notion",
+      "NOTION_TOKEN — token da integração Notion (a integração precisa ter acesso ao database)",
+      "NOTION_COBRANCA_DB_ID = 65a6dcc6c95f4e23bd14dd1798f2391a (database 'Eventos Quitação — Perdão de Dívida', no hub SST Clínica)",
       "EVOLUTION_API_URL / EVOLUTION_API_KEY / EVOLUTION_INSTANCE — Evolution API WhatsApp",
       "KARINE_WHATSAPP — número da Karine (5571XXXXXXXXX, sem traços)"
     ],
+    "database_notion": {
+      "nome": "Eventos Quitação — Perdão de Dívida",
+      "id": "65a6dcc6c95f4e23bd14dd1798f2391a",
+      "data_source": "a91a1c3f-2b72-442b-abec-7c98b3ffcfc4",
+      "schema_pronto": "Nome(title), CPF(text), Evento(select: recusou_inicio/cpf_nao_localizado/quer_negociar/nao_pode_agora), Escolha(text), Valor Dívida(text), Valor à Vista(text), Lead Quente(checkbox), Origem(text), Registrado em(created_time)",
+      "compartilhar": "Garantir que a integração do NOTION_TOKEN esteja conectada a este database (Notion > ... > Conexões > adicionar a integração)."
+    },
     "ajustar_antes_de_ativar": [
-      "Os nomes das propriedades no nó 'Notion — Registrar Evento' (Nome, CPF, Evento, Origem, Valor Dívida) DEVEM bater com o schema real do seu database. 'Evento' precisa ser do tipo Select com as 4 opções cadastradas, ou trocar para rich_text.",
+      "Schema do Notion JÁ ALINHADO ao database criado — não precisa mexer nas propriedades.",
+      "Apenas conectar a integração do NOTION_TOKEN ao database (Conexões).",
       "Conferir Notion-Version (2022-06-28) — manter compatível com a API em uso no projeto."
     ],
     "como_testar": [

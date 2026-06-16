@@ -84,6 +84,7 @@ prazo: 30/06/2026
 | Webhook 1 — busca dívida no Asaas por CPF (responde valor + 50%) | `02-cadencias/n8n-asaas-quitacao-buscar.json` | ✅ pronto — importar + env ASAAS_* |
 | Webhook 2 — gera 2ª via Pix no Asaas (cobrança com desconto + QR copia-e-cola) | `02-cadencias/n8n-asaas-quitacao-gerar-2via.json` | ✅ pronto — importar + env ASAAS_* |
 | Webhook 3 — registra evento no Notion + notifica Karine só nos quentes | `02-cadencias/n8n-asaas-quitacao-evento.json` | ✅ pronto — importar + env NOTION/EVOLUTION/KARINE_WHATSAPP |
+| Database Notion "Eventos Quitação — Perdão de Dívida" (`65a6dcc6c95f4e23bd14dd1798f2391a`) | criado no hub SST Clínica — schema alinhado ao Webhook 3 | ✅ criado — só conectar integração NOTION_TOKEN |
 | Notificar Karine no Telegram só nos "quentes" (quer pagar) | Workflow 2 nó Telegram | ⏳ |
 | Follow-up D+3/D+5/D+7 automático para quem não respondeu | Workflow 3 (JSON pronto) | ⏳ importar |
 
