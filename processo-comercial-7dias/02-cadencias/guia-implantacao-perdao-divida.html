@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implantação — Campanha Perdão de Dívida | SST Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#1987c3; --azul-escuro:#0c4a6e; --verde:#16a34a; --vermelho:#dc2626;
+    --laranja:#d97706; --roxo:#7c3aed; --amarelo:#fbbf24;
+    --bg:#0d1117; --surface:#161b22; --surface2:#21262d; --border:#30363d;
+    --text:#e6edf3; --muted:#8b949e;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif; font-size:15px; line-height:1.6; }
+  .header{ background:linear-gradient(135deg,var(--azul-escuro),var(--azul)); padding:30px 24px; text-align:center; position:relative; overflow:hidden; }
+  .header::before{ content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 1px,transparent 0,transparent 50%) center/20px 20px; }
+  .header-badge{ display:inline-block; background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:20px; padding:4px 14px; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; position:relative; }
+  .header h1{ font-family:'Barlow Condensed',sans-serif; font-size:34px; font-weight:900; line-height:1.05; position:relative; }
+  .header p{ font-size:13px; opacity:.8; margin-top:6px; position:relative; }
+  .wrap{ max-width:780px; margin:0 auto; padding:22px 16px 80px; }
+
+  /* progresso */
+  .progresso-box{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:22px; position:sticky; top:8px; z-index:10; backdrop-filter:blur(6px); }
+  .progresso-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .progresso-top strong{ font-size:14px; }
+  .progresso-pct{ font-family:'Barlow Condensed',sans-serif; font-size:26px; font-weight:900; color:var(--verde); }
+  .barra{ background:var(--surface2); border-radius:30px; height:14px; overflow:hidden; }
+  .barra-fill{ background:linear-gradient(90deg,var(--verde),#4ade80); height:100%; width:0%; border-radius:30px; transition:width .3s; }
+  .btn-reset{ background:transparent; border:1px solid var(--border); color:var(--muted); border-radius:6px; padding:4px 10px; font-size:11px; cursor:pointer; font-family:inherit; }
+  .btn-reset:hover{ color:var(--text); border-color:var(--muted); }
+
+  .fase{ margin-bottom:20px; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:var(--surface); }
+  .fase-head{ background:var(--surface2); padding:12px 16px; display:flex; align-items:center; gap:12px; }
+  .fase-num{ font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:900; color:var(--azul); min-width:30px; }
+  .fase-titulo{ font-size:16px; font-weight:700; flex:1; }
+  .fase-tag{ font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:3px 9px; border-radius:5px; }
+  .tag-cfg{ background:rgba(25,135,195,.18); color:#7cc4ec; }
+  .tag-import{ background:rgba(124,58,237,.18); color:#c4b5fd; }
+  .tag-test{ background:rgba(217,119,6,.18); color:#fbbf24; }
+  .tag-go{ background:rgba(22,163,74,.18); color:#4ade80; }
+  .fase-body{ padding:8px 16px 14px; }
+
+  .item{ display:flex; gap:11px; padding:9px 0; border-bottom:1px solid var(--border); align-items:flex-start; cursor:pointer; }
+  .item:last-child{ border-bottom:none; }
+  .item input{ appearance:none; width:20px; height:20px; border:2px solid var(--muted); border-radius:5px; flex-shrink:0; margin-top:2px; cursor:pointer; position:relative; transition:.15s; }
+  .item input:checked{ background:var(--verde); border-color:var(--verde); }
+  .item input:checked::after{ content:'✓'; position:absolute; color:#fff; font-size:13px; font-weight:900; left:3px; top:-1px; }
+  .item-texto{ font-size:14px; flex:1; }
+  .item input:checked + .item-texto{ color:var(--muted); text-decoration:line-through; }
+  .item-texto .det{ display:block; font-size:12px; color:var(--muted); margin-top:2px; }
+  .item-texto code{ font-family:'JetBrains Mono',monospace; font-size:12px; background:var(--surface2); padding:1px 6px; border-radius:4px; color:#7cc4ec; word-break:break-all; }
+
+  .nota{ background:rgba(251,191,36,.06); border:1px dashed rgba(251,191,36,.4); border-radius:8px; padding:10px 14px; margin:10px 0; font-size:13px; color:#e0d4b0; }
+  .nota b{ color:var(--amarelo); }
+  .critico{ background:rgba(220,38,38,.07); border:1px solid rgba(220,38,38,.35); border-radius:8px; padding:10px 14px; margin:10px 0; font-size:13px; }
+  .critico b{ color:#f87171; }
+
+  table.env{ width:100%; border-collapse:collapse; font-size:12.5px; margin-top:6px; }
+  table.env td{ padding:6px 8px; border-bottom:1px solid var(--border); vertical-align:top; }
+  table.env td:first-child{ font-family:'JetBrains Mono',monospace; color:#7cc4ec; white-space:nowrap; }
+  .footer{ text-align:center; font-size:11px; color:var(--muted); margin-top:30px; padding-top:18px; border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Guia de Implantação · Operacional</div>
+  <h1>Campanha Perdão de Dívida<br>Implantação Ponta a Ponta</h1>
+  <p>SST Card · Meta R$ 20k na 2ª quinzena (até 30/06) · 4 JSONs + Asaas + Typebot</p>
+</div>
+
+<div class="wrap">
+
+  <div class="progresso-box">
+    <div class="progresso-top">
+      <strong>Progresso da implantação</strong>
+      <span class="progresso-pct" id="pct">0%</span>
+    </div>
+    <div class="barra"><div class="barra-fill" id="barra"></div></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+      <span style="font-size:12px; color:var(--muted)" id="contador">0 de 0 concluídos</span>
+      <button class="btn-reset" onclick="resetar()">Zerar checklist</button>
+    </div>
+  </div>
+
+  <div class="nota">
+    <b>Ordem importa.</b> Faça as fases na sequência: primeiro credenciais → variáveis → import → Notion/Typebot → testes em sandbox → só então o go-live com aquecimento. Os checkboxes salvam sozinhos neste navegador.
+  </div>
+
+  <!-- FASE 0 -->
+  <div class="fase">
+    <div class="fase-head"><span class="fase-num">0</span><span class="fase-titulo">Reunir credenciais e acessos</span><span class="fase-tag tag-cfg">Pré-requisito</span></div>
+    <div class="fase-body">
+      <label class="item"><input type="checkbox" data-id="p0-1"><span class="item-texto">Aprovação do Rogério da oferta <b>50% à vista</b><span class="det">É o gatilho da campanha — sem o OK não dispara.</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p0-2"><span class="item-texto">Chave da API do Asaas<span class="det">Asaas → Configurações → Integrações → API → gerar/copiar a chave (<code>access_token</code>).</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p0-3"><span class="item-texto">Base Tenex 761 exportada pelo Lucas (CSV)<span class="det">Colunas: nome, whatsapp, valor_divida, parcelas_atraso. Validar com <code>validar_csv.py</code>.</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p0-4"><span class="item-texto">WhatsApp da Karine para receber alertas<span class="det">Formato <code>5571XXXXXXXXX</code> (sem traços).</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p0-5"><span class="item-texto">Acesso ao n8n (<code>n8n.clinicalucrativa.ia.br</code>) e ao Typebot (Easypanel)</span></label>
+    </div>
+  </div>
+
+  <!-- FASE 1 -->
+  <div class="fase">
+    <div class="fase-head"><span class="fase-num">1</span><span class="fase-titulo">Configurar variáveis de ambiente no n8n</span><span class="fase-tag tag-cfg">Config</span></div>
+    <div class="fase-body">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:8px;">n8n → Settings → Variables (ou .env do container). Adicionar as que faltam:</p>
+      <table class="env">
+        <tr><td>ASAAS_API_URL</td><td>Produção: <code>https://api.asaas.com/v3</code> · Teste: <code>https://sandbox.asaas.com/api/v3</code></td></tr>
+        <tr><td>ASAAS_API_KEY</td><td>Chave copiada na Fase 0</td></tr>
+        <tr><td>NOTION_COBRANCA_DB_ID</td><td><code>65a6dcc6c95f4e23bd14dd1798f2391a</code></td></tr>
+        <tr><td>KARINE_WHATSAPP</td><td><code>5571XXXXXXXXX</code></td></tr>
+        <tr><td>SHEETS_COBRANCA_ID</td><td>ID da planilha (aba nova <code>Perdao_Divida</code>)</td></tr>
+      </table>
+      <label class="item" style="margin-top:8px;"><input type="checkbox" data-id="p1-1"><span class="item-texto">Variáveis Asaas adicionadas (<code>ASAAS_API_URL</code>, <code>ASAAS_API_KEY</code>)</span></label>
+      <label class="item"><input type="checkbox" data-id="p1-2"><span class="item-texto"><code>NOTION_COBRANCA_DB_ID</code> e <code>KARINE_WHATSAPP</code> adicionadas</span></label>
+      <label class="item"><input type="checkbox" data-id="p1-3"><span class="item-texto">Confirmar que já existem: <code>NOTION_TOKEN</code>, <code>EVOLUTION_API_URL/KEY/INSTANCE</code><span class="det">Reaproveitadas dos workflows existentes.</span></span></label>
+    </div>
+  </div>
+
+  <!-- FASE 2 -->
+  <div class="fase">
+    <div class="fase-head"><span class="fase-num">2</span><span class="fase-titulo">Importar os 4 workflows no n8n</span><span class="fase-tag tag-import">Import</span></div>
+    <div class="fase-body">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:8px;">n8n → Workflows → Import from File. Após importar cada um, anotar a URL do nó Webhook.</p>
+      <label class="item"><input type="checkbox" data-id="p2-1"><span class="item-texto"><code>n8n-asaas-quitacao-buscar.json</code><span class="det">Webhook: <code>/webhook/sst-quitacao-buscar</code> — busca dívida por CPF.</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p2-2"><span class="item-texto"><code>n8n-asaas-quitacao-gerar-2via.json</code><span class="det">Webhook: <code>/webhook/sst-quitacao-gerar-2via</code> — gera Pix com 50%.</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p2-3"><span class="item-texto"><code>n8n-asaas-quitacao-evento.json</code><span class="det">Webhook: <code>/webhook/sst-quitacao-evento</code> — Notion + alerta Karine.</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p2-4"><span class="item-texto"><code>n8n-perdao-divida-disparo-massa.json</code><span class="det">Disparo em massa (lê aba <code>Perdao_Divida</code> do Sheets).</span></span></label>
+      <div class="nota">Se algum import der erro de formato: confirmar UTF-8 e, em vez de importar arquivo, criar workflow vazio e colar o JSON (Ctrl+A no canvas → colar).</div>
+    </div>
+  </div>
+
+  <!-- FASE 3 -->
+  <div class="fase">
+    <div class="fase-head"><span class="fase-num">3</span><span class="fase-titulo">Conectar Notion e preparar o Sheets</span><span class="fase-tag tag-cfg">Config</span></div>
+    <div class="fase-body">
+      <div class="critico"><b>Passo que mais trava:</b> a integração do <code>NOTION_TOKEN</code> precisa estar conectada ao database, senão o n8n recebe 404.</div>
+      <label class="item"><input type="checkbox" data-id="p3-1"><span class="item-texto">Conectar a integração ao database<span class="det">Abrir "Eventos Quitação — Perdão de Dívida" → menu <code>•••</code> → Conexões → adicionar a integração do n8n.</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p3-2"><span class="item-texto">Criar a aba <code>Perdao_Divida</code> no Google Sheets de cobrança<span class="det">Colunas: nome, whatsapp, valor_divida, parcelas_atraso, valor_a_vista_50, link_pix, fase_pd, data_ultimo_contato, status, nao_contatar.</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p3-3"><span class="item-texto">Importar a base Tenex validada na aba <code>Perdao_Divida</code><span class="det">Calcular <code>valor_a_vista_50</code> = metade de <code>valor_divida</code>. Deixar <code>fase_pd</code> e <code>status</code> vazios.</span></span></label>
+    </div>
+  </div>
+
+  <!-- FASE 4 -->
+  <div class="fase">
+    <div class="fase-head"><span class="fase-num">4</span><span class="fase-titulo">Publicar o Typebot de quitação</span><span class="fase-tag tag-import">Import</span></div>
+    <div class="fase-body">
+      <label class="item"><input type="checkbox" data-id="p4-1"><span class="item-texto">Importar <code>typebot-quitacao-perdao-divida.json</code> no Typebot (Easypanel)</span></label>
+      <label class="item"><input type="checkbox" data-id="p4-2"><span class="item-texto">Trocar <code>SEU_N8N_URL</code> nos 4 webhooks do bot<span class="det">Substituir pela URL real do n8n (ex.: <code>https://n8n.clinicalucrativa.ia.br</code>).</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p4-3"><span class="item-texto">Publicar o Typebot e copiar o link público</span></label>
+      <label class="item"><input type="checkbox" data-id="p4-4"><span class="item-texto">Colar o link como CTA nas copies de disparo e no criativo<span class="det">É o link que o cliente abre para quitar sozinho.</span></span></label>
+    </div>
+  </div>
+
+  <!-- FASE 5 -->
+  <div class="fase">
+    <div class="fase-head"><span class="fase-num">5</span><span class="fase-titulo">Testar em sandbox (antes de qualquer disparo real)</span><span class="fase-tag tag-test">Teste</span></div>
+    <div class="fase-body">
+      <div class="nota">Use <b>ASAAS_API_URL de sandbox</b> e seu próprio número/CPF. Não testar com base real.</div>
+      <label class="item"><input type="checkbox" data-id="p5-1"><span class="item-texto">Teste fim a fim do Typebot: abrir o link → informar CPF → ver a dívida → escolher "à vista" → receber o Pix<span class="det">Confirma os 3 webhooks de uma vez.</span></span></label>
+      <label class="item"><input type="checkbox" data-id="p5-2"><span class="item-texto">Teste CPF inexistente → bot encaminha à Karine + evento <code>cpf_nao_localizado</code> no Notion + WhatsApp Karine</span></label>
+      <label class="item"><input type="checkbox" data-id="p5-3"><span class="item-texto">Teste "Quero parcelar" → evento <code>quer_negociar</code> com <b>Lead Quente</b> marcado + alerta Karine</span></label>
+      <label class="item"><input type="checkbox" data-id="p5-4"><span class="item-texto">Teste do disparo: 3 linhas com seu número na aba <code>Perdao_Divida</code> → executar manual → recebe a mensagem OFERTA</span></label>
+      <label class="item"><input type="checkbox" data-id="p5-5"><span class="item-texto">Conferir que o Sheets atualizou <code>fase_pd</code> e <code>status</code> após o disparo</span></label>
+    </div>
+  </div>
+
+  <!-- FASE 6 -->
+  <div class="fase">
+    <div class="fase-head"><span class="fase-num">6</span><span class="fase-titulo">Go-live com aquecimento do número</span><span class="fase-tag tag-go">Go-live</span></div>
+    <div class="fase-body">
+      <div class="critico"><b>Nunca dispare os 761 de uma vez</b> — risco de banir o número. Escalone.</div>
+      <label class="item"><input type="checkbox" data-id="p6-1"><span class="item-texto">Trocar <code>ASAAS_API_URL</code> para produção e reativar workflows</span></label>
+      <label class="item"><input type="checkbox" data-id="p6-2"><span class="item-texto">Dia 1: <code>LIMITE_DIA = 50</code> no nó "Filtrar Elegíveis" do disparo</span></label>
+      <label class="item"><input type="checkbox" data-id="p6-3"><span class="item-texto">Dia 2: <code>LIMITE_DIA = 100</code> (se sem bloqueio)</span></label>
+      <label class="item"><input type="checkbox" data-id="p6-4"><span class="item-texto">Dia 3+: <code>LIMITE_DIA = 150</code> (teto)</span></label>
+      <label class="item"><input type="checkbox" data-id="p6-5"><span class="item-texto">Raquel publica o criativo no status/feed + lista de transmissão (Copy 4)</span></label>
+    </div>
+  </div>
+
+  <!-- FASE 7 -->
+  <div class="fase">
+    <div class="fase-head"><span class="fase-num">7</span><span class="fase-titulo">Acompanhamento diário até 30/06</span><span class="fase-tag tag-go">Operação</span></div>
+    <div class="fase-body">
+      <label class="item"><input type="checkbox" data-id="p7-1"><span class="item-texto">Karine trabalha os leads quentes do Notion (<b>Lead Quente</b> = ✓) — meta ≥4 quitações/dia</span></label>
+      <label class="item"><input type="checkbox" data-id="p7-2"><span class="item-texto">Conferir caixa no Asaas: Recebidas vs meta R$ 20k (gap inicial R$ 17.400)</span></label>
+      <label class="item"><input type="checkbox" data-id="p7-3"><span class="item-texto">Atualizar a barra de meta na matinal do dia</span></label>
+      <label class="item"><input type="checkbox" data-id="p7-4"><span class="item-texto">Marcos-CFO conectado ao Asaas envia caixa diário ao Rogério (até 30/06)</span></label>
+      <label class="item"><input type="checkbox" data-id="p7-5"><span class="item-texto">Fechamento 30/06: consolidar arrecadação + decidir escalar modelo para o Bairro da Paz</span></label>
+    </div>
+  </div>
+
+  <div class="footer">
+    Guia de Implantação · Campanha Perdão de Dívida · SST Card · 16/06/2026<br>
+    Plano: campanha-perdao-divida-2quinzena-junho-2026.md · Workflows: 02-cadencias/
+  </div>
+
+</div>
+
+<script>
+  const KEY = 'sst-perdao-divida-implantacao-v1';
+  const boxes = Array.from(document.querySelectorAll('.item input'));
+  function load(){
+    const saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+    boxes.forEach(b => { if(saved[b.dataset.id]) b.checked = true; });
+    update();
+  }
+  function save(){
+    const data = {};
+    boxes.forEach(b => { if(b.checked) data[b.dataset.id] = true; });
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }
+  function update(){
+    const total = boxes.length;
+    const done = boxes.filter(b => b.checked).length;
+    const pct = total ? Math.round(done/total*100) : 0;
+    document.getElementById('pct').textContent = pct + '%';
+    document.getElementById('barra').style.width = pct + '%';
+    document.getElementById('contador').textContent = done + ' de ' + total + ' concluídos';
+  }
+  boxes.forEach(b => b.addEventListener('change', () => { save(); update(); }));
+  function resetar(){
+    if(confirm('Zerar todo o checklist?')){ localStorage.removeItem(KEY); boxes.forEach(b => b.checked = false); update(); }
+  }
+  load();
+</script>
+</body>
+</html>

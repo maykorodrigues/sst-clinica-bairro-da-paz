@@ -129,6 +129,8 @@ prazo: 30/06/2026
 | **20/06** | Marcos começa a enviar caixa diário ao Rogério |
 | **30/06** | Fechamento da quinzena · RMAR parcial · GO/NO-GO sobre escalar modelo para BP |
 
+> **Guia de implantação interativo:** `02-cadencias/guia-implantacao-perdao-divida.html` (publicado em playbook.ssfcard.ia.br, checklist com progresso salvo via localStorage — 8 fases, da credencial ao fechamento 30/06).
+
 ## 6. Checklist binário (pré-disparo)
 - [ ] Oferta aprovada por Rogério (50% à vista / migração plano)
 - [ ] Base Tenex 761 + 226 Asaas exportadas em CSV
