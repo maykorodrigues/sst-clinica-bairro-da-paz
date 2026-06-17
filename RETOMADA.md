@@ -4,7 +4,36 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 14/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+> Última atualização: 16/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+
+---
+
+## 🔴 PENDENTE PARA 17/06 (manhã) — Alinhar campanha Perdão de Dívida com Rogério
+
+> **CONTEXTO:** Em 15/06 o Rogério mandou áudio cobrando estratégia — a 2ª quinzena estava em **R$ 2.600** e a meta dele é **R$ 20.000** (mínimo, "pagar a despesa do mês"); esticada **R$ 40.000**. Mayko montou a campanha completa, MAS **a reunião marcada para hoje (16/06) não aconteceu — Mayko teve uma urgência e não pôde participar.** A resposta ao Rogério ainda está pendente.
+
+**Ação imediata 17/06 cedo:**
+1. **Enviar a mensagem ao Rogério** (já pronta: `processo-comercial-7dias/mensagem-rogerio-estrategia-perdao-16-06-2026.md` — versão texto + áudio) pedindo 2 decisões: (a) aprovar oferta **quitação 50% à vista**; (b) liberar **base Tenex 761** (export Lucas) + acesso Asaas.
+2. **Reagendar/realizar o alinhamento** que ficou de hoje.
+
+**Diagnóstico do caixa (print Asaas 15/06):** mês com R$ 17.660 recebidas · **R$ 8.532 em 226 boletos aguardando** · R$ 1.217 em 32 vencidas. Gap da quinzena: **R$ 17.400** até 30/06.
+
+**Campanha JÁ CONSTRUÍDA e commitada (`master`, commits 1856089→b643702) — 4 frentes, falta só execução/config:**
+| Entregável | Arquivo | Estado |
+|---|---|---|
+| Plano mestre (4 frentes, funil, cronograma) | `processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md` | ✅ |
+| Mensagem/áudio Rogério | `processo-comercial-7dias/mensagem-rogerio-estrategia-perdao-16-06-2026.md` | ✅ pronta p/ enviar |
+| Matinal 16/06 (barra meta R$20k) | `01-matinais/16-06-2026/roteiro-matinal-16-06-2026.html` | ✅ deployada |
+| Criativo + 4 copies WhatsApp | `processo-comercial-7dias/criativo-perdao-divida-junho-2026.html` | ✅ deployado |
+| Disparo em massa (aquecimento 50→100→150/dia) | `02-cadencias/n8n-perdao-divida-disparo-massa.json` | ✅ |
+| Typebot de quitação (CPF→Asaas→Pix na hora) | `02-cadencias/typebot-quitacao-perdao-divida.json` | ✅ |
+| 3 webhooks Asaas (buscar / gerar 2ª via / evento) | `02-cadencias/n8n-asaas-quitacao-{buscar,gerar-2via,evento}.json` | ✅ |
+| Database Notion "Eventos Quitação" | ID `65a6dcc6c95f4e23bd14dd1798f2391a` (hub SST Clínica) | ✅ criado |
+| Guia de implantação interativo (8 fases) | `02-cadencias/guia-implantacao-perdao-divida.html` | ✅ deployado |
+
+**Falta só (não é código):** OK do Rogério · credenciais `ASAAS_API_*` + `KARINE_WHATSAPP` no n8n · trocar `SEU_N8N_URL` no Typebot · conectar integração `NOTION_TOKEN` ao database. Seguir o guia de implantação.
+
+**Frente 4 (Marcos-CFO → Asaas):** prazo 30/06 — relatório diário de caixa ao Rogério.
 
 ---
 
