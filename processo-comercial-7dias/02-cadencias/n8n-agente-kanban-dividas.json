@@ -1,0 +1,157 @@
+{
+  "name": "SST · Agente IA Kanban de Dívidas (matinal 07h30)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "cronExpression", "expression": "30 7 * * 1-6" }
+          ]
+        }
+      },
+      "id": "cron-0730",
+      "name": "Cron 07h30 (Seg-Sáb)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-1120, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.notion.com/v1/databases/{{$env.NOTION_KANBAN_DB_ID}}/query",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{$env.NOTION_TOKEN}}" },
+            { "name": "Notion-Version", "value": "2022-06-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"page_size\": 100,\n  \"filter\": {\n    \"and\": [\n      { \"property\": \"Status\", \"select\": { \"does_not_equal\": \"💰 Pagou / Recuperado\" } },\n      { \"property\": \"Status\", \"select\": { \"does_not_equal\": \"🧹 Cancelado / Base limpa\" } }\n    ]\n  }\n}",
+        "options": {}
+      },
+      "id": "notion-query",
+      "name": "Notion · Lê o Kanban",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-900, 300]
+    },
+    {
+      "parameters": {
+        "jsType": "javascript",
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Quebra a resposta do Notion em 1 item por card + calcula dias parado e faixa de dívida\nconst hoje = new Date();\nconst out = [];\nfor (const r of ($input.first().json.results || [])) {\n  const p = r.properties || {};\n  const txt = (o) => (o?.rich_text?.[0]?.plain_text) || (o?.title?.[0]?.plain_text) || '';\n  const num = (o) => (o?.number ?? 0);\n  const sel = (o) => (o?.select?.name) || '';\n  const dt  = (o) => (o?.date?.start) || null;\n  const ultima = dt(p['Última interação']);\n  const diasParado = ultima ? Math.floor((hoje - new Date(ultima)) / 86400000) : 999;\n  const parcelas = num(p['Parcelas em atraso']);\n  const faixa = parcelas <= 2 ? 'Leve' : parcelas <= 5 ? 'Média' : 'Alta';\n  out.push({ json: {\n    pageId: r.id,\n    nome: txt(p['Nome']),\n    cpf: txt(p['CPF']),\n    valorDevido: num(p['Valor devido']),\n    parcelas,\n    faixa,\n    origem: sel(p['Origem']),\n    status: sel(p['Status']),\n    dono: sel(p['Dono']),\n    tentativas: num(p['Tentativas']),\n    diasParado,\n    observacoes: txt(p['Observações'])\n  }});\n}\nreturn out;"
+      },
+      "id": "code-prep",
+      "name": "Prepara cards (dias parado + faixa)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-680, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "x-api-key", "value": "={{$env.ANTHROPIC_API_KEY}}" },
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"claude-opus-4-8\",\n  \"max_tokens\": 700,\n  \"system\": \"Você é o Agente de Cobrança do SST Card, operando o Kanban de Dívidas da campanha Perdão de Dívida. Objetivo: transformar a base inadimplente em caixa OU base limpa, regra do Rogério: 'ou traz de volta, ou paga'. Você PREPARA ações (mensagem, oferta, próximo status) e NUNCA envia nada ao cliente. Tom humano, respeitoso, firme; público C/D, linguagem simples. Régua de desconto por parcelas em atraso: 1-2 = sem desconto ou 10%; 3-5 = 40% à vista; 6+ = 50% à vista; legado Tenex sem histórico = oferecer entrar como assinante novo (Boom) sem cobrar dívida. NUNCA ultrapasse a régua. A mensagem conecta: (1) reconhecimento amigável, (2) o que ganha voltando, (3) custo de não resolver (mensalidade segue correndo e crescendo), (4) CTA com link/horário. Se o card já teve 3+ tentativas sem evoluir, recomende novo_status = 'Processo de cancelamento'. Responda SEMPRE só com JSON: {\\\"oferta_sugerida\\\":\\\"...\\\",\\\"mensagem_sugerida\\\":\\\"...\\\",\\\"novo_status\\\":\\\"...\\\",\\\"prioridade\\\":\\\"alta|media|baixa\\\",\\\"motivo\\\":\\\"...\\\"}\",\n  \"messages\": [\n    { \"role\": \"user\", \"content\": \"Card:\\n- Nome: {{$json.nome}}\\n- Valor devido: R$ {{$json.valorDevido}}\\n- Parcelas em atraso: {{$json.parcelas}} (faixa {{$json.faixa}})\\n- Origem: {{$json.origem}}\\n- Status atual: {{$json.status}}\\n- Tentativas: {{$json.tentativas}}\\n- Dias parado: {{$json.diasParado}}\\n- Histórico: {{$json.observacoes}}\\n\\nGere a oferta, a mensagem de WhatsApp e o próximo status.\" }\n  ]\n}",
+        "options": {}
+      },
+      "id": "ai-agent",
+      "name": "Agente IA (Claude) por card",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-460, 300]
+    },
+    {
+      "parameters": {
+        "jsType": "javascript",
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Junta a resposta da IA com os dados do card (vinda do node 'Prepara cards')\nconst card = $('Prepara cards (dias parado + faixa)').item.json;\nlet ai = {};\ntry {\n  const raw = $json.content?.[0]?.text || '{}';\n  ai = JSON.parse(raw.match(/\\{[\\s\\S]*\\}/)?.[0] || '{}');\n} catch (e) { ai = { oferta_sugerida: '', mensagem_sugerida: '', novo_status: card.status, prioridade: 'media', motivo: 'parse-fail' }; }\nreturn { json: { ...card, ...ai } };"
+      },
+      "id": "code-parse",
+      "name": "Parse resposta da IA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-240, 300]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.notion.com/v1/pages/{{$json.pageId}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{$env.NOTION_TOKEN}}" },
+            { "name": "Notion-Version", "value": "2022-06-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"properties\": {\n    \"Oferta sugerida\": { \"rich_text\": [ { \"text\": { \"content\": {{ JSON.stringify($json.oferta_sugerida || '') }} } } ] },\n    \"Mensagem sugerida\": { \"rich_text\": [ { \"text\": { \"content\": {{ JSON.stringify(($json.mensagem_sugerida || '').slice(0,1900)) }} } } ] },\n    \"Status\": { \"select\": { \"name\": {{ JSON.stringify($json.novo_status || $json.status) }} } }\n  }\n}",
+        "options": {}
+      },
+      "id": "notion-update",
+      "name": "Notion · Grava oferta + move card",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-20, 300]
+    },
+    {
+      "parameters": {
+        "jsType": "javascript",
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Monta o resumo matinal a partir de todos os cards processados\nconst items = $input.all().map(i => i.json);\nconst by = (s) => items.filter(c => (c.novo_status || c.status) === s).length;\nconst quentes = items\n  .filter(c => c.prioridade === 'alta')\n  .sort((a,b) => (b.valorDevido||0) - (a.valorDevido||0))\n  .slice(0,5);\nconst parados = items.filter(c => c.diasParado >= 3).length;\nconst data = new Date().toLocaleDateString('pt-BR');\nlet msg = `🏭 KANBAN DE DÍVIDAS — ${data}\\n\\n`;\nmsg += `📊 Pipeline: Triagem ${by('🆕 Triagem')} · Abordagem ${by('📤 Abordagem enviada')} · Negociação ${by('💬 Em negociação')} · Proposta ${by('📄 Proposta enviada')} · Aceitou ${by('✅ Aceitou')}\\n\\n`;\nmsg += `🎯 PRIORIDADES DE HOJE\\n`;\nmsg += `• Karine: ${items.filter(c=>c.dono==='Karine').length} cards\\n`;\nmsg += `• Lucas: ${by('⛔ Processo de cancelamento')} em cancelamento (ligar e encerrar)\\n`;\nmsg += `• Raquel: ${by('🆕 Triagem')} em triagem p/ enriquecer\\n\\n`;\nmsg += `🔥 TOP 5 quentes:\\n`;\nquentes.forEach((c,i) => { msg += `${i+1}. ${c.nome} — R$ ${c.valorDevido} (${c.parcelas}p) — ${c.motivo || ''}\\n`; });\nmsg += `\\n⚠️ ${parados} cards parados há +3 dias → cobrar ou cancelar`;\nreturn [{ json: { resumo: msg, total: items.length } }];"
+      },
+      "id": "code-resumo",
+      "name": "Monta resumo matinal",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{$env.EVOLUTION_API_URL}}/message/sendText/{{$env.EVOLUTION_INSTANCE}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{$env.EVOLUTION_API_KEY}}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{$env.SST_CARD_GROUP_CHAT_ID}}\",\n  \"text\": {{ JSON.stringify($json.resumo) }}\n}",
+        "options": {}
+      },
+      "id": "evolution-send",
+      "name": "WhatsApp · Resumo no grupo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [420, 300]
+    }
+  ],
+  "connections": {
+    "Cron 07h30 (Seg-Sáb)": { "main": [[{ "node": "Notion · Lê o Kanban", "type": "main", "index": 0 }]] },
+    "Notion · Lê o Kanban": { "main": [[{ "node": "Prepara cards (dias parado + faixa)", "type": "main", "index": 0 }]] },
+    "Prepara cards (dias parado + faixa)": { "main": [[{ "node": "Agente IA (Claude) por card", "type": "main", "index": 0 }]] },
+    "Agente IA (Claude) por card": { "main": [[{ "node": "Parse resposta da IA", "type": "main", "index": 0 }]] },
+    "Parse resposta da IA": { "main": [[{ "node": "Notion · Grava oferta + move card", "type": "main", "index": 0 }]] },
+    "Notion · Grava oferta + move card": { "main": [[{ "node": "Monta resumo matinal", "type": "main", "index": 0 }]] },
+    "Monta resumo matinal": { "main": [[{ "node": "WhatsApp · Resumo no grupo", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}
