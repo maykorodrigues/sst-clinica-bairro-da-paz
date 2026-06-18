@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matinal SST Card — 18/06/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1987c3; --azul-escuro: #0c4a6e; --verde: #16a34a; --vermelho: #dc2626;
+    --laranja: #d97706; --roxo: #7c3aed; --bg: #0d1117; --surface: #161b22;
+    --surface2: #21262d; --border: #30363d; --text: #e6edf3; --muted: #8b949e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 100%); padding: 32px 24px 28px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 0, transparent 50%) center / 20px 20px; }
+  .header-badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; position: relative; }
+  .header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; line-height: 1.1; margin-bottom: 8px; position: relative; }
+  .header-sub { font-size: 13px; opacity: 0.75; position: relative; }
+  .countdown { margin-top: 16px; display: inline-flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; position: relative; }
+  .countdown-num { font-size: 22px; font-weight: 900; color: #fff; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  .secao { margin-bottom: 20px; }
+  .secao-titulo { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .secao-titulo::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* BANNER OK ROGÉRIO */
+  .banner-ok { background: linear-gradient(135deg, #064e3b, #16a34a); border: 1px solid #16a34a; border-radius: 14px; padding: 18px 22px; margin-bottom: 20px; display: flex; gap: 14px; align-items: flex-start; }
+  .banner-ok .icone { font-size: 28px; line-height: 1; }
+  .banner-ok h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+  .banner-ok p { font-size: 13px; color: #d1fae5; }
+
+  /* BARRA DE META */
+  .meta-hero { background: linear-gradient(135deg, #0c4a6e, #1987c3); border: 1px solid #1987c3; border-radius: 14px; padding: 22px 24px; margin-bottom: 20px; }
+  .meta-hero h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+  .meta-hero .sub { font-size: 13px; color: #cfe6f5; margin-bottom: 16px; }
+  .barra { background: rgba(0,0,0,0.3); border-radius: 30px; height: 34px; overflow: hidden; position: relative; }
+  .barra-fill { background: linear-gradient(90deg, #16a34a, #4ade80); height: 100%; width: 13%; border-radius: 30px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 12px; font-weight: 900; color: #052e16; }
+  .barra-labels { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; font-weight: 700; }
+  .barra-labels .atual { color: #4ade80; }
+  .barra-labels .gap { color: #fbbf24; }
+  .barra-labels .meta { color: #fff; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--surface2); color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 10px; text-align: left; }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .ok { color: #4ade80; font-weight: 700; }
+  .alerta { color: #fbbf24; font-weight: 700; }
+  .critico { color: #f87171; font-weight: 700; }
+  .neutro { color: var(--muted); }
+
+  .meta-bloco { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--azul); border-radius: 0 10px 10px 0; padding: 14px 16px; margin-bottom: 10px; }
+  .meta-bloco.verde { border-left-color: var(--verde); }
+  .meta-bloco.roxo { border-left-color: var(--roxo); }
+  .meta-bloco.laranja { border-left-color: var(--laranja); }
+  .meta-bloco.indigo { border-left-color: #a5b4fc; }
+  .meta-pessoa { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .meta-lista { list-style: none; }
+  .meta-lista li { font-size: 13px; color: #c9d1d9; padding: 3px 0; padding-left: 16px; position: relative; }
+  .meta-lista li::before { content: '▸'; position: absolute; left: 0; color: var(--muted); }
+  .meta-num { font-weight: 700; color: var(--text); }
+
+  .pergunta { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+  .pergunta-num { background: var(--azul); color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; flex-shrink: 0; margin-top: 2px; }
+  .pergunta-num.crit { background: var(--vermelho); }
+  .pergunta-texto { font-size: 14px; color: var(--text); }
+  .pergunta-detalhe { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .tag { display: inline-block; border-radius: 5px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+  .tag-crit { background: rgba(220,38,38,0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.35); }
+  .tag-ok { background: rgba(22,163,74,0.15); color: #4ade80; border: 1px solid rgba(22,163,74,0.35); }
+
+  .frente { background: rgba(25,135,195,0.06); border: 1px solid rgba(25,135,195,0.3); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .frente h3 { font-size: 14px; font-weight: 700; color: #93c5fd; margin-bottom: 6px; }
+  .frente p { font-size: 13px; color: #c9d1d9; }
+  .frente .status-frente { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-radius: 5px; padding: 2px 8px; margin-left: 6px; vertical-align: middle; }
+  .frente .status-frente.no-ar { background: rgba(22,163,74,0.18); color: #4ade80; }
+  .frente .status-frente.config { background: rgba(217,119,6,0.18); color: #fbbf24; }
+
+  .roteiro-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .roteiro-item:last-child { border-bottom: none; }
+  .roteiro-min { background: var(--azul); color: white; border-radius: 6px; padding: 3px 9px; font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .roteiro-min.verde { background: var(--verde); }
+  .roteiro-min.laranja { background: var(--laranja); }
+  .roteiro-texto { font-size: 14px; color: var(--text); }
+  .roteiro-texto strong { color: white; }
+  .roteiro-texto .citacao { color: #93c5fd; font-style: italic; font-size: 13px; display: block; margin-top: 4px; }
+
+  .footer { text-align: center; font-size: 11px; color: var(--muted); margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Matinal · Quinta · Campanha no ar</div>
+  <h1>18 de Junho de 2026</h1>
+  <p class="header-sub">SST Card · Simões Filho/BA · Advisor: Mayko Rodrigues</p>
+  <div class="countdown">
+    <span class="countdown-num">13</span>&nbsp;dias para a inauguração do <strong>Bairro da Paz</strong> · 01/07
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- BANNER OK ROGÉRIO -->
+  <div class="banner-ok">
+    <div class="icone">✅</div>
+    <div>
+      <h2>O SIM saiu: Rogério aprovou tudo (17/06)</h2>
+      <p>Oferta de <strong>quitação 50% à vista</strong> aprovada + <strong>base Tenex 761</strong> e acesso ao <strong>Asaas</strong> liberados. Acabaram as travas de decisão. A partir de hoje, o que segura o caixa é só execução — e isso é com a gente.</p>
+    </div>
+  </div>
+
+  <!-- META DA QUINZENA -->
+  <div class="meta-hero">
+    <h2>🎯 Meta da 2ª quinzena: R$ 20.000 arrecadados até 30/06</h2>
+    <p class="sub">Recebido na quinzena até agora: <strong>R$ 2.600</strong> — ainda parado desde 16/06. A oferta foi aprovada ontem, mas <strong>o disparo ainda não foi pro ar</strong>. Faltam 12 dias. Hoje é o 1º dia de execução de verdade.</p>
+    <div class="barra">
+      <div class="barra-fill">R$ 2.600</div>
+    </div>
+    <div class="barra-labels">
+      <span class="atual">▲ R$ 2.600 (13%)</span>
+      <span class="gap">faltam R$ 17.400</span>
+      <span class="meta">Meta R$ 20.000</span>
+    </div>
+  </div>
+
+  <!-- DE ONDE SAI O DINHEIRO -->
+  <div class="secao">
+    <div class="secao-titulo">De onde sai o dinheiro (situação Asaas — este mês)</div>
+    <div class="card">
+      <table>
+        <tr><th>Fonte</th><th>Disponível</th><th>Caixa realista</th><th>Ação</th></tr>
+        <tr><td>🟠 Boletos aguardando (226)</td><td>R$ 8.532</td><td class="ok">~R$ 5.100</td><td>Lembrete D+0/3/7 — só falta pagar</td></tr>
+        <tr><td>🔴 Vencidas recentes (32)</td><td>R$ 1.217</td><td class="ok">~R$ 670</td><td>Cobrança ativa + 2ª via</td></tr>
+        <tr><td>🔵 Confirmadas (liquidando)</td><td>R$ 2.069</td><td class="ok">~R$ 2.069</td><td>Já entra</td></tr>
+        <tr><td>⚡ Base Tenex (761) — perdão 50% à vista</td><td>alto</td><td class="ok">~R$ 8.000</td><td><span class="ok">✓ liberada</span> → disparo em massa (caixa imediato)</td></tr>
+        <tr><td>🆕 Novas adesões (Karine)</td><td>—</td><td class="ok">~R$ 2.000</td><td>Adesão R$35 + 1ª mensalidade</td></tr>
+        <tr><td><strong>TOTAL realista da quinzena</strong></td><td></td><td class="ok"><strong>~R$ 18–20k</strong></td><td>Atinge a meta com execução agressiva</td></tr>
+      </table>
+      <p style="font-size:12px; color: var(--muted); margin-top:10px;">Maior alavanca: <strong>Tenex à vista + 226 boletos parados</strong> = ~R$ 13k de caixa novo. Com a base já liberada, a única coisa entre nós e esse dinheiro é colocar o disparo no ar <strong>hoje</strong>.</p>
+    </div>
+  </div>
+
+  <!-- AS 4 FRENTES -->
+  <div class="secao">
+    <div class="secao-titulo">Campanha Perdão de Dívida — 4 frentes (status hoje)</div>
+    <div class="frente">
+      <h3>1 · Marketing/Comunicação + Disparos <span class="status-frente config">configurar p/ disparar</span></h3>
+      <p>Base Tenex liberada ✓. Falta: Lucas entregar o CSV (nome, WhatsApp, valor) → importar no Notion → ligar o workflow n8n e disparar a 1ª leva de <strong>50/dia</strong> (aquecendo 50→100→150). Criativo "50% à vista até 30/06" no status e nos disparos. <strong>JSON pronto: <code>02-cadencias/n8n-perdao-divida-disparo-massa.json</code></strong></p>
+    </div>
+    <div class="frente">
+      <h3>2 · SDR / Qualificadora de Cobrança <span class="status-frente config">configurar credenciais</span></h3>
+      <p>Typebot de quitação (CPF → busca Asaas → gera Pix na hora) + 3 webhooks. Falta plugar <code>ASAAS_API_*</code>, <code>KARINE_WHATSAPP</code> e <code>SEU_N8N_URL</code>. Webhook Chatwoot classifica respostas (quer pagar / negocia / recusa). Karine só recebe os <strong>quentes</strong>.</p>
+    </div>
+    <div class="frente">
+      <h3>3 · CRM / Closer — Karine <span class="status-frente no-ar">pode rodar já</span></h3>
+      <p>Não depende do disparo para começar: trabalhar os <strong>226 boletos + 32 vencidas</strong> hoje. Meta/dia: 15 contatos quentes → ≥4 quitações à vista + ≥3 renegociações + ≥2 adesões. Pipeline limpo no Notion (até "Recuperado").</p>
+    </div>
+    <div class="frente">
+      <h3>4 · Plataforma Marcos (CFO) <span class="status-frente config">conectar Asaas</span></h3>
+      <p>Conectar Marcos ao Asaas → relatório diário de caixa no WhatsApp do Rogério às 18h ("entrou X, faltam Y para os R$ 20k"). Prazo de finalização: 30/06.</p>
+    </div>
+  </div>
+
+  <!-- METAS DO DIA POR PESSOA -->
+  <div class="secao">
+    <div class="secao-titulo">Foco do dia 18/06 — colocar o disparo no ar</div>
+
+    <div class="meta-bloco indigo">
+      <div class="meta-pessoa" style="color: #a5b4fc">Mayko — Advisor</div>
+      <ul class="meta-lista">
+        <li>Plugar credenciais reais no n8n: <span class="meta-num">ASAAS_API_*</span> · <span class="meta-num">KARINE_WHATSAPP</span> · <span class="meta-num">NOTION_TOKEN</span> + trocar <span class="meta-num">SEU_N8N_URL</span> no Typebot</li>
+        <li>Importar a base do Lucas no Notion e <span class="meta-num">disparar a 1ª leva (50)</span> ainda hoje</li>
+        <li>Conectar <span class="meta-num">Marcos-CFO → Asaas</span> (caixa diário automático às 18h)</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco laranja">
+      <div class="meta-pessoa" style="color: var(--laranja)">Lucas — Customer Success <span class="tag tag-crit" style="margin-left:6px;">Gargalo do dia</span></div>
+      <ul class="meta-lista">
+        <li>Exportar a <span class="meta-num">base Tenex 761</span> (nome, WhatsApp, valor, parcelas) em CSV — <strong>insumo nº 1, sem ela o disparo não roda</strong></li>
+        <li>Entregar até as <span class="meta-num">12h</span> para o Mayko importar e disparar à tarde</li>
+        <li>Apoiar onboarding/reativação dos que quitarem</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco">
+      <div class="meta-pessoa" style="color: var(--azul)">Karine — Comercial/Cobrança</div>
+      <ul class="meta-lista">
+        <li>Começar JÁ pelos <span class="meta-num">226 boletos aguardando</span> (não dependem do disparo) — meta ≥4 quitações</li>
+        <li>Cobrar as <span class="meta-num">32 vencidas</span> com 2ª via</li>
+        <li>Receber e fechar os <span class="meta-num">quentes</span> que o disparo gerar</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco roxo">
+      <div class="meta-pessoa" style="color: var(--roxo)">Raquel — SDR/Campo</div>
+      <ul class="meta-lista">
+        <li>Publicar o <span class="meta-num">criativo "50% à vista até 30/06"</span> no status/feed</li>
+        <li>Disparar a <span class="meta-num">lista de transmissão</span> (Copy 4) para inadimplentes</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco verde">
+      <div class="meta-pessoa" style="color: var(--verde)">Rogério — Gestor / Sponsor</div>
+      <ul class="meta-lista">
+        <li>Parte dele <span class="meta-num">já está feita ✓</span> — hoje só acompanha o caixa às 18h (relatório Marcos)</li>
+        <li>Seguir destravando <span class="meta-num">VISA/alvará</span> e obra (pré-condições do piloto BP)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ROTEIRO DA REUNIÃO -->
+  <div class="secao">
+    <div class="secao-titulo">Roteiro — 15 minutos (08h00–08h15)</div>
+    <div class="card" style="padding:0; overflow:hidden; border:none; background:transparent;">
+      <div class="roteiro-item">
+        <div class="roteiro-min verde">00–03</div>
+        <div class="roteiro-texto"><strong>Abertura — conquistamos o SIM</strong>
+          <span class="citacao">"Ontem o Rogério aprovou a oferta e liberou a base. Acabou a fase de pedir autorização. Hoje a gente faz o disparo ir pro ar — e o caixa começar a se mexer."</span></div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min">03–08</div>
+        <div class="roteiro-texto"><strong>O que falta pra disparar HOJE</strong>
+          <span class="citacao">Lucas entrega a base até 12h → Mayko pluga credenciais e dispara 50 à tarde. Karine não espera: já começa pelos 226 boletos.</span></div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min laranja">08–13</div>
+        <div class="roteiro-texto"><strong>Metas do dia por pessoa</strong>
+          <span class="citacao">Lucas: base CSV até 12h | Mayko: credenciais + 1ª leva | Karine: 226 boletos (≥4 quitações) | Raquel: status + transmissão</span></div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min verde">13–15</div>
+        <div class="roteiro-texto"><strong>Encerramento</strong>
+          <span class="citacao">"Simões Filho é o laboratório. O que provar aqui na cobrança, a gente leva pronto pro Bairro da Paz daqui a 13 dias."</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOQUEIOS QUE PRECISAM CAIR HOJE -->
+  <div class="secao">
+    <div class="secao-titulo">Bloqueios que precisam cair hoje (p/ o disparo sair)</div>
+    <div class="pergunta">
+      <div class="pergunta-num crit">1</div>
+      <div>
+        <div class="pergunta-texto"><strong>Lucas exporta a base Tenex 761 em CSV até 12h?</strong></div>
+        <div class="pergunta-detalhe">Nome + WhatsApp + valor + parcelas. Sem ela, não há disparo em massa. <span class="tag tag-crit">Gargalo nº 1</span></div>
+      </div>
+    </div>
+    <div class="pergunta">
+      <div class="pergunta-num crit">2</div>
+      <div>
+        <div class="pergunta-texto"><strong>Credenciais Asaas + Karine + Notion plugadas no n8n / Typebot?</strong></div>
+        <div class="pergunta-detalhe"><code>ASAAS_API_*</code>, <code>KARINE_WHATSAPP</code>, <code>NOTION_TOKEN</code>, <code>SEU_N8N_URL</code>. Última milha técnica antes do disparo. <span class="tag tag-crit">Mayko</span></div>
+      </div>
+    </div>
+    <div class="pergunta">
+      <div class="pergunta-num">3</div>
+      <div>
+        <div class="pergunta-texto"><strong>Karine já está nos 226 boletos, sem esperar o disparo?</strong></div>
+        <div class="pergunta-detalhe">Essa frente independe da automação e já pode gerar caixa hoje de manhã. <span class="tag tag-ok">Pode rodar já</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANTADA DO DIA -->
+  <div class="card" style="border-color: #fbbf24; background: rgba(251,191,36,0.05);">
+    <div class="secao-titulo" style="margin-bottom:8px;">Cantada do dia</div>
+    <p style="font-size:16px; font-weight:700; color:#fbbf24; font-style:italic; line-height:1.4;">
+      "O 'sim' do Rogério não vale nada parado num áudio. Vale quando vira Pix na conta. A base está liberada, a oferta aprovada, 761 portas destrancadas — agora só falta a gente bater. Hoje o disparo vai pro ar."
+    </p>
+  </div>
+
+  <div class="footer">
+    Matinal SST Card · 18/06/2026 · Mayko Rodrigues Advisor<br>
+    Plano completo: processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md
+  </div>
+
+</div>
+</body>
+</html>
