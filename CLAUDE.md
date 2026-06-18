@@ -8,16 +8,16 @@ Consultoria comercial ativa para **Rogério Ferreira** (SST Clínica / SST Card)
 
 O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório em Markdown, espelhado no Notion e executado via WhatsApp + n8n.
 
-**Status do Projeto (09/06/2026):**
+**Status do Projeto (17/06/2026):**
 - ✅ **Advisory assinado** em 01/05/2026 (contrato R$30k validado)
-- ✅ **Bairro da Paz** — contrato assinado, inauguração oficial **01/07/2026** (22 dias)
+- ✅ **Bairro da Paz** — contrato assinado, inauguração oficial **01/07/2026** (14 dias)
 - ✅ **Precificação redefinida** (02/06): Individual R$39,90 + Família R$64,90 + Adesão R$35 — ver Decisões Estratégicas no `RETOMADA.md`
 - ✅ **Grande Automação MADIP** — 9 automações mapeadas (05/06); A1–A5 com JSONs prontos, A6–A9 até 13/06 — ver `02-cadencias/GRANDE-AUTOMACAO-MADIP.md`
-- ✅ **RMAR Abril-Maio** — gerado 09/06 via `gerar_rmar_sst.py` com dados reais (24 adesões abr → 35 mai, +45%)
-- 🔄 **Campanha Perdão de Dívida** — 761 contas Tenex em atraso (foco operacional)
+- ✅ **RMAR Abril-Maio** — gerado 08/06 via `gerar_rmar_sst.py` com dados reais (24 adesões abr → 35 mai, +45%)
+- 🔴 **Campanha Perdão de Dívida (2ª quinzena junho)** — FOCO OPERACIONAL ATUAL. Meta R$20k (esticada R$40k), gap ~R$17,4k até 30/06 sobre as 761 contas Tenex em atraso. Tudo construído e commitado (plano, disparo em massa n8n, Typebot quitação Asaas, 3 webhooks Asaas, database Notion `65a6dcc6...`, guia de implantação). **Falta só: OK do Rogério + credenciais `ASAAS_API_*`/`KARINE_WHATSAPP` no n8n + conectar `NOTION_TOKEN`.** Ver `RETOMADA.md` e `processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md`
 - 🔄 **Transição PJ equipe** — contratos Lucas/Karine/Raquel em andamento (`processo-comercial-7dias/transicao-pj-equipe-sst.md`)
-- 🔄 **VISA Salvador + alvará** — entrada prevista 30/05 (CRÍTICO — aguardando confirmação Rogério)
-- 👤 **RH Closer Bairro da Paz** — **Safira Letícia Souza Pereira** é a única e principal candidata. Aprovada na fase comportamental (11/06) → aguarda fase 2 (competências, presencial com Rogério). Possível futura gestora. Ver `rh-closer/scoring-safira-11-06-2026.md`
+- 🔄 **VISA Salvador + alvará** — entrada estava prevista 30/05 e venceu o prazo; reconfirmar status com Rogério (ver `memory/pendencias_criticas_09-06-2026.md`)
+- 👤 **RH Closer Bairro da Paz** — **Safira Letícia Souza Pereira** é a principal candidata (aprovada na fase comportamental 11/06 → aguarda fase 2 de competências, presencial com Rogério; possível futura gestora). **Já não é única**: desde 15/06 há também **Vanesca Nascimento** (mora no Bairro da Paz, sem experiência no produto) — guia de entrevista + scoring commitados. Etapa decisiva: teste de campo com 2–3 candidatos. Ver `rh-closer/`
 - ℹ️ **Roni** — funcionário do RH da SST (irmão e indicação do Rogério); apoia as funções de Recursos Humanos. **NÃO é candidato a closer** (registro histórico de 22/05 foi um mal-entendido)
 - 👤 **RH Clínica** — processo seletivo coordenadora clínica em `rh-clinica/` (aprovação salário pendente Rogério)
 - 📊 **Playbook web** — https://playbook.ssfcard.ia.br (Vercel + Cloudflare)
@@ -51,6 +51,10 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | `processo-comercial-7dias/transicao-pj-equipe-sst.md` | Documento de transição PJ: proposta, roteiro individual por pessoa, escada de comissões |
 | `processo-comercial-7dias/reuniao-transicao-pj-roteiro.html` | Roteiro HTML da reunião de transição PJ → publicado em playbook.ssfcard.ia.br |
 | `processo-comercial-7dias/cronograma-inauguracao-01-07-2026.md` | Cronograma detalhado marcos da inauguração Bairro da Paz |
+| `processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md` | **Plano mestre da Campanha Perdão de Dívida** (4 frentes, funil, cronograma) — frente operacional atual |
+| `processo-comercial-7dias/mensagem-rogerio-estrategia-perdao-16-06-2026.md` | Mensagem/áudio pronta para Rogério pedir OK da oferta de quitação + liberar base Tenex/Asaas |
+| `processo-comercial-7dias/criativo-perdao-divida-junho-2026.html` | Criativo + 4 copies WhatsApp da campanha (deployado no playbook) |
+| `processo-comercial-7dias/02-cadencias/guia-implantacao-perdao-divida.html` | Guia de implantação interativo da campanha (8 fases, dark theme) |
 | `RMA-MAIO-2026-INDICE.md` | Índice do RMA com links para todas as seções |
 | `RMA-MAIO-2026-NOTAS-APRESENTADOR.md` | Notas do apresentador slide a slide para RMA ao vivo |
 | `RMA-MAIO-2026-RESUMO-EXECUTIVO.md` | Resumo executivo 1 página — decisão rápida do Rogério |
@@ -76,7 +80,8 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | **Karine** | Comercial/Financeiro | Gargalo central — tudo passa por ela. Motivação real: aprender para o negócio próprio (buffet) |
 | **Raquel** | Marketing | 20 anos, logística, funciona como SDR. Cadência atual: 2 toques → abandonar (precisa de 7) |
 | **Lucas** | Customer Success/Onboarding | Afastado por saúde — consultoria preparou apresentação CS em `lucas-cs/` |
-| **Safira Letícia Souza Pereira** | Closer Bairro da Paz (candidata única) | Perfil hunter PJ; aprovada na fase comportamental 11/06, aguarda fase 2 (competências). Possível futura gestora. `rh-closer/` |
+| **Safira Letícia Souza Pereira** | Closer Bairro da Paz (principal candidata) | Perfil hunter PJ; aprovada na fase comportamental 11/06, aguarda fase 2 (competências). Possível futura gestora. **Não é mais a única** — ver Vanesca abaixo. `rh-closer/` |
+| **Vanesca Nascimento** | Closer Bairro da Paz (2ª candidata) | Entrevista 15/06; mora no Bairro da Paz, sem experiência no produto. Guia de entrevista + scoring em `rh-closer/`. Etapa decisiva: teste de campo com 2–3 candidatos. |
 | **Roni** | Funcionário do RH (irmão/indicação do Rogério) | Apoia funções de Recursos Humanos. **Não é candidato a closer.** |
 | **Aline Souza** | Gestora lab. MADIP | Frente secundária de consultoria — sessões em `aline-laboratorio/` |
 
@@ -397,8 +402,18 @@ Localização principal: `processo-comercial-7dias/02-cadencias/`
 | — | `rh-closer/n8n-workflow-candidatura-closer.json` | Recebe candidatura Typebot → notifica Rogério + Mayko via WhatsApp | ✅ |
 | — | `pesquisa-satisfacao-sponsor/n8n-workflow-satisfacao-rogerio.json` | Semáforo pós-pesquisa → decide se Mayko liga antes do vencimento | ✅ |
 
+**Campanha Perdão de Dívida (2ª quinzena junho/2026)** — automações em `02-cadencias/`. Guia interativo: `02-cadencias/guia-implantacao-perdao-divida.html` (8 fases). Plano mestre: `processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md`.
+
+| Arquivo JSON | O que faz | Estado |
+|---|---|---|
+| `n8n-perdao-divida-disparo-massa.json` | Disparo em massa WhatsApp com aquecimento 50→100→150/dia sobre as 761 contas Tenex | ✅ Pronto |
+| `typebot-quitacao-perdao-divida.json` | Typebot de quitação: CPF → busca Asaas → gera Pix na hora | ✅ Pronto |
+| `n8n-asaas-quitacao-buscar.json` | Webhook 1 — busca débito do CPF no Asaas | ✅ Pronto |
+| `n8n-asaas-quitacao-gerar-2via.json` | Webhook 2 — gera 2ª via / Pix de quitação 50% | ✅ Pronto |
+| `n8n-asaas-quitacao-evento.json` | Webhook 3 — recebe evento Asaas → grava no database Notion "Eventos Quitação" (`65a6dcc6c95f4e23bd14dd1798f2391a`) | ✅ Pronto |
+
 **Variáveis de ambiente necessárias (configurar antes de implantar):**
-`ANTHROPIC_API_KEY` · `NOTION_TOKEN` · `NOTION_PARCIAIS_DB_ID` · `NOTION_CLINICA_DB_ID` · `CHATWOOT_API_KEY` · `EVOLUTION_API_URL` · `EVOLUTION_API_KEY` · `EVOLUTION_INSTANCE` · `SST_CARD_GROUP_CHAT_ID` · `SHEETS_COBRANCA_ID` · `SHEETS_AGENDA_ID`
+`ANTHROPIC_API_KEY` · `NOTION_TOKEN` · `NOTION_PARCIAIS_DB_ID` · `NOTION_CLINICA_DB_ID` · `CHATWOOT_API_KEY` · `EVOLUTION_API_URL` · `EVOLUTION_API_KEY` · `EVOLUTION_INSTANCE` · `SST_CARD_GROUP_CHAT_ID` · `SHEETS_COBRANCA_ID` · `SHEETS_AGENDA_ID` · `ASAAS_API_KEY` · `ASAAS_API_URL` · `KARINE_WHATSAPP` (campanha Perdão de Dívida)
 
 Setup do group-parser: ver `02-cadencias/SETUP-sst-group-parser.md`.
 
