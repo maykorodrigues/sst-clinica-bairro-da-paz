@@ -36,43 +36,49 @@ O agente **não envia mensagem sozinho** (decisão de governança): ele **prepar
 
 ---
 
-## 2. Schema do Kanban (estende a pipeline existente)
+## 2. Schema do Kanban (pipeline existente — ✅ provisionado via MCP em 18/06)
 
-Pipeline base: **🎯 Pipeline Ativa — Karine | Cobranças SST Card** (`138f7d78-0ea6-423d-babc-2f5a1fe0092b`).
+Pipeline base: **🎯 Pipeline Ativa — Karine | Cobranças SST Card** (`138f7d78-0ea6-423d-babc-2f5a1fe0092b` · data source `e819fdee-322b-4cd5-a9b5-208bd30f14e1`).
 
-### Status (colunas do kanban) — alinhadas à máquina
+> ⚠️ **Use os nomes REAIS das propriedades** (abaixo) — o workflow n8n já está alinhado a eles. Não invente "Valor devido"/"Dono": a pipeline usa `Valor em Aberto` e `Responsável`.
 
-| Ordem | Status | Dono | Significado |
+### Status (coluna `Status`) — fluxo alinhado à máquina
+
+| Etapa | Valor real no Notion | Dono | Significado |
 |---|---|---|---|
-| 1 | 🆕 **Triagem** | Raquel | Entrou na base; falta enriquecer contato/qualificar dívida |
-| 2 | 📤 **Abordagem enviada** | Karine | 1ª mensagem disparada, aguardando resposta |
-| 3 | 💬 **Em negociação** | Karine | Respondeu, conversa ativa |
-| 4 | 📄 **Proposta enviada** | Karine | Oferta + link de pagamento enviados |
-| 5 | ✅ **Aceitou** | Karine | Vai pagar (aguardando Pix/boleto cair) |
-| 6 | 💰 **Pagou / Recuperado** | Karine | **Caixa!** Recuperado ou reativado |
-| 7 | ⛔ **Processo de cancelamento** | Lucas | 3 tentativas sem evoluir → cobrança/encerramento |
-| 8 | 🧹 **Cancelado / Base limpa** | Lucas | Encerrado (pagou multa OU saiu da base) |
+| 1 | **Para Contatar** | Karine | Entrou na base, ainda não abordado |
+| 2 | **Mensagem Enviada** | Karine | 1ª mensagem disparada |
+| 3 | **Respondeu** | Karine | Cliente respondeu |
+| 4 | **Em Negociação** | Karine | Conversa ativa |
+| 5 | **Proposta Enviada** | Karine | Oferta + link enviados |
+| 6 | **Recuperado** | Karine | **Caixa!** pagou/reativou (saída ✅) |
+| — | **Sem Resposta** | Raquel | Não respondeu → enriquecer |
+| 7 | **Processo de Cancelamento** 🆕 | Lucas | 3 tentativas sem evoluir → cobrança/encerramento |
+| 8 | **Cancelado / Base Limpa** 🆕 | Lucas | Encerrado (saída 🧹) |
+| — | Recusou · Encaminhar Serasa | — | terminais existentes |
 
-### Propriedades necessárias
+> 🆕 = status criados em 18/06 para a lane do Lucas (os demais já existiam).
 
-| Propriedade | Tipo | Uso |
-|---|---|---|
-| Nome | title | — |
-| CPF | text | chave de enriquecimento + busca Asaas |
-| Telefone | phone | canal principal |
-| E-mail | email | canal secundário |
-| Valor devido | number | base da régua de oferta |
-| Parcelas em atraso | number | faixa de dívida |
-| Origem | select | Tenex (legado) / Boom (novo) |
-| Dono | select | Karine / Lucas / Raquel |
-| Status | select | as 8 colunas acima |
-| Última interação | date | usado para detectar "parado" |
-| Tentativas | number | conta toques (meta 7) |
-| Oferta sugerida | text | preenchido pelo agente |
-| Mensagem sugerida | text | preenchido pelo agente |
-| ID Chatwoot | text | liga ao webhook tempo real |
-| Canal | select | WhatsApp / Ligação / E-mail / Presencial |
-| Observações | text | histórico |
+### Propriedades (nomes reais) — ✅ todas presentes
+
+| Propriedade (real) | Tipo | Uso | Status |
+|---|---|---|---|
+| Nome | title | — | já existia |
+| Telefone | phone_number | canal principal | já existia |
+| Valor em Aberto | number | base da régua de oferta | já existia |
+| Parcelas em Atraso | number | faixa de dívida | já existia |
+| Origem | select | BOOM / Tenex 1-2/3-4/5+ parc / Novo Lead | já existia |
+| Responsável | select | Karine / Rogério / Raquel / N8N Bot / **Lucas** 🆕 | Lucas add 18/06 |
+| Status | select | ver tabela acima | 2 add 18/06 |
+| Data Último Contato | date | detectar "parado" | já existia |
+| Tentativas de Contato | number | conta toques (meta 7) | já existia |
+| Via Pagamento | select | PIX / Cartão / Dinheiro / Não Pago (mix) | já existia |
+| ID Chatwoot | text | liga ao webhook tempo real | já existia |
+| Canal · Observações · Oferta Feita · Plano Atual · Próxima Ação | vários | apoio | já existia |
+| **CPF** 🆕 | text | chave de enriquecimento + busca Asaas | add 18/06 |
+| **E-mail** 🆕 | email | canal secundário | add 18/06 |
+| **Oferta Sugerida** 🆕 | text | preenchido pelo agente | add 18/06 |
+| **Mensagem Sugerida** 🆕 | text | preenchido pelo agente | add 18/06 |
 
 ---
 
@@ -146,7 +152,9 @@ Princípios:
   Legado Tenex sem histórico → oferecer entrar como assinante novo (Boom), sem cobrar dívida.
 - A mensagem sempre conecta: (1) reconhecimento amigável, (2) o que ela ganha voltando,
   (3) o custo de não resolver (mensalidade segue correndo e crescendo), (4) CTA com link/horário.
-- Se o card já teve 3 tentativas sem evoluir, recomende mover para "Processo de cancelamento".
+- novo_status deve ser um valor EXATO da pipeline: "Mensagem Enviada", "Em Negociação",
+  "Proposta Enviada", "Processo de Cancelamento" — ou manter o atual.
+- Se o card já teve 3+ tentativas sem evoluir, recomende novo_status = "Processo de Cancelamento".
 
 Responda SEMPRE em JSON:
 { "oferta_sugerida": "...", "mensagem_sugerida": "...", "novo_status": "...",
@@ -192,8 +200,8 @@ Nós (todos com lógica em Code + HTTP Request à API do Notion — padrão robu
 ## 8. Implantação (passos)
 
 - [ ] **Rogério crava a régua de oferta** (seção 3) — pré-requisito que destrava tudo.
-- [ ] Garantir as propriedades da seção 2 na pipeline `138f7d78...` (criar as que faltam).
-- [ ] Subir as planilhas da Karine (28/04 + anotações) no kanban com `Valor devido` e `Parcelas`.
+- [x] ~~Provisionar as propriedades na pipeline `138f7d78...`~~ — ✅ feito via MCP em 18/06 (CPF, E-mail, Oferta Sugerida, Mensagem Sugerida + Lucas em Responsável + 2 status da lane do Lucas).
+- [ ] Subir as planilhas da Karine (28/04 + anotações) no kanban com `Valor em Aberto` e `Parcelas em Atraso`.
 - [ ] Importar `n8n-agente-kanban-dividas.json` no n8n e configurar as env vars.
 - [ ] Rodar manual 1x com 5 cards de teste → conferir oferta/mensagem/status.
 - [ ] Ligar o cron 07h30 e validar o resumo no grupo.
