@@ -4,7 +4,7 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 16/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+> Última atualização: 17/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
 
 ---
 
@@ -34,6 +34,21 @@ tags: [em-progresso]
 **Falta só (não é código):** OK do Rogério · credenciais `ASAAS_API_*` + `KARINE_WHATSAPP` no n8n · trocar `SEU_N8N_URL` no Typebot · conectar integração `NOTION_TOKEN` ao database. Seguir o guia de implantação.
 
 **Frente 4 (Marcos-CFO → Asaas):** prazo 30/06 — relatório diário de caixa ao Rogério.
+
+---
+
+## Sessão 17/06/2026 — Manutenção do CLAUDE.md (sincronização de estado)
+
+Auditoria do `CLAUDE.md` do projeto via `/init` — correções factuais entre o documentado e o estado real de 17/06. **Commit `1959b6e`, pushed para `origin/master`.**
+
+| Correção | Detalhe |
+|---|---|
+| Bloco de Status | Data 09/06 → 17/06; inauguração "22 dias" → "14 dias"; RMAR "09/06" → 08/06; Campanha Perdão de Dívida promovida a 🔴 foco atual; VISA marcado como prazo vencido a reconfirmar |
+| Personas — Closer | **Safira deixa de ser "única candidata".** Adicionada **Vanesca Nascimento** como 2ª candidata (entrevista 15/06; mora no Bairro da Paz, sem experiência no produto). Etapa decisiva: teste de campo com 2–3 candidatos. Ver `rh-closer/` |
+| Workflows n8n | Novo bloco com os 5 JSONs da campanha (disparo em massa, Typebot quitação, 3 webhooks Asaas) + env vars `ASAAS_API_KEY/URL` e `KARINE_WHATSAPP` |
+| Mapa de documentos | Adicionados plano mestre da campanha, mensagem Rogério, criativo e guia de implantação |
+
+> **⚠️ Supersede a "CORREÇÃO FACTUAL (11/06)" mais abaixo:** a afirmação de que "Safira é a única e principal candidata" valeu até 14/06. **Desde 15/06 há 2 candidatas no funil** (Safira + Vanesca). A parte sobre Roni (RH, não candidato a closer) permanece válida.
 
 ---
 
