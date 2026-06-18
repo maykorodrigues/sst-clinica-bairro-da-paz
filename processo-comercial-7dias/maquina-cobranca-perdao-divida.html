@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Máquina de Cobrança · Perdão de Dívida · SST Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1987c3; --azul-escuro: #0c4a6e; --verde: #16a34a; --vermelho: #dc2626;
+    --laranja: #d97706; --roxo: #7c3aed; --bg: #0d1117; --surface: #161b22;
+    --surface2: #21262d; --border: #30363d; --text: #e6edf3; --muted: #8b949e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 100%); padding: 34px 24px 30px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 0, transparent 50%) center / 20px 20px; }
+  .header-badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; position: relative; }
+  .header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 40px; font-weight: 900; line-height: 1.05; margin-bottom: 8px; position: relative; }
+  .header-sub { font-size: 13px; opacity: 0.8; position: relative; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 22px 16px 70px; }
+  .secao { margin-bottom: 26px; }
+  .secao-titulo { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .secao-titulo::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* CAIXA / META */
+  .caixa-hero { background: linear-gradient(135deg, #0c4a6e, #1987c3); border: 1px solid #1987c3; border-radius: 14px; padding: 22px 24px; }
+  .caixa-hero h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+  .caixa-hero .sub { font-size: 13px; color: #cfe6f5; margin-bottom: 16px; }
+  .barra { background: rgba(0,0,0,0.32); border-radius: 30px; height: 36px; overflow: hidden; position: relative; }
+  .barra-fill { background: linear-gradient(90deg, #16a34a, #4ade80); height: 100%; width: 19%; border-radius: 30px; display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; font-size: 12px; font-weight: 900; color: #052e16; }
+  .barra-labels { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; font-weight: 700; }
+  .barra-labels .atual { color: #4ade80; }
+  .barra-labels .gap { color: #fbbf24; }
+  .barra-labels .meta { color: #fff; }
+  .alerta-aporte { margin-top: 14px; background: rgba(220,38,38,0.14); border: 1px solid rgba(220,38,38,0.4); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #fca5a5; }
+  .alerta-aporte strong { color: #fecaca; }
+
+  /* CARDS KPI */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+  .kpi .num { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 900; color: var(--azul); line-height: 1; }
+  .kpi .lab { font-size: 11px; color: var(--muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* MÁQUINA — PIPELINE */
+  .maquina { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 18px; }
+  .etapa { display: flex; gap: 14px; align-items: flex-start; }
+  .etapa-rail { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .etapa-bolha { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; border: 2px solid; }
+  .etapa-linha { width: 2px; flex: 1; min-height: 28px; background: var(--border); margin: 4px 0; }
+  .etapa-corpo { padding-bottom: 22px; flex: 1; }
+  .etapa-corpo h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; margin-bottom: 2px; }
+  .etapa-corpo .papel { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
+  .etapa-corpo p { font-size: 13px; color: #c9d1d9; }
+  .ramos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .ramo { border-radius: 8px; padding: 9px 12px; font-size: 12px; font-weight: 600; border: 1px solid; }
+  .ramo .ramo-tit { font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px; }
+  .ramo.bom { background: rgba(22,163,74,0.1); border-color: rgba(22,163,74,0.4); color: #86efac; }
+  .ramo.ruim { background: rgba(217,119,6,0.1); border-color: rgba(217,119,6,0.4); color: #fcd34d; }
+
+  .azul { color: var(--azul); } .b-azul { border-color: var(--azul); }
+  .laranja { color: var(--laranja); } .b-laranja { border-color: var(--laranja); }
+  .roxo { color: #a78bfa; } .b-roxo { border-color: var(--roxo); }
+
+  /* RESPONSABILIDADES */
+  .resp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .resp { background: var(--surface); border: 1px solid var(--border); border-top: 4px solid var(--azul); border-radius: 0 0 10px 10px; padding: 16px; }
+  .resp.l { border-top-color: var(--laranja); } .resp.r { border-top-color: var(--roxo); }
+  .resp h4 { font-size: 15px; font-weight: 900; margin-bottom: 2px; }
+  .resp .sub { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .resp ul { list-style: none; }
+  .resp li { font-size: 12.5px; color: #c9d1d9; padding: 4px 0 4px 16px; position: relative; }
+  .resp li::before { content: '▸'; position: absolute; left: 0; color: var(--muted); }
+  .resp .metrica { margin-top: 10px; background: var(--surface2); border-radius: 6px; padding: 7px 10px; font-size: 11.5px; }
+  .resp .metrica b { color: var(--text); }
+
+  /* ALERTA DESCONTO */
+  .alerta-card { background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.4); border-radius: 12px; padding: 16px 18px; }
+  .alerta-card h3 { font-size: 15px; font-weight: 900; color: #fbbf24; margin-bottom: 8px; }
+  .pill-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+  .pill { border-radius: 20px; padding: 5px 14px; font-size: 13px; font-weight: 900; border: 1px solid; }
+  .pill.p10 { background: rgba(220,38,38,0.12); border-color: #dc2626; color: #fca5a5; }
+  .pill.p40 { background: rgba(124,58,237,0.12); border-color: #7c3aed; color: #c4b5fd; }
+  .pill.p50 { background: rgba(217,119,6,0.12); border-color: #d97706; color: #fcd34d; }
+  .alerta-card p { font-size: 13px; color: #c9d1d9; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+  .frase { font-size: 18px; font-weight: 700; color: #fbbf24; font-style: italic; line-height: 1.4; }
+  .footer { text-align: center; font-size: 11px; color: var(--muted); margin-top: 44px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 680px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .resp-grid { grid-template-columns: 1fr; }
+    .ramos { grid-template-columns: 1fr; }
+    .header h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">SST Card · Simões Filho/BA · Advisor Mayko</div>
+  <h1>🏭 Máquina de Cobrança</h1>
+  <p class="header-sub">Campanha Perdão de Dívida · definida na matinal de 18/06/2026 · meta R$ 20.000 até 30/06</p>
+</div>
+
+<div class="wrap">
+
+  <!-- VERDADE DO CAIXA -->
+  <div class="secao">
+    <div class="secao-titulo">A verdade do caixa (18/06)</div>
+    <div class="caixa-hero">
+      <h2>🎯 Faltam ~R$ 17.000 até 30/06</h2>
+      <p class="sub">Produção real do mês (sem aportes): <strong>R$ 3.853</strong>. Karine produziu R$ 6.287 na 1ª quinzena. Meta R$ 20.000 · esticada R$ 40.000.</p>
+      <div class="barra">
+        <div class="barra-fill">R$ 3.853</div>
+      </div>
+      <div class="barra-labels">
+        <span class="atual">▲ R$ 3.853 produzidos</span>
+        <span class="gap">faltam ~R$ 17.000</span>
+        <span class="meta">Meta R$ 20.000</span>
+      </div>
+      <div class="alerta-aporte">
+        ⚠️ Os R$ 18.853 que apareciam no Asaas incluíam <strong>R$ 15.000 de aportes do Rogério</strong> (R$ 10k + R$ 5k). <strong>Não haverá mais aportes</strong> — "a aposta acabou, agora a gente vive do que produz". O mês fecha só com execução.
+      </div>
+    </div>
+  </div>
+
+  <!-- BASE -->
+  <div class="secao">
+    <div class="secao-titulo">A base que vamos limpar e cobrar</div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="num">761</div><div class="lab">Listagem Tenex</div></div>
+      <div class="kpi"><div class="num">411</div><div class="lab">Ativos hoje</div></div>
+      <div class="kpi"><div class="num">~200</div><div class="lab">No limbo (cobrar/limpar)</div></div>
+      <div class="kpi"><div class="num">35</div><div class="lab">Perdões já feitos</div></div>
+    </div>
+  </div>
+
+  <!-- DEFINIÇÃO -->
+  <div class="secao">
+    <div class="secao-titulo">O que é a campanha</div>
+    <div class="card">
+      <p class="frase">"Perdão de Dívida = limpeza de base com direcionamento. Ou traz de volta, ou paga."</p>
+      <p style="font-size:13px; color: var(--muted); margin-top:8px;">Não é dar dinheiro de graça. É parar de fingir que cliente morto está ativo: converter o limbo em <strong>caixa</strong> ou em <strong>base limpa</strong> — destravando energia para novas vendas.</p>
+    </div>
+  </div>
+
+  <!-- A MÁQUINA -->
+  <div class="secao">
+    <div class="secao-titulo">A máquina — fluxo Karine → Lucas → Raquel</div>
+    <div class="maquina">
+
+      <div class="etapa">
+        <div class="etapa-rail">
+          <div class="etapa-bolha b-azul azul">🟦</div>
+          <div class="etapa-linha"></div>
+        </div>
+        <div class="etapa-corpo">
+          <h3 class="azul">Karine — negocia</h3>
+          <div class="papel">Comercial / Cobrança</div>
+          <p>Negocia o perdão via WhatsApp (3 tentativas). Fonte do valor devido: <strong>planilha Excel de 28/04</strong>. Classifica cada arrecadação em Pix / cartão / dinheiro.</p>
+          <div class="ramos">
+            <div class="ramo bom"><span class="ramo-tit">✅ Pagou / reativou</span>Vira caixa — entra no mix de pagamento</div>
+            <div class="ramo ruim"><span class="ramo-tit">↳ Não evoluiu (3x)</span>Passa pro Lucas: processo de cancelamento</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="etapa">
+        <div class="etapa-rail">
+          <div class="etapa-bolha b-laranja laranja">🟧</div>
+          <div class="etapa-linha"></div>
+        </div>
+        <div class="etapa-corpo">
+          <h3 class="laranja">Lucas — cancela e cobra</h3>
+          <div class="papel">Customer Success → Receita</div>
+          <p>"Reunião de cancelamento": <em>"as mensalidades seguem correndo e crescendo até a senhora encerrar — para encerrar, pague aqui"</em> (link avulso). Também faz o onboard imediato dos novos. <strong>Não termina o dia sem cancelar.</strong></p>
+          <div class="ramos">
+            <div class="ramo bom"><span class="ramo-tit">✅ Pagou pra cancelar</span>Caixa (multa + mensalidades atrasadas)</div>
+            <div class="ramo ruim"><span class="ramo-tit">↳ Não pagou</span>Base limpa: cancelado, para de sugar energia</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="etapa">
+        <div class="etapa-rail">
+          <div class="etapa-bolha b-roxo roxo">🟪</div>
+        </div>
+        <div class="etapa-corpo" style="padding-bottom:0;">
+          <h3 class="roxo">Raquel — enriquece e devolve</h3>
+          <div class="papel">SDR / Enriquecimento de base</div>
+          <p>Pega os <strong>~50% que não responderam</strong> aos disparos. Enriquece pelo sistema "dados" (CPF → telefone / e-mail / parentes válidos) e <strong>devolve pra Karine</strong> retomar a negociação.</p>
+          <div class="ramos">
+            <div class="ramo bom"><span class="ramo-tit">↺ Contato achado</span>Volta pra esteira da Karine</div>
+            <div class="ramo bom"><span class="ramo-tit">＋ Lead novo</span>Responsável financeiro / parente → nova venda</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RESPONSABILIDADES + MÉTRICA -->
+  <div class="secao">
+    <div class="secao-titulo">Como cada um mede o dia (cantada)</div>
+    <div class="resp-grid">
+      <div class="resp">
+        <h4 class="azul">Karine</h4>
+        <div class="sub">Comercial / Cobrança</div>
+        <ul>
+          <li>~20 negociações/dia</li>
+          <li>Manda lista dos "não evoluiu" pro Lucas</li>
+          <li>Classifica Pix / cartão / dinheiro</li>
+        </ul>
+        <div class="metrica">Cantada: <b>total arrecadado + mix</b> (Pix/cartão/dinheiro)</div>
+      </div>
+      <div class="resp l">
+        <h4 class="laranja">Lucas</h4>
+        <div class="sub">CS → Receita por cancelamento</div>
+        <ul>
+          <li>Onboard imediato dos novos</li>
+          <li>20–40 reuniões de cancelamento/dia</li>
+          <li>"Sim ou não" de cada cliente</li>
+        </ul>
+        <div class="metrica">Cantada: <b>cancelamentos pagos</b> + base limpa</div>
+      </div>
+      <div class="resp r">
+        <h4 class="roxo">Raquel</h4>
+        <div class="sub">Enriquecimento + Leads</div>
+        <ul>
+          <li>Enriquece os não-respondentes</li>
+          <li>Devolve pra Karine</li>
+          <li>Abre leads de parentes/financeiro</li>
+        </ul>
+        <div class="metrica">Cantada: <b>contatos recuperados</b> + leads gerados</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTA DESCONTO -->
+  <div class="secao">
+    <div class="secao-titulo">⚠️ Decisão que destrava o disparo</div>
+    <div class="alerta-card">
+      <h3>Régua de desconto sem padrão</h3>
+      <p>Hoje convivem três descontos diferentes na operação:</p>
+      <div class="pill-row">
+        <span class="pill p10">10% — cobrança SULENE no Asaas</span>
+        <span class="pill p40">40% — oferta do agente IA</span>
+        <span class="pill p50">50% — Lucas, casos de valor alto</span>
+      </div>
+      <p><strong>Precisa cravar a régua oficial com o Rogério antes de escalar</strong> — senão a campanha promete uma coisa no WhatsApp e o sistema cobra outra na recepção.</p>
+    </div>
+  </div>
+
+  <!-- O QUE DESTRAVA -->
+  <div class="secao">
+    <div class="secao-titulo">O que o Mayko precisa entregar pra esteira rodar</div>
+    <div class="card">
+      <ul style="list-style:none;">
+        <li style="padding:5px 0 5px 18px; position:relative; font-size:13.5px;"><span style="position:absolute;left:0;color:var(--azul);">▸</span> Subir as planilhas da Karine no Notion + mandar os <strong>links das pipelines</strong> (Karine/Raquel: "Cobrança, Reativação e Novos" · Lucas: "Jornada do Paciente")</li>
+        <li style="padding:5px 0 5px 18px; position:relative; font-size:13.5px;"><span style="position:absolute;left:0;color:var(--azul);">▸</span> Construir o <strong>agente IA "cambã de dívidas"</strong> (oferta, abordagem, detectar parados, resumo diário, mover cards por status)</li>
+        <li style="padding:5px 0 5px 18px; position:relative; font-size:13.5px;"><span style="position:absolute;left:0;color:var(--azul);">▸</span> Garantir <strong>QR Code Evolution API logado</strong> + ID do Chatwoot preenchido por cliente (insumo do n8n)</li>
+        <li style="padding:5px 0 5px 18px; position:relative; font-size:13.5px;"><span style="position:absolute;left:0;color:var(--azul);">▸</span> Rogério: criar <strong>acesso Asaas restrito</strong> pra Karine fazer a conciliação</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FRASE FINAL -->
+  <div class="card" style="border-color:#fbbf24; background:rgba(251,191,36,0.05);">
+    <p class="frase">"O dinheiro está na base. Cada dia que um cliente fica no limbo é um dia que ele suga energia e não vira caixa. A máquina existe pra dar um destino a cada nome: ou volta, ou paga, ou sai limpo."</p>
+  </div>
+
+  <div class="footer">
+    Máquina de Cobrança · Campanha Perdão de Dívida · SST Card<br>
+    Definida na matinal de 18/06/2026 · ATA: processo-comercial-7dias/01-matinais/18-06-2026/ata-matinal-18-06-2026.md
+  </div>
+
+</div>
+</body>
+</html>
