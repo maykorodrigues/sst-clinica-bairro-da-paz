@@ -8,15 +8,28 @@ tags: [em-progresso]
 
 ---
 
-## 🔴 PENDENTE PARA 17/06 (manhã) — Alinhar campanha Perdão de Dívida com Rogério
+## 🟢 18/06 — Matinal definiu a MÁQUINA de cobrança (ATA completa: `01-matinais/18-06-2026/ata-matinal-18-06-2026.md`)
 
-> **CONTEXTO:** Em 15/06 o Rogério mandou áudio cobrando estratégia — a 2ª quinzena estava em **R$ 2.600** e a meta dele é **R$ 20.000** (mínimo, "pagar a despesa do mês"); esticada **R$ 40.000**. Mayko montou a campanha completa, MAS **a reunião marcada para hoje (16/06) não aconteceu — Mayko teve uma urgência e não pôde participar.** A resposta ao Rogério ainda está pendente.
+> **Reunião de 2h44 (08h19) com Rogério + Karine + Lucas + Raquel.** Destravou a verdade do caixa e desenhou o fluxo operacional Karine→Lucas→Raquel para fechar o mês em R$ 20.000.
 
-**Ação imediata 17/06 cedo:**
-1. **Enviar a mensagem ao Rogério** (já pronta: `processo-comercial-7dias/mensagem-rogerio-estrategia-perdao-16-06-2026.md` — versão texto + áudio) pedindo 2 decisões: (a) aprovar oferta **quitação 50% à vista**; (b) liberar **base Tenex 761** (export Lucas) + acesso Asaas.
-2. **Reagendar/realizar o alinhamento** que ficou de hoje.
+**🔴 VIRADA FINANCEIRA (o número real):** o Asaas mostrava R$ 18.853 recebidos, mas **R$ 15.000 são aportes do Rogério** (R$ 10k + R$ 5k). **Produção real = R$ 3.853.** E **não haverá mais aportes** ("a aposta acabou — agora vivemos do que produzimos"). Karine produziu R$ 6.287 na 1ª quinzena (Boom). **Gap até R$ 20.000: ~R$ 17.000 até 30/06.** Esticada R$ 40.000.
 
-**Diagnóstico do caixa (print Asaas 15/06):** mês com R$ 17.660 recebidas · **R$ 8.532 em 226 boletos aguardando** · R$ 1.217 em 32 vencidas. Gap da quinzena: **R$ 17.400** até 30/06.
+**📌 DEFINIÇÃO OFICIAL — Perdão de Dívida = limpeza de base com direcionamento:** *"ou traz de volta ou paga"* (Rogério). Não é dar dinheiro de graça; é parar de "fingir que clientes mortos estão ativos" e converter o limbo em caixa OU base limpa.
+
+**A MÁQUINA (fluxo definido):**
+1. **Karine** negocia o perdão (3 tentativas). Pagou/reativou → ✅ caixa (classifica Pix/cartão/dinheiro). Não evoluiu → passa pro Lucas. Fonte do valor devido: **planilha Excel 28/04**.
+2. **Lucas** faz "reuniões de cancelamento": *"as mensalidades seguem correndo e crescendo até encerrar — pra encerrar, pague aqui"* (link avulso). Receita = encerramentos pagos OU base limpa. **Não terminar o dia sem cancelar.**
+3. **Raquel** enriquece (sistema "dados": CPF→telefone/e-mail/parentes) os **~50% que não responderam** → devolve pra Karine. Bônus: gera lead novo do responsável financeiro encontrado.
+
+**Base hoje:** 761 Tenex · 411 ativos · ~350 não migraram · ~170–200 prováveis cancelados · **35 perdões já feitos no mês** (~10% dos 225+181 disparados).
+
+**⚠️ Pendências da matinal:**
+- **Régua de desconto sem padrão:** aparecem 10% (cobrança SULENE no Asaas), 40% (agente) e 50% (Lucas casos altos) → **cravar a oficial** antes de escalar.
+- **Mayko:** subir planilhas da Karine no Notion + mandar links das pipelines; construir agente IA "cambã de dívidas"; melhorar automações (dependem do ID Chatwoot preenchido).
+- **Rogério:** criar acesso Asaas restrito p/ Karine (conciliação).
+- **Conciliação:** Karine fecha 3 caixas (dinheiro/cartão/Pix) batendo com Asaas → dinheiro → Hailani. Mix de pagamento entra no RMA semanal.
+
+> **Histórico (16–17/06):** Rogério aprovou em 17/06 a oferta + liberou base Tenex + Asaas (destravou a decisão). A campanha já estava construída/commitada (ver inventário abaixo). A matinal 18/06 transformou isso em processo executável.
 
 **Campanha JÁ CONSTRUÍDA e commitada (`master`, commits 1856089→b643702) — 4 frentes, falta só execução/config:**
 | Entregável | Arquivo | Estado |
@@ -24,6 +37,7 @@ tags: [em-progresso]
 | Plano mestre (4 frentes, funil, cronograma) | `processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md` | ✅ |
 | Mensagem/áudio Rogério | `processo-comercial-7dias/mensagem-rogerio-estrategia-perdao-16-06-2026.md` | ✅ pronta p/ enviar |
 | Matinal 16/06 (barra meta R$20k) | `01-matinais/16-06-2026/roteiro-matinal-16-06-2026.html` | ✅ deployada |
+| Matinal 18/06 (modo execução, OK Rogério) | `01-matinais/18-06-2026/roteiro-matinal-18-06-2026.html` | ✅ deployada |
 | Criativo + 4 copies WhatsApp | `processo-comercial-7dias/criativo-perdao-divida-junho-2026.html` | ✅ deployado |
 | Disparo em massa (aquecimento 50→100→150/dia) | `02-cadencias/n8n-perdao-divida-disparo-massa.json` | ✅ |
 | Typebot de quitação (CPF→Asaas→Pix na hora) | `02-cadencias/typebot-quitacao-perdao-divida.json` | ✅ |

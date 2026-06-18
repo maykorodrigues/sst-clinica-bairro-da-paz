@@ -4,7 +4,7 @@ tags: [sst, cobranca, perdao-divida, campanha, automacao, #em-progresso]
 aliases: [Plano 20k quinzena, Estratégia cobrança junho]
 related: [[RETOMADA]], [[05-agentamento-karine-ia/03-workflow-n8n-cobranca]], [[01-scripts/script-cobranca-mensalidade]]
 criado: 2026-06-16
-atualizado: 2026-06-16
+atualizado: 2026-06-18
 meta_arrecadacao: 20000
 prazo: 30/06/2026
 ---
@@ -12,6 +12,27 @@ prazo: 30/06/2026
 # 🎯 Campanha Perdão de Dívida — Meta R$ 20k na 2ª Quinzena de Junho
 
 > **Resumo em 60s:** Rogério (15/06, áudio) pede estratégia: recebeu só **R$ 2.600** da campanha, meta mínima **R$ 20.000** (cobre a despesa do mês), ideal **R$ 40.000** (dobrar). O print do Asaas mostra **R$ 9.749 já emitidos e não pagos** (226 boletos aguardando + 32 vencidas) — esse é o combustível mais quente. Somado à base **Tenex (761 inadimplentes)** com oferta de quitação à vista, é possível fechar os R$ 20k até 30/06 com execução agressiva em 4 frentes.
+
+---
+
+## 0. ⏩ ATUALIZAÇÃO 18/06 — Matinal redefiniu a campanha como MÁQUINA de cobrança
+
+> ATA completa: `01-matinais/18-06-2026/ata-matinal-18-06-2026.md`. O essencial mudou em 3 pontos.
+
+**(a) Verdade do caixa.** O Asaas mostrava R$ 18.853 recebidos no mês, mas **R$ 15.000 eram aportes do Rogério** (R$ 10k + R$ 5k). **Produção real = R$ 3.853** — e **não haverá mais aportes** ("a aposta acabou"). Karine produziu R$ 6.287 na 1ª quinzena (Boom). **Gap até R$ 20.000 ≈ R$ 17.000 até 30/06.** Sem colchão: o mês fecha só com execução.
+
+**(b) Definição oficial.** Perdão de Dívida = **limpeza de base com direcionamento: "ou traz de volta ou paga"**. Não é doar; é converter o limbo (~170–200 clientes nem ativos nem cancelados) em caixa OU base limpa, destravando novas vendas.
+
+**(c) A máquina (fluxo de pessoas):**
+| Papel | Faz | Entrega |
+|---|---|---|
+| **Karine** | Negocia perdão (3 tentativas). Fonte do valor: planilha Excel 28/04. Classifica Pix/cartão/dinheiro. | Caixa (pagou/reativou) **ou** passa pro Lucas (não evoluiu) |
+| **Lucas** | "Reunião de cancelamento": *"mensalidades crescem até encerrar — pague aqui"* (link avulso). Onboard de novos. | Caixa (multa/atrasadas) **ou** base limpa. Não terminar o dia sem cancelar. |
+| **Raquel** | Enriquece (~50% que não responderam) via sistema "dados" → devolve pra Karine. | Contatos válidos + leads novos (responsável financeiro) |
+
+**Base hoje:** 761 Tenex · 411 ativos · ~350 não migraram · **35 perdões já realizados no mês** (~10% dos 225+181 disparados).
+
+**⚠️ Pendência crítica — régua de desconto:** convivem **10%** (cobrança SULENE no Asaas), **40%** (agente IA) e **50%** (Lucas, casos altos). **Cravar a oficial antes de escalar.**
 
 ---
 
