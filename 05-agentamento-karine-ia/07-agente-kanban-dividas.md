@@ -201,10 +201,28 @@ Nós (todos com lógica em Code + HTTP Request à API do Notion — padrão robu
 
 - [ ] **Rogério crava a régua de oferta** (seção 3) — pré-requisito que destrava tudo.
 - [x] ~~Provisionar as propriedades na pipeline `138f7d78...`~~ — ✅ feito via MCP em 18/06 (CPF, E-mail, Oferta Sugerida, Mensagem Sugerida + Lucas em Responsável + 2 status da lane do Lucas).
-- [ ] Subir as planilhas da Karine (28/04 + anotações) no kanban com `Valor em Aberto` e `Parcelas em Atraso`.
+- [ ] Subir as planilhas da Karine (28/04 + anotações) no kanban com `Valor em Aberto` e `Parcelas em Atraso` — **usar `importar-csv-kanban.py`** (ver seção 10).
 - [ ] Importar `n8n-agente-kanban-dividas.json` no n8n e configurar as env vars.
 - [ ] Rodar manual 1x com 5 cards de teste → conferir oferta/mensagem/status.
 - [ ] Ligar o cron 07h30 e validar o resumo no grupo.
+
+## 10. Importação da planilha da Karine (CSV → Notion)
+
+Script: `importar-csv-kanban.py` (nesta pasta). Lê o CSV da Karine e cria os cards no kanban já com `Nome`, `Telefone`, `CPF`, `E-mail`, `Valor em Aberto`, `Parcelas em Atraso`, `Origem` (inferida pela faixa de parcelas), `Responsável=Karine`, `Status=Para Contatar`.
+
+**Recursos:** auto-detecta colunas (aceita "Celular", "Valor", "Parcelas em atraso" etc.), normaliza telefone (+55) e CPF, parser BR de valor (R$ 1.234,56), **dedupe** por CPF/telefone, e **dry-run** que mostra tudo sem gravar.
+
+```powershell
+pip install requests
+$env:NOTION_TOKEN="secret_xxx"
+# 1) Conferir SEM gravar:
+python importar-csv-kanban.py "Cobrancas-Karine.csv" --dry-run
+# 2) Importar de verdade (começar com --limit 5 p/ testar):
+python importar-csv-kanban.py "Cobrancas-Karine.csv" --limit 5
+python importar-csv-kanban.py "Cobrancas-Karine.csv"
+```
+
+Se a detecção de colunas errar, forçar manualmente: `--map "Nome do Cliente=Nome" --map "Débito=Valor em Aberto"`.
 
 ## 9. Pendências / riscos
 - **Régua de desconto:** bloqueia o go-live (precisa do Rogério).
