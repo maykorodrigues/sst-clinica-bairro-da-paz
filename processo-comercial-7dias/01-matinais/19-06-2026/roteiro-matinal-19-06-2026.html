@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matinal SST Card — 19/06/2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #1987c3; --azul-escuro: #0c4a6e; --verde: #16a34a; --vermelho: #dc2626;
+    --laranja: #d97706; --roxo: #7c3aed; --bg: #0d1117; --surface: #161b22;
+    --surface2: #21262d; --border: #30363d; --text: #e6edf3; --muted: #8b949e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; line-height: 1.6; }
+  .header { background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul) 100%); padding: 32px 24px 28px; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0, rgba(255,255,255,0.03) 1px, transparent 0, transparent 50%) center / 20px 20px; }
+  .header-badge { display: inline-block; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; position: relative; }
+  .header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; line-height: 1.1; margin-bottom: 8px; position: relative; }
+  .header-sub { font-size: 13px; opacity: 0.75; position: relative; }
+  .countdown { margin-top: 16px; display: inline-flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; position: relative; }
+  .countdown-num { font-size: 22px; font-weight: 900; color: #fff; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  .secao { margin-bottom: 20px; }
+  .secao-titulo { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .secao-titulo::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* BANNER */
+  .banner-ok { background: linear-gradient(135deg, #064e3b, #16a34a); border: 1px solid #16a34a; border-radius: 14px; padding: 18px 22px; margin-bottom: 20px; display: flex; gap: 14px; align-items: flex-start; }
+  .banner-ok .icone { font-size: 28px; line-height: 1; }
+  .banner-ok h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+  .banner-ok p { font-size: 13px; color: #d1fae5; }
+
+  /* BARRA DE META */
+  .meta-hero { background: linear-gradient(135deg, #0c4a6e, #1987c3); border: 1px solid #1987c3; border-radius: 14px; padding: 22px 24px; margin-bottom: 20px; }
+  .meta-hero h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+  .meta-hero .sub { font-size: 13px; color: #cfe6f5; margin-bottom: 16px; }
+  .barra { background: rgba(0,0,0,0.3); border-radius: 30px; height: 34px; overflow: hidden; position: relative; }
+  .barra-fill { background: linear-gradient(90deg, #16a34a, #4ade80); height: 100%; width: 19%; border-radius: 30px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 12px; font-weight: 900; color: #052e16; }
+  .barra-labels { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; font-weight: 700; }
+  .barra-labels .atual { color: #4ade80; }
+  .barra-labels .gap { color: #fbbf24; }
+  .barra-labels .meta { color: #fff; }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--surface2); color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 7px 10px; text-align: left; }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .ok { color: #4ade80; font-weight: 700; }
+  .alerta { color: #fbbf24; font-weight: 700; }
+  .critico { color: #f87171; font-weight: 700; }
+  .neutro { color: var(--muted); }
+
+  .meta-bloco { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--azul); border-radius: 0 10px 10px 0; padding: 14px 16px; margin-bottom: 10px; }
+  .meta-bloco.verde { border-left-color: var(--verde); }
+  .meta-bloco.roxo { border-left-color: var(--roxo); }
+  .meta-bloco.laranja { border-left-color: var(--laranja); }
+  .meta-bloco.indigo { border-left-color: #a5b4fc; }
+  .meta-pessoa { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .meta-lista { list-style: none; }
+  .meta-lista li { font-size: 13px; color: #c9d1d9; padding: 3px 0; padding-left: 16px; position: relative; }
+  .meta-lista li::before { content: '▸'; position: absolute; left: 0; color: var(--muted); }
+  .meta-num { font-weight: 700; color: var(--text); }
+
+  .pergunta { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+  .pergunta-num { background: var(--azul); color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; flex-shrink: 0; margin-top: 2px; }
+  .pergunta-num.crit { background: var(--vermelho); }
+  .pergunta-texto { font-size: 14px; color: var(--text); }
+  .pergunta-detalhe { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .tag { display: inline-block; border-radius: 5px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+  .tag-crit { background: rgba(220,38,38,0.15); color: #f87171; border: 1px solid rgba(220,38,38,0.35); }
+  .tag-ok { background: rgba(22,163,74,0.15); color: #4ade80; border: 1px solid rgba(22,163,74,0.35); }
+
+  .frente { background: rgba(25,135,195,0.06); border: 1px solid rgba(25,135,195,0.3); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .frente h3 { font-size: 14px; font-weight: 700; color: #93c5fd; margin-bottom: 6px; }
+  .frente p { font-size: 13px; color: #c9d1d9; }
+  .frente .status-frente { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; border-radius: 5px; padding: 2px 8px; margin-left: 6px; vertical-align: middle; }
+  .frente .status-frente.no-ar { background: rgba(22,163,74,0.18); color: #4ade80; }
+  .frente .status-frente.config { background: rgba(217,119,6,0.18); color: #fbbf24; }
+
+  .roteiro-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .roteiro-item:last-child { border-bottom: none; }
+  .roteiro-min { background: var(--azul); color: white; border-radius: 6px; padding: 3px 9px; font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .roteiro-min.verde { background: var(--verde); }
+  .roteiro-min.laranja { background: var(--laranja); }
+  .roteiro-texto { font-size: 14px; color: var(--text); }
+  .roteiro-texto strong { color: white; }
+  .roteiro-texto .citacao { color: #93c5fd; font-style: italic; font-size: 13px; display: block; margin-top: 4px; }
+
+  .preencher { color: #fbbf24; font-weight: 700; background: rgba(251,191,36,0.1); border-radius: 4px; padding: 0 6px; }
+  .footer { text-align: center; font-size: 11px; color: var(--muted); margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">Matinal · Sexta · Máquina em execução</div>
+  <h1>19 de Junho de 2026</h1>
+  <p class="header-sub">SST Card · Simões Filho/BA · Advisor: Mayko Rodrigues</p>
+  <div class="countdown">
+    <span class="countdown-num">12</span>&nbsp;dias para a inauguração do <strong>Bairro da Paz</strong> · 01/07
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- BANNER -->
+  <div class="banner-ok">
+    <div class="icone">🏭</div>
+    <div>
+      <h2>A Máquina está montada — hoje ela RODA</h2>
+      <p>Ontem definimos o fluxo <strong>Karine → Lucas → Raquel</strong>. As ferramentas estão prontas (pipeline Notion, agente IA, scripts). Não é mais sobre planejar — é cada nome da base virando caixa ou base limpa, <strong>um sim de cada vez</strong>.</p>
+    </div>
+  </div>
+
+  <!-- META DA QUINZENA -->
+  <div class="meta-hero">
+    <h2>🎯 Meta da 2ª quinzena: R$ 20.000 até 30/06</h2>
+    <p class="sub">Produção real (sem aportes): <strong>R$ 3.853</strong>. Faltam <strong>11 dias</strong>. Atualizar a barra com a <span class="preencher">cantada de ontem (18/06)</span> na abertura.</p>
+    <div class="barra">
+      <div class="barra-fill">R$ 3.853</div>
+    </div>
+    <div class="barra-labels">
+      <span class="atual">▲ R$ 3.853 produzidos</span>
+      <span class="gap">faltam ~R$ 16.100</span>
+      <span class="meta">Meta R$ 20.000</span>
+    </div>
+  </div>
+
+  <!-- RESULTADO DE ONTEM -->
+  <div class="card" style="border-color: var(--laranja); background: rgba(217,119,6,0.05);">
+    <div class="secao-titulo" style="margin-bottom:8px;">Resultado de ontem (18/06) — cantada na abertura</div>
+    <table>
+      <tr><th>Pessoa</th><th>Entregou ontem</th><th>Valor / nº</th></tr>
+      <tr><td>Karine — caixa + mix</td><td class="neutro">Pix / cartão / dinheiro</td><td><span class="preencher">R$ ___</span></td></tr>
+      <tr><td>Lucas — cancelamentos</td><td class="neutro">pagou pra encerrar?</td><td><span class="preencher">___ / ___</span></td></tr>
+      <tr><td>Raquel — enriquecidos + leads</td><td class="neutro">contatos recuperados</td><td><span class="preencher">___</span></td></tr>
+    </table>
+    <p style="font-size:12px; color: var(--muted); margin-top:8px;">Preencher ao vivo com os números do grupo e atualizar a barra acima.</p>
+  </div>
+
+  <!-- PROVA: JÁ ESTÁ ACONTECENDO -->
+  <div class="card" style="border-color: var(--verde); background: rgba(22,163,74,0.06);">
+    <div class="secao-titulo" style="margin-bottom:8px;">A oferta já converte — antes mesmo do disparo em massa</div>
+    <table>
+      <tr><th>Quem</th><th>Quando</th><th>Valor</th><th>Como</th></tr>
+      <tr><td><strong>ZENILDE NASCIMENTO</strong></td><td>10/06</td><td class="ok">R$ 64,90</td><td>Reativou na recepção — "ação perdão da dívida"</td></tr>
+      <tr><td><strong>SULENE SANTANA</strong></td><td>19/06</td><td class="ok">R$ 90,00</td><td>Cobrança de quitação no Asaas</td></tr>
+    </table>
+    <p style="font-size:12px; color: var(--muted); margin-top:8px;">2 quitações orgânicas <strong>sem máquina ligada</strong>. Com a esteira rodando, isso escala.</p>
+  </div>
+
+  <!-- A MÁQUINA -->
+  <div class="secao">
+    <div class="secao-titulo">A Máquina de Cobrança — quem faz o quê</div>
+    <div class="frente">
+      <h3>🟦 Karine — negocia <span class="status-frente no-ar">roda já</span></h3>
+      <p>Trabalha as cobranças (foco nas <strong>59 vencidas reais, R$ 3.369</strong> + os <strong>139 Pix</strong>). 3 tentativas. Pagou → caixa (classifica Pix/cartão/dinheiro). Não evoluiu → <strong>passa a lista pro Lucas</strong>.</p>
+    </div>
+    <div class="frente">
+      <h3>🟧 Lucas — cancela e cobra <span class="status-frente no-ar">roda já</span></h3>
+      <p>"Reuniões de cancelamento": <em>"a mensalidade segue correndo e crescendo até encerrar — pra encerrar, pague aqui"</em>. Onboard dos novos. <strong>Não termina o dia sem cancelar.</strong></p>
+    </div>
+    <div class="frente">
+      <h3>🟪 Raquel — enriquece <span class="status-frente no-ar">roda já</span></h3>
+      <p>Pega os ~50% que não responderam, enriquece (CPF → telefone/e-mail/parente) e devolve pra Karine. Bônus: abre lead do responsável financeiro.</p>
+    </div>
+    <p style="font-size:12px; color: var(--muted); margin-top:4px;">Página completa: playbook.ssfcard.ia.br/processo-comercial-7dias/maquina-cobranca-perdao-divida.html</p>
+  </div>
+
+  <!-- METAS DO DIA POR PESSOA -->
+  <div class="secao">
+    <div class="secao-titulo">Foco do dia 19/06 — a esteira não para</div>
+
+    <div class="meta-bloco indigo">
+      <div class="meta-pessoa" style="color: #a5b4fc">Mayko — Advisor</div>
+      <ul class="meta-lista">
+        <li>Criar o <span class="meta-num">workflow n8n do Agente Kanban</span> (pipeline Notion já provisionada) + testar 5 cards</li>
+        <li>Subir a <span class="meta-num">planilha da Karine</span> no kanban (script CSV→Notion pronto)</li>
+        <li>Ligar a <span class="meta-num">matinal automática</span> no grupo (cron 07h50)</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco">
+      <div class="meta-pessoa" style="color: var(--azul)">Karine — Comercial/Cobrança</div>
+      <ul class="meta-lista">
+        <li>Atacar as <span class="meta-num">59 vencidas reais (R$ 3.369)</span> + os <span class="meta-num">139 Pix</span> — meta ≥4 quitações</li>
+        <li>Entregar ao Lucas a <span class="meta-num">lista dos "não evoluiu"</span> (3 tentativas sem sim/não)</li>
+        <li>Cantada: total + mix Pix/cartão/dinheiro</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco laranja">
+      <div class="meta-pessoa" style="color: var(--laranja)">Lucas — Customer Success</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">20–40 reuniões de cancelamento</span> — "sim ou não" de cada</li>
+        <li>Onboard imediato dos novos que a Karine fechar</li>
+        <li>Não terminar o dia sem cancelar</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco roxo">
+      <div class="meta-pessoa" style="color: var(--roxo)">Raquel — SDR/Enriquecimento</div>
+      <ul class="meta-lista">
+        <li>Enriquecer os <span class="meta-num">não-respondentes</span> → devolver pra Karine</li>
+        <li>Abrir <span class="meta-num">leads novos</span> dos responsáveis financeiros encontrados</li>
+        <li>Publicar o criativo da campanha no status/feed</li>
+      </ul>
+    </div>
+
+    <div class="meta-bloco verde">
+      <div class="meta-pessoa" style="color: var(--verde)">Rogério — Gestor / Sponsor</div>
+      <ul class="meta-lista">
+        <li><span class="meta-num">Cravar a régua de desconto</span> (decisão nº 1 — destrava o disparo)</li>
+        <li>Criar acesso Asaas restrito p/ Karine (conciliação)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ROTEIRO DA REUNIÃO -->
+  <div class="secao">
+    <div class="secao-titulo">Roteiro — 15 minutos (08h21–08h41)</div>
+    <div class="card" style="padding:0; overflow:hidden; border:none; background:transparent;">
+      <div class="roteiro-item">
+        <div class="roteiro-min verde">00–04</div>
+        <div class="roteiro-texto"><strong>Cantada de ontem</strong>
+          <span class="citacao">Cada um diz o número de 18/06: Karine (caixa+mix), Lucas (cancelamentos), Raquel (enriquecidos). Atualiza a barra.</span></div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min">04–09</div>
+        <div class="roteiro-texto"><strong>A máquina rodando hoje</strong>
+          <span class="citacao">Karine entrega a lista dos "não evoluiu" → Lucas começa cancelamentos. Raquel enriquece os mudos.</span></div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min laranja">09–13</div>
+        <div class="roteiro-texto"><strong>Régua de desconto — decisão do Rogério</strong>
+          <span class="citacao">10% / 40% / 50%? Cravar a régua oficial pra liberar o disparo em massa sem prometer o que o sistema não cobra.</span></div>
+      </div>
+      <div class="roteiro-item">
+        <div class="roteiro-min verde">13–15</div>
+        <div class="roteiro-texto"><strong>Encerramento</strong>
+          <span class="citacao">"A máquina está montada. Hoje ela prova que funciona aqui — pra a gente levar pronta pro Bairro da Paz daqui a 12 dias."</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECISÕES -->
+  <div class="secao">
+    <div class="secao-titulo">Decisões que destravam hoje</div>
+    <div class="pergunta">
+      <div class="pergunta-num crit">1</div>
+      <div>
+        <div class="pergunta-texto"><strong>A régua de desconto é 10% / 40% / 50% por faixa de dívida?</strong></div>
+        <div class="pergunta-detalhe">Hoje convivem 3 descontos soltos. Proposta: 1-2 parc → 10% · 3-5 → 40% · 6+ → 50% · legado Tenex → entra como assinante novo. Sem cravar, o disparo em massa não sai. <span class="tag tag-crit">Rogério decide</span></div>
+      </div>
+    </div>
+    <div class="pergunta">
+      <div class="pergunta-num">2</div>
+      <div>
+        <div class="pergunta-texto"><strong>Karine já entregou a lista dos "não evoluiu" pro Lucas?</strong></div>
+        <div class="pergunta-detalhe">É o insumo que liga a esteira. Sem ela, o Lucas fica sem fila de cancelamento. <span class="tag tag-ok">Manhã</span></div>
+      </div>
+    </div>
+    <div class="pergunta">
+      <div class="pergunta-num">3</div>
+      <div>
+        <div class="pergunta-texto"><strong>QR Code Evolution logado + ID Chatwoot por cliente?</strong></div>
+        <div class="pergunta-detalhe">Sem isso, as conversas não viram CRM e a automação não enxerga. <span class="tag tag-ok">Base da automação</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CANTADA DO DIA -->
+  <div class="card" style="border-color: #fbbf24; background: rgba(251,191,36,0.05);">
+    <div class="secao-titulo" style="margin-bottom:8px;">Cantada do dia</div>
+    <p style="font-size:16px; font-weight:700; color:#fbbf24; font-style:italic; line-height:1.4;">
+      "Planejar acabou. A máquina está montada e as ferramentas estão na mão. Agora é simples e brutal: cada nome da base, hoje, ou volta, ou paga, ou sai limpo. Ninguém mais fica no limbo sugando nossa energia. 11 dias — bora encher o caixa."
+    </p>
+  </div>
+
+  <div class="footer">
+    Matinal SST Card · 19/06/2026 · Mayko Rodrigues Advisor<br>
+    Máquina: processo-comercial-7dias/maquina-cobranca-perdao-divida.html · ATA 18/06: 01-matinais/18-06-2026/
+  </div>
+
+</div>
+</body>
+</html>
