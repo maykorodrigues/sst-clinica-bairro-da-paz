@@ -116,23 +116,30 @@ O agente **não dispara** mensagem ao cliente — só prepara. Envio é 1 clique
 
 ## 5. Formato do resumo matinal (saída do agente)
 
+> ⚠️ **Caixa SEPARADO (ajuste 19/06):** o agente consulta o Asaas e separa o caixa que entrou em **recorrente** (cartão de assinatura — cai sozinho, não é mérito de cobrança) vs **ativo** (Pix/dinheiro/cobrança — esforço real da equipe). Motivo: descobrimos em 19/06 que os R$ 289,30 "do dia" eram 7 cartões recorrentes de maio creditados em D+32 — zero relação com a cobrança ativa. Sem separar, o número infla e mascara o resultado real da Karine/Lucas.
+
 ```
 🏭 KANBAN DE DÍVIDAS — {{data}}
 
-💰 Caixa de ontem: R$ {{pagou_ontem}}  ({{qtd}} recuperados)
-📊 Pipeline: Triagem {{n}} · Abordagem {{n}} · Negociação {{n}} · Proposta {{n}} · Aceitou {{n}}
+💰 CAIXA DE ONTEM (separado):
+   🔵 Recorrente (cartão, cai sozinho): R$ {{rec}} ({{qtd}})
+   🟢 ATIVO (Pix/dinheiro/cobrança): R$ {{ativo}} ({{qtd}})  ← resultado real da equipe
+
+📊 Pipeline: Para Contatar {{n}} · Msg Enviada {{n}} · Respondeu {{n}} · Negociação {{n}} · Proposta {{n}}
 
 🎯 PRIORIDADES DE HOJE
-• Karine: {{n}} em negociação parados + {{n}} propostas a cobrar
+• Karine: {{n}} cards na esteira
 • Lucas:  {{n}} em processo de cancelamento (ligar e encerrar)
-• Raquel: {{n}} em triagem p/ enriquecer (sem contato válido)
+• Raquel: {{n}} sem resposta p/ enriquecer
 
 🔥 TOP 5 quentes (maior valor + mais perto do sim):
-1. {{nome}} — R$ {{valor}} ({{parcelas}}p) — {{acao}}
+1. {{nome}} — R$ {{valor}} ({{parcelas}}p) — {{motivo}}
 ...
 
 ⚠️ {{n}} cards parados há +3 dias → decisão: cobrar ou cancelar
 ```
+
+**Regra de classificação (Asaas):** `recorrente = billingType == CREDIT_CARD && subscription != null`; todo o resto (PIX, BOLETO, dinheiro, avulsa) = **ativo**.
 
 ---
 
@@ -193,7 +200,9 @@ Nós (todos com lógica em Code + HTTP Request à API do Notion — padrão robu
 8. **HTTP → Evolution API** (envia resumo no grupo) + **Telegram** (Mayko)
 
 ### Variáveis de ambiente
-`NOTION_TOKEN` · `NOTION_KANBAN_DB_ID` (=`138f7d78-0ea6-423d-babc-2f5a1fe0092b`) · `ANTHROPIC_API_KEY` · `EVOLUTION_API_URL` · `EVOLUTION_API_KEY` · `EVOLUTION_INSTANCE` · `SST_CARD_GROUP_CHAT_ID` · `TELEGRAM_MAYKO_CHAT_ID`
+`NOTION_TOKEN` · `NOTION_KANBAN_DB_ID` (=`138f7d78-0ea6-423d-babc-2f5a1fe0092b`) · `ANTHROPIC_API_KEY` · `EVOLUTION_API_URL` · `EVOLUTION_API_KEY` · `EVOLUTION_INSTANCE` · `SST_CARD_GROUP_CHAT_ID` · **`ASAAS_API_URL`** (ex.: `https://api.asaas.com/v3`) · **`ASAAS_API_KEY`** (header `access_token`)
+
+> Os nós Asaas têm `continueOnFail` — se o Asaas não responder, o resumo sai com "caixa a confirmar" em vez de quebrar o fluxo.
 
 ---
 

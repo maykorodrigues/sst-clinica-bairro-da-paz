@@ -13,7 +13,51 @@
       "name": "Cron 07h30 (Seg-Sáb)",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
+      "position": [-1340, 300]
+    },
+    {
+      "parameters": {
+        "jsType": "javascript",
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Janela de ontem e hoje em America/Bahia (YYYY-MM-DD) para consultar o Asaas\nconst TZ = 'America/Bahia';\nconst now = new Date();\nconst fmt = (d) => d.toLocaleDateString('en-CA', { timeZone: TZ }); // YYYY-MM-DD\nconst hoje = fmt(now);\nconst ontem = fmt(new Date(now.getTime() - 86400000));\nreturn [{ json: { ontem, hoje } }];"
+      },
+      "id": "code-datas",
+      "name": "Janela ontem/hoje (BA)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [-1120, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=${{$env.ASAAS_API_URL}}/payments?status=RECEIVED&paymentDate[ge]={{$json.ontem}}&paymentDate[le]={{$json.hoje}}&limit=100",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "access_token", "value": "={{$env.ASAAS_API_KEY}}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "asaas-recebidas",
+      "name": "Asaas · Recebidas (ontem→hoje)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-900, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsType": "javascript",
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Separa o caixa recebido em RECORRENTE (cartão de assinatura, cai sozinho)\n// vs ATIVO (Pix / dinheiro / boleto / avulsa = esforço de cobrança da equipe).\nconst data = ($json.data) || [];\nlet rec = 0, ativo = 0, qr = 0, qa = 0;\nfor (const p of data) {\n  const v = p.value || 0;\n  // recorrente automático: cartão de crédito vinculado a assinatura\n  const isRec = p.billingType === 'CREDIT_CARD' && !!p.subscription;\n  if (isRec) { rec += v; qr++; } else { ativo += v; qa++; }\n}\nreturn [{ json: {\n  caixaRecorrente: rec, qtdRec: qr,\n  caixaAtivo: ativo, qtdAtivo: qa,\n  totalCaixa: rec + ativo,\n  asaasOk: !$json.error\n} }];"
+      },
+      "id": "code-caixa",
+      "name": "Classifica caixa (recorrente vs ativo)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-680, 300]
     },
     {
       "parameters": {
@@ -36,7 +80,7 @@
       "name": "Notion · Lê o Kanban",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [-900, 300]
+      "position": [-460, 300]
     },
     {
       "parameters": {
@@ -48,7 +92,7 @@
       "name": "Prepara cards (dias parado + faixa)",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [-680, 300]
+      "position": [-240, 300]
     },
     {
       "parameters": {
@@ -71,7 +115,7 @@
       "name": "Agente IA (Claude) por card",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [-460, 300]
+      "position": [-20, 300]
     },
     {
       "parameters": {
@@ -83,7 +127,7 @@
       "name": "Parse resposta da IA",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [-240, 300]
+      "position": [200, 300]
     },
     {
       "parameters": {
@@ -106,19 +150,19 @@
       "name": "Notion · Grava oferta + move card",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [-20, 300]
+      "position": [420, 300]
     },
     {
       "parameters": {
         "jsType": "javascript",
         "mode": "runOnceForAllItems",
-        "jsCode": "// Monta o resumo matinal a partir de todos os cards processados (status reais da pipeline)\nconst items = $input.all().map(i => i.json);\nconst by = (s) => items.filter(c => (c.novo_status || c.status) === s).length;\nconst quentes = items\n  .filter(c => c.prioridade === 'alta')\n  .sort((a,b) => (b.valorAberto||0) - (a.valorAberto||0))\n  .slice(0,5);\nconst parados = items.filter(c => c.diasParado >= 3).length;\nconst data = new Date().toLocaleDateString('pt-BR');\nlet msg = `🏭 KANBAN DE DÍVIDAS — ${data}\\n\\n`;\nmsg += `📊 Pipeline: Para Contatar ${by('Para Contatar')} · Msg Enviada ${by('Mensagem Enviada')} · Respondeu ${by('Respondeu')} · Negociação ${by('Em Negociação')} · Proposta ${by('Proposta Enviada')}\\n\\n`;\nmsg += `🎯 PRIORIDADES DE HOJE\\n`;\nmsg += `• Karine: ${items.filter(c=>c.responsavel==='Karine').length} cards na esteira\\n`;\nmsg += `• Lucas: ${by('Processo de Cancelamento')} em cancelamento (ligar e encerrar)\\n`;\nmsg += `• Raquel: ${by('Sem Resposta')} sem resposta p/ enriquecer\\n\\n`;\nmsg += `🔥 TOP 5 quentes:\\n`;\nquentes.forEach((c,i) => { msg += `${i+1}. ${c.nome} — R$ ${c.valorAberto} (${c.parcelas}p) — ${c.motivo || ''}\\n`; });\nmsg += `\\n⚠️ ${parados} cards parados há +3 dias → cobrar ou cancelar`;\nreturn [{ json: { resumo: msg, total: items.length } }];"
+        "jsCode": "// Monta o resumo matinal: caixa SEPARADO (recorrente vs ativo) + pipeline + prioridades.\nconst items = $input.all().map(i => i.json);\nconst caixa = $('Classifica caixa (recorrente vs ativo)').first().json || {};\nconst brl = (n) => 'R$ ' + (n || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });\nconst by = (s) => items.filter(c => (c.novo_status || c.status) === s).length;\nconst quentes = items\n  .filter(c => c.prioridade === 'alta')\n  .sort((a,b) => (b.valorAberto||0) - (a.valorAberto||0))\n  .slice(0,5);\nconst parados = items.filter(c => c.diasParado >= 3).length;\nconst data = new Date().toLocaleDateString('pt-BR');\nlet msg = `🏭 KANBAN DE DÍVIDAS — ${data}\\n\\n`;\nmsg += `💰 CAIXA DE ONTEM (separado):\\n`;\nmsg += `   🔵 Recorrente (cartão, cai sozinho): ${brl(caixa.caixaRecorrente)} (${caixa.qtdRec||0})\\n`;\nmsg += `   🟢 ATIVO (Pix/dinheiro/cobrança): ${brl(caixa.caixaAtivo)} (${caixa.qtdAtivo||0})  ← resultado real da equipe\\n`;\nif (caixa.asaasOk === false) msg += `   ⚠️ (Asaas não respondeu — caixa a confirmar)\\n`;\nmsg += `\\n📊 Pipeline: Para Contatar ${by('Para Contatar')} · Msg Enviada ${by('Mensagem Enviada')} · Respondeu ${by('Respondeu')} · Negociação ${by('Em Negociação')} · Proposta ${by('Proposta Enviada')}\\n\\n`;\nmsg += `🎯 PRIORIDADES DE HOJE\\n`;\nmsg += `• Karine: ${items.filter(c=>c.responsavel==='Karine').length} cards na esteira\\n`;\nmsg += `• Lucas: ${by('Processo de Cancelamento')} em cancelamento (ligar e encerrar)\\n`;\nmsg += `• Raquel: ${by('Sem Resposta')} sem resposta p/ enriquecer\\n\\n`;\nmsg += `🔥 TOP 5 quentes:\\n`;\nquentes.forEach((c,i) => { msg += `${i+1}. ${c.nome} — ${brl(c.valorAberto)} (${c.parcelas}p) — ${c.motivo || ''}\\n`; });\nmsg += `\\n⚠️ ${parados} cards parados há +3 dias → cobrar ou cancelar`;\nreturn [{ json: { resumo: msg, total: items.length } }];"
       },
       "id": "code-resumo",
       "name": "Monta resumo matinal",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [200, 300]
+      "position": [640, 300]
     },
     {
       "parameters": {
@@ -140,11 +184,14 @@
       "name": "WhatsApp · Resumo no grupo",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [420, 300]
+      "position": [860, 300]
     }
   ],
   "connections": {
-    "Cron 07h30 (Seg-Sáb)": { "main": [[{ "node": "Notion · Lê o Kanban", "type": "main", "index": 0 }]] },
+    "Cron 07h30 (Seg-Sáb)": { "main": [[{ "node": "Janela ontem/hoje (BA)", "type": "main", "index": 0 }]] },
+    "Janela ontem/hoje (BA)": { "main": [[{ "node": "Asaas · Recebidas (ontem→hoje)", "type": "main", "index": 0 }]] },
+    "Asaas · Recebidas (ontem→hoje)": { "main": [[{ "node": "Classifica caixa (recorrente vs ativo)", "type": "main", "index": 0 }]] },
+    "Classifica caixa (recorrente vs ativo)": { "main": [[{ "node": "Notion · Lê o Kanban", "type": "main", "index": 0 }]] },
     "Notion · Lê o Kanban": { "main": [[{ "node": "Prepara cards (dias parado + faixa)", "type": "main", "index": 0 }]] },
     "Prepara cards (dias parado + faixa)": { "main": [[{ "node": "Agente IA (Claude) por card", "type": "main", "index": 0 }]] },
     "Agente IA (Claude) por card": { "main": [[{ "node": "Parse resposta da IA", "type": "main", "index": 0 }]] },
