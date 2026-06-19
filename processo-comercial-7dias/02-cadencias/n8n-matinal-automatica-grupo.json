@@ -1,0 +1,59 @@
+{
+  "name": "SST · Matinal automática no grupo (07h50 Seg-Sáb)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "cronExpression", "expression": "50 7 * * 1-6" }
+          ]
+        }
+      },
+      "id": "cron-0750",
+      "name": "Cron 07h50 (Seg-Sáb)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-720, 300]
+    },
+    {
+      "parameters": {
+        "jsType": "javascript",
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Monta a mensagem de chamada da matinal — data e contagem regressiva dinâmicas (America/Bahia).\nconst TZ = 'America/Bahia';\nconst agora = new Date();\n// data formatada pt-BR\nconst diaSemana = agora.toLocaleDateString('pt-BR', { weekday: 'long', timeZone: TZ });\nconst dataFmt = agora.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: TZ });\n// contagens regressivas (em dias) a partir de hoje\nconst hojeBA = new Date(agora.toLocaleString('en-US', { timeZone: TZ }));\nhojeBA.setHours(0,0,0,0);\nconst diasAte = (alvoISO) => Math.max(0, Math.round((new Date(alvoISO) - hojeBA) / 86400000));\nconst diasFimMes = diasAte('2026-06-30T00:00:00');\nconst diasInaug = diasAte('2026-07-01T00:00:00');\n// link do Meet: fixo via env (recorrente) — troque MEET_URL_MATINAL quando criar o Meet recorrente\nconst meet = $env.MEET_URL_MATINAL || 'https://playbook.ssfcard.ia.br';\nconst hora = $env.MATINAL_HORA || '08h';\n\nconst msg =\n`\\u2600\\uFE0F Bom dia, equipe SST Card! (${diaSemana}, ${dataFmt})\\n\\n` +\n`\\uD83C\\uDFED MATINAL \\u00e0s ${hora}\\n\\uD83D\\uDC49 Meet: ${meet}\\n\\n` +\n`Foco: a M\\u00c1QUINA de cobran\\u00e7a rodando. Meta R$ 20.000 at\\u00e9 30/06 \\u2014 faltam ${diasFimMes} dias. O dinheiro est\\u00e1 na base, \\u00e9 s\\u00f3 executar.\\n\\n` +\n`Cheguem com a cantada de ONTEM na m\\u00e3o:\\n` +\n`\\u2022 Karine \\u2014 total arrecadado + mix (Pix/cart\\u00e3o/dinheiro) + lista dos \\\"n\\u00e3o evoluiu\\\" pro Lucas\\n` +\n`\\u2022 Lucas \\u2014 cancelamentos do dia (pagou pra encerrar?) + n\\u00fameros atualizados\\n` +\n`\\u2022 Raquel \\u2014 contatos enriquecidos + leads novos\\n\\n` +\n`\\u23F1\\uFE0F 15 minutos, direto ao ponto. \\uD83D\\uDE80  (${diasInaug} dias pra inaugura\\u00e7\\u00e3o do Bairro da Paz)`;\n\nreturn [{ json: { mensagem: msg } }];"
+      },
+      "id": "code-msg",
+      "name": "Monta mensagem da matinal",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-500, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{$env.EVOLUTION_API_URL}}/message/sendText/{{$env.EVOLUTION_INSTANCE}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{$env.EVOLUTION_API_KEY}}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{$env.SST_CARD_GROUP_CHAT_ID}}\",\n  \"text\": {{ JSON.stringify($json.mensagem) }}\n}",
+        "options": {}
+      },
+      "id": "evolution-send",
+      "name": "WhatsApp · Chamada no grupo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-280, 300]
+    }
+  ],
+  "connections": {
+    "Cron 07h50 (Seg-Sáb)": { "main": [[{ "node": "Monta mensagem da matinal", "type": "main", "index": 0 }]] },
+    "Monta mensagem da matinal": { "main": [[{ "node": "WhatsApp · Chamada no grupo", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}
