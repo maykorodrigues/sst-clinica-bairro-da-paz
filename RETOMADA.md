@@ -4,7 +4,31 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 17/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+> Última atualização: 18/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+
+---
+
+## ▶️ AO RETOMAR (manhã 19/06) — Criar o n8n do Agente Kanban de Dívidas
+
+> **Tarefa nº 1 da manhã (pedido explícito do Mayko em 18/06):** criar o workflow no n8n e seguir com a proposta de automação. **Tudo já está pronto pra isso** — não precisa reconstruir contexto.
+
+**O que já está feito (não refazer):**
+- ✅ Pipeline Notion provisionada via MCP: propriedades `CPF`, `E-mail`, `Oferta Sugerida`, `Mensagem Sugerida` + `Lucas` em Responsável + status `Processo de Cancelamento` e `Cancelado / Base Limpa`. DB `138f7d78-0ea6-423d-babc-2f5a1fe0092b` · data source `e819fdee-322b-4cd5-a9b5-208bd30f14e1`.
+- ✅ Workflow JSON pronto e alinhado ao schema real: `processo-comercial-7dias/02-cadencias/n8n-agente-kanban-dividas.json` (8 nós, validado).
+- ✅ Spec + prompt do agente: `05-agentamento-karine-ia/07-agente-kanban-dividas.md`.
+- ✅ Página visual da máquina (deployada) + ATA da matinal 18/06.
+
+**Passos da manhã (ordem):**
+1. **Importar** `n8n-agente-kanban-dividas.json` no n8n (`n8n.clinicalucrativa.ia.br`).
+2. **Configurar env vars:** `NOTION_TOKEN` · `NOTION_KANBAN_DB_ID=138f7d78-0ea6-423d-babc-2f5a1fe0092b` · `ANTHROPIC_API_KEY` · `EVOLUTION_API_URL` · `EVOLUTION_API_KEY` · `EVOLUTION_INSTANCE` · `SST_CARD_GROUP_CHAT_ID`.
+3. **Teste manual** com 5 cards → conferir que grava `Oferta Sugerida`/`Mensagem Sugerida` e move `Status` corretamente.
+4. **Ligar o cron 07h30** e validar o resumo no grupo WhatsApp.
+
+**⚠️ Bloqueador a resolver com Rogério (paralelo):** cravar a **régua de desconto oficial** — hoje convivem 10% (Asaas/SULENE), 40% (agente) e 50% (Lucas). Proposta pronta na seção 3 do spec (1-2 parc → 10% · 3-5 → 40% · 6+ → 50% · legado Tenex → entra como assinante novo). Sem isso, não escalar o disparo.
+
+**Insumo pendente:** subir a planilha 28/04 da Karine no kanban (`Valor em Aberto` + `Parcelas em Atraso`) — posso gerar um script CSV→Notion se Mayko pedir.
+
+Detalhe completo na memória do projeto (`.claude/.../memory/proxima_tarefa_n8n_agente_kanban.md`) e na ATA `01-matinais/18-06-2026/ata-matinal-18-06-2026.md`.
 
 ---
 
