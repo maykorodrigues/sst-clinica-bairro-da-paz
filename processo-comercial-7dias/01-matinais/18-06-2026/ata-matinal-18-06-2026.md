@@ -152,6 +152,26 @@ Rogério abriu o Asaas ao vivo. O extrato mostrava **R$ 18.853 recebidos no mês
 | **Histórico Tenex perdido** | Para o legado não há valor devido no sistema → depende da planilha 28/04 da Karine. Sem ela, Lucas não consegue cobrar valor. |
 | **Auditoria das mensagens** | Conversas no WhatsApp só viram CRM/automação se o **QR Code da Evolution API** estiver logado e o ID do Chatwoot preenchido. Karine ficou sem acesso ao Chatwoot (resolvido na call via super admin). |
 | **Sem 2º aporte** | Não há colchão. O mês fecha **só** com execução da máquina. |
+| **Caixa recorrente mascara o resultado** | (achado 19/06) O Asaas em "Data de recebimento" mistura cartão que cai sozinho com cobrança ativa — ver seção 8. |
+
+---
+
+## 8. 🔎 Aprendizado 19/06 — Caixa recorrente vs ativo (o "real resultado da Karine")
+
+> Análise feita em 19/06 cruzando a transcrição da matinal + o extrato Asaas (planilha `Cobrancas (1).xlsx`, filtro "Data de recebimento").
+
+**O achado:** as 7 cobranças que "caíram" no Asaas em 19/06 (R$ 289,30) eram **todas Cartão de Crédito recorrente, confirmadas em 18/05 e creditadas em 19/06** (regra D+30+2 do cartão). Ou seja: **caixa de maio que o cartão creditou sozinho hoje — zero relação com a cobrança ativa de ontem.**
+
+**Por que importa:** o Asaas filtrado por "Data de recebimento" **mistura**:
+- 🔵 **Recorrente** (cartão de assinatura) — cai sozinho, não é mérito de cobrança.
+- 🟢 **Ativo** (Pix / dinheiro / boleto / avulsa) — esforço real da Karine/Lucas.
+
+Sem separar, o número infla e **mascara** que a campanha de perdão ainda quase não gera caixa novo. O esforço ativo de ontem foi: **180 disparos → 10 respostas → 2 perdões + 3 promessas** (conversão disparo→caixa ~1%) e Karine cantou R$ 356,02 / 8 cobranças — majoritariamente recorrente.
+
+**3 implicações nos fluxos de automação:**
+1. **Dashboard/agente separam os 2 baldes.** ✅ Feito: o Agente Kanban (`02-cadencias/n8n-agente-kanban-dividas.json`) agora consulta o Asaas e mostra `🔵 Recorrente` vs `🟢 Ativo` no resumo matinal. Regra: `recorrente = CREDIT_CARD + subscription`.
+2. **Volume + canal certo.** Meta 300 disparos/dia; o chat está caro (~R$200/disparo na pediatria) → usar **lista de transmissão WhatsApp** no `n8n-perdao-divida-disparo-massa.json`.
+3. **Enriquecimento é pré-requisito.** Taxa de resposta de 5,5% = base com contato desatualizado → a frente da Raquel (Dados/Inbotics) roda **antes** do disparo.
 
 ---
 

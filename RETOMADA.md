@@ -32,6 +32,16 @@ Detalhe completo na memória do projeto (`.claude/.../memory/proxima_tarefa_n8n_
 
 ---
 
+## 🔎 19/06 — Achado: caixa RECORRENTE vs ATIVO (o "real resultado da Karine")
+
+> Cruzando a transcrição da matinal 19/06 + extrato Asaas (`Cobrancas (1).xlsx`, filtro "Data de recebimento").
+
+As 7 cobranças que "caíram" no Asaas em 19/06 (**R$ 289,30**) eram **todas Cartão de Crédito recorrente, confirmadas em 18/05 e creditadas hoje** (D+30+2) — **caixa de maio que caiu sozinho, não cobrança ativa.** O Asaas em "Data de recebimento" **mistura** 🔵 recorrente (cartão, automático) com 🟢 ativo (Pix/dinheiro/cobrança = esforço real da equipe). Sem separar, o número infla e mascara que a campanha ainda quase não gera caixa novo (esforço ativo de ontem: 180 disparos → 10 respostas → 2 perdões).
+
+**Ações:** ✅ Agente Kanban ajustado p/ separar os 2 baldes no resumo matinal (`02-cadencias/n8n-agente-kanban-dividas.json`, consulta Asaas; regra `recorrente = CREDIT_CARD + subscription`). ⏳ Disparo via **lista de transmissão WhatsApp** (chat caro ~R$200) · enriquecimento (Raquel) **antes** do disparo (taxa resposta 5,5%). Detalhe: ATA 18/06 seção 8.
+
+---
+
 ## 🟢 18/06 — Matinal definiu a MÁQUINA de cobrança (ATA completa: `01-matinais/18-06-2026/ata-matinal-18-06-2026.md`)
 
 > **Reunião de 2h44 (08h19) com Rogério + Karine + Lucas + Raquel.** Destravou a verdade do caixa e desenhou o fluxo operacional Karine→Lucas→Raquel para fechar o mês em R$ 20.000.
