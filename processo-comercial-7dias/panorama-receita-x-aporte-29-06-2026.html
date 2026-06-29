@@ -93,7 +93,7 @@
     <div class="cards">
       <div class="kpi verde">
         <div class="lbl">Receita real (ano)</div>
-        <div class="val verde">R$ 32 mil</div>
+        <div class="val verde">R$ 24,6 mil</div>
         <div class="hint">venda de verdade, sem aportes</div>
       </div>
       <div class="kpi amarelo">
@@ -102,14 +102,14 @@
         <div class="hint">dinheiro do Rogério p/ caixa</div>
       </div>
       <div class="kpi azul" style="border:1px solid var(--linha)">
-        <div class="lbl">MRR contratado</div>
-        <div class="val azul">R$ 14,6 mil/mês</div>
-        <div class="hint">422 contratos recorrentes ativos</div>
+        <div class="lbl">MRR contratado (jun)</div>
+        <div class="val azul">R$ 13,9 mil/mês</div>
+        <div class="hint">327 recorrentes — só 178 pagaram</div>
       </div>
       <div class="kpi verde">
         <div class="lbl">Crescimento Abr → Jun</div>
-        <div class="val verde">+170%</div>
-        <div class="hint">receita real: R$ 5,9k → R$ 16k</div>
+        <div class="val verde">+45%</div>
+        <div class="hint">receita real: R$ 5,9k → R$ 8,6k</div>
       </div>
     </div>
   </section>
@@ -121,7 +121,7 @@
       <div class="chart-box"><canvas id="chartReceita"></canvas></div>
       <div class="legend-note">
         🟢 Receita real = o que o negócio gerou sozinho &nbsp;·&nbsp; 🟡 Aporte = dinheiro do Rogério para segurar o caixa.
-        Em junho, pela 1ª vez, a operação real (R$ 16k) <strong>superou o aporte mensal</strong>.
+        Em junho o aporte (R$ 15k) <strong>ainda foi maior que a operação real (R$ 8,6k)</strong> — é ele que segura o caixa hoje. Por isso o foco é fazer a receita real crescer até dispensar o aporte.
       </div>
     </div>
   </section>
@@ -145,10 +145,10 @@
           <tr><td>Mar</td><td class="num">2.037</td><td class="num">1.073</td><td class="num pos">3.110</td><td class="num mut">—</td></tr>
           <tr><td>Abr <span class="mut">(antes)</span></td><td class="num">4.405</td><td class="num">1.524</td><td class="num pos">5.929</td><td class="num">2.400</td></tr>
           <tr class="destaque"><td>Mai <span class="mut">· advisory entra</span></td><td class="num">5.239</td><td class="num">1.617</td><td class="num pos">6.856</td><td class="num">3.800</td></tr>
-          <tr class="destaque"><td>Jun</td><td class="num">13.095</td><td class="num">2.916</td><td class="num pos">16.010</td><td class="num">15.000</td></tr>
+          <tr class="destaque"><td>Jun</td><td class="num">6.601</td><td class="num">2.012</td><td class="num pos">8.613</td><td class="num">15.000</td></tr>
           <tr style="border-top:2px solid var(--azul)">
-            <td><strong>Total</strong></td><td class="num"><strong>24.845</strong></td><td class="num"><strong>7.168</strong></td>
-            <td class="num pos"><strong>32.013</strong></td><td class="num"><strong>21.200</strong></td>
+            <td><strong>Total</strong></td><td class="num"><strong>18.351</strong></td><td class="num"><strong>6.264</strong></td>
+            <td class="num pos"><strong>24.615</strong></td><td class="num"><strong>21.200</strong></td>
           </tr>
         </tbody>
       </table>
@@ -161,22 +161,22 @@
       <div>
         <h2><span class="num">3</span> Motor recorrente</h2>
         <div class="panel"><div class="chart-box sm"><canvas id="chartMRR"></canvas></div>
-        <div class="legend-note">Contratos recorrentes pagos por mês — quase 6× de mar a jun</div></div>
+        <div class="legend-note">Contratos recorrentes pagos por mês — 3× de mar a jun (62 → 188)</div></div>
       </div>
       <div>
-        <h2><span class="num">4</span> Foto Asaas hoje</h2>
+        <h2><span class="num">4</span> Foto Asaas — junho (bate com seu painel)</h2>
         <div class="panel" style="padding:8px 8px">
           <table>
             <thead><tr><th>Status</th><th class="num">Valor</th><th>É caixa?</th></tr></thead>
             <tbody>
-              <tr><td>🟢 Recebidas</td><td class="num">R$ 48.742</td><td class="pos">Já caiu</td></tr>
-              <tr><td>🔵 Confirmadas</td><td class="num">R$ 3.820</td><td class="mut">A caminho</td></tr>
-              <tr><td>🟡 Aguardando</td><td class="num">R$ 23.824</td><td class="neg">Promessa</td></tr>
-              <tr><td>🔴 Vencidas</td><td class="num">R$ 2.214</td><td class="neg">Inadimplência</td></tr>
+              <tr><td>🟢 Recebidas</td><td class="num">R$ 19.790</td><td class="pos">Já caiu</td></tr>
+              <tr><td>🔵 Confirmadas</td><td class="num">R$ 3.391</td><td class="mut">A caminho</td></tr>
+              <tr><td>🟡 Aguardando</td><td class="num">R$ 7.506</td><td class="neg">Promessa</td></tr>
+              <tr><td>🔴 Vencidas</td><td class="num">R$ 1.436</td><td class="neg">Inadimplência</td></tr>
             </tbody>
           </table>
           <p class="legend-note" style="text-align:left;padding:8px 12px">
-            ⚠️ "Aguardando" <strong>não é faturamento</strong> — é o que falta cobrar (alvo da Máquina de Cobrança).
+            ⚠️ Dos R$ 19.790 "Recebidas", <strong>R$ 15.000 é aporte</strong> (Maria Adélia). "Aguardando" não é faturamento — é o alvo da Máquina de Cobrança.
           </p>
         </div>
       </div>
@@ -187,13 +187,13 @@
   <section>
     <h2><span class="num">5</span> A decisão que destrava o caixa</h2>
     <div class="callout win">
-      <h3>📈 Migrar 294 contratos de R$ 24,90 → R$ 39,90 (reajuste já programado)</h3>
-      <span class="big-num">+ R$ 4.410/mês &nbsp;·&nbsp; + R$ 52.920/ano</span>
+      <h3>📈 Migrar os contratos de R$ 24,90 → R$ 39,90 (reajuste já programado)</h3>
+      <span class="big-num">+ R$ 2.460/mês &nbsp;·&nbsp; + R$ 29.520/ano</span>
       <ul>
-        <li><strong>294 clientes</strong> ainda pagam o preço antigo de R$ 24,90 (hoje R$ 7.321/mês).</li>
-        <li>No preço atual de R$ 39,90 viram <strong>R$ 11.731/mês</strong>.</li>
-        <li><strong>Blindagem:</strong> mesmo perdendo 20% no reajuste (59 cancelamentos), ainda sobra <strong>+R$ 2.056/mês</strong>. Risco assimétrico a favor.</li>
-        <li>Sozinha, essa decisão <strong>paga o advisory (R$ 30k) quase 2×</strong>.</li>
+        <li><strong>164 contratos recorrentes</strong> da base ativa ainda pagam o preço antigo de R$ 24,90 (hoje R$ 4.084/mês). <span class="mut">Pode haver mais fora do ciclo de junho — confirmar com Karine.</span></li>
+        <li>No preço atual de R$ 39,90 viram <strong>R$ 6.544/mês</strong>.</li>
+        <li><strong>Blindagem:</strong> mesmo perdendo 20% no reajuste (33 cancelamentos), ainda sobra <strong>+R$ 1.143/mês</strong>. Risco assimétrico a favor.</li>
+        <li>Sozinha, essa decisão gera <strong>quase o valor de um advisory inteiro (R$ 30k) por ano</strong> — e é o caminho mais rápido pra dispensar o aporte.</li>
       </ul>
     </div>
   </section>
@@ -204,10 +204,10 @@
     <div class="callout ask">
       <h3>❓ Para cravar o número limpo do RMAR de junho</h3>
       <ol>
-        <li><strong>Aportes (R$ 21,2k):</strong> os Pix de R$ 10k + R$ 5k (Maria Adélia) e R$ 2k + R$ 1,8k (seu nome) foram aporte de capital, certo?</li>
+        <li><strong>Aportes (R$ 21,2k):</strong> os Pix de R$ 10k + R$ 5k (Maria Adélia) e R$ 2k + R$ 1,8k (seu nome) foram aporte de capital, certo? <span class="mut">É isso que tirei da receita real — por isso o número honesto é R$ 8,6k e não R$ 16k.</span></li>
         <li><strong>Recepção:</strong> o dinheiro recebido presencialmente (espécie/maquininha) <strong>entra no Asaas</strong> ou fica fora? Se fica fora, o faturamento real é maior do que esse painel mostra.</li>
-        <li><strong>Outros repasses:</strong> teve algum aporte fora do Asaas que eu deva descontar da receita?</li>
-        <li><strong>Quitações da campanha:</strong> conta como receita do mês ou recuperação de caixa antigo?</li>
+        <li><strong>Inadimplência recorrente:</strong> dos 327 contratos recorrentes de junho, só 178 pagaram — <strong>R$ 7,9k/mês contratado não entrou</strong>. É o maior alvo da Máquina de Cobrança. Bate com o que você vê?</li>
+        <li><strong>Quitações da campanha:</strong> conta como receita do mês ou recuperação de caixa antigo (one-time)?</li>
       </ol>
     </div>
   </section>
@@ -215,9 +215,8 @@
   <!-- Ressalva -->
   <section>
     <div class="callout warn">
-      <strong>⚠️ Nota metodológica:</strong> consolidação de exports do Asaas tirados em dias diferentes — total ~R$ 53k vs ~R$ 51k do painel oficial.
-      A <strong>tendência mês a mês e a separação aporte/receita estão sólidas</strong>; o número fechado oficial é o do dashboard Asaas. Parte do salto de junho é one-time
-      (quitações + recorrentes atrasadas recuperadas) — não é MRR sustentável recorrente.
+      <strong>⚠️ Nota metodológica (revisado):</strong> a receita real é calculada <strong>por data de pagamento</strong> (caixa que de fato entrou) e <strong>sem os aportes</strong>. A "Foto Asaas" de junho bate com o seu painel (Recebidas R$ 19.790, Aguardando R$ 7.506 etc.).
+      O número honesto de junho é <strong>R$ 8,6k de receita real</strong> (não os R$ 16k de uma versão anterior, que ainda misturava o aporte). Crescimento real Abr→Jun = <strong>+45%</strong>. Parte do caixa de junho é one-time (quitações da campanha + recorrentes atrasadas recuperadas) — não é MRR sustentável.
     </div>
   </section>
 
@@ -236,7 +235,7 @@ Chart.defaults.font.family = "'Barlow','Segoe UI',sans-serif";
 new Chart(document.getElementById('chartReceita'), {
   type:'bar',
   data:{ labels:meses, datasets:[
-    { label:'Receita real (operação)', data:[108,3110,5929,6856,16010],
+    { label:'Receita real (operação)', data:[108,3110,5929,6856,8613],
       backgroundColor:'#16c784', borderRadius:6 },
     { label:'Aporte do sócio', data:[0,0,2400,3800,15000],
       backgroundColor:'#f5b301', borderRadius:6 }
@@ -251,7 +250,7 @@ new Chart(document.getElementById('chartReceita'), {
 new Chart(document.getElementById('chartMRR'), {
   type:'line',
   data:{ labels:['Mar','Abr','Mai','Jun'], datasets:[
-    { label:'Contratos recorrentes pagos', data:[62,114,149,361],
+    { label:'Contratos recorrentes pagos', data:[62,114,149,188],
       borderColor:'#36a9e1', backgroundColor:'rgba(54,169,225,.18)',
       fill:true, tension:.35, pointRadius:5, pointBackgroundColor:'#36a9e1', borderWidth:3 }
   ]},

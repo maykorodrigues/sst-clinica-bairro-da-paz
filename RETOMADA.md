@@ -12,17 +12,20 @@ tags: [em-progresso]
 
 > Análise consolidada da conta Asaas (4 exports, dedup por Identificador) para mostrar ao Rogério o crescimento real desde o advisory (entrou 01/05). Detalhe na memória `analise_financeira_asaas_29-06-2026.md`.
 
-**🟢 A virada da narrativa (receita real × aporte):**
-- Separados os **R$ 21.200 de APORTE do sócio** (Maria Adélia R$10k+R$5k, Rogério R$2k+R$1,8k, SSF-Card R$2,4k) da receita de verdade.
-- **Receita real (sem aporte):** Abr R$ 5.929 → Mai R$ 6.856 → **Jun R$ 16.010 (+170%)**. Motor recorrente: 114 → 361 cobranças pagas. **MRR contratado ≈ R$ 14.579/mês** (422 contratos, ticket ~R$ 34,5).
-- **Junho foi o 1º mês em que a operação real superou o aporte mensal** — o negócio começa a andar com as próprias pernas.
+**⚠️ CORREÇÃO (29/06, fim do dia) — Rogério contestou por áudio e ESTAVA CERTO.** A 1ª versão dava Jun R$ 16.010 / +170%, que não bateu com o caixa real dele ("não tenho nem dinheiro pra pagar o seu e o meu amanhã"). Recalculado **por data de pagamento, sem aporte**: número honesto abaixo. Gráfico PNG, panorama HTML e memória já corrigidos.
 
-**📈 DECISÃO ESTRATÉGICA (maior alavanca disponível):** **294 contratos ainda em R$ 24,90** → migrar p/ **R$ 39,90** (reajuste já programado) = **+R$ 4.410/mês / +R$ 52.920/ano**. Blindagem: mesmo com 20% de churn, ainda +R$ 2.056/mês. Sozinha paga o advisory ~2×. **Aguarda GO/NO-GO do Rogério.**
+**🟢 A narrativa CORRIGIDA (receita real × aporte):**
+- Separados os **R$ 21.200 de APORTE do sócio** (Maria Adélia R$10k+R$5k, Rogério R$2k+R$1,8k, SSF-Card R$2,4k) da receita de verdade.
+- **Receita real (sem aporte, por data de pgto):** Abr R$ 5.929 → Mai R$ 6.856 → **Jun R$ 8.613 (+45%, não +170%)**. Motor recorrente PAGO: 114 → **188** cobranças (3×). **MRR contratado jun ≈ R$ 13.943** (327 recorrentes), mas **só 178 pagaram → R$ 7,9k/mês não entrou (46% inadimplência)** = maior alvo da Máquina de Cobrança.
+- **Em junho o aporte (R$ 15k) ainda foi MAIOR que a operação real (R$ 8,6k)** — é ele que segura o caixa. Foco: crescer a receita real até dispensar o aporte. Bate com a dor do Rogério.
+- **Reconciliação com o dashboard dele (junho/vencimento):** Recebidas R$ 19.790 ✓ · Confirmadas R$ 3.391 ✓ · Aguardando R$ 7.506 ✓ · Vencidas R$ 1.436 ✓.
+
+**📈 DECISÃO ESTRATÉGICA (número conservador):** **164 contratos recorrentes** da base ativa de junho ainda em R$ 24,90 (não 294) → migrar p/ **R$ 39,90** (reajuste já programado) = **+R$ 2.460/mês / +R$ 29.520/ano** (≈ 1 advisory/ano). Blindagem: mesmo com 20% churn, ainda +R$ 1.143/mês. Pode haver mais 24,90 fora do ciclo de junho — confirmar com Karine. **Aguarda GO/NO-GO do Rogério.**
 
 **❓ PENDÊNCIA a confirmar com Rogério (trava o número oficial do RMAR):**
-1. Aportes (R$ 21,2k) — confirmar que são repasse dele, não venda.
+1. Aportes (R$ 21,2k) — confirmar que são repasse dele, não venda. (É o que tirei → por isso jun real é R$ 8,6k, não R$ 16k.)
 2. **Dinheiro da recepção (espécie/maquininha) entra no Asaas ou fica fora?** Se fica fora, o faturamento real é maior. → virar processo (registrar toda venda presencial).
-3. Outros repasses fora do Asaas?
+3. Inadimplência recorrente: 327 contratos, só 178 pagaram — bate com o que ele vê? Rogério vai puxar extratos amanhã/quarta pra cravar o número.
 
 **Artefatos criados/deployados (29/06):**
 | Entregável | Arquivo | Estado |
