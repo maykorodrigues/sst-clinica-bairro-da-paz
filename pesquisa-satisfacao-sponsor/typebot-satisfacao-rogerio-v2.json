@@ -1,0 +1,386 @@
+{
+  "version": "6",
+  "id": "sst-satisfacao-sponsor-v2",
+  "name": "Pesquisa de Satisfação — Sponsor Rogério (Advisory) V2",
+  "events": [
+    {
+      "id": "evt_start",
+      "type": "start",
+      "graphCoordinates": { "x": -400, "y": 0 },
+      "outgoingEdgeId": "e_start_to_g00"
+    }
+  ],
+  "variables": [
+    { "id": "v01", "name": "SatisfacaoGeral" },
+    { "id": "v02", "name": "PercepcaoROI" },
+    { "id": "v03", "name": "MaiorEntrega" },
+    { "id": "v04", "name": "SaudeFinanceira" },
+    { "id": "v05", "name": "ConfiancaNovaUnidade" },
+    { "id": "v06", "name": "Continuidade" },
+    { "id": "v07", "name": "PrioridadeProxMes" },
+    { "id": "v08", "name": "MensagemMayko" }
+  ],
+  "edges": [
+    { "id": "e_start_to_g00", "from": { "eventId": "evt_start" }, "to": { "groupId": "g00" } },
+    { "id": "e00_to_g01", "from": { "groupId": "g00", "blockId": "b00_start" }, "to": { "groupId": "g01" } },
+    { "id": "e01_to_g02", "from": { "groupId": "g01", "blockId": "b01_sat"   }, "to": { "groupId": "g02" } },
+    { "id": "e02_to_g03", "from": { "groupId": "g02", "blockId": "b02_roi"   }, "to": { "groupId": "g03" } },
+    { "id": "e03_to_g04", "from": { "groupId": "g03", "blockId": "b03_entrega" }, "to": { "groupId": "g04" } },
+    { "id": "e04_to_g05", "from": { "groupId": "g04", "blockId": "b04_saude" }, "to": { "groupId": "g05" } },
+    { "id": "e05_to_g06", "from": { "groupId": "g05", "blockId": "b05_unid"  }, "to": { "groupId": "g06" } },
+    { "id": "e06_to_g07", "from": { "groupId": "g06", "blockId": "b06_cont"  }, "to": { "groupId": "g07" } },
+    { "id": "e07_to_g08", "from": { "groupId": "g07", "blockId": "b07_prio"  }, "to": { "groupId": "g08" } },
+    { "id": "e08_to_g09", "from": { "groupId": "g08", "blockId": "b08_msg"   }, "to": { "groupId": "g09" } },
+    { "id": "e09_to_g10", "from": { "groupId": "g09", "blockId": "b09_wh"    }, "to": { "groupId": "g10" } }
+  ],
+  "groups": [
+
+    {
+      "id": "g00",
+      "title": "Abertura",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "blocks": [
+        {
+          "id": "b00_bv",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Olá, Sr. Rogério! 👋" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Aqui é o Advisory do Mayko." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Fechando 2 meses de trabalho — e na véspera da inauguração da Bairro da Paz — queria 2 minutos do seu tempo: 7 perguntas rápidas, agora com os números na mesa." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Resposta honesta vale mais que elogio. 🙏", "bold": true }] }
+            ]
+          }
+        },
+        {
+          "id": "b00_start",
+          "type": "choice input",
+          "items": [
+            { "id": "start_i0", "content": "Bora começar →" }
+          ],
+          "options": { "isMultipleChoice": false },
+          "outgoingEdgeId": "e00_to_g01"
+        }
+      ]
+    },
+
+    {
+      "id": "g01",
+      "title": "Q1 — Satisfação geral",
+      "graphCoordinates": { "x": 450, "y": 0 },
+      "blocks": [
+        {
+          "id": "b01_intro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "1 de 7 — Visão geral", "bold": true }] }] }
+        },
+        {
+          "id": "b01_q",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "De forma geral, o quanto você está satisfeito com o trabalho do Advisory neste 2º mês?" }] }] }
+        },
+        {
+          "id": "b01_sat",
+          "type": "choice input",
+          "items": [
+            { "id": "sat_i1", "content": "⭐ Muito abaixo do esperado" },
+            { "id": "sat_i2", "content": "⭐⭐ Abaixo do esperado" },
+            { "id": "sat_i3", "content": "⭐⭐⭐ Dentro do esperado" },
+            { "id": "sat_i4", "content": "⭐⭐⭐⭐ Acima do esperado" },
+            { "id": "sat_i5", "content": "⭐⭐⭐⭐⭐ Muito acima do esperado" }
+          ],
+          "options": { "variableId": "v01", "isMultipleChoice": false },
+          "outgoingEdgeId": "e01_to_g02"
+        }
+      ]
+    },
+
+    {
+      "id": "g02",
+      "title": "Q2 — Percepção de ROI",
+      "graphCoordinates": { "x": 900, "y": 0 },
+      "blocks": [
+        {
+          "id": "b02_intro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "2 de 7 — Retorno x investimento", "bold": true }] }] }
+        },
+        {
+          "id": "b02_q",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Desde que começamos, a receita real do negócio (sem contar os seus aportes) saltou de ~R$ 6 mil/mês para ~R$ 16 mil/mês, e a base recorrente quase quadruplicou." }] },
+            { "type": "p", "children": [{ "text": "" }] },
+            { "type": "p", "children": [{ "text": "Considerando o investimento no advisory, como você avalia o retorno?" }] }
+          ]}
+        },
+        {
+          "id": "b02_roi",
+          "type": "choice input",
+          "items": [
+            { "id": "roi_i1", "content": "Excelente — já paga o investimento com folga" },
+            { "id": "roi_i2", "content": "Bom — está valendo a pena" },
+            { "id": "roi_i3", "content": "Razoável — quero ver consolidar nos próximos meses" },
+            { "id": "roi_i4", "content": "Abaixo do que eu esperava" }
+          ],
+          "options": { "variableId": "v02", "isMultipleChoice": false },
+          "outgoingEdgeId": "e02_to_g03"
+        }
+      ]
+    },
+
+    {
+      "id": "g03",
+      "title": "Q3 — O que mais gerou valor",
+      "graphCoordinates": { "x": 1350, "y": 0 },
+      "blocks": [
+        {
+          "id": "b03_intro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "3 de 7 — Destaques dos 2 meses", "bold": true }] }] }
+        },
+        {
+          "id": "b03_q",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "O que mais te gerou valor nestes 2 meses? (pode marcar mais de um)" }] }] }
+        },
+        {
+          "id": "b03_entrega",
+          "type": "choice input",
+          "items": [
+            { "id": "ent_i1", "content": "Crescimento da receita recorrente (mensalidades)" },
+            { "id": "ent_i2", "content": "Máquina de Cobrança / recuperação de inadimplentes" },
+            { "id": "ent_i3", "content": "Estruturação da nova unidade (Bairro da Paz)" },
+            { "id": "ent_i4", "content": "Clareza financeira (separar aporte de receita, números reais)" },
+            { "id": "ent_i5", "content": "Capacitação e automação da equipe (Karine, Raquel, Lucas)" },
+            { "id": "ent_i6", "content": "Processo seletivo do Closer (RH)" },
+            { "id": "ent_i7", "content": "Visão estratégica / direção do negócio" }
+          ],
+          "options": { "variableId": "v03", "isMultipleChoice": true },
+          "outgoingEdgeId": "e03_to_g04"
+        }
+      ]
+    },
+
+    {
+      "id": "g04",
+      "title": "Q4 — Saúde financeira (receita x custo)",
+      "graphCoordinates": { "x": 1800, "y": 0 },
+      "blocks": [
+        {
+          "id": "b04_intro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "4 de 7 — Receita x custo", "bold": true }] }] }
+        },
+        {
+          "id": "b04_q",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Olhando a saúde financeira hoje — o dinheiro que entra vs os custos (equipe, advisory, despesas da operação) — como você se sente?" }] }
+          ]}
+        },
+        {
+          "id": "b04_saude",
+          "type": "choice input",
+          "items": [
+            { "id": "sau_i1", "content": "Confiante — a conta está fechando e melhorando" },
+            { "id": "sau_i2", "content": "Otimista, mas atento aos custos" },
+            { "id": "sau_i3", "content": "Preocupado — os custos ainda pesam" },
+            { "id": "sau_i4", "content": "Inseguro — preciso de mais visibilidade dos números" }
+          ],
+          "options": { "variableId": "v04", "isMultipleChoice": false },
+          "outgoingEdgeId": "e04_to_g05"
+        }
+      ]
+    },
+
+    {
+      "id": "g05",
+      "title": "Q5 — Confiança na nova unidade",
+      "graphCoordinates": { "x": 2250, "y": 0 },
+      "blocks": [
+        {
+          "id": "b05_intro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "5 de 7 — Bairro da Paz (01/07)", "bold": true }] }] }
+        },
+        {
+          "id": "b05_q",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Na véspera da inauguração da Bairro da Paz (01/07), qual seu nível de confiança no preparo?" }] }] }
+        },
+        {
+          "id": "b05_unid",
+          "type": "choice input",
+          "items": [
+            { "id": "uni_i1", "content": "Muito confiante — estamos prontos" },
+            { "id": "uni_i2", "content": "Confiante, com ajustes finais" },
+            { "id": "uni_i3", "content": "Cauteloso — ainda temos pendências" },
+            { "id": "uni_i4", "content": "Preocupado — falta coisa importante" }
+          ],
+          "options": { "variableId": "v05", "isMultipleChoice": false },
+          "outgoingEdgeId": "e05_to_g06"
+        }
+      ]
+    },
+
+    {
+      "id": "g06",
+      "title": "Q6 — Continuidade",
+      "graphCoordinates": { "x": 2700, "y": 0 },
+      "blocks": [
+        {
+          "id": "b06_intro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "6 de 7 — Próximos meses", "bold": true }] }] }
+        },
+        {
+          "id": "b06_q",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Pretende seguir com o Advisory nos próximos meses?" }] }] }
+        },
+        {
+          "id": "b06_cont",
+          "type": "choice input",
+          "items": [
+            { "id": "cont_i1", "content": "Com certeza — quero continuar e até expandir" },
+            { "id": "cont_i2", "content": "Sim, mantenho o combinado" },
+            { "id": "cont_i3", "content": "Tenho dúvidas — vamos conversar" },
+            { "id": "cont_i4", "content": "Penso em pausar / encerrar" }
+          ],
+          "options": { "variableId": "v06", "isMultipleChoice": false },
+          "outgoingEdgeId": "e06_to_g07"
+        }
+      ]
+    },
+
+    {
+      "id": "g07",
+      "title": "Q7 — Prioridade do próximo mês",
+      "graphCoordinates": { "x": 3150, "y": 0 },
+      "blocks": [
+        {
+          "id": "b07_intro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "7 de 7 — Onde eu foco", "bold": true }] }] }
+        },
+        {
+          "id": "b07_q",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Com a unidade nova de pé, onde você quer minha energia no próximo mês? (prioridade nº 1)" }] }] }
+        },
+        {
+          "id": "b07_prio",
+          "type": "choice input",
+          "items": [
+            { "id": "prio_i1", "content": "Rampar as vendas da Bairro da Paz" },
+            { "id": "prio_i2", "content": "Reajuste de preço (R$ 24,90 → R$ 39,90) e ticket médio" },
+            { "id": "prio_i3", "content": "Reduzir inadimplência / Máquina de Cobrança" },
+            { "id": "prio_i4", "content": "Grande Automação (IA na operação)" },
+            { "id": "prio_i5", "content": "Laboratório MADIP (Aline)" },
+            { "id": "prio_i6", "content": "Produtividade e gestão da equipe" }
+          ],
+          "options": { "variableId": "v07", "isMultipleChoice": false },
+          "outgoingEdgeId": "e07_to_g08"
+        }
+      ]
+    },
+
+    {
+      "id": "g08",
+      "title": "Mensagem aberta ao Mayko",
+      "graphCoordinates": { "x": 3600, "y": 0 },
+      "blocks": [
+        {
+          "id": "b08_q",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Por último: algo que você queira me dizer diretamente? Elogio, cobrança, ideia — vale tudo." }] },
+            { "type": "p", "children": [{ "text": "(opcional — pode pular)", "italic": true }] }
+          ]}
+        },
+        {
+          "id": "b08_msg",
+          "type": "text input",
+          "options": {
+            "variableId": "v08",
+            "isLong": true,
+            "labels": { "placeholder": "Opcional — escreva ou pule", "button": "Enviar respostas ✓" }
+          },
+          "outgoingEdgeId": "e08_to_g09"
+        }
+      ]
+    },
+
+    {
+      "id": "g09",
+      "title": "Webhook → n8n",
+      "graphCoordinates": { "x": 4050, "y": 0 },
+      "blocks": [
+        {
+          "id": "b09_wh",
+          "type": "Webhook",
+          "webhookId": "wh-sst-satisfacao-02",
+          "options": {
+            "url": "https://n8n.clinicalucrativa.ia.br/webhook/sst-satisfacao-sponsor-v2",
+            "method": "POST",
+            "headers": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": "{\n  \"source\": \"typebot:satisfacao-sponsor-rogerio-v2\",\n  \"sponsor\": \"Rogério Ferreira\",\n  \"ciclo\": \"mes-2\",\n  \"respostas\": {\n    \"satisfacao_geral\": \"{{SatisfacaoGeral}}\",\n    \"percepcao_roi\": \"{{PercepcaoROI}}\",\n    \"maior_entrega\": \"{{MaiorEntrega}}\",\n    \"saude_financeira\": \"{{SaudeFinanceira}}\",\n    \"confianca_nova_unidade\": \"{{ConfiancaNovaUnidade}}\",\n    \"continuidade\": \"{{Continuidade}}\",\n    \"prioridade_prox_mes\": \"{{PrioridadeProxMes}}\",\n    \"mensagem_mayko\": \"{{MensagemMayko}}\"\n  }\n}"
+          },
+          "outgoingEdgeId": "e09_to_g10"
+        }
+      ]
+    },
+
+    {
+      "id": "g10",
+      "title": "Agradecimento",
+      "graphCoordinates": { "x": 4500, "y": 0 },
+      "blocks": [
+        {
+          "id": "b10_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Valeu, Sr. Rogério! 🙏", "bold": true }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Suas respostas chegaram. Vou usar exatamente isso pra calibrar o próximo ciclo — e te trago um plano focado na prioridade que você marcou, com receita e custo lado a lado." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Bora inaugurar a Bairro da Paz. 🚀" }] }
+            ]
+          }
+        }
+      ]
+    }
+
+  ],
+
+  "settings": {
+    "general": {
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": true,
+      "isHideQueryParamsEnabled": true
+    },
+    "typingEmulation": {
+      "enabled": true,
+      "speed": 300,
+      "maxDelay": 2.5
+    }
+  },
+
+  "theme": {
+    "general": {
+      "font": "Inter",
+      "background": { "type": "Color", "content": "#f2efe6" }
+    },
+    "chat": {
+      "hostBubbles": { "backgroundColor": "#1987c3", "color": "#ffffff" },
+      "guestBubbles": { "backgroundColor": "#f0f7ff", "color": "#1a1a2e" },
+      "buttons": { "backgroundColor": "#1987c3", "color": "#ffffff" },
+      "inputs": { "backgroundColor": "#ffffff", "color": "#1a1a2e", "placeholderColor": "#9ca3af" }
+    }
+  }
+}

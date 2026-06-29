@@ -1,0 +1,79 @@
+{
+  "name": "SST Satisfação Sponsor V2 — Rogério (ROI + Custo) → WhatsApp Mayko",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-satisfacao-sponsor-v2",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-0001-0001-aabbccddeeff",
+      "name": "Receber Pesquisa V2",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\nconst b = raw.body ?? raw;\nconst r = b.respostas ?? {};\n\nconst sat   = (r.satisfacao_geral ?? '').toLowerCase();\nconst roi   = (r.percepcao_roi ?? '').toLowerCase();\nconst saude = (r.saude_financeira ?? '').toLowerCase();\nconst cont  = (r.continuidade ?? '').toLowerCase();\nconst unid  = (r.confianca_nova_unidade ?? '').toLowerCase();\n\n// Semáforo do ciclo 2: lê satisfação + ROI + saúde financeira + continuidade\nlet semaforo = '🟢 OK — sponsor satisfeito e confiante';\nlet acao = 'Siga com o ciclo e a cobrança com tranquilidade. Reforce o ganho de receita real no próximo contato.';\n\nconst vermelho = sat.includes('abaixo')\n  || roi.includes('abaixo do que eu esperava')\n  || saude.includes('inseguro')\n  || saude.includes('preocupado')\n  || cont.includes('pausar')\n  || cont.includes('encerrar');\n\nconst amarelo = sat.includes('dentro do esperado')\n  || roi.includes('razoável')\n  || saude.includes('atento aos custos')\n  || cont.includes('dúvidas')\n  || unid.includes('preocupado')\n  || unid.includes('cauteloso');\n\nif (vermelho) {\n  semaforo = '🔴 ATENÇÃO — risco de insatisfação / custo pesando';\n  acao = '⚠️ LIGUE para o Rogério ANTES de qualquer cobrança. Leve o quadro receita x custo na mão e trate o ponto de preocupação primeiro.';\n} else if (amarelo) {\n  semaforo = '🟡 MORNO — confiança parcial';\n  acao = 'Ligação rápida de alinhamento. Mostre o panorama Receita Real x Aporte para ancorar o ROI antes de avançar.';\n}\n\nconst linhas = [\n  '📊 *Pesquisa de Satisfação V2 — Rogério (Advisory · ciclo 2)*',\n  semaforo,\n  '',\n  `*Satisfação geral:* ${r.satisfacao_geral ?? 'N/A'}`,\n  `*Retorno x investimento (ROI):* ${r.percepcao_roi ?? 'N/A'}`,\n  `*Saúde financeira (receita x custo):* ${r.saude_financeira ?? 'N/A'}`,\n  `*Confiança na nova unidade:* ${r.confianca_nova_unidade ?? 'N/A'}`,\n  `*Maior entrega:* ${r.maior_entrega ?? 'N/A'}`,\n  `*Continuidade:* ${r.continuidade ?? 'N/A'}`,\n  `*Prioridade próx. mês:* ${r.prioridade_prox_mes ?? 'N/A'}`,\n  '',\n  `*Mensagem direta:* ${r.mensagem_mayko || '—'}`,\n  '',\n  `➡️ *Ação sugerida:* ${acao}`,\n];\n\nreturn [{ json: { mensagem: linhas.join('\\n'), numero: '5571982170967' } }];"
+      },
+      "id": "a1b2c3d4-0002-0002-0002-aabbccddeeff",
+      "name": "Montar Mensagem + Semáforo V2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://evolution.clinicalucrativa.ia.br/message/sendText/Mayko Rodrigues - Consultor Comercial Clínica Lucrativa",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({ number: $json.numero, text: $json.mensagem }) }}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0003-0003-0003-aabbccddeeff",
+      "name": "WhatsApp Mayko",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [720, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "2WoKcrxJKwbaBV05",
+          "name": "apikey"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Receber Pesquisa V2": {
+      "main": [
+        [
+          {
+            "node": "Montar Mensagem + Semáforo V2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar Mensagem + Semáforo V2": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Mayko",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

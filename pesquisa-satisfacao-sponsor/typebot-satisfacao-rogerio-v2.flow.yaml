@@ -1,0 +1,224 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Flow Spec — Pesquisa de Satisfação do Sponsor · Rogério (Advisory SST) — V2
+# Versão: 2.0 · Data: 29/06/2026
+# Objetivo: fechar o 2º ciclo de advisory (dia do pagamento) REFORÇANDO valor e
+#           contribuição, com os números reais na mesa: crescimento de receita,
+#           relação receita × custo (equipe, advisor, despesas) e a abertura da
+#           nova unidade (Bairro da Paz, inaugura 01/07).
+# Diferença p/ v1: v1 media satisfação ANTES de cobrar a 2ª mensalidade.
+#           v2 ANCORA o ROI — usa os números do Asaas pra fazer o sponsor
+#           RECONHECER o salto de receita e avaliar a saúde financeira.
+# Importar via: typebot.clinicalucrativa.ia.br → Criar typebot → Importar JSON
+# JSON gerado: typebot-satisfacao-rogerio-v2.json (mesmo diretório)
+# Base: padrão validado em [[padrao-typebot-whatsapp]] · clona estrutura da v1
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: satisfacao-sponsor-rogerio-v2
+locale: pt-BR
+entry_channels: [web]   # link enviado por WhatsApp (não é bot de conversa)
+
+theme:
+  host_bubble_bg: "#1987c3"   # azul SST
+  host_bubble_color: "#ffffff"
+  guest_bubble_bg: "#f0f7ff"
+  guest_bubble_color: "#1a1a2e"
+  button_bg: "#1987c3"
+  button_color: "#ffffff"
+  font: "Inter"
+  background_color: "#f2efe6"
+
+# ── VARIÁVEIS ─────────────────────────────────────────────────────────────────
+variables:
+  - id: v01  name: SatisfacaoGeral        # escala CSAT — comparável com a v1 (4⭐)
+  - id: v02  name: PercepcaoROI           # retorno x investimento, ancorado em número
+  - id: v03  name: MaiorEntrega           # múltipla — o que gerou valor no ciclo 2
+  - id: v04  name: SaudeFinanceira        # receita × custo (equipe, advisor, despesas)
+  - id: v05  name: ConfiancaNovaUnidade   # preparo p/ inauguração Bairro da Paz
+  - id: v06  name: Continuidade           # retenção / expansão
+  - id: v07  name: PrioridadeProxMes      # foco pós-inauguração (planta o reajuste)
+  - id: v08  name: MensagemMayko          # texto longo, opcional
+
+# ── DESIGN (por que cada pergunta) ────────────────────────────────────────────
+# Q1 Satisfação geral  → métrica de cabeçalho; comparável com a v1 (manteve 4⭐?).
+# Q2 ROI ancorado      → mostra o salto R$6k→R$16k e pede a leitura de retorno.
+#                        Educa o sponsor sobre o valor durante a própria resposta.
+# Q3 Maior entrega     → reforça os pontos fortes do ciclo (cobrança, clareza fin.).
+# Q4 Saúde financeira  → captura a real preocupação dele (custo de equipe/advisor).
+# Q5 Nova unidade      → mede confiança às vésperas do 01/07; abre pendências.
+# Q6 Continuidade      → sinal de retenção/expansão.
+# Q7 Prioridade        → vira direção de trabalho E planta a decisão do reajuste.
+# Q8 Mensagem aberta   → canal direto, opcional.
+#
+# REGRA ÉTICA: toda pergunta mantém opções honestas (inclusive negativas).
+# A pesquisa ancora valor com número REAL — não enviesa a resposta.
+
+# ── FLUXO (linear — nunca elimina o sponsor) ──────────────────────────────────
+blocks:
+
+  - id: abertura
+    group: g00
+    type: text
+    text: |
+      Olá, Sr. Rogério! 👋
+
+      Aqui é o Advisory do Mayko.
+
+      Fechando 2 meses de trabalho — e na véspera da inauguração da Bairro da Paz — queria 2 minutos do seu tempo: 7 perguntas rápidas, agora com os números na mesa.
+
+      Resposta honesta vale mais que elogio. 🙏
+    next: q1_satisfacao  # botão "Bora começar →"
+
+  - id: q1_satisfacao
+    group: g01
+    type: choice
+    text: "De forma geral, o quanto você está satisfeito com o trabalho do Advisory neste 2º mês?"
+    save_to: SatisfacaoGeral
+    options:
+      - "⭐ Muito abaixo do esperado"
+      - "⭐⭐ Abaixo do esperado"
+      - "⭐⭐⭐ Dentro do esperado"
+      - "⭐⭐⭐⭐ Acima do esperado"
+      - "⭐⭐⭐⭐⭐ Muito acima do esperado"
+    next: q2_roi
+
+  - id: q2_roi
+    group: g02
+    type: choice
+    text: |
+      Desde que começamos, a receita real do negócio (sem contar os seus aportes) saltou de ~R$ 6 mil/mês para ~R$ 16 mil/mês, e a base recorrente quase quadruplicou.
+
+      Considerando o investimento no advisory, como você avalia o retorno?
+    save_to: PercepcaoROI
+    options:
+      - "Excelente — já paga o investimento com folga"
+      - "Bom — está valendo a pena"
+      - "Razoável — quero ver consolidar nos próximos meses"
+      - "Abaixo do que eu esperava"
+    next: q3_entrega
+
+  - id: q3_entrega
+    group: g03
+    type: choice
+    multiple: true
+    text: "O que mais te gerou valor nestes 2 meses? (pode marcar mais de um)"
+    save_to: MaiorEntrega
+    options:
+      - "Crescimento da receita recorrente (mensalidades)"
+      - "Máquina de Cobrança / recuperação de inadimplentes"
+      - "Estruturação da nova unidade (Bairro da Paz)"
+      - "Clareza financeira (separar aporte de receita, números reais)"
+      - "Capacitação e automação da equipe (Karine, Raquel, Lucas)"
+      - "Processo seletivo do Closer (RH)"
+      - "Visão estratégica / direção do negócio"
+    next: q4_saude
+
+  - id: q4_saude
+    group: g04
+    type: choice
+    text: |
+      Olhando a saúde financeira hoje — o dinheiro que entra vs os custos (equipe, advisory, despesas da operação) — como você se sente?
+    save_to: SaudeFinanceira
+    options:
+      - "Confiante — a conta está fechando e melhorando"
+      - "Otimista, mas atento aos custos"
+      - "Preocupado — os custos ainda pesam"
+      - "Inseguro — preciso de mais visibilidade dos números"
+    next: q5_unidade
+
+  - id: q5_unidade
+    group: g05
+    type: choice
+    text: "Na véspera da inauguração da Bairro da Paz (01/07), qual seu nível de confiança no preparo?"
+    save_to: ConfiancaNovaUnidade
+    options:
+      - "Muito confiante — estamos prontos"
+      - "Confiante, com ajustes finais"
+      - "Cauteloso — ainda temos pendências"
+      - "Preocupado — falta coisa importante"
+    next: q6_continuidade
+
+  - id: q6_continuidade
+    group: g06
+    type: choice
+    text: "Pretende seguir com o Advisory nos próximos meses?"
+    save_to: Continuidade
+    options:
+      - "Com certeza — quero continuar e até expandir"
+      - "Sim, mantenho o combinado"
+      - "Tenho dúvidas — vamos conversar"
+      - "Penso em pausar / encerrar"
+    next: q7_prioridade
+
+  - id: q7_prioridade
+    group: g07
+    type: choice
+    text: "Com a unidade nova de pé, onde você quer minha energia no próximo mês? (prioridade nº 1)"
+    save_to: PrioridadeProxMes
+    options:
+      - "Rampar as vendas da Bairro da Paz"
+      - "Reajuste de preço (R$ 24,90 → R$ 39,90) e ticket médio"
+      - "Reduzir inadimplência / Máquina de Cobrança"
+      - "Grande Automação (IA na operação)"
+      - "Laboratório MADIP (Aline)"
+      - "Produtividade e gestão da equipe"
+    next: q8_mensagem
+
+  - id: q8_mensagem
+    group: g08
+    type: input
+    input_type: long_text
+    prompt: "Por último: algo que você queira me dizer diretamente? Elogio, cobrança, ideia — vale tudo. (opcional)"
+    save_to: MensagemMayko
+    next: webhook_n8n
+
+  - id: webhook_n8n
+    group: g09
+    type: webhook
+    method: POST
+    url: "https://n8n.clinicalucrativa.ia.br/webhook/sst-satisfacao-sponsor-v2"
+    body: |
+      {
+        "source": "typebot:satisfacao-sponsor-rogerio-v2",
+        "sponsor": "Rogério Ferreira",
+        "ciclo": "mes-2",
+        "respostas": {
+          "satisfacao_geral":      "{{SatisfacaoGeral}}",
+          "percepcao_roi":         "{{PercepcaoROI}}",
+          "maior_entrega":         "{{MaiorEntrega}}",
+          "saude_financeira":      "{{SaudeFinanceira}}",
+          "confianca_nova_unidade":"{{ConfiancaNovaUnidade}}",
+          "continuidade":          "{{Continuidade}}",
+          "prioridade_prox_mes":   "{{PrioridadeProxMes}}",
+          "mensagem_mayko":        "{{MensagemMayko}}"
+        }
+      }
+    next: agradecimento
+
+  - id: agradecimento
+    group: g10
+    type: text
+    text: |
+      Valeu, Sr. Rogério! 🙏
+
+      Suas respostas chegaram. Vou usar exatamente isso pra calibrar o próximo ciclo — e te trago um plano focado na prioridade que você marcou, com receita e custo lado a lado.
+
+      Bora inaugurar a Bairro da Paz. 🚀
+    next: end
+
+# ── SEMÁFORO (calculado no n8n, não no Typebot) ───────────────────────────────
+# O Code node lê SatisfacaoGeral + PercepcaoROI + SaudeFinanceira + Continuidade:
+#   🔴 ATENÇÃO  → satisfação "abaixo" | ROI "abaixo do esperado"
+#                 | saúde "inseguro/preocupado" | continuidade "pausar/dúvidas"
+#                 Ação: LIGAR para Rogério ANTES de qualquer cobrança.
+#   🟡 MORNO    → "dentro do esperado" | "razoável" | "atento aos custos"
+#                 Ação: ligação rápida de alinhamento.
+#   🟢 OK       → demais casos → seguir com tranquilidade.
+# Notificação no WhatsApp do Mayko (5571982170967) com a ação sugerida.
+
+# ── CHECKLIST DE IMPLANTAÇÃO (5 itens) ────────────────────────────────────────
+# [ ] 1. typebot.clinicalucrativa.ia.br → Criar typebot → Importar typebot-satisfacao-rogerio-v2.json
+# [ ] 2. Clonar o n8n da v1 e trocar o path p/ /webhook/sst-satisfacao-sponsor-v2
+#        (ajustar o Code node p/ ler percepcao_roi + saude_financeira)
+# [ ] 3. Publicar o typebot e copiar o link público
+# [ ] 4. Teste: responder com ROI "abaixo do esperado" → confirmar alerta 🔴 no WhatsApp
+# [ ] 5. Enviar o link ao Rogério JUNTO da mensagem do dia do pagamento

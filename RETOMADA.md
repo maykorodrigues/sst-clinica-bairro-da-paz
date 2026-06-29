@@ -4,7 +4,37 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 18/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (Cenário 2 — com VISA Salvador)
+> Última atualização: 29/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (faltam ~2 dias)
+
+---
+
+## 💰 29/06 — Panorama financeiro Asaas + Pesquisa de Satisfação v2 (dia do pagamento do advisory)
+
+> Análise consolidada da conta Asaas (4 exports, dedup por Identificador) para mostrar ao Rogério o crescimento real desde o advisory (entrou 01/05). Detalhe na memória `analise_financeira_asaas_29-06-2026.md`.
+
+**🟢 A virada da narrativa (receita real × aporte):**
+- Separados os **R$ 21.200 de APORTE do sócio** (Maria Adélia R$10k+R$5k, Rogério R$2k+R$1,8k, SSF-Card R$2,4k) da receita de verdade.
+- **Receita real (sem aporte):** Abr R$ 5.929 → Mai R$ 6.856 → **Jun R$ 16.010 (+170%)**. Motor recorrente: 114 → 361 cobranças pagas. **MRR contratado ≈ R$ 14.579/mês** (422 contratos, ticket ~R$ 34,5).
+- **Junho foi o 1º mês em que a operação real superou o aporte mensal** — o negócio começa a andar com as próprias pernas.
+
+**📈 DECISÃO ESTRATÉGICA (maior alavanca disponível):** **294 contratos ainda em R$ 24,90** → migrar p/ **R$ 39,90** (reajuste já programado) = **+R$ 4.410/mês / +R$ 52.920/ano**. Blindagem: mesmo com 20% de churn, ainda +R$ 2.056/mês. Sozinha paga o advisory ~2×. **Aguarda GO/NO-GO do Rogério.**
+
+**❓ PENDÊNCIA a confirmar com Rogério (trava o número oficial do RMAR):**
+1. Aportes (R$ 21,2k) — confirmar que são repasse dele, não venda.
+2. **Dinheiro da recepção (espécie/maquininha) entra no Asaas ou fica fora?** Se fica fora, o faturamento real é maior. → virar processo (registrar toda venda presencial).
+3. Outros repasses fora do Asaas?
+
+**Artefatos criados/deployados (29/06):**
+| Entregável | Arquivo | Estado |
+|---|---|---|
+| Panorama Receita × Aporte (HTML, 2 gráficos Chart.js) | `processo-comercial-7dias/panorama-receita-x-aporte-29-06-2026.html` | ✅ deployado |
+| Gráfico PNG da receita (p/ WhatsApp) | `processo-comercial-7dias/receita-real-x-aporte-29-06-2026.png` | ✅ enviado ao Rogério |
+| Pesquisa Satisfação v2 (Typebot, foco receita×custo + nova unidade) | `pesquisa-satisfacao-sponsor/typebot-satisfacao-rogerio-v2.json` + `.flow.yaml` | ✅ criada — Mayko importa |
+| n8n v2 (semáforo lê ROI + saúde financeira) | `pesquisa-satisfacao-sponsor/n8n-workflow-satisfacao-rogerio-v2.json` | ✅ criado — Mayko ativa |
+
+**Dinâmica de envio (igual mês passado):** 1º Mayko manda áudio + gráfico PNG em seu nome (confirma receita); depois **Julia (estagiária da equipe)** manda a pesquisa v2 e, após a resposta, a cobrança da mensalidade (R$ 3.800 — confirmar valor). Mensagens prontas na sessão.
+
+**⏳ Próximo:** importar Typebot v2 + ativar n8n v2 + teste 🔴 → publicar link → fechar mensagem da Julia. Validar total de junho contra o dashboard Asaas antes de cravar RMAR.
 
 ---
 

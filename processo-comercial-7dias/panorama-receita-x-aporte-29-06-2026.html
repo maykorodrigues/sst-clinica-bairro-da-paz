@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panorama Receita × Aporte — SST Card (Advisory) · 29/06/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --azul:#1987c3; --azul-claro:#36a9e1; --verde:#16c784; --amarelo:#f5b301;
+    --vermelho:#e0556b; --roxo:#7c5cff;
+    --bg:#0e1726; --card:#16223a; --card2:#1b2b47; --linha:#23355a;
+    --txt:#e8eef7; --txt2:#9fb2cc; --txt3:#6c84a6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Barlow','Segoe UI',system-ui,sans-serif;
+    background:linear-gradient(160deg,#0c1422,#0e1726 40%,#101d33);
+    color:var(--txt); line-height:1.5; padding:28px 18px 60px;
+  }
+  .wrap{max-width:1040px;margin:0 auto}
+  header.top{
+    border-left:5px solid var(--azul); padding:6px 0 6px 18px; margin-bottom:6px;
+  }
+  header.top .eyebrow{color:var(--azul-claro);font-weight:700;letter-spacing:.14em;
+    text-transform:uppercase;font-size:.72rem}
+  header.top h1{font-size:1.85rem;font-weight:800;margin:4px 0;line-height:1.15}
+  header.top .sub{color:var(--txt2);font-size:.95rem}
+  .tag{display:inline-block;background:rgba(25,135,195,.16);color:var(--azul-claro);
+    border:1px solid rgba(54,169,225,.35);border-radius:20px;padding:3px 12px;
+    font-size:.75rem;font-weight:600;margin-top:10px}
+
+  section{margin-top:30px}
+  h2{font-size:1.18rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:9px}
+  h2 .num{background:var(--azul);color:#fff;width:26px;height:26px;border-radius:7px;
+    display:inline-flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+  .kpi{background:var(--card);border:1px solid var(--linha);border-radius:14px;padding:18px 18px 16px;
+    position:relative;overflow:hidden}
+  .kpi::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--azul)}
+  .kpi.verde::before{background:var(--verde)} .kpi.amarelo::before{background:var(--amarelo)}
+  .kpi.vermelho::before{background:var(--vermelho)} .kpi.roxo::before{background:var(--roxo)}
+  .kpi .lbl{color:var(--txt2);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+  .kpi .val{font-size:1.7rem;font-weight:800;margin:6px 0 2px}
+  .kpi .hint{color:var(--txt3);font-size:.8rem}
+  .kpi .val.verde{color:var(--verde)} .kpi .val.amarelo{color:var(--amarelo)}
+  .kpi .val.vermelho{color:var(--vermelho)} .kpi .val.azul{color:var(--azul-claro)}
+
+  .panel{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:22px}
+  .chart-box{position:relative;height:340px}
+  .chart-box.sm{height:280px}
+  .legend-note{color:var(--txt3);font-size:.82rem;margin-top:10px;text-align:center}
+
+  table{width:100%;border-collapse:collapse;font-size:.9rem}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--linha)}
+  th{color:var(--txt2);font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:none}
+  tbody tr.destaque{background:rgba(22,199,132,.08)}
+  .pos{color:var(--verde);font-weight:700} .neg{color:var(--vermelho);font-weight:700}
+  .mut{color:var(--txt3)}
+
+  .callout{border-radius:14px;padding:18px 20px;margin-top:6px}
+  .callout.win{background:linear-gradient(135deg,rgba(22,199,132,.14),rgba(22,199,132,.05));
+    border:1px solid rgba(22,199,132,.4)}
+  .callout.ask{background:linear-gradient(135deg,rgba(245,179,1,.12),rgba(245,179,1,.04));
+    border:1px solid rgba(245,179,1,.38)}
+  .callout.warn{background:rgba(224,85,107,.08);border:1px solid rgba(224,85,107,.3)}
+  .callout h3{font-size:1.05rem;margin-bottom:10px}
+  .callout.win h3{color:var(--verde)} .callout.ask h3{color:var(--amarelo)}
+  .callout ol,.callout ul{margin-left:20px;display:flex;flex-direction:column;gap:8px;font-size:.92rem}
+  .big-num{font-size:2.1rem;font-weight:800;color:var(--verde);display:block;margin:4px 0}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}.chart-box{height:300px}}
+  footer{margin-top:40px;color:var(--txt3);font-size:.8rem;text-align:center;
+    border-top:1px solid var(--linha);padding-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">SST Card · Advisory Mayko Rodrigues</div>
+    <h1>Panorama Receita × Aporte</h1>
+    <div class="sub">O que de fato entrou de dinheiro desde o início do advisory (01/05) — fonte: conta Asaas</div>
+    <span class="tag">📅 Fechamento 29/06/2026 · dia do pagamento do advisory</span>
+  </header>
+
+  <!-- KPIs -->
+  <section>
+    <div class="cards">
+      <div class="kpi verde">
+        <div class="lbl">Receita real (ano)</div>
+        <div class="val verde">R$ 32 mil</div>
+        <div class="hint">venda de verdade, sem aportes</div>
+      </div>
+      <div class="kpi amarelo">
+        <div class="lbl">Aporte do sócio</div>
+        <div class="val amarelo">R$ 21,2 mil</div>
+        <div class="hint">dinheiro do Rogério p/ caixa</div>
+      </div>
+      <div class="kpi azul" style="border:1px solid var(--linha)">
+        <div class="lbl">MRR contratado</div>
+        <div class="val azul">R$ 14,6 mil/mês</div>
+        <div class="hint">422 contratos recorrentes ativos</div>
+      </div>
+      <div class="kpi verde">
+        <div class="lbl">Crescimento Abr → Jun</div>
+        <div class="val verde">+170%</div>
+        <div class="hint">receita real: R$ 5,9k → R$ 16k</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gráfico principal -->
+  <section>
+    <h2><span class="num">1</span> Receita Real × Aporte do sócio (mês a mês)</h2>
+    <div class="panel">
+      <div class="chart-box"><canvas id="chartReceita"></canvas></div>
+      <div class="legend-note">
+        🟢 Receita real = o que o negócio gerou sozinho &nbsp;·&nbsp; 🟡 Aporte = dinheiro do Rogério para segurar o caixa.
+        Em junho, pela 1ª vez, a operação real (R$ 16k) <strong>superou o aporte mensal</strong>.
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabela detalhada -->
+  <section>
+    <h2><span class="num">2</span> Detalhamento (valores líquidos que entraram)</h2>
+    <div class="panel" style="padding:8px 8px">
+      <table>
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th class="num">Recorrente (MRR)</th>
+            <th class="num">Avulsa / pontual</th>
+            <th class="num">= Receita real</th>
+            <th class="num">Aporte sócio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Fev</td><td class="num">70</td><td class="num">38</td><td class="num pos">108</td><td class="num mut">—</td></tr>
+          <tr><td>Mar</td><td class="num">2.037</td><td class="num">1.073</td><td class="num pos">3.110</td><td class="num mut">—</td></tr>
+          <tr><td>Abr <span class="mut">(antes)</span></td><td class="num">4.405</td><td class="num">1.524</td><td class="num pos">5.929</td><td class="num">2.400</td></tr>
+          <tr class="destaque"><td>Mai <span class="mut">· advisory entra</span></td><td class="num">5.239</td><td class="num">1.617</td><td class="num pos">6.856</td><td class="num">3.800</td></tr>
+          <tr class="destaque"><td>Jun</td><td class="num">13.095</td><td class="num">2.916</td><td class="num pos">16.010</td><td class="num">15.000</td></tr>
+          <tr style="border-top:2px solid var(--azul)">
+            <td><strong>Total</strong></td><td class="num"><strong>24.845</strong></td><td class="num"><strong>7.168</strong></td>
+            <td class="num pos"><strong>32.013</strong></td><td class="num"><strong>21.200</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MRR e Status -->
+  <section>
+    <div class="grid2">
+      <div>
+        <h2><span class="num">3</span> Motor recorrente</h2>
+        <div class="panel"><div class="chart-box sm"><canvas id="chartMRR"></canvas></div>
+        <div class="legend-note">Contratos recorrentes pagos por mês — quase 6× de mar a jun</div></div>
+      </div>
+      <div>
+        <h2><span class="num">4</span> Foto Asaas hoje</h2>
+        <div class="panel" style="padding:8px 8px">
+          <table>
+            <thead><tr><th>Status</th><th class="num">Valor</th><th>É caixa?</th></tr></thead>
+            <tbody>
+              <tr><td>🟢 Recebidas</td><td class="num">R$ 48.742</td><td class="pos">Já caiu</td></tr>
+              <tr><td>🔵 Confirmadas</td><td class="num">R$ 3.820</td><td class="mut">A caminho</td></tr>
+              <tr><td>🟡 Aguardando</td><td class="num">R$ 23.824</td><td class="neg">Promessa</td></tr>
+              <tr><td>🔴 Vencidas</td><td class="num">R$ 2.214</td><td class="neg">Inadimplência</td></tr>
+            </tbody>
+          </table>
+          <p class="legend-note" style="text-align:left;padding:8px 12px">
+            ⚠️ "Aguardando" <strong>não é faturamento</strong> — é o que falta cobrar (alvo da Máquina de Cobrança).
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Decisão estratégica -->
+  <section>
+    <h2><span class="num">5</span> A decisão que destrava o caixa</h2>
+    <div class="callout win">
+      <h3>📈 Migrar 294 contratos de R$ 24,90 → R$ 39,90 (reajuste já programado)</h3>
+      <span class="big-num">+ R$ 4.410/mês &nbsp;·&nbsp; + R$ 52.920/ano</span>
+      <ul>
+        <li><strong>294 clientes</strong> ainda pagam o preço antigo de R$ 24,90 (hoje R$ 7.321/mês).</li>
+        <li>No preço atual de R$ 39,90 viram <strong>R$ 11.731/mês</strong>.</li>
+        <li><strong>Blindagem:</strong> mesmo perdendo 20% no reajuste (59 cancelamentos), ainda sobra <strong>+R$ 2.056/mês</strong>. Risco assimétrico a favor.</li>
+        <li>Sozinha, essa decisão <strong>paga o advisory (R$ 30k) quase 2×</strong>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Perguntas pro Rogério -->
+  <section>
+    <h2><span class="num">6</span> Confirmar com o Rogério (repasse × receita)</h2>
+    <div class="callout ask">
+      <h3>❓ Para cravar o número limpo do RMAR de junho</h3>
+      <ol>
+        <li><strong>Aportes (R$ 21,2k):</strong> os Pix de R$ 10k + R$ 5k (Maria Adélia) e R$ 2k + R$ 1,8k (seu nome) foram aporte de capital, certo?</li>
+        <li><strong>Recepção:</strong> o dinheiro recebido presencialmente (espécie/maquininha) <strong>entra no Asaas</strong> ou fica fora? Se fica fora, o faturamento real é maior do que esse painel mostra.</li>
+        <li><strong>Outros repasses:</strong> teve algum aporte fora do Asaas que eu deva descontar da receita?</li>
+        <li><strong>Quitações da campanha:</strong> conta como receita do mês ou recuperação de caixa antigo?</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Ressalva -->
+  <section>
+    <div class="callout warn">
+      <strong>⚠️ Nota metodológica:</strong> consolidação de exports do Asaas tirados em dias diferentes — total ~R$ 53k vs ~R$ 51k do painel oficial.
+      A <strong>tendência mês a mês e a separação aporte/receita estão sólidas</strong>; o número fechado oficial é o do dashboard Asaas. Parte do salto de junho é one-time
+      (quitações + recorrentes atrasadas recuperadas) — não é MRR sustentável recorrente.
+    </div>
+  </section>
+
+  <footer>
+    SST Card · Clube de Prevenção à Saúde &nbsp;|&nbsp; Advisory Mayko Rodrigues &nbsp;|&nbsp; gerado em 29/06/2026 a partir da conta Asaas
+  </footer>
+
+</div>
+
+<script>
+const fmt = v => 'R$ ' + v.toLocaleString('pt-BR');
+const meses = ['Fev','Mar','Abr','Mai','Jun'];
+Chart.defaults.color = '#9fb2cc';
+Chart.defaults.font.family = "'Barlow','Segoe UI',sans-serif";
+
+new Chart(document.getElementById('chartReceita'), {
+  type:'bar',
+  data:{ labels:meses, datasets:[
+    { label:'Receita real (operação)', data:[108,3110,5929,6856,16010],
+      backgroundColor:'#16c784', borderRadius:6 },
+    { label:'Aporte do sócio', data:[0,0,2400,3800,15000],
+      backgroundColor:'#f5b301', borderRadius:6 }
+  ]},
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{position:'top',labels:{usePointStyle:true,padding:18}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)}} },
+    scales:{ x:{grid:{display:false}},
+      y:{grid:{color:'#23355a'},ticks:{callback:v=>'R$ '+(v/1000)+'k'}} } }
+});
+
+new Chart(document.getElementById('chartMRR'), {
+  type:'line',
+  data:{ labels:['Mar','Abr','Mai','Jun'], datasets:[
+    { label:'Contratos recorrentes pagos', data:[62,114,149,361],
+      borderColor:'#36a9e1', backgroundColor:'rgba(54,169,225,.18)',
+      fill:true, tension:.35, pointRadius:5, pointBackgroundColor:'#36a9e1', borderWidth:3 }
+  ]},
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false},
+      tooltip:{callbacks:{label:c=>c.parsed.y+' contratos'}} },
+    scales:{ x:{grid:{display:false}}, y:{grid:{color:'#23355a'},beginAtZero:true} } }
+});
+</script>
+</body>
+</html>
