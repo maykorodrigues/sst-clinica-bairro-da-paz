@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demandas da Equipe — Semana 1 Julho | SST Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#1987c3; --azul-esc:#0f5a85; --bg:#0d1117; --card:#161b22; --card2:#1c232c;
+    --borda:#2a323c; --txt:#e6edf3; --txt2:#8b949e; --verde:#27ae60; --verm:#e74c3c; --amarelo:#f0b429;
+    --roxo:#a371f7;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Barlow',sans-serif;}
+  body{background:var(--bg);color:var(--txt);line-height:1.5;padding:18px;max-width:820px;margin:0 auto;}
+  header{text-align:center;margin-bottom:18px;}
+  .tag{display:inline-block;background:var(--azul-esc);color:#fff;font-size:12px;font-weight:600;
+    padding:4px 12px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;}
+  h1{font-size:25px;font-weight:800;color:#fff;line-height:1.2;}
+  h1 span{color:var(--azul);}
+  .sub{color:var(--txt2);font-size:14px;margin-top:6px;}
+  .prog-wrap{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:14px 16px;margin:18px 0 22px;}
+  .prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .prog-top span{font-weight:700;font-size:15px;}
+  .prog-pct{color:var(--azul);font-weight:800;font-size:20px;}
+  .prog-bar{height:10px;background:#0a0e13;border-radius:6px;overflow:hidden;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--azul),var(--verde));width:0;transition:width .4s;}
+  section{background:var(--card);border:1px solid var(--borda);border-radius:12px;margin-bottom:16px;overflow:hidden;}
+  .pessoa{padding:14px 16px;border-bottom:1px solid var(--borda);}
+  .pessoa .nome{font-size:19px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;}
+  .pessoa .papel{font-size:13px;color:var(--txt2);margin-top:2px;}
+  .k .nome{color:#5eb3e0;} .l .nome{color:#5fd48a;} .r .nome{color:#c9a2f7;}
+  ul{list-style:none;}
+  li{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--borda);
+    cursor:pointer;transition:background .15s;}
+  li:hover{background:var(--card2);}
+  .cb{flex-shrink:0;width:22px;height:22px;border:2px solid var(--azul);border-radius:6px;margin-top:2px;
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;transition:all .15s;}
+  li.done .cb{background:var(--verde);border-color:var(--verde);}
+  li.done .txt{text-decoration:line-through;color:var(--txt2);}
+  .txt{font-size:15px;} .txt b{color:#fff;}
+  .meta{padding:12px 16px;background:rgba(240,180,41,.08);font-size:14px;color:var(--amarelo);font-weight:600;}
+  .aline{background:linear-gradient(135deg,var(--azul-esc),#0a3a54);border:1px solid var(--azul);
+    border-radius:12px;padding:16px;margin-top:20px;font-size:14px;}
+  .aline h3{color:#fff;font-size:16px;margin-bottom:8px;}
+  footer{text-align:center;color:var(--txt2);font-size:12px;margin-top:24px;padding-top:16px;border-top:1px solid var(--borda);}
+  .reset{display:block;margin:16px auto 0;background:none;border:1px solid var(--borda);color:var(--txt2);
+    padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;}
+  .reset:hover{border-color:var(--verm);color:var(--verm);}
+</style>
+</head>
+<body>
+<header>
+  <div class="tag">SST Card · Bairro da Paz</div>
+  <h1>Demandas da <span>Equipe</span> — Semana 1</h1>
+  <div class="sub">01–07/07/2026 · O que cada um faz esta semana</div>
+</header>
+
+<div class="prog-wrap">
+  <div class="prog-top"><span>Progresso da equipe</span><span class="prog-pct" id="pct">0%</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="fill"></div></div>
+</div>
+
+<section class="k">
+  <div class="pessoa"><div class="nome">👩‍💼 Karine</div><div class="papel">Closer Senior — vendas + liderança</div></div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt"><b>Iniciar o reajuste</b> R$ 24,90 → R$ 39,90 (comunicar clientes antigos após GO do Rogério)</span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Fechar os leads</b> do tráfego + prospecção da Raquel — <b>oferecer o Ouro (R$ 64,90) primeiro</b></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Confirmar números reais de junho</b> (adesões novas + reativações) — pro RMAR</span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Conferir o R1 Growth (R$ 600)</b> que saiu no extrato</span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Preparar para receber e treinar os 2 juniores</b> (duplicar seu jeito de vender)</span></li>
+  </ul>
+  <div class="meta">🎯 Meta: puxar as vendas do mês (parte das 56 Prata + 24 Ouro) e cravar o reajuste.</div>
+</section>
+
+<section class="l">
+  <div class="pessoa"><div class="nome">👨‍💻 Lucas</div><div class="papel">Customer Success + Cobrança</div></div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt"><b>Onboarding dos novos membros</b> (garantir ativação e uso do cartão)</span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Reuniões de cancelamento</b> dos inadimplentes: "as mensalidades correm até encerrar — pra encerrar, pague aqui" → vira caixa OU base limpa</span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Ativações</b> (clínica + app) da base atual</span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Apoiar a nova pessoa de cobrança</b> (passar o contexto da base Tenex)</span></li>
+  </ul>
+  <div class="meta">🎯 Meta: não terminar nenhum dia sem resolver casos de cancelamento (pagou ou encerrou).</div>
+</section>
+
+<section class="r">
+  <div class="pessoa"><div class="nome">👧 Raquel</div><div class="papel">Prospecção / SDR / Social Seller</div></div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt"><b>Cadência de mensageria</b> (7 toques, não 2) — qualificar e aquecer leads → entregar quentes pra Karine</span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Enriquecer os dados</b> dos que não responderam (CPF → telefone/e-mail) → devolver pra vendas/cobrança</span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Posts no Instagram</b> (cada post = 1 lead) — agendar a semana no Meta Business Suite</span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Alimentar o CRM</b> com os leads (pra cair certinho na fechadora)</span></li>
+  </ul>
+  <div class="meta">🎯 Meta: ≥ 10 leads qualificados/dia entregues pra Karine.</div>
+</section>
+
+<div class="aline">
+  <h3>🔬 Aline — Lab MADIP (frente separada)</h3>
+  Frente do laboratório (conversão 33%→60%) + programa de coaching (sessões quarta 07h). As demandas da Aline serão alinhadas em separado, com base na última sessão e nas metas de conversão. <b>Em breve nesta página.</b>
+</div>
+
+<button class="reset" onclick="resetar()">↺ Zerar demandas</button>
+
+<footer>
+  SST Card · Bairro da Paz — Consultoria Mayko Rodrigues<br>
+  Semana 1 de Julho/2026 · progresso salvo neste navegador ·
+  <a href="checklist-semana1-julho-2026.html" style="color:var(--azul);">ver checklist geral</a>
+</footer>
+
+<script>
+  const KEY='sst-demandas-equipe-semana1-julho-2026';
+  const itens=document.querySelectorAll('li');
+  function salvar(){localStorage.setItem(KEY,JSON.stringify([...itens].map(li=>li.classList.contains('done'))));atualizar();}
+  function atualizar(){
+    const f=[...itens].filter(li=>li.classList.contains('done')).length;
+    const p=Math.round(f/itens.length*100);
+    document.getElementById('pct').textContent=p+'%';document.getElementById('fill').style.width=p+'%';
+  }
+  function carregar(){const s=JSON.parse(localStorage.getItem(KEY)||'[]');itens.forEach((li,i)=>{if(s[i])li.classList.add('done');});atualizar();}
+  function resetar(){if(confirm('Zerar todas as demandas?')){localStorage.removeItem(KEY);itens.forEach(li=>li.classList.remove('done'));atualizar();}}
+  itens.forEach(li=>li.addEventListener('click',()=>{li.classList.toggle('done');salvar();}));
+  carregar();
+</script>
+</body>
+</html>
