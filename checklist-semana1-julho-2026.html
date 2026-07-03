@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist Semana 1 — Julho 2026 | SST Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#1987c3; --azul-esc:#0f5a85; --bg:#0d1117; --card:#161b22; --card2:#1c232c;
+    --borda:#2a323c; --txt:#e6edf3; --txt2:#8b949e; --verde:#27ae60; --verm:#e74c3c;
+    --amarelo:#f0b429;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Barlow',sans-serif;}
+  body{background:var(--bg);color:var(--txt);line-height:1.5;padding:18px;max-width:820px;margin:0 auto;}
+  header{text-align:center;margin-bottom:20px;}
+  .tag{display:inline-block;background:var(--azul-esc);color:#fff;font-size:12px;font-weight:600;
+    padding:4px 12px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;}
+  h1{font-size:26px;font-weight:800;color:#fff;line-height:1.2;}
+  h1 span{color:var(--azul);}
+  .sub{color:var(--txt2);font-size:14px;margin-top:6px;}
+  .caixa-info{background:var(--card2);border:1px solid var(--borda);border-radius:10px;
+    padding:10px 14px;margin:14px 0;font-size:14px;color:var(--txt2);text-align:center;}
+  .caixa-info b{color:var(--amarelo);}
+  /* barra progresso */
+  .prog-wrap{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:14px 16px;margin-bottom:22px;}
+  .prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .prog-top span{font-weight:700;font-size:15px;}
+  .prog-pct{color:var(--azul);font-weight:800;font-size:20px;}
+  .prog-bar{height:10px;background:#0a0e13;border-radius:6px;overflow:hidden;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--azul),var(--verde));width:0;transition:width .4s;}
+  /* secoes */
+  section{background:var(--card);border:1px solid var(--borda);border-radius:12px;margin-bottom:16px;overflow:hidden;}
+  .sec-head{padding:12px 16px;font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px;
+    border-bottom:1px solid var(--borda);}
+  .sec-trava{background:rgba(231,76,60,.12);color:#ff8a7a;}
+  .sec-rog{background:rgba(240,180,41,.10);color:var(--amarelo);}
+  .sec-mayko{background:rgba(25,135,195,.12);color:#5eb3e0;}
+  .sec-karine{background:rgba(39,174,96,.12);color:#5fd48a;}
+  .sec-gov{background:rgba(139,148,158,.12);color:#b6c0cc;}
+  ul{list-style:none;}
+  li{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--borda);
+    cursor:pointer;transition:background .15s;}
+  li:last-child{border-bottom:none;}
+  li:hover{background:var(--card2);}
+  .cb{flex-shrink:0;width:22px;height:22px;border:2px solid var(--azul);border-radius:6px;margin-top:2px;
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;transition:all .15s;}
+  li.done .cb{background:var(--verde);border-color:var(--verde);}
+  li.done .txt{text-decoration:line-through;color:var(--txt2);}
+  .txt{font-size:15px;}
+  .txt b{color:#fff;}
+  .prazo{display:inline-block;background:#0a0e13;color:var(--txt2);font-size:12px;font-weight:600;
+    padding:2px 8px;border-radius:6px;margin-left:6px;white-space:nowrap;}
+  .prazo.urg{background:rgba(231,76,60,.15);color:#ff8a7a;}
+  .dono{font-size:12px;color:var(--azul);font-weight:600;}
+  /* indicadores */
+  .final{background:linear-gradient(135deg,var(--azul-esc),#0a3a54);border:1px solid var(--azul);
+    border-radius:12px;padding:16px;margin-top:20px;}
+  .final h3{color:#fff;font-size:16px;margin-bottom:10px;}
+  .final .ind{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:14px;}
+  .divisao{display:grid;grid-template-columns:1fr;gap:8px;margin-top:16px;}
+  .div-item{background:var(--card2);border:1px solid var(--borda);border-radius:8px;padding:10px 14px;font-size:14px;}
+  .div-item b{color:var(--azul);}
+  footer{text-align:center;color:var(--txt2);font-size:12px;margin-top:24px;padding-top:16px;border-top:1px solid var(--borda);}
+  .reset{display:block;margin:16px auto 0;background:none;border:1px solid var(--borda);color:var(--txt2);
+    padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;}
+  .reset:hover{border-color:var(--verm);color:var(--verm);}
+</style>
+</head>
+<body>
+<header>
+  <div class="tag">SST Card · Bairro da Paz</div>
+  <h1>Checklist <span>Semana 1</span> de Julho</h1>
+  <div class="sub">01–07/07/2026 · Arranque da máquina comercial</div>
+</header>
+
+<div class="caixa-info">Caixa Asaas hoje: <b>R$ 1.228</b> · Meta da semana: destravar o caixa + ligar o reajuste + abrir as vagas</div>
+
+<div class="prog-wrap">
+  <div class="prog-top"><span>Progresso da semana</span><span class="prog-pct" id="pct">0%</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="fill"></div></div>
+</div>
+
+<section>
+  <div class="sec-head sec-trava">🔴 TRAVA TUDO — resolver primeiro</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt"><b>Rogério libera o aporte da semana 1 (~R$ 7.000)</b> — prólabore atrasado R$ 2.000 + consultoria Mayko R$ 3.800 + prólabore julho R$ 3.800 <span class="dono">· Rogério</span><span class="prazo urg">até 05/07</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Rogério crava os salários definitivos</b> (Closer Senior, 2 juniores, cobrança, tráfego) → Mayko recalcula o aporte exato <span class="dono">· Rogério</span><span class="prazo urg">até 04/07</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-head sec-rog">👤 ROGÉRIO — decisões</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt"><b>GO no reajuste</b> R$ 24,90 → R$ 39,90 (comunicação + sistema) <span class="prazo">até 03/07</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Cravar a régua de desconto</b> oficial da cobrança (ex.: 10% / 40% / 50% por faixa) <span class="prazo">até 05/07</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Confirmar agenda 2×/semana</b> no Bairro da Paz (blocar no calendário) <span class="prazo">até 05/07</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Autorizar abertura das vagas</b> (júnior + cobrança) e orçamento de tráfego <span class="prazo">até 03/07</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-head sec-mayko">🛠️ MAYKO — construção</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt"><b>Enviar pedido de fluxo de caixa à Raylane</b> (planilha já pronta) <span class="prazo urg">hoje</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Enviar resumo da reunião ao Rogério</b> (mensagem pronta) <span class="prazo urg">hoje</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Abrir 2 vagas júnior + 1 vaga cobrança</b> (kit rh-closer: Typebot + formulário) <span class="prazo">até 04/07</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Apresentar o RMAR à equipe</b> (Abr-Mai-Jun) <span class="prazo urg">03/07 08h</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Recalcular aporte exato</b> assim que o Rogério passar os salários <span class="prazo">após salários</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Preparar modelo de remuneração do júnior</b> (base + comissão por qualificação + por venda) <span class="prazo">até 06/07</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-head sec-karine">👥 KARINE / EQUIPE</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt"><b>Confirmar números reais de junho</b>: adesões novas + reativações (o RMAR usou estimativas) <span class="prazo">até 03/07</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Confirmar o que é o R1 Growth (R$ 600)</b> no extrato <span class="prazo">até 04/07</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Iniciar operação do reajuste</b> (comunicar clientes de R$ 24,90) após GO do Rogério <span class="prazo">a partir 03/07</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-head sec-gov">📊 GOVERNANÇA / RAYLANE</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt"><b>Raylane monta o calendário</b> de contas a pagar (por vencimento) × recebimentos por semana (na planilha entregue) <span class="prazo">até 07/07</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Planejar a unificação das contas</b> BOON + SST Card (executar na 2ª quinzena) <span class="prazo">até 07/07</span></span></li>
+  </ul>
+</section>
+
+<div class="final">
+  <h3>🎯 A semana 1 foi bem se, no domingo:</h3>
+  <div class="ind">✅ Aporte da semana 1 <b>&nbsp;liberado</b>&nbsp; (o caixa respira)</div>
+  <div class="ind">✅ Reajuste <b>&nbsp;ativo</b>&nbsp; no sistema (receita nova correndo)</div>
+  <div class="ind">✅ Vagas <b>&nbsp;publicadas</b>&nbsp; (juniores + cobrança em captação)</div>
+  <div class="divisao">
+    <div class="div-item"><b>Rogério</b> = decisões (aporte · salários · GO reajuste · régua · agenda BP)</div>
+    <div class="div-item"><b>Mayko</b> = construção (fluxo Raylane · vagas · RMAR · remuneração · IA)</div>
+    <div class="div-item"><b>Karine</b> = confirmar dados + iniciar reajuste no campo</div>
+  </div>
+</div>
+
+<button class="reset" onclick="resetar()">↺ Zerar checklist</button>
+
+<footer>
+  SST Card · Bairro da Paz — Consultoria Mayko Rodrigues<br>
+  Baseado na Reunião Mensal 02/07/2026 · progresso salvo neste navegador
+</footer>
+
+<script>
+  const KEY='sst-checklist-semana1-julho-2026';
+  const itens=document.querySelectorAll('li');
+  function salvar(){
+    const estado=[...itens].map(li=>li.classList.contains('done'));
+    localStorage.setItem(KEY,JSON.stringify(estado));
+    atualizar();
+  }
+  function atualizar(){
+    const feitos=[...itens].filter(li=>li.classList.contains('done')).length;
+    const pct=Math.round(feitos/itens.length*100);
+    document.getElementById('pct').textContent=pct+'%';
+    document.getElementById('fill').style.width=pct+'%';
+  }
+  function carregar(){
+    const salvo=JSON.parse(localStorage.getItem(KEY)||'[]');
+    itens.forEach((li,i)=>{ if(salvo[i]) li.classList.add('done'); });
+    atualizar();
+  }
+  function resetar(){
+    if(confirm('Zerar todo o checklist?')){ localStorage.removeItem(KEY); itens.forEach(li=>li.classList.remove('done')); atualizar(); }
+  }
+  itens.forEach(li=>li.addEventListener('click',()=>{ li.classList.toggle('done'); salvar(); }));
+  carregar();
+</script>
+</body>
+</html>
