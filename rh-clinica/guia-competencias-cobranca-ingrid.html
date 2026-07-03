@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Bolso — Competências Cobrança (Ingrid)</title>
+<style>
+  :root{
+    --bg:#0d1117; --card:#161b22; --card2:#1c232c; --line:#2d3540;
+    --azul:#1987c3; --azul2:#2ba3e3; --verde:#2ea043; --vermelho:#e5484d;
+    --amarelo:#e3b341; --txt:#e6edf3; --txt2:#9aa7b4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{background:var(--bg);color:var(--txt);font-family:'Barlow','Segoe UI',system-ui,sans-serif;
+    line-height:1.45;padding:16px 14px 80px;max-width:780px;margin:0 auto;font-size:16px;}
+  header{text-align:center;margin-bottom:18px;}
+  header .tag{display:inline-block;background:rgba(25,135,195,.18);color:var(--azul2);
+    border:1px solid var(--azul);border-radius:20px;padding:3px 12px;font-size:12px;font-weight:600;letter-spacing:.5px;}
+  h1{font-size:22px;margin:10px 0 4px;font-weight:700;}
+  .sub{color:var(--txt2);font-size:13px;}
+  .warn{background:rgba(229,72,77,.12);border:1px solid var(--vermelho);border-radius:10px;
+    padding:10px 12px;margin:14px 0;font-size:13.5px;color:#ffb3b5;}
+  .bloco{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;margin-bottom:14px;}
+  .bloco h2{font-size:15px;color:var(--azul2);display:flex;align-items:center;gap:8px;margin-bottom:10px;
+    border-bottom:1px solid var(--line);padding-bottom:8px;}
+  .bloco h2 .t{margin-left:auto;font-size:11px;color:var(--txt2);font-weight:500;background:var(--card2);
+    padding:2px 8px;border-radius:10px;}
+  .q{background:var(--card2);border-left:3px solid var(--azul);border-radius:0 8px 8px 0;
+    padding:8px 10px;margin:8px 0;font-size:14px;}
+  .q .why{display:block;color:var(--txt2);font-size:12px;font-style:italic;margin-top:3px;}
+  .killer{border-left-color:var(--amarelo);}
+  .react{padding:8px 10px;margin:7px 0;border-radius:8px;font-size:14px;background:var(--card2);}
+  .r1{border-left:3px solid var(--amarelo);} .r2{border-left:3px solid var(--vermelho);} .r3{border-left:3px solid var(--verde);}
+  .tool{background:rgba(46,160,67,.12);border:1px solid var(--verde);border-radius:8px;padding:9px 11px;margin:8px 0;font-size:13.5px;}
+  .speech{color:#cfe8f7;font-style:italic;}
+  /* checklist simulação */
+  .chk{display:flex;align-items:center;gap:10px;padding:9px 6px;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer;}
+  .chk:last-child{border-bottom:none;}
+  .chk .box{width:24px;height:24px;border:2px solid var(--azul);border-radius:6px;flex:0 0 24px;
+    display:flex;align-items:center;justify-content:center;font-size:15px;transition:.15s;}
+  .chk.on .box{background:var(--verde);border-color:var(--verde);}
+  .chk.on{color:var(--txt);} .chk.off .lbl{color:var(--txt2);}
+  .chk.killeritem .box{border-color:var(--amarelo);}
+  .chk.killeritem.on .box{background:var(--amarelo);border-color:var(--amarelo);color:#0d1117;}
+  /* placar */
+  .placar{position:sticky;bottom:0;background:linear-gradient(0deg,#0d1117 70%,transparent);padding-top:8px;z-index:5;}
+  .dims .dim{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);}
+  .dims .dim .nm{flex:1;font-size:13.5px;}
+  .dims .dim .pz{font-size:11px;color:var(--txt2);background:var(--card2);border-radius:8px;padding:1px 7px;margin-right:4px;}
+  .stepper{display:flex;align-items:center;gap:6px;}
+  .stepper button{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--card2);
+    color:var(--txt);font-size:18px;font-weight:700;cursor:pointer;}
+  .stepper .val{width:26px;text-align:center;font-weight:700;font-size:16px;}
+  .total{background:var(--card);border:1px solid var(--azul);border-radius:12px;padding:12px;margin-top:10px;text-align:center;}
+  .total .n{font-size:34px;font-weight:800;color:var(--azul2);}
+  .total .dec{font-size:14px;font-weight:700;margin-top:4px;}
+  .dec.go{color:var(--verde);} .dec.mid{color:var(--amarelo);} .dec.no{color:var(--vermelho);}
+  .reset{display:block;margin:14px auto 0;background:none;border:1px solid var(--line);color:var(--txt2);
+    border-radius:8px;padding:7px 16px;font-size:12px;cursor:pointer;}
+  .muted{color:var(--txt2);font-size:12.5px;margin-top:6px;}
+  ol.tight{padding-left:20px;} ol.tight li{margin:6px 0;font-size:14px;}
+</style>
+</head>
+<body>
+<header>
+  <span class="tag">COMPETÊNCIAS · COBRANÇA</span>
+  <h1>Ingrid Oliveira dos Santos</h1>
+  <div class="sub">Cobrança · Simões Filho · foco <b>Perdão de Dívida (Tenex)</b> · 45–55 min</div>
+</header>
+
+<div class="warn">⚠️ <b>Não é o closer.</b> Vaga de COBRANÇA. Os 3 sinais que não dá pra fingir: <b>negocia ao vivo + fecha compromisso</b> · <b>controle emocional</b> · <b>follow-up</b>. Júnior treinável — decide aptidão + disposição, não experiência.</div>
+
+<div class="bloco">
+  <h2>1 · Reconexão + função de verdade <span class="t">5 min</span></h2>
+  <div class="q"><span class="speech">"Hoje é prático. Cobrança aqui não é robô — é ligar pra quem deve (às vezes sem dinheiro, às vezes bravo) e trazer de volta SEM perder o cliente nem a educação. Vou te dar cenários reais."</span></div>
+  <div class="muted">👀 Recua ao ouvir "ligar pra quem deve" ou acha interessante?</div>
+</div>
+
+<div class="bloco">
+  <h2>2 · Aptidões transferíveis (STAR) <span class="t">12 min</span></h2>
+  <div class="q">"No estágio de DP/NF, uma vez que achou um erro que ninguém viu — qual era?"<span class="why">detalhismo real</span></div>
+  <div class="q">"Já teve que cobrar alguém na vida (dinheiro, documento)? Como fez?"<span class="why">tolerância a cobrar · 🚩 'fico sem graça e desisto'</span></div>
+  <div class="q">"Uma vez que lidou com pessoa grosseira — o que fez e como terminou?"<span class="why">controle emocional · 🚩 travou/revidou</span></div>
+  <div class="q">"Como se organiza pra não esquecer tarefa? Me mostra seu sistema."<span class="why">follow-up · 🚩 'guardo na cabeça'</span></div>
+</div>
+
+<div class="bloco">
+  <h2>3 · ⭐ Simulação "Seu João da Tenex" <span class="t">15 min · ×4</span></h2>
+  <div class="q killer"><span class="speech">"Eu sou o Seu João, 52, pedreiro. Fiz o cartão na época da Tenex, parei de pagar faz tempo e tenho dívida em aberto. Você é a cobrança e vai me LIGAR pra recuperar. Pode começar."</span></div>
+  <div class="react r1">😟 1. "Eu sei que devo, mas não tenho como pagar tudo isso não."</div>
+  <div class="react r2">😤 2. "Isso é tão antigo, eu nem uso mais, deixa pra lá!"</div>
+  <div class="react r3">🤝 3. (se for bem) "E quanto fica se eu quitar? Tem desconto?"</div>
+  <div class="tool">🛠️ <b>Ferramenta dela:</b> Perdão de Dívida = quita com <b>50% à vista</b> (ou parcela), <b>Pix na hora</b> (Asaas). Se não souber, ofereça e veja se usa.</div>
+
+  <div style="margin-top:10px;font-size:12px;color:var(--txt2);">Toque para marcar o que ela fez:</div>
+  <div class="chk off" data-w="0"><div class="box"></div><span class="lbl">Cumprimentou humano (não robótico/acusatório)</span></div>
+  <div class="chk off" data-w="0"><div class="box"></div><span class="lbl">Perguntou o que houve ANTES de exigir pagamento</span></div>
+  <div class="chk off" data-w="0"><div class="box"></div><span class="lbl">Manteve a calma quando ele ficou irritado</span></div>
+  <div class="chk off" data-w="0"><div class="box"></div><span class="lbl">Validou a dificuldade SEM desistir da cobrança</span></div>
+  <div class="chk off" data-w="0"><div class="box"></div><span class="lbl">Ofereceu saída concreta (50% à vista / parcela / data)</span></div>
+  <div class="chk off killeritem" data-w="0"><div class="box"></div><span class="lbl"><b>🔑 Fechou COMPROMISSO (data + valor + "te mando o Pix?")</b></span></div>
+  <div class="chk off" data-w="0"><div class="box"></div><span class="lbl">Não deixou em aberto ("qualquer coisa me chama" = falha)</span></div>
+  <div class="chk off" data-w="0"><div class="box"></div><span class="lbl">Tentou recuperar em vez de aceitar o "deixa pra lá"</span></div>
+  <div class="warn" style="margin-top:10px;">🔴 KILLER: não fechou compromisso / aceitou "vou ver" sem reagir → ainda é atendente, não cobrança.</div>
+</div>
+
+<div class="bloco">
+  <h2>4 · Processo e números <span class="t">8 min</span></h2>
+  <ol class="tight">
+    <li>"80 contas Tenex, tempo pra 25. <b>Por quem começa?</b>" <span class="why" style="color:var(--txt2);font-size:12px;">(precisa ter critério)</span></li>
+    <li>"10 prometeram pagar 'amanhã'. Amanhã chega — o que faz?" <span class="why" style="color:var(--txt2);font-size:12px;">(follow-up)</span></li>
+    <li>"Devia R$240, topa R$120 à vista (50% off). R$120 agora ou insistir nos R$240?" <span class="why" style="color:var(--txt2);font-size:12px;">(pássaro na mão)</span></li>
+    <li>"Como anotaria o combinado com cada cliente?" <span class="why" style="color:var(--txt2);font-size:12px;">(detalhismo aplicado)</span></li>
+  </ol>
+</div>
+
+<div class="bloco">
+  <h2>5 · Disposição + proposta <span class="t">8 min</span></h2>
+  <div class="q">"Cobrança é muito 'não' e repetição. Nos dias ruins, o que te segura?"</div>
+  <div class="q">"Você quer financeiro e ajudar a construtora do pai — <b>cobrança é a porta de entrada do financeiro</b>. Degrau ou desvio?"</div>
+  <div class="q">"Se te ensinarmos régua + scripts + Pix/desconto, domina em 60 dias?"</div>
+  <div class="muted">💬 Rogério conduz remuneração. 👀 Anima com crescimento ou só com salário?</div>
+</div>
+
+<div class="bloco">
+  <h2>6 · Perguntas dela + fecho <span class="t">5 min</span></h2>
+  <ol class="tight">
+    <li>"O que te faria desistir dessa vaga?"</li>
+    <li>"O que mais te assusta em cobrar gente o dia todo?"</li>
+    <li>"Tem outra seleção em andamento?"</li>
+  </ol>
+  <div class="q"><span class="speech">"Te dou retorno até [dia útil]. Faz sentido?"</span></div>
+</div>
+
+<!-- PLACAR -->
+<div class="bloco">
+  <h2>📊 Placar (preencher sem a candidata)</h2>
+  <div class="dims" id="dims"></div>
+  <div class="total">
+    <div class="n" id="scoreN">0</div>
+    <div style="font-size:12px;color:var(--txt2)">de 100</div>
+    <div class="dec" id="decisao">—</div>
+  </div>
+  <div class="muted" style="text-align:center;">≥70 GO · 55–69 teste prático c/ Karine · &lt;55 NO-GO</div>
+  <button class="reset" id="reset">↺ Zerar placar</button>
+</div>
+
+<script>
+const DIMS = [
+  {id:'sim', nm:'Simulação: negociou + fechou compromisso', peso:4},
+  {id:'emo', nm:'Controle emocional / cliente difícil', peso:3},
+  {id:'det', nm:'Detalhismo / follow-up', peso:3},
+  {id:'proc', nm:'Processo e números', peso:2},
+  {id:'disp', nm:'Disposição de aprender', peso:2},
+  {id:'post', nm:'Postura e energia', peso:1},
+];
+const KEY = 'guia-cobranca-ingrid-v1';
+let state = JSON.parse(localStorage.getItem(KEY) || '{}');
+state.dims = state.dims || {};
+state.chk = state.chk || {};
+
+const dimsEl = document.getElementById('dims');
+DIMS.forEach(d=>{
+  const v = state.dims[d.id] ?? 0;
+  const row = document.createElement('div');
+  row.className='dim';
+  row.innerHTML = `<span class="pz">×${d.peso}</span><span class="nm">${d.nm}</span>
+    <span class="stepper">
+      <button data-d="${d.id}" data-s="-1">−</button>
+      <span class="val" id="v-${d.id}">${v}</span>
+      <button data-d="${d.id}" data-s="1">+</button>
+    </span>`;
+  dimsEl.appendChild(row);
+});
+
+function maxTotal(){ return DIMS.reduce((a,d)=>a+d.peso*10,0); } // 150
+function recalc(){
+  let pts=0;
+  DIMS.forEach(d=> pts += (state.dims[d.id]??0)*d.peso);
+  const score = Math.round(pts/maxTotal()*100);
+  document.getElementById('scoreN').textContent = score;
+  const dec = document.getElementById('decisao');
+  if(score>=70){dec.textContent='GO — proposta';dec.className='dec go';}
+  else if(score>=55){dec.textContent='Teste prático c/ Karine';dec.className='dec mid';}
+  else {dec.textContent='NO-GO educado';dec.className='dec no';}
+  localStorage.setItem(KEY, JSON.stringify(state));
+}
+dimsEl.addEventListener('click', e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  const id=b.dataset.d, s=parseInt(b.dataset.s);
+  let v=(state.dims[id]??0)+s; v=Math.max(0,Math.min(10,v));
+  state.dims[id]=v; document.getElementById('v-'+id).textContent=v; recalc();
+});
+
+document.querySelectorAll('.chk').forEach((c,i)=>{
+  if(state.chk[i]){c.classList.add('on');c.classList.remove('off');c.querySelector('.box').textContent='✓';}
+  c.addEventListener('click', ()=>{
+    const on=c.classList.toggle('on'); c.classList.toggle('off',!on);
+    c.querySelector('.box').textContent = on?'✓':'';
+    state.chk[i]=on; localStorage.setItem(KEY, JSON.stringify(state));
+  });
+});
+
+document.getElementById('reset').addEventListener('click', ()=>{
+  if(!confirm('Zerar todo o placar e marcações?'))return;
+  state={dims:{},chk:{}}; localStorage.removeItem(KEY);
+  DIMS.forEach(d=>document.getElementById('v-'+d.id).textContent='0');
+  document.querySelectorAll('.chk').forEach(c=>{c.classList.add('off');c.classList.remove('on');c.querySelector('.box').textContent='';});
+  recalc();
+});
+recalc();
+</script>
+</body>
+</html>

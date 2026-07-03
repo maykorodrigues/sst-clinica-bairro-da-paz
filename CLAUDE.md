@@ -8,13 +8,14 @@ Consultoria comercial ativa para **Rogério Ferreira** (SST Clínica / SST Card)
 
 O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório em Markdown, espelhado no Notion e executado via WhatsApp + n8n.
 
-**Status do Projeto (17/06/2026):**
+**Status do Projeto (01/07/2026):**
 - ✅ **Advisory assinado** em 01/05/2026 (contrato R$30k validado)
-- ✅ **Bairro da Paz** — contrato assinado, inauguração oficial **01/07/2026** (14 dias)
+- 🎯 **Bairro da Paz — INAUGURAÇÃO É HOJE (01/07/2026)** — contrato assinado; dia oficial de abertura da 2ª filial. Confirmar checklist final (alvará/VISA Salvador, equipe, closer em campo) — ver `RETOMADA.md` (bloco "AO RETOMAR 30/06", P0)
 - ✅ **Precificação redefinida** (02/06): Individual R$39,90 + Família R$64,90 + Adesão R$35 — ver Decisões Estratégicas no `RETOMADA.md`
 - ✅ **Grande Automação MADIP** — 9 automações mapeadas (05/06); A1–A5 com JSONs prontos, A6–A9 até 13/06 — ver `02-cadencias/GRANDE-AUTOMACAO-MADIP.md`
 - ✅ **RMAR Abril-Maio** — gerado 08/06 via `gerar_rmar_sst.py` com dados reais (24 adesões abr → 35 mai, +45%)
-- 🔴 **Campanha Perdão de Dívida (2ª quinzena junho)** — FOCO OPERACIONAL ATUAL. Meta R$20k (esticada R$40k), gap ~R$17,4k até 30/06 sobre as 761 contas Tenex em atraso. Tudo construído e commitado (plano, disparo em massa n8n, Typebot quitação Asaas, 3 webhooks Asaas, database Notion `65a6dcc6...`, guia de implantação). **Falta só: OK do Rogério + credenciais `ASAAS_API_*`/`KARINE_WHATSAPP` no n8n + conectar `NOTION_TOKEN`.** Ver `RETOMADA.md` e `processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md`
+- 🔴 **Campanha Perdão de Dívida → "Máquina de Cobrança"** — FOCO OPERACIONAL ATUAL. **Rogério aprovou tudo em 17/06** (oferta 50% à vista + base Tenex 761 + Asaas), e a matinal de 18/06 transformou a campanha em **processo executável** (fluxo Karine→Lucas→Raquel; ver `01-matinais/18-06-2026/ata-matinal-18-06-2026.md`). Meta R$20k (esticada R$40k); **virada financeira:** o caixa "real" era R$3.853 (R$15k eram aportes do Rogério, que acabaram), gap ~R$17k até 30/06. **Bloqueador ativo:** Rogério precisa **cravar a régua de desconto oficial** (hoje convivem 10%/40%/50%) antes de escalar o disparo. Ver `RETOMADA.md` e `processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md`
+- 🤖 **Agente Kanban de Dívidas** — workflow n8n que lê a Pipeline Notion da Karine, sugere oferta/mensagem por card e separa **caixa RECORRENTE (cartão automático) vs ATIVO (cobrança = esforço real)** no resumo matinal das 07h30. JSON pronto (`02-cadencias/n8n-agente-kanban-dividas.json`), spec em `05-agentamento-karine-ia/07-agente-kanban-dividas.md`. **Tarefa de retomada nº 1:** importar no n8n + env vars + teste 5 cards + ligar cron. Ver `RETOMADA.md` (bloco "AO RETOMAR") e `memory/proxima_tarefa_n8n_agente_kanban.md`
 - 🔄 **Transição PJ equipe** — contratos Lucas/Karine/Raquel em andamento (`processo-comercial-7dias/transicao-pj-equipe-sst.md`)
 - 🔄 **VISA Salvador + alvará** — entrada estava prevista 30/05 e venceu o prazo; reconfirmar status com Rogério (ver `memory/pendencias_criticas_09-06-2026.md`)
 - 👤 **RH Closer Bairro da Paz** — **Safira Letícia Souza Pereira** é a principal candidata (aprovada na fase comportamental 11/06 → aguarda fase 2 de competências, presencial com Rogério; possível futura gestora). **Já não é única**: desde 15/06 há também **Vanesca Nascimento** (mora no Bairro da Paz, sem experiência no produto) — guia de entrevista + scoring commitados. Etapa decisiva: teste de campo com 2–3 candidatos. Ver `rh-closer/`
@@ -55,6 +56,10 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | `processo-comercial-7dias/mensagem-rogerio-estrategia-perdao-16-06-2026.md` | Mensagem/áudio pronta para Rogério pedir OK da oferta de quitação + liberar base Tenex/Asaas |
 | `processo-comercial-7dias/criativo-perdao-divida-junho-2026.html` | Criativo + 4 copies WhatsApp da campanha (deployado no playbook) |
 | `processo-comercial-7dias/02-cadencias/guia-implantacao-perdao-divida.html` | Guia de implantação interativo da campanha (8 fases, dark theme) |
+| `05-agentamento-karine-ia/07-agente-kanban-dividas.md` | **Spec + prompt do Agente Kanban de Dívidas** (régua de desconto, lógica recorrente vs ativo) |
+| `05-agentamento-karine-ia/importar-csv-kanban.py` | Script CSV (planilha inadimplentes Karine) → Pipeline Notion da Karine; auto-detecta colunas, `--dry-run`, dedupe por CPF/telefone |
+| `processo-comercial-7dias/02-cadencias/n8n-agente-kanban-dividas.json` | Workflow n8n do Agente Kanban (8 nós) — lê Notion + Asaas, sugere oferta, resumo matinal 07h30 |
+| `processo-comercial-7dias/02-cadencias/n8n-matinal-automatica-grupo.json` | Workflow n8n da matinal automática no grupo WhatsApp (cron 07h50 Seg–Sáb, mensagem dinâmica) |
 | `RMA-MAIO-2026-INDICE.md` | Índice do RMA com links para todas as seções |
 | `RMA-MAIO-2026-NOTAS-APRESENTADOR.md` | Notas do apresentador slide a slide para RMA ao vivo |
 | `RMA-MAIO-2026-RESUMO-EXECUTIVO.md` | Resumo executivo 1 página — decisão rápida do Rogério |
@@ -174,7 +179,7 @@ Usar sempre português. Datas no formato DD/MM/AAAA.
 1. **08h–09h:** Reunião matinal ao vivo (15 min)
 2. **Capturar resultados** do dia anterior via WhatsApp grupo SST Card
 3. **Gerar HTML matinal** — copiar template da última matinal e atualizar dados
-4. **Template base:** copiar a matinal mais recente em `processo-comercial-7dias/01-matinais/` (atualmente `11-06-2026/roteiro-matinal-11-06-2026.html`)
+4. **Template base:** copiar a matinal mais recente em `processo-comercial-7dias/01-matinais/` (mais recente: pasta `30-06-2026/`). Nota: a de 30/06 é `.md` (`pauta-matinal-30-06-2026.md`); para o formato HTML deployado, copiar a última matinal `.html` (`19-06-2026/roteiro-matinal-19-06-2026.html`)
 5. **Criar pasta:** `processo-comercial-7dias/01-matinais/DD-MM-YYYY/`
 6. **Nomear arquivo:** `roteiro-matinal-DD-MM-YYYY.html`
 7. **Deploy:** `git add` → `git commit -m "Matinal DD/MM/YYYY"` → `git push origin master` → Vercel deploy automático (<1 min)
@@ -412,8 +417,17 @@ Localização principal: `processo-comercial-7dias/02-cadencias/`
 | `n8n-asaas-quitacao-gerar-2via.json` | Webhook 2 — gera 2ª via / Pix de quitação 50% | ✅ Pronto |
 | `n8n-asaas-quitacao-evento.json` | Webhook 3 — recebe evento Asaas → grava no database Notion "Eventos Quitação" (`65a6dcc6c95f4e23bd14dd1798f2391a`) | ✅ Pronto |
 
+**Agente Kanban de Dívidas + Matinal automática (Máquina de Cobrança, junho/2026):**
+
+| Arquivo JSON | O que faz | Estado |
+|---|---|---|
+| `n8n-agente-kanban-dividas.json` | Cron 07h30 → lê Pipeline Notion da Karine (`138f7d78-0ea6-423d-babc-2f5a1fe0092b`) + Asaas → sugere `Oferta Sugerida`/`Mensagem Sugerida` por card, move `Status`, separa caixa RECORRENTE (cartão automático) vs ATIVO (cobrança) no resumo do grupo (8 nós) | ✅ Pronto — **importar/testar** |
+| `n8n-matinal-automatica-grupo.json` | Cron 07h50 Seg–Sáb → posta a matinal dinâmica no grupo WhatsApp SST Card | ✅ Pronto |
+
+> A régua de desconto do Agente Kanban (10% / 40% / 50% por faixa de atraso) **ainda precisa ser cravada pelo Rogério** antes de escalar o disparo — proposta na seção 3 de `07-agente-kanban-dividas.md`.
+
 **Variáveis de ambiente necessárias (configurar antes de implantar):**
-`ANTHROPIC_API_KEY` · `NOTION_TOKEN` · `NOTION_PARCIAIS_DB_ID` · `NOTION_CLINICA_DB_ID` · `CHATWOOT_API_KEY` · `EVOLUTION_API_URL` · `EVOLUTION_API_KEY` · `EVOLUTION_INSTANCE` · `SST_CARD_GROUP_CHAT_ID` · `SHEETS_COBRANCA_ID` · `SHEETS_AGENDA_ID` · `ASAAS_API_KEY` · `ASAAS_API_URL` · `KARINE_WHATSAPP` (campanha Perdão de Dívida)
+`ANTHROPIC_API_KEY` · `NOTION_TOKEN` · `NOTION_PARCIAIS_DB_ID` · `NOTION_CLINICA_DB_ID` · `NOTION_KANBAN_DB_ID` (`138f7d78-0ea6-423d-babc-2f5a1fe0092b` — Pipeline Karine) · `CHATWOOT_API_KEY` · `EVOLUTION_API_URL` · `EVOLUTION_API_KEY` · `EVOLUTION_INSTANCE` · `SST_CARD_GROUP_CHAT_ID` · `SHEETS_COBRANCA_ID` · `SHEETS_AGENDA_ID` · `ASAAS_API_KEY` · `ASAAS_API_URL` · `KARINE_WHATSAPP` (campanha Perdão de Dívida)
 
 Setup do group-parser: ver `02-cadencias/SETUP-sst-group-parser.md`.
 
@@ -485,7 +499,7 @@ Referência completa: `.claude/skills/cerebro-ia-clinica-lucrativa/SKILL.md`.
 | `rh-closer/` | Processo seletivo closer PJ Bairro da Paz (Typebot + kit entrevista + scoring) | `rh-closer/CLAUDE.md` |
 | `rh-clinica/` | Processo seletivo coordenadora clínica (formulário abertura vaga + qualificação HTML + Typebot JSON) | `rh-clinica/CLAUDE.md` |
 | `aline-laboratorio/` | Consultoria laboratório MADIP (Aline Souza) — sessões mensais + Funil 1 anti-noshow | `aline-laboratorio/CLAUDE.md` |
-| `05-agentamento-karine-ia/` | Agentização da Karine (cobrança/vendas com IA) — roadmap, prompts WhatsApp, workflow n8n cobrança, dashboard, integrações Chatwoot/Notion | — |
+| `05-agentamento-karine-ia/` | Agentização da Karine (cobrança/vendas com IA) — roadmap, prompts WhatsApp, workflow n8n cobrança, dashboard, integrações Chatwoot/Notion, **Agente Kanban de Dívidas (07-...)** + script `importar-csv-kanban.py` | — |
 | `Coaching-Emocional/` | Material de apoio do programa de coaching (Método CIS, ferramentas de identidade/metas) — usado nas sessões de coaching (ver `aline-laboratorio/`); só PDFs/imagem, sem notas | — |
 | `pesquisa-satisfacao-sponsor/` | Pesquisa de satisfação do Rogério (Typebot JSON + n8n semáforo); sem CLAUDE.md local | — |
 | `estrategia_comercial/` | Modelos financeiros, plano de lançamento, implementação 2ª filial | Documentado neste CLAUDE.md |

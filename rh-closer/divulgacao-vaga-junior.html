@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaga — Vendedor(a) Júnior SST Card | Bairro da Paz · Salvador/BA</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1a1a2e;
+    background: #f5f7fa;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0c4a6e 0%, #1987c3 60%, #38bdf8 100%);
+    color: white;
+    padding: 44px 48px 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .header-left .kicker {
+    font-size: 8.5pt;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 8px;
+  }
+  .header-left h1 {
+    font-size: 26pt;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .header-left .sub {
+    font-size: 12pt;
+    opacity: 0.85;
+  }
+  .header-right { text-align: right; flex-shrink: 0; }
+  .salario-label { font-size: 8pt; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.7; }
+  .salario-valor { font-size: 22pt; font-weight: 800; line-height: 1.1; }
+  .salario-sub { font-size: 9pt; opacity: 0.75; margin-top: 3px; }
+
+  /* ── BODY ── */
+  .body { max-width: 760px; margin: 0 auto; padding: 28px 32px 40px; background: #fff; }
+
+  /* ── GRID DE DADOS ── */
+  .dados-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .dado { background: #f0f9ff; border-radius: 8px; padding: 10px 12px; }
+  .dado .d-label { font-size: 7.5pt; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 3px; }
+  .dado .d-val { font-size: 10pt; font-weight: 700; color: #0c4a6e; }
+
+  /* ── SEÇÃO ── */
+  h2 {
+    font-size: 8.5pt;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #1987c3;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #1987c3;
+    page-break-after: avoid;
+  }
+  .secao { margin-bottom: 28px; page-break-inside: avoid; }
+
+  /* ── LISTA ── */
+  .lista { list-style: none; }
+  .lista li {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 9px 0; border-bottom: 1px solid #f1f5f9;
+    font-size: 10.5pt; color: #334155;
+  }
+  .lista li:last-child { border-bottom: none; }
+  .num {
+    background: #1987c3; color: white; font-size: 8pt; font-weight: 800;
+    width: 20px; height: 20px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .num.check { background: #16a34a; font-size: 10pt; }
+  .lista li strong { color: #0c4a6e; }
+
+  /* ── TABELA ── */
+  table { width: 100%; border-collapse: collapse; font-size: 10pt; margin-bottom: 12px; }
+  th { background: #0c4a6e; color: white; padding: 9px 14px; text-align: left; font-size: 8pt; letter-spacing: 1px; text-transform: uppercase; }
+  td { padding: 9px 14px; border-bottom: 1px solid #e2e8f0; color: #334155; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .val { font-weight: 800; font-size: 12pt; color: #1987c3; }
+  .val-green { font-weight: 800; font-size: 12pt; color: #16a34a; }
+  .badge-meta { background: #dcfce7; color: #166534; font-size: 8pt; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+
+  /* ── BOXES ── */
+  .box-azul { background: #eff6ff; border-left: 4px solid #1987c3; border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 10pt; color: #1e3a5f; margin: 12px 0; }
+  .box-verde { background: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 10pt; color: #14532d; margin: 12px 0; }
+  .box-amarelo { background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 10pt; color: #78350f; margin: 12px 0; }
+
+  /* ── DESTAQUE NÃO PRECISA EXPERIÊNCIA ── */
+  .hero-msg {
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    color: white; border-radius: 14px; padding: 20px 24px; margin: 4px 0 28px;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .hero-msg .hm-tit { font-size: 15pt; font-weight: 800; margin-bottom: 4px; }
+  .hero-msg .hm-sub { font-size: 10.5pt; opacity: 0.92; }
+
+  /* ── TAGS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .tag { background: #e0f2fe; border: 1px solid #7dd3fc; color: #0c4a6e; padding: 4px 12px; border-radius: 20px; font-size: 9.5pt; font-weight: 500; }
+
+  /* ── CTA ── */
+  .cta-section { background: linear-gradient(135deg, #0c4a6e, #1987c3); color: white; border-radius: 14px; padding: 28px 32px; margin: 28px 0 0; text-align: center; page-break-inside: avoid; }
+  .cta-section h2 { color: white; border-color: rgba(255,255,255,0.3); font-size: 10pt; letter-spacing: 2px; margin-bottom: 6px; }
+  .cta-titulo { font-size: 18pt; font-weight: 800; margin-bottom: 8px; }
+  .cta-sub { font-size: 10.5pt; opacity: 0.85; margin-bottom: 20px; }
+  .cta-link-box { background: white; border-radius: 10px; padding: 14px 20px; display: inline-block; margin-bottom: 16px; }
+  .cta-link-label { font-size: 8pt; color: #64748b; letter-spacing: 1px; text-transform: uppercase; }
+  .cta-link { font-size: 12pt; font-weight: 800; color: #1987c3; word-break: break-all; }
+  .cta-steps { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; font-size: 9.5pt; opacity: 0.85; }
+  .cta-step { display: flex; align-items: center; gap: 6px; }
+
+  /* ── RODAPÉ ── */
+  .footer { text-align: center; font-size: 8pt; color: #94a3b8; margin-top: 20px; padding-top: 16px; border-top: 1px solid #e2e8f0; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; font-size: 10pt; }
+    .header, .cta-section, .hero-msg { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th, .num { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .body { padding: 20px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="kicker">SST Clínica · Vaga de início de carreira · Junho 2026</div>
+    <h1>Vendedor(a)<br>Júnior</h1>
+    <div class="sub">Bairro da Paz · Salvador/BA · A gente te treina do zero</div>
+  </div>
+  <div class="header-right">
+    <div class="salario-label">Faixa de ganho</div>
+    <div class="salario-valor">R$ 1.800<br>a R$ 3.000</div>
+    <div class="salario-sub">por mês · CLT (carteira assinada)</div>
+  </div>
+</div>
+
+<div class="body">
+
+  <!-- HERO: NÃO PRECISA DE EXPERIÊNCIA -->
+  <div class="hero-msg">
+    <div class="hm-tit">🌱 Nunca trabalhou com vendas? Tudo bem.</div>
+    <div class="hm-sub">Aqui a gente quer <strong>vontade, jeito com as pessoas e disposição pra aprender</strong>. O treinamento é por nossa conta. Quem entrega, cresce.</div>
+  </div>
+
+  <!-- DADOS RÁPIDOS -->
+  <div class="dados-grid">
+    <div class="dado"><div class="d-label">Cargo</div><div class="d-val">Vendedor(a) Júnior</div></div>
+    <div class="dado"><div class="d-label">Vínculo</div><div class="d-val">CLT — carteira assinada</div></div>
+    <div class="dado"><div class="d-label">Localização</div><div class="d-val">Bairro da Paz, Salvador</div></div>
+    <div class="dado"><div class="d-label">Horário</div><div class="d-val">Seg–Sex + Sáb (4h)</div></div>
+    <div class="dado"><div class="d-label">Vagas</div><div class="d-val">01 vaga</div></div>
+    <div class="dado"><div class="d-label">Salário fixo</div><div class="d-val">R$ 1.500 + comissão</div></div>
+    <div class="dado"><div class="d-label">Idade mínima</div><div class="d-val">18 anos</div></div>
+    <div class="dado"><div class="d-label">Início</div><div class="d-val">Imediato</div></div>
+  </div>
+
+  <!-- O QUE VOCÊ VAI FAZER -->
+  <div class="secao">
+    <h2>O que você vai fazer</h2>
+    <ul class="lista">
+      <li><span class="num">1</span><div><strong>Conversar com a comunidade</strong> — porta a porta, comércio local, igrejas e pontos de movimento no Bairro da Paz, oferecendo o cartão de saúde.</div></li>
+      <li><span class="num">2</span><div><strong>Aprender vendendo com o líder</strong> — você acompanha o vendedor líder, observa e vai fechando suas próprias vendas com apoio.</div></li>
+      <li><span class="num">3</span><div><strong>Atender no balcão da clínica</strong> — quem vem fazer consulta vira membro do cartão pagando menos no longo prazo.</div></li>
+      <li><span class="num">4</span><div><strong>Reativar quem parou de pagar</strong> — ajudar antigos clientes a voltar com a campanha de perdão de dívida.</div></li>
+      <li><span class="num">5</span><div><strong>Participar da reunião da manhã (9h)</strong> e anotar suas vendas do dia. Simples e direto.</div></li>
+    </ul>
+  </div>
+
+  <!-- REMUNERAÇÃO -->
+  <div class="secao">
+    <h2>Quanto você ganha — CLT</h2>
+    <table>
+      <tr><th>Componente</th><th>Valor</th><th>Detalhe</th></tr>
+      <tr><td>Salário fixo (carteira assinada)</td><td><span class="val">R$ 1.500</span></td><td>Todo mês, independente de venda</td></tr>
+      <tr><td>Comissão por cartão vendido</td><td><span class="val">R$ 10</span></td><td>Por adesão — sem limite de quantas</td></tr>
+      <tr><td>Reativação de cliente antigo</td><td><span class="val">R$ 5</span></td><td>Por contrato que voltar a pagar</td></tr>
+      <tr><td>Vale-transporte + vale-refeição</td><td><span class="val-green">Inclusos</span></td><td>Benefícios de carteira assinada</td></tr>
+      <tr><td>Ganho típico nos primeiros meses</td><td><span class="val-green">R$ 1.800 a R$ 3.000</span></td><td>Fixo + comissão na medida que você aprende <span class="badge-meta">CLT</span></td></tr>
+    </table>
+
+    <div class="box-azul">
+      <strong>🚀 Plano de crescimento:</strong> bateu a meta <strong>2 meses seguidos</strong> e você vira <strong>Closer (Vendedor Líder)</strong> — com ganho bem maior e comissão sem teto. Essa vaga é a sua porta de entrada na carreira de vendas.
+    </div>
+  </div>
+
+  <!-- O QUE VOCÊ VAI VENDER -->
+  <div class="secao">
+    <h2>O que você vai vender</h2>
+    <table>
+      <tr><th>Plano</th><th>Mensalidade</th><th>Para quem</th><th>O que inclui</th></tr>
+      <tr>
+        <td><strong>Individual</strong></td>
+        <td><span class="val">R$ 39,90/mês</span></td>
+        <td>Trabalhador autônomo</td>
+        <td rowspan="2" style="font-size:9pt; color:#334155;">Telemedicina · Consultas populares · Auxílio funeral · Assistência veterinária · Exames com desconto</td>
+      </tr>
+      <tr>
+        <td><strong>Família (4 pessoas)</strong></td>
+        <td><span class="val">R$ 64,90/mês</span></td>
+        <td>A família toda</td>
+      </tr>
+    </table>
+    <div class="box-amarelo" style="margin-top:12px;">
+      <strong>Como explicar pro cliente:</strong> "Por pouco mais de R$ 1 por dia a sua família tem médico, telemedicina e exames com desconto — sem fila e sem susto no fim do mês." É um produto que ajuda gente de verdade.
+    </div>
+  </div>
+
+  <!-- REQUISITOS -->
+  <div class="secao">
+    <h2>O que a gente pede</h2>
+    <ul class="lista">
+      <li><span class="num check">✓</span><div><strong>18 anos ou mais</strong> e vontade de trabalhar com gente</div></li>
+      <li><span class="num check">✓</span><div><strong>Poder trabalhar no Bairro da Paz</strong>, presencial, de segunda a sábado</div></li>
+      <li><span class="num check">✓</span><div><strong>Topar carteira assinada (CLT)</strong> com salário fixo + comissão</div></li>
+      <li><span class="num check">✓</span><div><strong>Ser comunicativo(a)</strong> e gostar de conversar — o resto a gente ensina</div></li>
+    </ul>
+
+    <div style="margin: 16px 0 8px; font-size: 9pt; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">O que conta ponto a mais</div>
+    <div class="tags">
+      <span class="tag">Mora no Bairro da Paz</span>
+      <span class="tag">Já vendeu algo (doces, roupa, rifa…)</span>
+      <span class="tag">Trabalhou em loja / atendimento</span>
+      <span class="tag">Conhece muita gente no bairro</span>
+      <span class="tag">Quer carreira em vendas</span>
+      <span class="tag">Vocação pra cuidar de pessoas</span>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Candidature-se agora</h2>
+    <div class="cta-titulo">É rapidinho — 5 minutos</div>
+    <div class="cta-sub">Responda o formulário pelo celular.<br>Quem tiver o perfil a gente chama no WhatsApp em até 5 dias úteis.</div>
+    <div class="cta-link-box">
+      <div class="cta-link-label">Link do formulário</div>
+      <div class="cta-link">bot.clinicalucrativa.ia.br/qualifica-o-vendedor-j-nior-sst-card-bairro-da-paz-omamxv0</div>
+    </div>
+    <div class="cta-steps">
+      <div class="cta-step">① Preencha o formulário</div>
+      <div class="cta-step">② Conversa rápida</div>
+      <div class="cta-step">③ Dia de campo (rua)</div>
+      <div class="cta-step">④ Carteira assinada</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    SST Clínica · SST Card · Bairro da Paz · Salvador/BA &nbsp;|&nbsp; Consultoria: Mayko Rodrigues — contato@sucessodetodos.com.br &nbsp;|&nbsp; Junho 2026
+  </div>
+
+</div>
+</body>
+</html>

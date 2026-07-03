@@ -18,7 +18,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Propósito deste diretório
 
-Processo seletivo para **Closer (Vendedor Líder) — SST Card / Filial Bairro da Paz**. Vínculo PJ, função no fundo do funil (fechamento), produto SST Card (R$39,90–R$64,90/mês + adesão R$35).
+Processo seletivo de **vendas para a Filial Bairro da Paz — SST Card** (R$39,90–R$64,90/mês + adesão R$35). São **DUAS vagas paralelas, perfis e vínculos distintos** — não confundir:
+
+| Vaga | Perfil | Vínculo | Remuneração | Idade | Typebot |
+|---|---|---|---|---|---|
+| **1 · Closer / Vendedor Líder (Sênior)** | Hunter experiente (≥2 anos), vira gestor | **PJ** | R$2.000 fixo + R$20/adesão + R$5/Tenex, sem teto | 21+ | `typebot-qualificacao-closer.json` |
+| **2 · Vendedor Júnior** | Início de carreira, treinável, fit local | **CLT** | R$1.500 fixo + R$10/adesão + R$5/Tenex + VT/VR | 18+ | `typebot-qualificacao-junior-sst.json` |
+
+> 🆕 **Vaga Júnior aberta em 19/06/2026** (pedido Mayko). Remuneração CLT (Pacote B) — pendente OK final do Rogério antes de publicar. O júnior **não elimina por falta de experiência**; pesa atitude + jeito com as pessoas + fit local (morar no Bairro da Paz). Quem entrega vira Closer. Ver `formulario-abertura-vaga-junior-sst.md` + `typebot-qualificacao-junior-sst.flow.yaml`.
+>
+> 🔌 **Pipeline Typebot → Notion pronto (19/06):** workflow n8n `n8n-typebot-candidaturas-notion.json` recebe os **dois** formulários e cria card na base **RH — Candidatos** (data source `df0046dd-dd3c-4d37-9d37-4e6e6bb23d1d`), preenchendo `Nível`, `Vaga` (opção "Vendedor Júnior" adicionada ao schema), `Fonte=Typebot/formulário`, `Status=Triagem` + respostas no corpo. Falta só: criar credencial Notion no n8n + ativar. Ver `SETUP-typebot-candidaturas-notion.md`.
 
 Responsáveis: **Rogério Ferreira** (sponsor) + **Mayko Rodrigues** (consultoria).
 
@@ -54,7 +63,12 @@ Diferença crítica em relação ao `clientes/vetviver/rh-sdr/`:
 
 | Arquivo | Função | Quando usar |
 |---|---|---|
-| `formulario-abertura-vaga-closer-sst.md` | Fonte de dados da vaga: cargo, remuneração, requisitos, checklist de publicação | Referência antes de editar qualquer divulgação; dados de comissão só daqui |
+| `formulario-abertura-vaga-closer-sst.md` | Fonte de dados da vaga **Sênior** (Closer/Líder, PJ): cargo, remuneração, requisitos | Referência antes de editar divulgação sênior |
+| `formulario-abertura-vaga-junior-sst.md` | Fonte de dados da vaga **Júnior** (CLT R$1.500+comissão): cargo, remuneração, requisitos, metas 90 dias | Referência antes de editar divulgação júnior |
+| `typebot-qualificacao-junior-sst.json` / `.flow.yaml` | Typebot de qualificação do **Júnior** (idade 18+, sem eliminar por experiência, fit local). **Publicado:** https://bot.clinicalucrativa.ia.br/qualifica-o-vendedor-j-nior-sst-card-bairro-da-paz-omamxv0 | Importar no Typebot self-hosted; webhook `sst-vendedor-junior-candidatura` |
+| `divulgacao-vaga-junior.html` | Página de divulgação da vaga **Júnior** (CLT, tom acolhedor "não precisa de experiência", azul SST) | Editar aqui → gerar PDF/imagem p/ WhatsApp |
+| `n8n-typebot-candidaturas-notion.json` | Workflow n8n único: recebe os **2 Typebots** (sênior + júnior) → cria card na base Notion RH | Importar no n8n; ver SETUP abaixo |
+| `SETUP-typebot-candidaturas-notion.md` | Guia de implantação do workflow (credencial Notion, paths, teste ponta a ponta, troubleshooting) | Ler antes de ativar o workflow |
 | `divulgacao-vaga-closer.html` | Página de divulgação (paleta azul SST) — fonte para gerar PDF de WhatsApp/LinkedIn | Editar aqui, depois gerar PDF |
 | `formulario-qualificacao-closer.html` | Formulário multi-step de auto-qualificação (eliminatórios automáticos) — envia via link | Compartilhar link antes da entrevista para pré-triagem |
 | `kit-entrevista-closer-sst.md` | Roteiro completo de 75 min (7 blocos STAR + simulação Dona Maria + ficha de scoring) | Imprimir antes de cada entrevista |

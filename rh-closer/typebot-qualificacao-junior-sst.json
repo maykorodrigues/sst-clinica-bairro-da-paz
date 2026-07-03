@@ -1,0 +1,615 @@
+{
+  "version": "6",
+  "id": "sst-junior-qual-v1",
+  "name": "Qualificação Vendedor Júnior — SST Card · Bairro da Paz",
+  "events": [
+    {
+      "id": "evt_start",
+      "type": "start",
+      "graphCoordinates": { "x": -400, "y": 0 },
+      "outgoingEdgeId": "e_start_to_g00"
+    }
+  ],
+  "variables": [
+    { "id": "v01", "name": "Nome" },
+    { "id": "v02", "name": "Email" },
+    { "id": "v03", "name": "Telefone" },
+    { "id": "v04", "name": "Cidade" },
+    { "id": "v05", "name": "Bairro" },
+    { "id": "v06", "name": "Idade" },
+    { "id": "v07", "name": "ExpVendas" },
+    { "id": "v08", "name": "JaOfereceu" },
+    { "id": "v09", "name": "MoraBairro" },
+    { "id": "v10", "name": "Presencial" },
+    { "id": "v11", "name": "Disponibilidade" },
+    { "id": "v12", "name": "AceitaCLT" },
+    { "id": "v13", "name": "PublicoCD" },
+    { "id": "v14", "name": "RedeContatos" },
+    { "id": "v15", "name": "RespostaSUS" },
+    { "id": "v16", "name": "MotivoComecar" },
+    { "id": "v17", "name": "ConvenceuAlguem" },
+    { "id": "v18", "name": "ExpGanho" },
+    { "id": "v19", "name": "Sonho3Anos" }
+  ],
+  "edges": [
+    { "id": "e_start_to_g00", "from": { "eventId": "evt_start" }, "to": { "groupId": "g00" } },
+    { "id": "e_consent_ok",   "from": { "groupId": "g00", "blockId": "b00_consent" }, "to": { "groupId": "g01" } },
+    { "id": "e_consent_no",   "from": { "groupId": "g00", "blockId": "b00_consent" }, "to": { "groupId": "g13" } },
+    { "id": "e01_to_g02",     "from": { "groupId": "g01", "blockId": "b01_idade" }, "to": { "groupId": "g02" } },
+    { "id": "e02_nogo",       "from": { "groupId": "g02", "blockId": "b02_cond" }, "to": { "groupId": "g03" } },
+    { "id": "e02_ok",         "from": { "groupId": "g02", "blockId": "b02_cond" }, "to": { "groupId": "g04" } },
+    { "id": "e04_to_g05",     "from": { "groupId": "g04", "blockId": "b04_oferec" }, "to": { "groupId": "g05" } },
+    { "id": "e05_pres_nogo",  "from": { "groupId": "g05", "blockId": "b05_pres" }, "to": { "groupId": "g06" } },
+    { "id": "e05_disp_nogo",  "from": { "groupId": "g05", "blockId": "b05_disp" }, "to": { "groupId": "g07" } },
+    { "id": "e05_to_g08",     "from": { "groupId": "g05", "blockId": "b05_clt" }, "to": { "groupId": "g08" } },
+    { "id": "e08_to_g09",     "from": { "groupId": "g08", "blockId": "b08_sus" }, "to": { "groupId": "g09" } },
+    { "id": "e09_to_g10",     "from": { "groupId": "g09", "blockId": "b09_sonho" }, "to": { "groupId": "g10" } },
+    { "id": "e10_to_g11",     "from": { "groupId": "g10", "blockId": "b10_wh" }, "to": { "groupId": "g11" } }
+  ],
+  "groups": [
+
+    {
+      "id": "g00",
+      "title": "Boas-vindas + Consentimento LGPD",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "blocks": [
+        {
+          "id": "b00_bv",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "👋 Olá! Que bom te ver por aqui!" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Você está se candidatando para:" }] },
+              { "type": "p", "children": [{ "text": "Vendedor(a) Júnior — SST Card", "bold": true }] },
+              { "type": "p", "children": [{ "text": "📍 Filial Bairro da Paz · Salvador/BA" }] },
+              { "type": "p", "children": [{ "text": "🌱 Vaga de início de carreira — a gente te treina do zero" }] },
+              { "type": "p", "children": [{ "text": "💰 CLT: R$ 1.500 fixo + comissão por venda + VT e VR (faixa R$ 1.800 – 3.000/mês)" }] },
+              { "type": "p", "children": [{ "text": "🚀 Quem entrega vira Closer (vendedor líder) e cresce na operação" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Não precisa ter experiência em vendas. ", "bold": true }, { "text": "A gente quer vontade, jeito com as pessoas e disposição pra aprender." }] },
+              { "type": "p", "children": [{ "text": "São 5 etapas rápidas (uns 5 minutinhos). Responda com sinceridade 💙" }] }
+            ]
+          }
+        },
+        {
+          "id": "b00_q_consent",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Concorda que seus dados serão usados só para analisar esta candidatura (LGPD)?" }] }
+            ]
+          }
+        },
+        {
+          "id": "b00_consent",
+          "type": "choice input",
+          "items": [
+            { "id": "c00_ok", "content": "Concordo ✓",   "outgoingEdgeId": "e_consent_ok" },
+            { "id": "c00_no", "content": "Não concordo", "outgoingEdgeId": "e_consent_no" }
+          ],
+          "options": { "isMultipleChoice": false }
+        }
+      ]
+    },
+
+    {
+      "id": "g01",
+      "title": "Etapa 1 — Dados Pessoais",
+      "graphCoordinates": { "x": 400, "y": 0 },
+      "blocks": [
+        {
+          "id": "b01_intro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "📋 Etapa 1 de 5 — Dados para contato" }] }] }
+        },
+        {
+          "id": "b01_q_nome",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Qual seu nome completo?" }] }] }
+        },
+        {
+          "id": "b01_nome",
+          "type": "text input",
+          "options": { "variableId": "v01", "labels": { "placeholder": "Maria da Silva", "button": "Avançar →" } }
+        },
+        {
+          "id": "b01_q_email",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Seu e-mail (se tiver):" }] }] }
+        },
+        {
+          "id": "b01_email",
+          "type": "email input",
+          "options": { "variableId": "v02", "labels": { "placeholder": "seuemail@exemplo.com", "button": "Avançar →" } }
+        },
+        {
+          "id": "b01_q_tel",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Seu WhatsApp com DDD (é por aqui que vamos te chamar):" }] }] }
+        },
+        {
+          "id": "b01_tel",
+          "type": "phone number input",
+          "options": { "variableId": "v03", "labels": { "placeholder": "(71) 99999-9999", "button": "Avançar →" }, "defaultCountryCode": "BR" }
+        },
+        {
+          "id": "b01_q_cidade",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Cidade onde você mora:" }] }] }
+        },
+        {
+          "id": "b01_cidade",
+          "type": "text input",
+          "options": { "variableId": "v04", "labels": { "placeholder": "Salvador", "button": "Avançar →" } }
+        },
+        {
+          "id": "b01_q_bairro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Bairro onde você mora:" }] }] }
+        },
+        {
+          "id": "b01_bairro",
+          "type": "text input",
+          "options": { "variableId": "v05", "labels": { "placeholder": "Bairro da Paz", "button": "Avançar →" } }
+        },
+        {
+          "id": "b01_q_idade",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Qual a sua idade?" }] }] }
+        },
+        {
+          "id": "b01_idade",
+          "type": "number input",
+          "options": { "variableId": "v06", "labels": { "placeholder": "22", "button": "Avançar →" }, "min": 14, "max": 80 },
+          "outgoingEdgeId": "e01_to_g02"
+        }
+      ]
+    },
+
+    {
+      "id": "g02",
+      "title": "Check — Idade ≥ 18",
+      "graphCoordinates": { "x": 800, "y": 0 },
+      "blocks": [
+        {
+          "id": "b02_cond",
+          "type": "Condition",
+          "items": [
+            {
+              "id": "cond_idade_nogo",
+              "outgoingEdgeId": "e02_nogo",
+              "condition": {
+                "logicalOperator": "AND",
+                "comparisons": [
+                  {
+                    "id": "comp_idade",
+                    "variableId": "v06",
+                    "comparisonOperator": "Less than",
+                    "value": "18"
+                  }
+                ]
+              }
+            }
+          ],
+          "outgoingEdgeId": "e02_ok"
+        }
+      ]
+    },
+
+    {
+      "id": "g03",
+      "title": "NO-GO — Idade < 18",
+      "graphCoordinates": { "x": 800, "y": 320 },
+      "blocks": [
+        {
+          "id": "b03_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Obrigado pelo interesse na SST Card! 🙏" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Motivo: ", "bold": true }, { "text": "esta vaga é para maiores de 18 anos." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Fica de olho — em breve teremos oportunidades de jovem aprendiz. 📸 @sstclinica" }] }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g04",
+      "title": "Etapa 2 — Sua relação com vendas (não elimina)",
+      "graphCoordinates": { "x": 1200, "y": 0 },
+      "blocks": [
+        {
+          "id": "b04_intro",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "💪 Etapa 2 de 5 — Sua relação com vendas", "bold": true }, { "text": " (relaxa: aqui ninguém é eliminado)" }] }
+          ]}
+        },
+        {
+          "id": "b04_q_exp",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Você já trabalhou com vendas, atendimento ao público ou já ofereceu algum produto/serviço?" }] }] }
+        },
+        {
+          "id": "b04_exp",
+          "type": "choice input",
+          "items": [
+            { "id": "exp_i0", "content": "Sim, já trabalhei com vendas" },
+            { "id": "exp_i1", "content": "Já trabalhei com atendimento (loja, recepção, telemarketing...)" },
+            { "id": "exp_i2", "content": "Nunca tive emprego nisso, mas já vendi por conta (doces, roupa, rifa...)" },
+            { "id": "exp_i3", "content": "Nunca tive contato com vendas — quero aprender" }
+          ],
+          "options": { "variableId": "v07", "isMultipleChoice": false }
+        },
+        {
+          "id": "b04_q_oferec",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "O que você já vendeu ou ofereceu pra alguém? (marque tudo que já fez — vale informal)" }] }] }
+        },
+        {
+          "id": "b04_oferec",
+          "type": "choice input",
+          "items": [
+            { "id": "of_i0", "content": "Cartão de saúde / plano popular" },
+            { "id": "of_i1", "content": "Roupas, cosméticos, acessórios" },
+            { "id": "of_i2", "content": "Comida (doces, salgados, marmita...)" },
+            { "id": "of_i3", "content": "Serviços (manicure, cabelo, conserto...)" },
+            { "id": "of_i4", "content": "Rifa, sorteio, vaquinha" },
+            { "id": "of_i5", "content": "Nunca ofereci nada ainda" }
+          ],
+          "options": { "variableId": "v08", "isMultipleChoice": true },
+          "outgoingEdgeId": "e04_to_g05"
+        }
+      ]
+    },
+
+    {
+      "id": "g05",
+      "title": "Etapa 3 — Disponibilidade (eliminatória)",
+      "graphCoordinates": { "x": 1700, "y": 0 },
+      "blocks": [
+        {
+          "id": "b05_intro",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "📍 Etapa 3 de 5 — Disponibilidade e localização", "bold": true }] }
+          ]}
+        },
+        {
+          "id": "b05_q_pres",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Você pode trabalhar presencialmente no Bairro da Paz (Salvador/BA)?" }] }] }
+        },
+        {
+          "id": "b05_pres",
+          "type": "choice input",
+          "items": [
+            { "id": "pres_i0", "content": "Sim, sem problema" },
+            { "id": "pres_i1", "content": "Moro perto, dá pra ir todo dia" },
+            { "id": "pres_i2", "content": "Não consigo ir presencial", "outgoingEdgeId": "e05_pres_nogo" }
+          ],
+          "options": { "variableId": "v10", "isMultipleChoice": false }
+        },
+        {
+          "id": "b05_q_disp",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Dá pra trabalhar de segunda a sábado (8h/dia + sábado meio período)?" }] }] }
+        },
+        {
+          "id": "b05_disp",
+          "type": "choice input",
+          "items": [
+            { "id": "disp_i0", "content": "Sim, tranquilo" },
+            { "id": "disp_i1", "content": "Sim, com pequenos ajustes (explico depois)" },
+            { "id": "disp_i2", "content": "Não tenho essa disponibilidade", "outgoingEdgeId": "e05_disp_nogo" }
+          ],
+          "options": { "variableId": "v11", "isMultipleChoice": false }
+        },
+        {
+          "id": "b05_q_clt",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Essa vaga é registrada (CLT, carteira assinada) com salário fixo + comissão. Você topa?" }] }] }
+        },
+        {
+          "id": "b05_clt",
+          "type": "choice input",
+          "items": [
+            { "id": "clt_i0", "content": "Sim, quero carteira assinada" },
+            { "id": "clt_i1", "content": "Tanto faz, só quero a oportunidade" }
+          ],
+          "options": { "variableId": "v12", "isMultipleChoice": false },
+          "outgoingEdgeId": "e05_to_g08"
+        }
+      ]
+    },
+
+    {
+      "id": "g06",
+      "title": "NO-GO — Não presencial",
+      "graphCoordinates": { "x": 1700, "y": 340 },
+      "blocks": [
+        {
+          "id": "b06_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Obrigado pelo interesse! 🙏" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Motivo: ", "bold": true }, { "text": "a vaga é presencial no Bairro da Paz, Salvador/BA. Quando você puder estar por aqui, será bem-vindo(a)!" }] }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g07",
+      "title": "NO-GO — Sem disponibilidade de horário",
+      "graphCoordinates": { "x": 1700, "y": 540 },
+      "blocks": [
+        {
+          "id": "b07_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Obrigado pelo interesse! 🙏" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Motivo: ", "bold": true }, { "text": "a vaga precisa de disponibilidade de segunda a sábado. Se sua agenda mudar, fala com a gente!" }] }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g08",
+      "title": "Etapa 4 — Fit local + público",
+      "graphCoordinates": { "x": 2200, "y": 0 },
+      "blocks": [
+        {
+          "id": "b08_intro",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "🎯 Etapa 4 de 5 — Você e a comunidade", "bold": true }] }] }
+        },
+        {
+          "id": "b08_q_mora",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Você mora no Bairro da Paz ou em algum bairro vizinho (Mussurunga, São Cristóvão, Paripe...)?" }] }] }
+        },
+        {
+          "id": "b08_mora",
+          "type": "choice input",
+          "items": [
+            { "id": "mora_i0", "content": "Sim, moro no Bairro da Paz" },
+            { "id": "mora_i1", "content": "Moro num bairro vizinho" },
+            { "id": "mora_i2", "content": "Moro em Salvador, mas mais longe" },
+            { "id": "mora_i3", "content": "Moro em outra cidade" }
+          ],
+          "options": { "variableId": "v09", "isMultipleChoice": false }
+        },
+        {
+          "id": "b08_q_cd",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Você se sente à vontade conversando com trabalhador, gente simples, gente da comunidade?" }] }] }
+        },
+        {
+          "id": "b08_cd",
+          "type": "choice input",
+          "items": [
+            { "id": "cd_i0", "content": "Sim, é a minha gente — convivo com esse público todo dia" },
+            { "id": "cd_i1", "content": "Sim, me viro bem" },
+            { "id": "cd_i2", "content": "Tenho um pouco de vergonha, mas encaro" }
+          ],
+          "options": { "variableId": "v13", "isMultipleChoice": false }
+        },
+        {
+          "id": "b08_q_rede",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Você conhece bastante gente na sua região (vizinhos, comércio, igreja, grupos)?" }] }] }
+        },
+        {
+          "id": "b08_rede",
+          "type": "choice input",
+          "items": [
+            { "id": "rede_i0", "content": "Sim, conheço muita gente" },
+            { "id": "rede_i1", "content": "Conheço alguns" },
+            { "id": "rede_i2", "content": "Quase ninguém ainda" }
+          ],
+          "options": { "variableId": "v14", "isMultipleChoice": false }
+        },
+        {
+          "id": "b08_q_sus",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Imagina: você oferece o cartão e a pessoa diz \"já tenho SUS, não preciso pagar nada\". O que você responderia?" }] },
+            { "type": "p", "children": [{ "text": "(Não tem resposta certa — queremos ver o seu jeito de conversar.)", "italic": true }] }
+          ]}
+        },
+        {
+          "id": "b08_sus",
+          "type": "text input",
+          "options": {
+            "variableId": "v15",
+            "isLong": true,
+            "labels": { "placeholder": "Escreva com as palavras que você usaria de verdade...", "button": "Avançar →" }
+          },
+          "outgoingEdgeId": "e08_to_g09"
+        }
+      ]
+    },
+
+    {
+      "id": "g09",
+      "title": "Etapa 5 — Motivação",
+      "graphCoordinates": { "x": 2700, "y": 0 },
+      "blocks": [
+        {
+          "id": "b09_intro",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "💬 Etapa 5 de 5 — Sua motivação", "bold": true }, { "text": " (última etapa!)" }] }
+          ]}
+        },
+        {
+          "id": "b09_q_motivo",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Por que você quer essa vaga AGORA?" }] },
+            { "type": "p", "children": [{ "text": "Sem resposta decorada — o que te trouxe aqui?", "italic": true }] }
+          ]}
+        },
+        {
+          "id": "b09_motivo",
+          "type": "text input",
+          "options": {
+            "variableId": "v16",
+            "isLong": true,
+            "labels": { "placeholder": "O que está te trazendo aqui agora?", "button": "Avançar →" }
+          }
+        },
+        {
+          "id": "b09_q_convenceu",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Conta uma vez que você convenceu alguém de alguma coisa." }] },
+            { "type": "p", "children": [{ "text": "Pode ser um amigo, um cliente, um familiar — qualquer situação real.", "italic": true }] }
+          ]}
+        },
+        {
+          "id": "b09_convenceu",
+          "type": "text input",
+          "options": {
+            "variableId": "v17",
+            "isLong": true,
+            "labels": { "placeholder": "Conta como foi...", "button": "Avançar →" }
+          }
+        },
+        {
+          "id": "b09_q_ganho",
+          "type": "text",
+          "content": { "richText": [{ "type": "p", "children": [{ "text": "Quanto você gostaria/precisa ganhar por mês pra ficar feliz nessa vaga? (seja realista)" }] }] }
+        },
+        {
+          "id": "b09_ganho",
+          "type": "text input",
+          "options": {
+            "variableId": "v18",
+            "labels": { "placeholder": "Ex: R$ 2.200", "button": "Avançar →" }
+          }
+        },
+        {
+          "id": "b09_q_sonho",
+          "type": "text",
+          "content": { "richText": [
+            { "type": "p", "children": [{ "text": "Onde você quer estar daqui a 3 anos?" }] },
+            { "type": "p", "children": [{ "text": "(opcional — pode pular)", "italic": true }] }
+          ]}
+        },
+        {
+          "id": "b09_sonho",
+          "type": "text input",
+          "options": {
+            "variableId": "v19",
+            "isLong": true,
+            "labels": { "placeholder": "Opcional — pule se preferir", "button": "Enviar candidatura ✓" }
+          },
+          "outgoingEdgeId": "e09_to_g10"
+        }
+      ]
+    },
+
+    {
+      "id": "g10",
+      "title": "Webhook → n8n",
+      "graphCoordinates": { "x": 3200, "y": 0 },
+      "blocks": [
+        {
+          "id": "b10_wh",
+          "type": "Webhook",
+          "webhookId": "wh-sst-junior-01",
+          "options": {
+            "url": "https://n8n.clinicalucrativa.ia.br/webhook/sst-vendedor-junior-candidatura",
+            "method": "POST",
+            "headers": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": "{\n  \"source\": \"typebot:qualificacao-junior-sst\",\n  \"nivel\": \"junior\",\n  \"vaga\": \"Vendedor Junior SST Card - Bairro da Paz\",\n  \"candidato\": {\n    \"nome\": \"{{Nome}}\",\n    \"email\": \"{{Email}}\",\n    \"telefone\": \"{{Telefone}}\",\n    \"cidade\": \"{{Cidade}}\",\n    \"bairro\": \"{{Bairro}}\",\n    \"idade\": \"{{Idade}}\"\n  },\n  \"qualificacao\": {\n    \"exp_vendas\": \"{{ExpVendas}}\",\n    \"ja_ofereceu\": \"{{JaOfereceu}}\",\n    \"mora_bairro\": \"{{MoraBairro}}\",\n    \"presencial\": \"{{Presencial}}\",\n    \"disponibilidade\": \"{{Disponibilidade}}\",\n    \"aceita_clt\": \"{{AceitaCLT}}\",\n    \"publico_cd\": \"{{PublicoCD}}\",\n    \"rede_contatos\": \"{{RedeContatos}}\"\n  },\n  \"respostas_abertas\": {\n    \"resposta_sus\": \"{{RespostaSUS}}\",\n    \"motivo_comecar\": \"{{MotivoComecar}}\",\n    \"convenceu_alguem\": \"{{ConvenceuAlguem}}\",\n    \"exp_ganho\": \"{{ExpGanho}}\",\n    \"sonho_3anos\": \"{{Sonho3Anos}}\"\n  }\n}"
+          },
+          "outgoingEdgeId": "e10_to_g11"
+        }
+      ]
+    },
+
+    {
+      "id": "g11",
+      "title": "Sucesso — Candidatura Recebida",
+      "graphCoordinates": { "x": 3700, "y": 0 },
+      "blocks": [
+        {
+          "id": "b11_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "🎉 Candidatura recebida, {{Nome}}!", "bold": true }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Suas respostas chegaram certinho." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "📞 Se houver fit, a gente te chama no seu WhatsApp em até " }, { "text": "5 dias úteis", "bold": true }, { "text": "." }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "E olha: aqui você começa como júnior, mas quem entrega ", "bold": false }, { "text": "vira vendedor líder 🚀", "bold": true }] }
+            ]
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "g13",
+      "title": "NO-GO — LGPD (não concordou)",
+      "graphCoordinates": { "x": 0, "y": 320 },
+      "blocks": [
+        {
+          "id": "b13_text",
+          "type": "text",
+          "content": {
+            "richText": [
+              { "type": "p", "children": [{ "text": "Tudo bem, respeitamos sua escolha! 🙏" }] },
+              { "type": "p", "children": [{ "text": "" }] },
+              { "type": "p", "children": [{ "text": "Você pode refazer a candidatura quando estiver à vontade." }] }
+            ]
+          }
+        }
+      ]
+    }
+
+  ],
+
+  "settings": {
+    "general": {
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": true,
+      "isHideQueryParamsEnabled": true
+    },
+    "typingEmulation": {
+      "enabled": true,
+      "speed": 300,
+      "maxDelay": 2.5
+    }
+  },
+
+  "theme": {
+    "general": {
+      "font": "Inter",
+      "background": { "type": "Color", "content": "#f2efe6" }
+    },
+    "chat": {
+      "hostBubbles": { "backgroundColor": "#1987c3", "color": "#ffffff" },
+      "guestBubbles": { "backgroundColor": "#f0f7ff", "color": "#1a1a2e" },
+      "buttons": { "backgroundColor": "#1987c3", "color": "#ffffff" },
+      "inputs": { "backgroundColor": "#ffffff", "color": "#1a1a2e", "placeholderColor": "#9ca3af" }
+    }
+  }
+}

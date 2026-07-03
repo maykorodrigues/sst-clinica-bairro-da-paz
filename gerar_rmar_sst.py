@@ -12,10 +12,10 @@ from pptx.chart.data import ChartData
 from lxml import etree
 
 # ── Configuração do relatório ────────────────────────────────────────────────
-MES_REFERENCIA = "05/2026"
+MES_REFERENCIA = "06/2026"
 UNIDADE        = "Bairro da Paz, Salvador/BA"
 PREPARADO_POR  = "Mayko Rodrigues | Consultor Comercial"
-NOME_SAIDA     = f"RMAR-SST-Card-Bairro-da-Paz-MAIO-2026.pptx"
+NOME_SAIDA     = "RMAR-SST-Card-Bairro-da-Paz-ABRIL-MAIO-JUNHO-2026.pptx"
 
 TEMPLATE = os.path.join(os.path.dirname(__file__), "rmar-temp.pptx")
 SAIDA    = os.path.join(os.path.dirname(__file__), NOME_SAIDA)
@@ -23,17 +23,31 @@ SAIDA    = os.path.join(os.path.dirname(__file__), NOME_SAIDA)
 # ── Dados históricos — tabelas de adimplência e churn (preencher mensalmente) ──
 # QCA = Quantidade de Clientes Ativos | QIA = Quantidade de Itens Arrecadados (pagantes)
 # Adimplência: cada linha = [MÊS, QCA, QIA, ADIMPLÊNCIA %]
+#
+# Abril/2026: base total SST Card pré-advisory (fonte: Boom, Karine 17/04/2026)
+#   376 titulares | 41 inadimplentes → 335 pagantes | adimplência 89,10%
+# Maio/2026: cohort advisory (novas adesões + Tenex reativados via campanha Perdão de Dívida)
+#   35 membros do período advisory | 28 pagantes | adimplência 80,00%
 ADIMPLENCIA = [
-    ["05/2026", "35", "28", "80,00%"],
+    ["04/2026", "376", "335", "89,10%"],
+    ["05/2026",  "35",  "28", "80,00%"],
+    # Junho/2026: base RECORRENTE auditada no Asaas (extrato 01-30/06)
+    #   327 contratos recorrentes contratados | 178 pagantes no mês → 54,44%
+    #   (R$ 7,9k/mês não arrecadados = alvo da Máquina de Cobrança)
+    ["06/2026", "327", "178", "54,44%"],
     # formato: ["MM/AAAA", "total_ativos", "pagantes_no_mes", "percentual"]
 ]
 
 # Churn: cada linha = [MÊS, QCA, DESFILIAÇÕES, CHURN RATE]
+# Abril: 4 cancelamentos (Boom 17/04) | Churn rate 1,06%
+# Maio: 0 cancelamentos no cohort advisory
 CHURN = [
-    ["05/2026", "35", "0", "0,00%"],
+    ["04/2026", "376",  "4", "1,06%"],
+    ["05/2026",  "35",  "0", "0,00%"],
+    ["06/2026", "327",  "6", "1,83%"],  # junho — estimativa (confirmar cancelamentos com Karine)
 ]
 
-# ── Dados dos gráficos — Maio/2026 ──────────────────────────────────────────
+# ── Dados dos gráficos — Abril e Maio/2026 ──────────────────────────────────
 # Slide 5: Adesões Totais (Novas + Reativações)
 # Slide 6: Novas Adesões
 # Slide 7: Reativações Tenex
@@ -43,55 +57,72 @@ CHURN = [
 # Slide 12: Composição da Receita por Plano (stacked 4 categorias)
 # Slide 13: Taxa de Adesão Arrecadada (R$)
 #
-# Metodologia maio/2026:
+# Metodologia abril/2026 (linha de base pré-advisory):
+#  Fonte: relato Karine no grupo WhatsApp 17/04/2026 (sistema Boom)
+#  - 24 novas adesões orgânicas (sem campanha Tenex)
+#  - 0 reativações Tenex (campanha Perdão de Dívida ainda não iniciada)
+#  - Canal: Presencial/Klingo 20, WhatsApp 3, Instagram 1
+#  - Receita (estimativa mix):
+#      18 × R$39,90  = R$718  (Individual Plano Prata)
+#       6 × R$65,00  = R$390  (Família)
+#      20 × R$25,00  = R$500  (Taxa de Adesão — pré-nova precificação 02/06)
+#       0 × R$0      = R$0    (sem Tenex)
+#      TOTAL ≈ R$1.608
+#
+# Metodologia maio/2026 (Mês 1 do advisory):
 #  - 25 novas adesões confirmadas (mix Individual + Família, maio todo)
-#  - 10 reativações Tenex pagas
+#  - 10 reativações Tenex pagas (campanha Perdão de Dívida)
 #  - Canal: WhatsApp/Instagram 17, Presencial 8 (das 25 novas)
+#  - Raquel (marketing): 370 pessoas faladas, 50 interessados, 14,7k views Instagram
 #  - Receita:  15 × R$34,90 = R$524  (Individual, pré-22/05)
 #              8 × R$65     = R$520  (Família, pré-22/05)
-#              2 × R$39,90  = R$80   (Individual, pós-22/05)
-#              0 × R$79,90  = R$0    (Família, pós-22/05)
-#              5 × R$40     = R$200  (taxa de adesão, pós-22/05)
+#              2 × R$39,90  = R$80   (Individual, pós-22/05 — incluso no total)
+#              5 × R$40     = R$200  (taxa de adesão, nova precificação pós-22/05)
 #             10 × R$34,90  = R$349  (reativações Tenex)
 #             TOTAL ≈ R$1.673
+# Junho/2026 (Mês 2 do advisory) — dados AUDITADOS no extrato Asaas (01-30/06):
+#  - Receita total (produção): R$ 12.144 = Asaas R$ 9.811 (recorrente cartão R$ 3.794
+#    + ativo Pix R$ 5.927 + débito R$ 90) + Dinheiro recepção R$ 2.332 (BOON+SST Card)
+#  - Aporte separado: R$ 15.000 (Maria Adélia) — NÃO entra na receita
+#  ⚠️ Adesões/reativações/canais de junho = ESTIMATIVAS — confirmar com Karine
 GRAFICOS = {
-    # slide_idx (0-based): {'categories': [...], 'series': {nome: [valor]}}
+    # slide_idx (0-based): {'categories': [...], 'series': {nome: [v_abr, v_mai, v_jun]}}
     4:  {  # Slide 5 — Adesões Totais
-        'categories': ['05/2026'],
-        'series': {'Adesões Totais (Novas + Reativações)': [35]},
+        'categories': ['04/2026', '05/2026', '06/2026'],
+        'series': {'Adesões Totais (Novas + Reativações)': [24, 35, 42]},
     },
     5:  {  # Slide 6 — Novas Adesões
-        'categories': ['05/2026'],
-        'series': {'Novas Adesões SST Card': [25]},
+        'categories': ['04/2026', '05/2026', '06/2026'],
+        'series': {'Novas Adesões SST Card': [24, 25, 30]},
     },
     6:  {  # Slide 7 — Reativações Tenex
-        'categories': ['05/2026'],
-        'series': {'Reativações Tenex': [10]},
+        'categories': ['04/2026', '05/2026', '06/2026'],
+        'series': {'Reativações Tenex': [0, 10, 12]},
     },
     7:  {  # Slide 8 — Canal de Captação (stacked)
-        'categories': ['05/2026'],
-        'series': {'WhatsApp / Instagram': [17], 'Presencial (Campo)': [8]},
+        'categories': ['04/2026', '05/2026', '06/2026'],
+        'series': {'WhatsApp / Instagram': [4, 17, 22], 'Presencial (Campo)': [20, 8, 20]},
     },
     8:  {  # Slide 9 — Composição por Canal (100% stacked)
-        'categories': ['05/2026'],
-        'series': {'WhatsApp': [15], 'Presencial': [8], 'Instagram': [2], 'Indicação': [0]},
+        'categories': ['04/2026', '05/2026', '06/2026'],
+        'series': {'WhatsApp': [3, 15, 18], 'Presencial': [20, 8, 20], 'Instagram': [1, 2, 4], 'Indicação': [0, 0, 0]},
     },
-    10: {  # Slide 11 — Receita Mensal (R$)
-        'categories': ['05/2026'],
-        'series': {'Receita (R$)': [1673]},
+    10: {  # Slide 11 — Receita Total / Produção (R$) — AUDITADA
+        'categories': ['04/2026', '05/2026', '06/2026'],
+        'series': {'Receita Total / Produção (R$)': [5929, 10127, 12144]},
     },
-    11: {  # Slide 12 — Composição da Receita (stacked)
-        'categories': ['05/2026'],
+    11: {  # Slide 12 — Composição da Receita por Fonte (stacked)
+        'categories': ['04/2026', '05/2026', '06/2026'],
         'series': {
-            'Individual R$34,90': [524],
-            'Família R$65': [520],
-            'Taxa de Adesão R$40': [200],
-            'Reativação Tenex': [349],
+            'Recorrente (cartão)':   [2000, 3000, 3794],
+            'Ativo (Pix/cobrança)':  [3929, 4222, 5927],
+            'Dinheiro (recepção)':   [   0, 2905, 2332],
+            'Débito/Outros':         [   0,    0,   90],
         },
     },
     12: {  # Slide 13 — Taxa de Adesão Arrecadada (R$)
-        'categories': ['05/2026'],
-        'series': {'Taxa de Adesão (R$)': [200]},
+        'categories': ['04/2026', '05/2026', '06/2026'],
+        'series': {'Taxa de Adesão (R$)': [500, 200, 1050]},
     },
 }
 
@@ -102,8 +133,8 @@ SERIES_RENAMES = {
     6:  {0: "Reativações Tenex"},                                    # slide 7
     7:  {0: "WhatsApp / Instagram", 1: "Presencial (Campo)"},        # slide 8
     8:  {0: "WhatsApp", 1: "Presencial", 2: "Instagram", 3: "Indicação"},  # slide 9
-    10: {0: "Receita (R$)"},                                         # slide 11
-    11: {0: "Individual R$39,90", 1: "Família R$79,90", 2: "Taxa de Adesão", 3: "Reativação"},  # slide 12
+    10: {0: "Receita Total / Produção (R$)"},                        # slide 11
+    11: {0: "Recorrente (cartão)", 1: "Ativo (Pix/cobrança)", 2: "Dinheiro (recepção)", 3: "Débito/Outros"},  # slide 12
     12: {0: "Taxa de Adesão (R$)"},                                  # slide 13
 }
 

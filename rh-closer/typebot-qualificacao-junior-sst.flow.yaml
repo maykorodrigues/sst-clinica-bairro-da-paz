@@ -1,0 +1,114 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Flow Spec — Qualificação Vendedor JÚNIOR · SST Card · Bairro da Paz
+# Versão: 1.0 · Data: 19/06/2026 · Modelo aprovado: CLT (Pacote B)
+# Importar via: typebot.clinicalucrativa.ia.br → Criar typebot → Importar JSON
+# JSON gerado: typebot-qualificacao-junior-sst.json (mesmo diretório)
+# Vaga sênior (referência): typebot-qualificacao-closer.flow.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# DIFERENÇA-CHAVE vs. vaga sênior (Closer):
+#   • NÃO elimina por falta de experiência — perfil júnior é treinável.
+#   • Idade mínima 18 (sênior = 21).
+#   • Vínculo CLT (sênior = PJ). Remuneração R$1.500 + R$10/adesão + R$5/Tenex + VT/VR.
+#   • Pesa FIT LOCAL (mora no Bairro da Paz) + atitude + jeito com as pessoas.
+#   • Só 3 eliminatórios, todos de logística: idade<18, não presencial, sem disponibilidade.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: qualificacao-junior-sst-card-v1
+locale: pt-BR
+entry_channels: [web]
+
+theme:
+  host_bubble_bg: "#1987c3"   # azul SST
+  host_bubble_color: "#ffffff"
+  guest_bubble_bg: "#f0f7ff"
+  guest_bubble_color: "#1a1a2e"
+  button_bg: "#1987c3"
+  button_color: "#ffffff"
+  font: "Inter"
+  background_color: "#f2efe6"
+
+# ── VARIÁVEIS ─────────────────────────────────────────────────────────────────
+variables:
+  - id: v01  name: Nome
+  - id: v02  name: Email
+  - id: v03  name: Telefone
+  - id: v04  name: Cidade
+  - id: v05  name: Bairro
+  - id: v06  name: Idade            # number — eliminatório < 18
+  - id: v07  name: ExpVendas        # NÃO elimina — só perfila
+  - id: v08  name: JaOfereceu       # múltipla escolha — iniciativa comercial bruta
+  - id: v09  name: MoraBairro       # FIT LOCAL — peso forte na triagem manual
+  - id: v10  name: Presencial       # eliminatório: nao
+  - id: v11  name: Disponibilidade  # eliminatório: nao
+  - id: v12  name: AceitaCLT        # informativo (não elimina)
+  - id: v13  name: PublicoCD        # à vontade com público C/D
+  - id: v14  name: RedeContatos
+  - id: v15  name: RespostaSUS      # long text — raciocínio comercial bruto
+  - id: v16  name: MotivoComecar    # long text
+  - id: v17  name: ConvenceuAlguem  # long text — substitui "venda persistiu" do sênior
+  - id: v18  name: ExpGanho
+  - id: v19  name: Sonho3Anos       # long text, opcional
+
+# ── ELIMINATÓRIOS (só logística — nunca competência) ──────────────────────────
+eliminatorios:
+  - variavel: Idade         operador: menor_que  valor: 18
+    motivo: "Vaga para maiores de 18 anos."
+  - variavel: Presencial    valores: ["nao"]
+    motivo: "A vaga é presencial no Bairro da Paz, Salvador/BA."
+  - variavel: Disponibilidade  valores: ["nao"]
+    motivo: "A vaga exige disponibilidade seg-sáb."
+
+# ── MAPA DE GRUPOS (JSON) ─────────────────────────────────────────────────────
+# g00  Boas-vindas + LGPD            → g01 (ok) | g13 (não concordou)
+# g01  Etapa 1 — Dados pessoais      → g02 (check idade)
+# g02  Condition idade < 18          → g03 (nogo) | g04 (ok)
+# g03  NO-GO idade
+# g04  Etapa 2 — Relação com vendas  → g05   (NÃO elimina)
+# g05  Etapa 3 — Disponibilidade     → g06 (nogo pres) | g07 (nogo disp) | g08 (ok)
+# g06  NO-GO presencial
+# g07  NO-GO disponibilidade
+# g08  Etapa 4 — Fit local + público → g09
+# g09  Etapa 5 — Motivação           → g10
+# g10  Webhook → n8n                 → g11
+# g11  Sucesso
+# g13  NO-GO LGPD
+
+# ── ROTEIRO DAS PERGUNTAS ─────────────────────────────────────────────────────
+# ETAPA 1 (dados): nome, email, WhatsApp, cidade, bairro, idade.
+#
+# ETAPA 2 — Relação com vendas (NÃO elimina, só perfila):
+#   ExpVendas: já trabalhou com vendas/atendimento? / vendeu por conta? / nunca, quero aprender
+#   JaOfereceu (multi): cartão | roupa/cosmético | comida | serviço | rifa | nunca ofereci
+#
+# ETAPA 3 — Disponibilidade (eliminatória de logística):
+#   Presencial: sim | moro perto | NÃO (→nogo)
+#   Disponibilidade: sim | com ajustes | NÃO (→nogo)
+#   AceitaCLT (informativo): quero carteira assinada | tanto faz, quero a oportunidade
+#
+# ETAPA 4 — Fit local + público:
+#   MoraBairro: Bairro da Paz | vizinho | Salvador longe | outra cidade
+#   PublicoCD: é a minha gente | me viro bem | tenho vergonha mas encaro
+#   RedeContatos: muita gente | alguns | quase ninguém
+#   RespostaSUS (long): "já tenho SUS, não preciso pagar" → como responde? (mede tato bruto)
+#
+# ETAPA 5 — Motivação:
+#   MotivoComecar (long): por que essa vaga agora?
+#   ConvenceuAlguem (long): conte uma vez que convenceu alguém de algo
+#   ExpGanho: quanto quer ganhar/mês (realista)
+#   Sonho3Anos (long, opcional): onde quer estar em 3 anos
+
+# ── WEBHOOK → n8n ─────────────────────────────────────────────────────────────
+# URL: https://n8n.clinicalucrativa.ia.br/webhook/sst-vendedor-junior-candidatura
+# Payload marca:  nivel: "junior"  ·  vaga: "Vendedor Junior SST Card - Bairro da Paz"
+# n8n deve: notificar Mayko/Rogério (WhatsApp) + criar card na base Notion
+#           "RH — Candidatos Vendas (Sênior & Júnior)" na TRILHA JÚNIOR.
+
+# ── CHECKLIST DE IMPLANTAÇÃO ─────────────────────────────────────────────────
+# [ ] Importar typebot-qualificacao-junior-sst.json no Typebot self-hosted
+# [ ] Confirmar/ajustar URL do webhook n8n (bloco g10)
+# [ ] Criar/clonar workflow n8n: payload júnior → WhatsApp + Notion (trilha júnior)
+# [ ] Testar fluxo: candidato OK + cada eliminatório (idade<18, não presencial, sem disp.)
+# [ ] OK do Rogério na remuneração CLT antes de publicar o link
+# [ ] Distribuir link nos grupos WhatsApp do Bairro da Paz

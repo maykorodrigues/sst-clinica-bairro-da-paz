@@ -1,0 +1,102 @@
+{
+  "name": "SST RH — Typebot Candidaturas (Sênior + Júnior) → Notion",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-closer-candidatura",
+        "responseMode": "onReceived",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "id": "wh-senior",
+      "name": "Webhook · Candidatura SÊNIOR",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-280, -120],
+      "webhookId": "sst-closer-candidatura"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-vendedor-junior-candidatura",
+        "responseMode": "onReceived",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "id": "wh-junior",
+      "name": "Webhook · Candidatura JÚNIOR",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-280, 160],
+      "webhookId": "sst-vendedor-junior-candidatura"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza o payload do Typebot SÊNIOR (Closer/Líder) → corpo da Notion API\nconst out = [];\nfor (const item of $input.all()) {\n  const p = item.json.body ?? item.json;\n  const c = p.candidato || {};\n  const q = p.qualificacao || {};\n  const r = p.respostas_abertas || {};\n\n  const nome = String(c.nome || 'Sem nome').trim();\n  const bairroCidade = [c.bairro, c.cidade].filter(Boolean).join(', ');\n  const idadeNum = c.idade ? Number(String(c.idade).replace(/\\D/g, '')) : null;\n  const moraBP = /paz/i.test(String(c.bairro || ''));\n\n  const expMap = { '0': 'Nunca vendeu o produto', '<1': 'Menos de 1 ano', '1-2': '1 a 2 anos', '2-5': '2 a 5 anos', '>5': 'Mais de 5 anos' };\n  const experiencia = expMap[q.exp_tempo] || q.exp_tempo || '';\n\n  const properties = {\n    'Candidato': { title: [{ text: { content: nome.slice(0, 2000) } }] },\n    'Nível': { select: { name: 'Sênior' } },\n    'Vaga': { select: { name: 'Closer / Vendedor Líder' } },\n    'Fonte': { select: { name: 'Typebot / formulário' } },\n    'Status': { select: { name: 'Triagem' } },\n    'Mora no Bairro da Paz': { checkbox: moraBP },\n    'Próximo passo': { rich_text: [{ text: { content: 'Revisar candidatura e contatar em até 5 dias úteis' } }] }\n  };\n  if (c.email) properties['Email'] = { email: String(c.email) };\n  if (c.telefone) properties['Telefone'] = { phone_number: String(c.telefone) };\n  if (idadeNum) properties['Idade'] = { number: idadeNum };\n  if (bairroCidade) properties['Bairro / Cidade'] = { rich_text: [{ text: { content: bairroCidade.slice(0, 2000) } }] };\n  if (experiencia) properties['Experiência em vendas'] = { rich_text: [{ text: { content: String(experiencia).slice(0, 2000) } }] };\n\n  const linhas = [\n    ['Produtos já vendidos', q.produtos],\n    ['Volume (melhor média/mês)', q.volume],\n    ['Já vendeu público C/D', q.publico_cd],\n    ['Rede de contatos local', q.rede_contatos],\n    ['Veículo próprio', q.veiculo],\n    ['Resposta ao \"já tenho SUS\"', r.resposta_sus],\n    ['Por que SST Card agora', r.motivo_sst],\n    ['Venda em que insistiu 5+ vezes', r.venda_persistiu],\n    ['Expectativa de ganho mês 1', r.exp_ganho],\n    ['Onde quer estar em 3 anos', r.visao_3anos]\n  ];\n\n  const children = [{ object: 'block', type: 'heading_3', heading_3: { rich_text: [{ type: 'text', text: { content: 'Respostas do formulário (Typebot · Sênior)' } }] } }];\n  for (const [k, v] of linhas) {\n    if (v && String(v).trim()) {\n      children.push({ object: 'block', type: 'paragraph', paragraph: { rich_text: [\n        { type: 'text', text: { content: k + ': ' }, annotations: { bold: true } },\n        { type: 'text', text: { content: String(v).slice(0, 1800) } }\n      ] } });\n    }\n  }\n\n  out.push({ json: { parent: { database_id: '8a821b22-4afb-4a42-aa7f-126b8efe7918' }, properties, children } });\n}\nreturn out;"
+      },
+      "id": "code-senior",
+      "name": "Normalizar SÊNIOR → Notion",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-20, -120]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza o payload do Typebot JÚNIOR (Vendedor Júnior) → corpo da Notion API\nconst out = [];\nfor (const item of $input.all()) {\n  const p = item.json.body ?? item.json;\n  const c = p.candidato || {};\n  const q = p.qualificacao || {};\n  const r = p.respostas_abertas || {};\n\n  const nome = String(c.nome || 'Sem nome').trim();\n  const bairroCidade = [c.bairro, c.cidade].filter(Boolean).join(', ');\n  const idadeNum = c.idade ? Number(String(c.idade).replace(/\\D/g, '')) : null;\n  // fit local: marca o checkbox se mora no Bairro da Paz (resposta da etapa 4 OU campo bairro)\n  const moraBP = /bairro da paz/i.test(String(q.mora_bairro || '')) || /paz/i.test(String(c.bairro || ''));\n  const experiencia = q.exp_vendas || '';\n\n  const properties = {\n    'Candidato': { title: [{ text: { content: nome.slice(0, 2000) } }] },\n    'Nível': { select: { name: 'Júnior' } },\n    'Vaga': { select: { name: 'Vendedor Júnior' } },\n    'Fonte': { select: { name: 'Typebot / formulário' } },\n    'Status': { select: { name: 'Triagem' } },\n    'Mora no Bairro da Paz': { checkbox: moraBP },\n    'Próximo passo': { rich_text: [{ text: { content: 'Revisar candidatura e contatar em até 5 dias úteis' } }] }\n  };\n  if (c.email) properties['Email'] = { email: String(c.email) };\n  if (c.telefone) properties['Telefone'] = { phone_number: String(c.telefone) };\n  if (idadeNum) properties['Idade'] = { number: idadeNum };\n  if (bairroCidade) properties['Bairro / Cidade'] = { rich_text: [{ text: { content: bairroCidade.slice(0, 2000) } }] };\n  if (experiencia) properties['Experiência em vendas'] = { rich_text: [{ text: { content: String(experiencia).slice(0, 2000) } }] };\n\n  const linhas = [\n    ['O que já ofereceu/vendeu', q.ja_ofereceu],\n    ['Mora no Bairro da Paz / vizinhança', q.mora_bairro],\n    ['À vontade com público da comunidade', q.publico_cd],\n    ['Rede de contatos local', q.rede_contatos],\n    ['Aceita CLT', q.aceita_clt],\n    ['Resposta ao \"já tenho SUS\"', r.resposta_sus],\n    ['Por que quer a vaga agora', r.motivo_comecar],\n    ['Vez em que convenceu alguém', r.convenceu_alguem],\n    ['Quanto quer ganhar/mês', r.exp_ganho],\n    ['Onde quer estar em 3 anos', r.sonho_3anos]\n  ];\n\n  const children = [{ object: 'block', type: 'heading_3', heading_3: { rich_text: [{ type: 'text', text: { content: 'Respostas do formulário (Typebot · Júnior)' } }] } }];\n  for (const [k, v] of linhas) {\n    if (v && String(v).trim()) {\n      children.push({ object: 'block', type: 'paragraph', paragraph: { rich_text: [\n        { type: 'text', text: { content: k + ': ' }, annotations: { bold: true } },\n        { type: 'text', text: { content: String(v).slice(0, 1800) } }\n      ] } });\n    }\n  }\n\n  out.push({ json: { parent: { database_id: '8a821b22-4afb-4a42-aa7f-126b8efe7918' }, properties, children } });\n}\nreturn out;"
+      },
+      "id": "code-junior",
+      "name": "Normalizar JÚNIOR → Notion",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-20, 160]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Notion-Version", "value": "2022-06-28" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "http-notion",
+      "name": "Criar card no Notion (RH Candidatos)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [280, 20],
+      "credentials": {
+        "notionApi": { "id": "REPLACE_NOTION_CRED_ID", "name": "Notion · SST" }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook · Candidatura SÊNIOR": {
+      "main": [[{ "node": "Normalizar SÊNIOR → Notion", "type": "main", "index": 0 }]]
+    },
+    "Webhook · Candidatura JÚNIOR": {
+      "main": [[{ "node": "Normalizar JÚNIOR → Notion", "type": "main", "index": 0 }]]
+    },
+    "Normalizar SÊNIOR → Notion": {
+      "main": [[{ "node": "Criar card no Notion (RH Candidatos)", "type": "main", "index": 0 }]]
+    },
+    "Normalizar JÚNIOR → Notion": {
+      "main": [[{ "node": "Criar card no Notion (RH Candidatos)", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "active": false,
+  "pinData": {},
+  "meta": {
+    "instanceId": "sst-rh-candidaturas",
+    "descricao": "Recebe candidaturas dos 2 Typebots (Closer/Líder e Vendedor Júnior) e cria card na base Notion 'RH — Candidatos Vendas SST Card (Sênior & Júnior)' (df0046dd...). Fonte=Typebot/formulário, Status=Triagem, Nível e Vaga conforme a origem. Respostas abertas vão no corpo da página."
+  }
+}

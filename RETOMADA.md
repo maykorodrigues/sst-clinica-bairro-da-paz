@@ -4,7 +4,46 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 29/06/2026 — **Data oficial de inauguração Bairro da Paz: 01/07/2026** (faltam ~2 dias)
+> Última atualização: 02/07/2026 — **Reunião Mensal concluída (auditoria financeira + plano semestral + plano de julho)**
+
+---
+
+## 🆕 AO RETOMAR (02/07/2026) — Reunião Mensal concluída
+
+> **Ata completa:** `reuniao-mensal-02-07-2026.md` (leia para o detalhe). Espelho no Notion: Pipeline "Decisões & Monitoramento" (`c5c9fb1eb5284c5684993207c7acba5b`) + atas 1ª/2ª Parte. **Entregáveis em `Downloads/`:** 5 gráficos + RMAR (PPTX/PDF) + planilha fluxo de caixa.
+
+**Descobertas-chave:** o cartão **já se paga** (produção mai+jun R$ 22.270 > aporte na empresa R$ 11.943, sem o carro). Produção real jun **R$ 12.144** (Asaas R$ 9.811 + dinheiro recepção R$ 2.332). Adimplência recorrente **54,4%** = R$ 7,9k/mês parados.
+
+**Decisões:** reajuste R$ 24,90→39,90 (julho, +R$ 13,5–20,9k/ano) · unificar contas · máquina de vendas (Karine **Closer Senior** + 2 juniores + 1 cobrança) · meta julho 56 Prata + 24 Ouro.
+
+**Julho:** custo R$ 26k · receita (meta) R$ 20k · **aporte ~R$ 11k** (semana 1 concentra R$ 9,6k de sócios/consultor vs caixa R$ 1.228 → aporte urgente ~R$ 7k).
+
+**🔴 PENDENTE DO ROGÉRIO (esta semana):** liberar aporte semana 1 (~R$ 7k) · cravar salários definitivos · GO reajuste + régua de desconto · agenda 2×/sem BP.
+**Pendências:** confirmar com Karine adesões/reativações jun + R1 Growth · **blocos da pauta não abertos: Inauguração BP · Closer (Safira × Vanesca)**.
+
+---
+
+## ✅ AO RETOMAR (30/06/2026) — PRÓXIMOS PASSOS, em ordem
+
+> Onde paramos: CLAUDE.md sincronizado (status 29/06, Agente Kanban + Máquina de Cobrança mapeados). Agora a fila de execução, do mais urgente ao estratégico. Cada item linka a seção detalhada abaixo.
+
+**🔴 P0 — Inauguração Bairro da Paz (D-1, é amanhã 01/07):**
+1. Confirmar com Rogério o checklist final de inauguração (alvará/VISA Salvador, equipe, ponto). Ver `processo-comercial-7dias/cronograma-inauguracao-01-07-2026.md`.
+2. Confirmar quem é o closer em campo no dia 1 (Safira × Vanesca — teste de campo). Ver `rh-closer/`.
+
+**🟠 P1 — Pesquisa de Satisfação v2 + fechar nº de junho (gate do RMAR):**
+3. Importar Typebot v2 (`pesquisa-satisfacao-sponsor/typebot-satisfacao-rogerio-v2.json`) + ativar n8n v2 (`...n8n-workflow-satisfacao-rogerio-v2.json`) + **teste 🔴** → publicar link.
+4. Fechar a mensagem da Julia (pesquisa + cobrança mensalidade R$ 3.800 — confirmar valor).
+5. **Validar total de junho contra o dashboard Asaas do Rogério** ANTES de cravar o RMAR (ele puxa extratos quarta). Receita real jun = R$ 8.613 / +45% (sem aporte).
+
+**🟡 P2 — Máquina de Cobrança / Agente Kanban (destrava caixa recorrente inadimplente R$ 7,9k/mês):**
+6. Importar `02-cadencias/n8n-agente-kanban-dividas.json` no n8n + env vars (`NOTION_KANBAN_DB_ID=138f7d78-...` etc.) → teste 5 cards → ligar cron 07h30. Detalhe na seção "AO RETOMAR (manhã 19/06)" abaixo.
+7. **Cravar com Rogério a régua de desconto oficial** (hoje convivem 10%/40%/50%) — bloqueador para escalar o disparo.
+8. Subir a planilha 28/04 da Karine no kanban Notion (`importar-csv-kanban.py`).
+
+**🟢 P3 — Decisão estratégica de receita (aguarda GO/NO-GO Rogério):**
+9. Reajuste de **164 contratos R$ 24,90 → R$ 39,90 = +R$ 2.460/mês / +R$ 29.520/ano**. Confirmar com Karine se há mais 24,90 fora do ciclo de junho.
+10. Pendências p/ cravar nº oficial: recepção (espécie/maquininha) entra no Asaas? · inadimplência 327 recorrentes × 178 pagantes bate com o que ele vê?
 
 ---
 
