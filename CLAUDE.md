@@ -8,14 +8,15 @@ Consultoria comercial ativa para **Rogério Ferreira** (SST Clínica / SST Card)
 
 O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório em Markdown, espelhado no Notion e executado via WhatsApp + n8n.
 
-**Status do Projeto (01/07/2026):**
+**Status do Projeto (08/07/2026):**
 - ✅ **Advisory assinado** em 01/05/2026 (contrato R$30k validado)
-- 🎯 **Bairro da Paz — INAUGURAÇÃO É HOJE (01/07/2026)** — contrato assinado; dia oficial de abertura da 2ª filial. Confirmar checklist final (alvará/VISA Salvador, equipe, closer em campo) — ver `RETOMADA.md` (bloco "AO RETOMAR 30/06", P0)
+- ✅ **Bairro da Paz — 2ª filial INAUGURADA em 01/07/2026** — foco migrou de abrir para operar/vender. Faixas de rua de lançamento pedidas pelo Rogério em 06/07 (ver `05-bairro-da-paz/faixas-lancamento-06-07-2026.md`) e proposta de Sala de Odontologia (fusão Clínica 03+04, revisão de planta) em `05-bairro-da-paz/proposta-sala-odontologia-06-07-2026.md`
+- ✅ **Reunião Mensal 02/07 concluída** (ata: `reuniao-mensal-02-07-2026.md`) — descobriu que **o cartão já se paga** (produção mai+jun R$22.270 > aporte R$11.943). Produção real jun **R$12.144**; adimplência recorrente **54,4%** = R$7,9k/mês parados. **Decisões:** reajuste R$24,90→R$39,90 (julho, +R$13,5–29,5k/ano) · unificar contas · **Karine promovida a Closer Senior** + estrutura (2 juniores + 1 cobrança) · meta julho **56 Prata + 24 Ouro**
 - ✅ **Precificação redefinida** (02/06): Individual R$39,90 + Família R$64,90 + Adesão R$35 — ver Decisões Estratégicas no `RETOMADA.md`
-- ✅ **Grande Automação MADIP** — 9 automações mapeadas (05/06); A1–A5 com JSONs prontos, A6–A9 até 13/06 — ver `02-cadencias/GRANDE-AUTOMACAO-MADIP.md`
-- ✅ **RMAR Abril-Maio** — gerado 08/06 via `gerar_rmar_sst.py` com dados reais (24 adesões abr → 35 mai, +45%)
-- 🔴 **Campanha Perdão de Dívida → "Máquina de Cobrança"** — FOCO OPERACIONAL ATUAL. **Rogério aprovou tudo em 17/06** (oferta 50% à vista + base Tenex 761 + Asaas), e a matinal de 18/06 transformou a campanha em **processo executável** (fluxo Karine→Lucas→Raquel; ver `01-matinais/18-06-2026/ata-matinal-18-06-2026.md`). Meta R$20k (esticada R$40k); **virada financeira:** o caixa "real" era R$3.853 (R$15k eram aportes do Rogério, que acabaram), gap ~R$17k até 30/06. **Bloqueador ativo:** Rogério precisa **cravar a régua de desconto oficial** (hoje convivem 10%/40%/50%) antes de escalar o disparo. Ver `RETOMADA.md` e `processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md`
-- 🤖 **Agente Kanban de Dívidas** — workflow n8n que lê a Pipeline Notion da Karine, sugere oferta/mensagem por card e separa **caixa RECORRENTE (cartão automático) vs ATIVO (cobrança = esforço real)** no resumo matinal das 07h30. JSON pronto (`02-cadencias/n8n-agente-kanban-dividas.json`), spec em `05-agentamento-karine-ia/07-agente-kanban-dividas.md`. **Tarefa de retomada nº 1:** importar no n8n + env vars + teste 5 cards + ligar cron. Ver `RETOMADA.md` (bloco "AO RETOMAR") e `memory/proxima_tarefa_n8n_agente_kanban.md`
+- 🔴 **Checklist Semana 1 de Julho — PENDENTE COM ROGÉRIO:** liberar aporte semana 1 (~R$7k) · cravar salários definitivos · GO no reajuste + régua de desconto (10%/40%/50%) · agenda 2×/sem BP. Ver `checklist-semana1-julho-2026.md`
+- 🤖 **Automatização dos processos (retomada 06/07)** — as **19 automações existem como JSON** em `02-cadencias/*.json`, mas foram **construídas, não implantadas**. Gargalo nunca foi código: é importar no n8n + env vars + testar + ligar cron. **🔴 BLOQUEADOR ATIVO:** confirmar o que está vivo em `n8n.clinicalucrativa.ia.br` exige autenticar o MCP n8n → **rodar `/mcp` → selecionar "claude.ai n8n"** antes de listar workflows. Ver `RETOMADA.md` (bloco "AO RETOMAR 06/07") e `memory/retomada_automatizacao_processos_06-07-2026.md`
+- 🤖 **Agente Kanban de Dívidas (candidato #1 de automação — destrava ~R$7,9k/mês)** — workflow n8n que lê a Pipeline Notion da Karine, sugere oferta/mensagem por card e separa **caixa RECORRENTE (cartão automático) vs ATIVO (cobrança = esforço real)** no resumo das 07h30. JSON pronto (`02-cadencias/n8n-agente-kanban-dividas.json`), spec em `05-agentamento-karine-ia/07-agente-kanban-dividas.md`. Pode ser **importado e testado em modo manual** sem esperar a régua do Rogério (só o cron escalado depende dela). Ver `memory/proxima_tarefa_n8n_agente_kanban.md`
+- 📉 **Problema sistêmico "BOOM"** (levantado na matinal 03/07) — sistema inativa ativos, falha na cobrança de cartão e dificulta acesso; uma das 3 prioridades de julho (junto de cobrança multi-canal + relatório com número real)
 - 🔄 **Transição PJ equipe** — contratos Lucas/Karine/Raquel em andamento (`processo-comercial-7dias/transicao-pj-equipe-sst.md`)
 - 🔄 **VISA Salvador + alvará** — entrada estava prevista 30/05 e venceu o prazo; reconfirmar status com Rogério (ver `memory/pendencias_criticas_09-06-2026.md`)
 - 👤 **RH Closer Bairro da Paz** — **Safira Letícia Souza Pereira** é a principal candidata (aprovada na fase comportamental 11/06 → aguarda fase 2 de competências, presencial com Rogério; possível futura gestora). **Já não é única**: desde 15/06 há também **Vanesca Nascimento** (mora no Bairro da Paz, sem experiência no produto) — guia de entrevista + scoring commitados. Etapa decisiva: teste de campo com 2–3 candidatos. Ver `rh-closer/`
@@ -52,6 +53,10 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | `processo-comercial-7dias/transicao-pj-equipe-sst.md` | Documento de transição PJ: proposta, roteiro individual por pessoa, escada de comissões |
 | `processo-comercial-7dias/reuniao-transicao-pj-roteiro.html` | Roteiro HTML da reunião de transição PJ → publicado em playbook.ssfcard.ia.br |
 | `processo-comercial-7dias/cronograma-inauguracao-01-07-2026.md` | Cronograma detalhado marcos da inauguração Bairro da Paz |
+| `reuniao-mensal-02-07-2026.md` | **Ata da Reunião Mensal 02/07** — auditoria financeira (cartão já se paga), decisão de reajuste R$24,90→39,90, Karine → Closer Senior, meta julho 56 Prata + 24 Ouro |
+| `checklist-semana1-julho-2026.md` | Checklist Semana 1 de Julho — pendências com Rogério: aporte ~R$7k, salários, GO reajuste, régua de desconto |
+| `processo-comercial-7dias/05-bairro-da-paz/faixas-lancamento-06-07-2026.md` | Spec das 3 faixas de rua de lançamento (fachada + 2 ruas teaser sem endereço) — pedido urgente do Rogério 06/07 |
+| `processo-comercial-7dias/05-bairro-da-paz/proposta-sala-odontologia-06-07-2026.md` | Proposta de fusão Clínica 03+04 em Sala de Odontologia (~13,17m²) — checklist RDC ANVISA 50/2002 + mensagem para a arquiteta Érica Sobral |
 | `processo-comercial-7dias/campanha-perdao-divida-2quinzena-junho-2026.md` | **Plano mestre da Campanha Perdão de Dívida** (4 frentes, funil, cronograma) — frente operacional atual |
 | `processo-comercial-7dias/mensagem-rogerio-estrategia-perdao-16-06-2026.md` | Mensagem/áudio pronta para Rogério pedir OK da oferta de quitação + liberar base Tenex/Asaas |
 | `processo-comercial-7dias/criativo-perdao-divida-junho-2026.html` | Criativo + 4 copies WhatsApp da campanha (deployado no playbook) |
@@ -82,7 +87,7 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | Pessoa | Papel | Fator crítico |
 |---|---|---|
 | **Rogério** | Dono/Sponsor | Aceita R$30k de investimento; decidido na reunião 10/04. Prefere GO/NO-GO direto às 9h — ver `perfil-rogerio-diretor.md` |
-| **Karine** | Comercial/Financeiro | Gargalo central — tudo passa por ela. Motivação real: aprender para o negócio próprio (buffet) |
+| **Karine** | **Closer Senior** (promovida na Reunião Mensal 02/07) + Comercial/Financeiro | Era o gargalo central (tudo passava por ela); a nova estrutura de vendas prevê 2 juniores + 1 cobrança abaixo dela. Motivação real: aprender para o negócio próprio (buffet) |
 | **Raquel** | Marketing | 20 anos, logística, funciona como SDR. Cadência atual: 2 toques → abandonar (precisa de 7) |
 | **Lucas** | Customer Success/Onboarding | Afastado por saúde — consultoria preparou apresentação CS em `lucas-cs/` |
 | **Safira Letícia Souza Pereira** | Closer Bairro da Paz (principal candidata) | Perfil hunter PJ; aprovada na fase comportamental 11/06, aguarda fase 2 (competências). Possível futura gestora. **Não é mais a única** — ver Vanesca abaixo. `rh-closer/` |
@@ -179,7 +184,7 @@ Usar sempre português. Datas no formato DD/MM/AAAA.
 1. **08h–09h:** Reunião matinal ao vivo (15 min)
 2. **Capturar resultados** do dia anterior via WhatsApp grupo SST Card
 3. **Gerar HTML matinal** — copiar template da última matinal e atualizar dados
-4. **Template base:** copiar a matinal mais recente em `processo-comercial-7dias/01-matinais/` (mais recente: pasta `30-06-2026/`). Nota: a de 30/06 é `.md` (`pauta-matinal-30-06-2026.md`); para o formato HTML deployado, copiar a última matinal `.html` (`19-06-2026/roteiro-matinal-19-06-2026.html`)
+4. **Template base:** copiar a matinal mais recente em `processo-comercial-7dias/01-matinais/` (mais recentes: `03-07-2026/`, `30-06-2026/`). Nota: as de 30/06 e 03/07 são `.md` (ata/pauta); para o formato HTML deployado, copiar a última matinal `.html` (`19-06-2026/roteiro-matinal-19-06-2026.html`)
 5. **Criar pasta:** `processo-comercial-7dias/01-matinais/DD-MM-YYYY/`
 6. **Nomear arquivo:** `roteiro-matinal-DD-MM-YYYY.html`
 7. **Deploy:** `git add` → `git commit -m "Matinal DD/MM/YYYY"` → `git push origin master` → Vercel deploy automático (<1 min)

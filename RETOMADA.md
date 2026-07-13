@@ -4,11 +4,88 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 02/07/2026 — **Reunião Mensal concluída (auditoria financeira + plano semestral + plano de julho)**
+> Última atualização: 06/07/2026 — **Faixas de rua do lançamento + Proposta de Sala de Odontologia (revisão de planta) + retomada da automatização dos processos**
 
 ---
 
-## 🆕 AO RETOMAR (02/07/2026) — Reunião Mensal concluída
+## 🌅 AO RETOMAR AMANHÃ DE MANHÃ (07/07/2026) — ordem de prioridade
+
+> Sessão de 06/07 fechou 3 frentes novas (detalhe de cada uma logo abaixo). Nenhuma está 100% concluída — todas têm uma ação de Mayko e/ou Rogério pendente. Ordem sugerida:
+
+1. **🚩 Faixas de rua (urgente, Rogério cobrou pessoalmente)** — mandar o artifact pro Raquel/Rogério, resolver logo oficial + confirmar WhatsApp + Raquel escolher os 2 pontos no bairro → só depois manda pra gráfica.
+2. **🦷 Sala de Odontologia** — enviar a mensagem pronta + checklist técnico pra arquiteta Érica Sobral e aguardar prazo de revisão; confirmar com Rogério se já há dentista CRO-BA definido.
+3. **🤖 Automação n8n** — autenticar `/mcp` → "claude.ai n8n" (bloqueador de todos os passos seguintes) e então montar o mapa 🟢/🟡/🔴 dos 19 workflows.
+4. **🔴 Ainda em aberto de antes (não esquecer):** checklist Semana 1 de Julho — aporte, salários, GO reajuste, régua de desconto — ver bloco mais abaixo (`checklist-semana1-julho-2026.md`). Nada disso foi resolvido nesta sessão.
+
+---
+
+## 🚩 AO RETOMAR (06/07/2026) — Faixas de rua do lançamento (urgente)
+
+> Rogério pediu, na call de hoje, para produzir com urgência as 3 faixas do item #27 do checklist de inauguração (prazo original 10/06, nunca produzido): 1 na fachada da clínica + 2 em ruas estratégicas do bairro, sem revelar o endereço nas de rua.
+
+**Documentos:** `processo-comercial-7dias/05-bairro-da-paz/faixas-lancamento-06-07-2026.md` + artifact de produção (spec 4×1m, pronta para gráfica/PDF): https://claude.ai/code/artifact/f0d5f361-d350-4d89-997c-84dced585491
+
+**Pendências antes de mandar pra gráfica:** logo oficial vetorial (trocar wordmark placeholder) · confirmar se WhatsApp da Karine aguenta o volume de rua · Raquel escolher os 2 pontos exatos das faixas 2 e 3.
+
+---
+
+## 🦷 AO RETOMAR (06/07/2026) — Proposta Sala de Odontologia (revisão de planta térreo)
+
+> Rogério pediu para unir as salas **Clínica 03** (6,49m²) e **Clínica 04** (6,30m²) da planta térrea (aprovada 08/06/2026, arquiteta Érica Sobral) em uma **Sala de Odontologia** (~13,17m²).
+
+**Documento criado:** `processo-comercial-7dias/05-bairro-da-paz/proposta-sala-odontologia-06-07-2026.md` — comparação antes/depois, checklist regulatório (RDC ANVISA 50/2002 para consultório odontológico) e mensagem pronta para enviar à arquiteta.
+
+**🔴 2 pontos que travam o Rogério antes da obra (não são só de planta):**
+1. O projeto já está **aprovado no VISA/CAU** (08/06/2026) — mudar o uso de 2 salas pode exigir **novo protocolo no alvará sanitário**, não só redesenho. Perguntar direto à Érica antes de tocar a obra.
+2. Odontologia exige **Responsável Técnico próprio** (cirurgião-dentista CRO-BA), separado do RT médico já existente — confirmar se já há dentista definido antes de formalizar a obra.
+
+**Próximo passo:** Mayko envia a mensagem pronta + checklist para Érica Sobral e aguarda prazo de revisão.
+
+**Atualização (mesmo dia):** Mayko enviou um guia técnico de consultório odontológico (RDC ANVISA 50/2002 + RDC 15/2012). Documento e artifact atualizados com: requisitos completos de piso/parede/teto/mobiliário, checklist de biossegurança e um **achado novo — não há espaço no térreo para sala de esterilização separada**; recomendação é bancada única de fluxo (suja→preparo→estéril) dentro da própria Sala de Odontologia. Artifact pronto para gerar PDF (Ctrl+P): https://claude.ai/code/artifact/26845181-659b-45b8-80f0-5fdce40f8933
+
+**Espelhado no Notion** (hub 🏥 SST Clínica — 2ª Filial | Bairro da Paz): https://app.notion.com/p/395ad3c0037381f48a13ed18c91b53f5
+
+---
+
+## 🤖 AO RETOMAR (06/07/2026) — Automatização dos processos SST
+
+> Mayko pediu **retomar a automatização dos processos da SST**. Escolha da abordagem (via AskUserQuestion): **"Mapa geral + decidir juntos"** (não escolher frente antes de saber o que está de fato no ar) + **"Tentar via MCP n8n"**.
+
+**Diagnóstico até aqui (fato, não documentação):**
+- As **19 automações existem fisicamente** como JSON em `processo-comercial-7dias/02-cadencias/*.json` — foram **construídas, não implantadas**. O gargalo nunca foi código: é **importar no n8n + env vars + testar + ligar cron**, mais a **decisão da régua de desconto do Rogério**.
+- Ainda **NÃO foi possível confirmar o que está vivo no n8n real** (`n8n.clinicalucrativa.ia.br`), porque o **MCP n8n exige autenticação interativa**.
+
+**🔴 BLOQUEADOR ATIVO — autenticação MCP n8n:**
+- `mcp__claude_ai_n8n__authenticate` retorna: *"This is a claude.ai MCP connector. Ask the user to run /mcp and select 'claude.ai n8n' to authenticate."*
+- **AÇÃO DO MAYKO ao retomar:** rodar `/mcp` → selecionar **"claude.ai n8n"** → autenticar. Só depois dá pra listar workflows ativos.
+
+**Próximos passos (ordem, ao retomar):**
+1. Autenticar o MCP n8n (`/mcp` → "claude.ai n8n").
+2. Listar workflows na instância e montar a tabela **🟢 Vivo (importado+ativo+executando) · 🟡 Importado mas parado · 🔴 Só JSON** para os 19.
+3. Priorizar por **impacto no caixa** — candidato líder: **Agente Kanban de Dívidas** (destrava ~R$ 7,9k/mês de inadimplência recorrente). Ver bloco "AO RETOMAR (manhã 19/06)" e memória `proxima_tarefa_n8n_agente_kanban.md`.
+4. Em paralelo (não bloqueia importar/testar, só escalar): **cobrar do Rogério a régua de desconto oficial** (10% / 40% / 50%).
+
+**Nota:** o Agente Kanban pode ser **importado e testado em modo manual** sem esperar a régua; só o **cron/disparo escalado** depende da decisão do Rogério.
+
+---
+
+## 🆕 AO RETOMAR (03/07/2026) — Matinal/RMA com o time
+
+> **Ata:** `processo-comercial-7dias/01-matinais/03-07-2026/ata-matinal-03-07-2026.md`. Espelho Notion: matinal `392ad3c0037380adb7f7d2ea52305959`.
+
+**O que rolou:** rodada de feedback (continuar/parar/começar) com Lucas, Raquel, Karine. Feedback-chave do Mayko: **parar a "cantada" (nomes de clientes) → reportar número real + resultado financeiro do dia** (isso rege o RMAR "aplicado"). Problema sistêmico: **BOOM** (inativa ativos, falha cobrança de cartão, dificultou acesso).
+
+**3 mudanças de julho:** (1) cobrança multi-canal · (2) resolver BOOM · (3) relatório = número real.
+
+**🔴 PENDENTE AO RETOMAR:**
+- Coletar números reais dos 3 (prazo amanhã 12h) → **refazer o RMAR de junho** (trocar estimativas 30 adesões/12 reativações/mix por reais; bater com produção R$ 12.144).
+- Montar **template "relatório diário com número real"**.
+- Encaminhar as 3 mudanças de julho.
+- **Ainda aberto da véspera:** aporte semana 1 (~R$ 7k) · salários · GO reajuste · demandas Aline (lab jun 50,01%, Débora gargalo 9,64%). Ver `checklist-semana1-julho-2026.md`.
+
+---
+
+## AO RETOMAR (02/07/2026) — Reunião Mensal concluída
 
 > **Ata completa:** `reuniao-mensal-02-07-2026.md` (leia para o detalhe). Espelho no Notion: Pipeline "Decisões & Monitoramento" (`c5c9fb1eb5284c5684993207c7acba5b`) + atas 1ª/2ª Parte. **Entregáveis em `Downloads/`:** 5 gráficos + RMAR (PPTX/PDF) + planilha fluxo de caixa.
 
