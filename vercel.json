@@ -1,5 +1,4 @@
 {
-  "public": true,
   "buildCommand": "echo 'Static HTML — no build needed'",
   "outputDirectory": ".",
   "rewrites": [
