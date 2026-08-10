@@ -25,7 +25,18 @@
   h2.h-secao{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
     color:var(--txt2);margin:26px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--borda);}
 
-  /* ---------- TIMELINE: ONDE ESTÁVAMOS ---------- */
+  /* ---------- AVISO DE MUDANÇA ---------- */
+  .aviso{background:rgba(240,180,41,.10);border:1px solid rgba(240,180,41,.35);border-radius:12px;
+    padding:14px 16px;margin-bottom:8px;}
+  .aviso .titulo{font-weight:800;color:var(--amarelo);font-size:15px;margin-bottom:6px;}
+  .aviso p{font-size:14px;color:var(--txt);margin-bottom:4px;}
+  .aviso p b{color:#fff;}
+
+  .viagem{background:var(--card2);border:1px solid var(--borda);border-radius:10px;
+    padding:10px 14px;margin:14px 0;font-size:13.5px;color:var(--txt2);text-align:center;}
+  .viagem b{color:var(--txt);}
+
+  /* ---------- TIMELINE ---------- */
   .timeline{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:18px 16px 6px;margin-bottom:8px;}
   .marco{display:flex;gap:14px;padding-bottom:18px;position:relative;}
   .marco:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;bottom:-4px;width:2px;background:var(--borda);}
@@ -52,14 +63,16 @@
   .prog-bar{height:10px;background:#0a0e13;border-radius:6px;overflow:hidden;}
   .prog-fill{height:100%;background:linear-gradient(90deg,var(--azul),var(--verde));width:0;transition:width .4s;}
 
-  /* ---------- SECOES DE PAUTA (checklist) ---------- */
+  /* ---------- SECOES ---------- */
   section{background:var(--card);border:1px solid var(--borda);border-radius:12px;margin-bottom:14px;overflow:hidden;}
   .sec-head{padding:12px 16px;font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px;
     border-bottom:1px solid var(--borda);}
-  .sec-trava{background:rgba(231,76,60,.12);color:#ff8a7a;}
-  .sec-doc{background:rgba(240,180,41,.10);color:var(--amarelo);}
-  .sec-time{background:rgba(142,111,214,.12);color:#c3b0f0;}
-  .sec-verba{background:rgba(25,135,195,.12);color:#5eb3e0;}
+  .sec-max{background:rgba(231,76,60,.14);color:#ff8a7a;}
+  .sec-karine{background:rgba(39,174,96,.12);color:#5fd48a;}
+  .sec-lucas{background:rgba(25,135,195,.12);color:#5eb3e0;}
+  .sec-sabrina{background:rgba(142,111,214,.12);color:#c3b0f0;}
+  .sec-elieser{background:rgba(240,180,41,.10);color:var(--amarelo);}
+  .sec-doc{background:rgba(139,148,158,.12);color:#b6c0cc;}
   ul{list-style:none;}
   li{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--borda);
     cursor:pointer;transition:background .15s;}
@@ -72,19 +85,19 @@
   .txt{font-size:15px;}
   .txt b{color:#fff;}
   .dono{display:block;font-size:12px;color:var(--azul);font-weight:600;margin-top:3px;}
-  .tag-sessoes{display:inline-block;background:rgba(231,76,60,.15);color:#ff8a7a;font-size:11px;font-weight:700;
-    padding:1px 7px;border-radius:5px;margin-left:6px;white-space:nowrap;}
+  .tag-max{display:inline-block;background:rgba(231,76,60,.18);color:#ff8a7a;font-size:11px;font-weight:800;
+    padding:1px 7px;border-radius:5px;margin-left:6px;white-space:nowrap;text-transform:uppercase;}
 
-  /* ---------- PERGUNTAS ---------- */
-  .perguntas{padding:14px 16px;}
-  .perguntas ol{padding-left:20px;}
-  .perguntas li{display:list-item;padding:8px 0;border:none;cursor:default;font-size:14.5px;color:var(--txt);}
-  .perguntas li:hover{background:none;}
-  .perguntas li b{color:#fff;}
+  /* ---------- TABELA RESUMO ---------- */
+  .resumo{width:100%;border-collapse:collapse;font-size:13px;}
+  .resumo th{background:var(--card2);color:var(--txt2);text-align:left;padding:8px 10px;font-weight:700;
+    text-transform:uppercase;font-size:10.5px;letter-spacing:.03em;}
+  .resumo td{padding:9px 10px;border-top:1px solid var(--borda);vertical-align:top;}
+  .resumo td b{color:#fff;}
 
   /* ---------- ALERTAS ---------- */
   .alerta{background:rgba(231,76,60,.08);border-left:3px solid var(--verm);border-radius:0 8px 8px 0;
-    padding:10px 14px;margin:0 16px 14px;font-size:13.5px;color:var(--txt);}
+    padding:10px 14px;margin:0 0 10px;font-size:13.5px;color:var(--txt);}
   .alerta.amarelo{background:rgba(240,180,41,.08);border-left-color:var(--amarelo);}
   .alerta b{color:#fff;}
 
@@ -107,31 +120,39 @@
 
 <header>
   <div class="tag">SST Card · MKT &amp; Vendas</div>
-  <h1>Aquisição de <span>Competência</span></h1>
-  <div class="sub">10/08/2026 · 10h–11h30 · <a href="https://meet.google.com/oir-yaam-idd" target="_blank">meet.google.com/oir-yaam-idd</a></div>
+  <h1>Plano da <span>Semana</span></h1>
+  <div class="sub">10/08/2026 · sessões individuais com Karine, Lucas e Sabrina</div>
 </header>
 
-<h2 class="h-secao">📍 Onde estávamos</h2>
+<div class="aviso">
+  <div class="titulo">⚠️ Raquel entrou de licença-maternidade</div>
+  <p>Nasceu o filho da Raquel — ela <b>não participa hoje nem nas próximas semanas</b>. A partir de agora, <b>Karine, Lucas e Sabrina encabeçam</b> o processo.</p>
+  <p><b>Social Selling</b> continua com a <b>Karine</b> (cobrindo o gap da Raquel), que repassa a <b>cobrança</b> gradualmente para a <b>Sabrina</b>.</p>
+</div>
+
+<div class="viagem">✈️ <b>Rogério em viagem até sexta-feira</b> — decisões que dependem dele (ex.: verba do Google Ads) ficam represadas até o retorno.</div>
+
+<h2 class="h-secao">📍 De onde viemos</h2>
 <div class="timeline">
   <div class="marco passado">
     <div class="bolha">1</div>
     <div class="corpo">
       <div class="data">27/07/2026</div>
       <div class="titulo-marco">4 canais combinados</div>
-      <div class="desc">Definidos os 4 processos da máquina comercial: <b>Social Selling</b>, <b>Prospecção Ativa</b>, <b>Tráfego Pago</b> e <b>documentar o fluxo</b>. Ponto de partida da série de acompanhamento.</div>
+      <div class="desc">Definidos os 4 processos da máquina comercial: <b>Social Selling</b>, <b>Prospecção Ativa</b>, <b>Tráfego Pago</b> e <b>documentar o fluxo</b>.</div>
     </div>
   </div>
   <div class="marco checkpoint">
     <div class="bolha">2</div>
     <div class="corpo">
-      <div class="data">05/08/2026 — checkpoint (Raquel ausente, Lucas + Sabrina cobriram)</div>
-      <div class="titulo-marco">Revisão ao vivo dos 4 canais</div>
+      <div class="data">05/08/2026 — checkpoint</div>
+      <div class="titulo-marco">Revisão dos 4 canais + decisão do E-Chat</div>
       <div class="desc">
         <span class="mini-status"><span class="dot ok"></span>Tráfego pago → CRM <b>feito</b></span>
         <span class="mini-status"><span class="dot no"></span>Prospecção Ativa (Typebot) <b>não feito</b></span>
-        <span class="mini-status"><span class="dot no"></span>Social Selling (remarketing) <b>não feito</b></span>
-        <span class="mini-status"><span class="dot mid"></span>Documentar fluxo <b>parcial → virou documento canônico no mesmo dia</b></span>
-        <br>Canal <b>"Blog"</b> esclarecido (GMB + SEO + blogagem IA). Decisão do E-Chat (04/08) operacionalizada no CRM.
+        <span class="mini-status"><span class="dot no"></span>Social Selling <b>não feito</b></span>
+        <span class="mini-status"><span class="dot mid"></span>Documento canônico <b>criado, não validado</b></span>
+        <br>Decisão de 04/08: operar por dentro do <b>E-Chat</b>, sem ferramenta nova.
       </div>
     </div>
   </div>
@@ -139,76 +160,96 @@
     <div class="bolha">3</div>
     <div class="corpo">
       <div class="data">HOJE · 10/08/2026</div>
-      <div class="titulo-marco">Fechar o que travou 2x seguidas</div>
-      <div class="desc">Prospecção Ativa e Social Selling seguem em zero após duas sessões. Hoje não é mais "combinar de novo" — é sair com <b>ação + data</b>, validar o documento canônico contra a realidade da equipe e destravar as pendências de terceiros (Rogério, Elieser).</div>
+      <div class="titulo-marco">Reorganização: Raquel sai, prioridades mudam</div>
+      <div class="desc">Prospecção Ativa deixa de ser "montar Typebot" e vira <b>disparos dentro do E-Chat</b>. Entra como prioridade máxima também a <b>Atendente de IA no WhatsApp oficial</b> da clínica.</div>
     </div>
   </div>
 </div>
 
-<h2 class="h-secao">🎯 Onde vamos — pauta de hoje</h2>
+<h2 class="h-secao">🎯 Onde vamos — prioridade máxima da semana</h2>
 
 <div class="prog-wrap">
-  <div class="prog-top"><span>Progresso da pauta</span><span class="prog-pct" id="pct">0%</span></div>
+  <div class="prog-top"><span>Progresso</span><span class="prog-pct" id="pct">0%</span></div>
   <div class="prog-bar"><div class="prog-fill" id="fill"></div></div>
 </div>
 
 <section>
-  <div class="sec-head sec-trava">🔴 TRAVADO 2x — resolver primeiro, sem re-explicar do zero</div>
+  <div class="sec-head sec-max">🔴 Prioridade máxima — implementar esta semana</div>
   <ul>
-    <li><span class="cb">✓</span><span class="txt"><b>Prospecção Ativa</b> — destravar o funil Typebot por especialidade <span class="tag-sessoes">2ª sessão travado</span><span class="dono">Diagnosticar: falta tempo, falta clareza do passo a passo, ou prioridade? → sair com data</span></span></li>
-    <li><span class="cb">✓</span><span class="txt"><b>Social Selling</b> — remarketing dos 255 engajados (campanha de visualização no Meta Business, não "engajar posts") <span class="tag-sessoes">2ª sessão travado</span><span class="dono">Confirmar se o conceito ficou claro desta vez</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Prospecção Ativa dentro do E-Chat</b> — disparos ativos rodando pela ferramenta <span class="tag-max">máxima</span><span class="dono">Substitui o funil Typebot à parte</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Atendente de IA no WhatsApp oficial da clínica</b> — Léia respondendo pela API oficial <span class="tag-max">máxima</span><span class="dono">Ver atendimento-ia-clinica/ · apoio do Lucas</span></span></li>
   </ul>
 </section>
 
 <section>
-  <div class="sec-head sec-doc">📄 Documento canônico</div>
+  <div class="sec-head sec-karine">👤 Karine</div>
   <ul>
-    <li><span class="cb">✓</span><span class="txt">Validar <b>documento canônico do processo</b> (criado 05/08) contra um caso real da semana — bateu ou precisa ajustar? <span class="dono">Lucas / Sabrina</span></span></li>
+    <li><span class="cb">✓</span><span class="txt">Continua o <b>Social Selling</b>, cobrindo o gap deixado pela Raquel</span></li>
+    <li><span class="cb">✓</span><span class="txt">Repassa a <b>cobrança</b> gradualmente para a Sabrina</span></li>
+    <li><span class="cb">✓</span><span class="txt">Junto com o Lucas, cobra o <b>Elieser</b> (ver seção abaixo)</span></li>
   </ul>
 </section>
 
 <section>
-  <div class="sec-head sec-time">👤 Situação da Raquel</div>
+  <div class="sec-head sec-lucas">👤 Lucas</div>
   <ul>
-    <li><span class="cb">✓</span><span class="txt">Esclarecer se a ausência em 05/08 foi <b>pontual</b> ou se Social Selling/Prospecção Ativa <b>passaram para Lucas/Sabrina</b> de vez <span class="dono">Sem explicação registrada até agora</span></span></li>
+    <li><span class="cb">✓</span><span class="txt">Junto com a Karine, cobra o <b>Elieser</b> (ver seção abaixo)</span></li>
+    <li><span class="cb">✓</span><span class="txt">Apoia a implementação da <b>Atendente de IA</b> no WhatsApp oficial</span></li>
   </ul>
 </section>
 
 <section>
-  <div class="sec-head sec-verba">💰 Pendências de terceiros</div>
+  <div class="sec-head sec-sabrina">👤 Sabrina</div>
   <ul>
-    <li><span class="cb">✓</span><span class="txt">Levar <b>número pronto</b> (custo estimado) para a decisão do Rogério sobre somar Google Ads ao orçamento (hoje R$30/dia só no Meta)</span></li>
-    <li><span class="cb">✓</span><span class="txt">Cobrar retorno do <b>Elieser (E-Chat)</b> sobre plugar Instagram e tráfego pago no CRM</span></li>
-    <li><span class="cb">✓</span><span class="txt">Registrar status do <b>2º número oficial</b> (SST Card, protocolo 3028061) — segue aguardando autorização da Meta</span></li>
+    <li><span class="cb">✓</span><span class="txt">Assume a <b>cobrança</b> repassada pela Karine</span></li>
+    <li><span class="cb">✓</span><span class="txt">Segue na frente de <b>Blog/GMB</b> combinada em 05/08</span></li>
   </ul>
 </section>
 
-<h2 class="h-secao">❓ Perguntas estratégicas</h2>
 <section>
-  <div class="perguntas">
-    <ol>
-      <li><b>1.</b> "Prospecção Ativa e Social Selling ficaram parados nas duas últimas sessões — o que especificamente está travando: falta de tempo, falta de clareza do passo a passo, ou prioridade for a disso?"</li>
-      <li><b>2.</b> "Lucas/Sabrina, o documento canônico que ficou pronto dia 05 — vocês já testaram ele contra um caso real da semana? Bateu ou precisa ajustar?"</li>
-      <li><b>3.</b> "Raquel, como você está vendo sua participação nesses canais — social selling e prospecção são seus ou passaram para o Lucas/Sabrina de vez?"</li>
-      <li><b>4.</b> "Rogério trouxe o sinal do Dr. Sérgio (33 marcados, 19 particulares) — dá pra vocês já isolar se veio de campanha paga, orgânico ou indicação, antes da decisão de verba do Google Ads?"</li>
-    </ol>
-  </div>
+  <div class="sec-head sec-elieser">📞 Cobrar o Elieser (Karine + Lucas)</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt">WhatsApp oficial da <b>Clínica</b> — ativo</span></li>
+    <li><span class="cb">✓</span><span class="txt">WhatsApp oficial do <b>SST Card</b> — ativo</span></li>
+    <li><span class="cb">✓</span><span class="txt">Instagram da <b>Clínica</b> — plugado no E-Chat</span></li>
+    <li><span class="cb">✓</span><span class="txt">Instagram do <b>SST Card</b> — plugado no E-Chat</span></li>
+    <li><span class="cb">✓</span><span class="txt">CRM de cada setor configurado</span></li>
+    <li><span class="cb">✓</span><span class="txt">Typebot de cada setor configurado</span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-head sec-doc">📄 Secundário esta semana</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt">Validar o <b>documento canônico</b> do processo contra a realidade (criado 05/08)</span></li>
+  </ul>
+</section>
+
+<h2 class="h-secao">📊 De onde viemos, resumido</h2>
+<section>
+  <table class="resumo">
+    <tr><th>Combinado 27/07</th><th>Status 05/08</th><th>Situação agora</th></tr>
+    <tr><td>Tráfego pago → CRM</td><td>✅ Feito</td><td>Confirmar se segue rodando</td></tr>
+    <tr><td>Prospecção Ativa</td><td>❌ Travou 2x</td><td><b>Redefinido:</b> disparos no E-Chat</td></tr>
+    <tr><td>Social Selling</td><td>❌ Não feito</td><td>Com a Karine, cobrindo gap Raquel</td></tr>
+    <tr><td>Documentar fluxo</td><td>🟡 Doc. criado</td><td>Validar quando E-Chat assentar</td></tr>
+  </table>
 </section>
 
 <div class="alerta">
-  🔴 <b>Dois dos quatro canais combinados em 27/07 seguem em zero após duas sessões.</b> Se não sair hoje com ação+data, considerar reduzir escopo para 1 canal por vez em vez de cobrar os 4 em paralelo.
+  🔴 <b>As duas prioridades máximas dependem do avanço com o Elieser</b> — se ele travar, prospecção ativa e atendente de IA travam junto.
 </div>
 <div class="alerta amarelo">
-  ⚠️ Decisão de verba (Google Ads) trava com o Rogério desde 05/08 sem posição — levar o número pronto facilita o sim/não.
+  ⚠️ <b>Karine está absorvendo 3 frentes de uma vez</b> (Social Selling + repasse de cobrança + cobrança do Elieser) — observar se não vira gargalo novo.
 </div>
 
 <div class="final">
-  <h3>✅ Checklist de saída — não fechar sem isto</h3>
+  <h3>✅ Checklist de saída — sessões desta semana</h3>
   <ul>
-    <li><span class="cb">✓</span><span>Ação + data para destravar Prospecção Ativa</span></li>
-    <li><span class="cb">✓</span><span>Ação + data para destravar Social Selling</span></li>
-    <li><span class="cb">✓</span><span>Documento canônico validado (ou marcado o que ajustar)</span></li>
-    <li><span class="cb">✓</span><span>Posição sobre a Raquel definida</span></li>
+    <li><span class="cb">✓</span><span>Prospecção Ativa rodando dentro do E-Chat</span></li>
+    <li><span class="cb">✓</span><span>Atendente de IA ativa no WhatsApp oficial da clínica</span></li>
+    <li><span class="cb">✓</span><span>Todos WhatsApps/Instagram (clínica + card) ativos com CRM e Typebot</span></li>
+    <li><span class="cb">✓</span><span>Cobrança repassada da Karine para a Sabrina, sem ruído</span></li>
     <li><span class="cb">✓</span><span>Registrar resultado no <b>RETOMADA.md</b> e <b>historico-acoes.md</b></span></li>
   </ul>
 </div>
@@ -221,7 +262,7 @@
 </footer>
 
 <script>
-  const KEY='sst-pauta-aquisicao-competencia-10-08-2026';
+  const KEY='sst-pauta-aquisicao-competencia-10-08-2026-v2';
   const itens=document.querySelectorAll('li:has(.cb)');
   function salvar(){
     const estado=[...itens].map(li=>li.classList.contains('done'));
