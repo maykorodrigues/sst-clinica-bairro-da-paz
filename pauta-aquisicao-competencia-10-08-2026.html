@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pauta — Aquisição de Competência MKT & Vendas | SST Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#1987c3; --azul-esc:#0f5a85; --bg:#0d1117; --card:#161b22; --card2:#1c232c;
+    --borda:#2a323c; --txt:#e6edf3; --txt2:#8b949e; --verde:#27ae60; --verm:#e74c3c;
+    --amarelo:#f0b429; --roxo:#8e6fd6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Barlow',sans-serif;}
+  body{background:var(--bg);color:var(--txt);line-height:1.5;padding:18px;max-width:820px;margin:0 auto;}
+  header{text-align:center;margin-bottom:20px;}
+  .tag{display:inline-block;background:var(--azul-esc);color:#fff;font-size:12px;font-weight:600;
+    padding:4px 12px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;}
+  h1{font-size:26px;font-weight:800;color:#fff;line-height:1.2;}
+  h1 span{color:var(--azul);}
+  .sub{color:var(--txt2);font-size:14px;margin-top:6px;}
+  .sub a{color:var(--azul);text-decoration:none;}
+  .sub a:hover{text-decoration:underline;}
+
+  h2.h-secao{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--txt2);margin:26px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--borda);}
+
+  /* ---------- TIMELINE: ONDE ESTÁVAMOS ---------- */
+  .timeline{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:18px 16px 6px;margin-bottom:8px;}
+  .marco{display:flex;gap:14px;padding-bottom:18px;position:relative;}
+  .marco:not(:last-child)::before{content:'';position:absolute;left:15px;top:32px;bottom:-4px;width:2px;background:var(--borda);}
+  .marco .bolha{flex-shrink:0;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:800;color:#fff;z-index:1;}
+  .marco.passado .bolha{background:var(--txt2);}
+  .marco.checkpoint .bolha{background:var(--amarelo);color:#2a2200;}
+  .marco.hoje .bolha{background:var(--azul);box-shadow:0 0 0 4px rgba(25,135,195,.2);}
+  .marco .corpo{flex:1;padding-top:2px;}
+  .marco .data{font-size:12px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.04em;}
+  .marco.hoje .data{color:var(--azul);}
+  .marco .titulo-marco{font-size:15px;font-weight:700;color:#fff;margin:2px 0 4px;}
+  .marco .desc{font-size:13.5px;color:var(--txt2);}
+  .marco .desc b{color:var(--txt);}
+  .mini-status{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;margin-top:6px;margin-right:12px;}
+  .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .dot.ok{background:var(--verde);} .dot.no{background:var(--verm);} .dot.mid{background:var(--amarelo);}
+
+  /* ---------- PROGRESSO ---------- */
+  .prog-wrap{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:14px 16px;margin-bottom:16px;}
+  .prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .prog-top span{font-weight:700;font-size:15px;}
+  .prog-pct{color:var(--azul);font-weight:800;font-size:20px;}
+  .prog-bar{height:10px;background:#0a0e13;border-radius:6px;overflow:hidden;}
+  .prog-fill{height:100%;background:linear-gradient(90deg,var(--azul),var(--verde));width:0;transition:width .4s;}
+
+  /* ---------- SECOES DE PAUTA (checklist) ---------- */
+  section{background:var(--card);border:1px solid var(--borda);border-radius:12px;margin-bottom:14px;overflow:hidden;}
+  .sec-head{padding:12px 16px;font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px;
+    border-bottom:1px solid var(--borda);}
+  .sec-trava{background:rgba(231,76,60,.12);color:#ff8a7a;}
+  .sec-doc{background:rgba(240,180,41,.10);color:var(--amarelo);}
+  .sec-time{background:rgba(142,111,214,.12);color:#c3b0f0;}
+  .sec-verba{background:rgba(25,135,195,.12);color:#5eb3e0;}
+  ul{list-style:none;}
+  li{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--borda);
+    cursor:pointer;transition:background .15s;}
+  li:last-child{border-bottom:none;}
+  li:hover{background:var(--card2);}
+  .cb{flex-shrink:0;width:22px;height:22px;border:2px solid var(--azul);border-radius:6px;margin-top:2px;
+    display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;transition:all .15s;}
+  li.done .cb{background:var(--verde);border-color:var(--verde);}
+  li.done .txt{text-decoration:line-through;color:var(--txt2);}
+  .txt{font-size:15px;}
+  .txt b{color:#fff;}
+  .dono{display:block;font-size:12px;color:var(--azul);font-weight:600;margin-top:3px;}
+  .tag-sessoes{display:inline-block;background:rgba(231,76,60,.15);color:#ff8a7a;font-size:11px;font-weight:700;
+    padding:1px 7px;border-radius:5px;margin-left:6px;white-space:nowrap;}
+
+  /* ---------- PERGUNTAS ---------- */
+  .perguntas{padding:14px 16px;}
+  .perguntas ol{padding-left:20px;}
+  .perguntas li{display:list-item;padding:8px 0;border:none;cursor:default;font-size:14.5px;color:var(--txt);}
+  .perguntas li:hover{background:none;}
+  .perguntas li b{color:#fff;}
+
+  /* ---------- ALERTAS ---------- */
+  .alerta{background:rgba(231,76,60,.08);border-left:3px solid var(--verm);border-radius:0 8px 8px 0;
+    padding:10px 14px;margin:0 16px 14px;font-size:13.5px;color:var(--txt);}
+  .alerta.amarelo{background:rgba(240,180,41,.08);border-left-color:var(--amarelo);}
+  .alerta b{color:#fff;}
+
+  /* ---------- CHECKLIST DE SAIDA ---------- */
+  .final{background:linear-gradient(135deg,var(--azul-esc),#0a3a54);border:1px solid var(--azul);
+    border-radius:12px;padding:16px;margin-top:20px;}
+  .final h3{color:#fff;font-size:16px;margin-bottom:10px;}
+  .final ul{list-style:none;}
+  .final li{padding:6px 0;border:none;cursor:pointer;font-size:14px;display:flex;gap:10px;}
+  .final li:hover{background:none;}
+
+  button.reset{display:block;margin:16px auto 0;background:none;border:1px solid var(--borda);color:var(--txt2);
+    padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;}
+  button.reset:hover{border-color:var(--verm);color:var(--verm);}
+  footer{text-align:center;color:var(--txt2);font-size:12px;margin-top:24px;padding-top:16px;border-top:1px solid var(--borda);}
+  footer a{color:var(--azul);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">SST Card · MKT &amp; Vendas</div>
+  <h1>Aquisição de <span>Competência</span></h1>
+  <div class="sub">10/08/2026 · 10h–11h30 · <a href="https://meet.google.com/oir-yaam-idd" target="_blank">meet.google.com/oir-yaam-idd</a></div>
+</header>
+
+<h2 class="h-secao">📍 Onde estávamos</h2>
+<div class="timeline">
+  <div class="marco passado">
+    <div class="bolha">1</div>
+    <div class="corpo">
+      <div class="data">27/07/2026</div>
+      <div class="titulo-marco">4 canais combinados</div>
+      <div class="desc">Definidos os 4 processos da máquina comercial: <b>Social Selling</b>, <b>Prospecção Ativa</b>, <b>Tráfego Pago</b> e <b>documentar o fluxo</b>. Ponto de partida da série de acompanhamento.</div>
+    </div>
+  </div>
+  <div class="marco checkpoint">
+    <div class="bolha">2</div>
+    <div class="corpo">
+      <div class="data">05/08/2026 — checkpoint (Raquel ausente, Lucas + Sabrina cobriram)</div>
+      <div class="titulo-marco">Revisão ao vivo dos 4 canais</div>
+      <div class="desc">
+        <span class="mini-status"><span class="dot ok"></span>Tráfego pago → CRM <b>feito</b></span>
+        <span class="mini-status"><span class="dot no"></span>Prospecção Ativa (Typebot) <b>não feito</b></span>
+        <span class="mini-status"><span class="dot no"></span>Social Selling (remarketing) <b>não feito</b></span>
+        <span class="mini-status"><span class="dot mid"></span>Documentar fluxo <b>parcial → virou documento canônico no mesmo dia</b></span>
+        <br>Canal <b>"Blog"</b> esclarecido (GMB + SEO + blogagem IA). Decisão do E-Chat (04/08) operacionalizada no CRM.
+      </div>
+    </div>
+  </div>
+  <div class="marco hoje">
+    <div class="bolha">3</div>
+    <div class="corpo">
+      <div class="data">HOJE · 10/08/2026</div>
+      <div class="titulo-marco">Fechar o que travou 2x seguidas</div>
+      <div class="desc">Prospecção Ativa e Social Selling seguem em zero após duas sessões. Hoje não é mais "combinar de novo" — é sair com <b>ação + data</b>, validar o documento canônico contra a realidade da equipe e destravar as pendências de terceiros (Rogério, Elieser).</div>
+    </div>
+  </div>
+</div>
+
+<h2 class="h-secao">🎯 Onde vamos — pauta de hoje</h2>
+
+<div class="prog-wrap">
+  <div class="prog-top"><span>Progresso da pauta</span><span class="prog-pct" id="pct">0%</span></div>
+  <div class="prog-bar"><div class="prog-fill" id="fill"></div></div>
+</div>
+
+<section>
+  <div class="sec-head sec-trava">🔴 TRAVADO 2x — resolver primeiro, sem re-explicar do zero</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt"><b>Prospecção Ativa</b> — destravar o funil Typebot por especialidade <span class="tag-sessoes">2ª sessão travado</span><span class="dono">Diagnosticar: falta tempo, falta clareza do passo a passo, ou prioridade? → sair com data</span></span></li>
+    <li><span class="cb">✓</span><span class="txt"><b>Social Selling</b> — remarketing dos 255 engajados (campanha de visualização no Meta Business, não "engajar posts") <span class="tag-sessoes">2ª sessão travado</span><span class="dono">Confirmar se o conceito ficou claro desta vez</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-head sec-doc">📄 Documento canônico</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt">Validar <b>documento canônico do processo</b> (criado 05/08) contra um caso real da semana — bateu ou precisa ajustar? <span class="dono">Lucas / Sabrina</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-head sec-time">👤 Situação da Raquel</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt">Esclarecer se a ausência em 05/08 foi <b>pontual</b> ou se Social Selling/Prospecção Ativa <b>passaram para Lucas/Sabrina</b> de vez <span class="dono">Sem explicação registrada até agora</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <div class="sec-head sec-verba">💰 Pendências de terceiros</div>
+  <ul>
+    <li><span class="cb">✓</span><span class="txt">Levar <b>número pronto</b> (custo estimado) para a decisão do Rogério sobre somar Google Ads ao orçamento (hoje R$30/dia só no Meta)</span></li>
+    <li><span class="cb">✓</span><span class="txt">Cobrar retorno do <b>Elieser (E-Chat)</b> sobre plugar Instagram e tráfego pago no CRM</span></li>
+    <li><span class="cb">✓</span><span class="txt">Registrar status do <b>2º número oficial</b> (SST Card, protocolo 3028061) — segue aguardando autorização da Meta</span></li>
+  </ul>
+</section>
+
+<h2 class="h-secao">❓ Perguntas estratégicas</h2>
+<section>
+  <div class="perguntas">
+    <ol>
+      <li><b>1.</b> "Prospecção Ativa e Social Selling ficaram parados nas duas últimas sessões — o que especificamente está travando: falta de tempo, falta de clareza do passo a passo, ou prioridade for a disso?"</li>
+      <li><b>2.</b> "Lucas/Sabrina, o documento canônico que ficou pronto dia 05 — vocês já testaram ele contra um caso real da semana? Bateu ou precisa ajustar?"</li>
+      <li><b>3.</b> "Raquel, como você está vendo sua participação nesses canais — social selling e prospecção são seus ou passaram para o Lucas/Sabrina de vez?"</li>
+      <li><b>4.</b> "Rogério trouxe o sinal do Dr. Sérgio (33 marcados, 19 particulares) — dá pra vocês já isolar se veio de campanha paga, orgânico ou indicação, antes da decisão de verba do Google Ads?"</li>
+    </ol>
+  </div>
+</section>
+
+<div class="alerta">
+  🔴 <b>Dois dos quatro canais combinados em 27/07 seguem em zero após duas sessões.</b> Se não sair hoje com ação+data, considerar reduzir escopo para 1 canal por vez em vez de cobrar os 4 em paralelo.
+</div>
+<div class="alerta amarelo">
+  ⚠️ Decisão de verba (Google Ads) trava com o Rogério desde 05/08 sem posição — levar o número pronto facilita o sim/não.
+</div>
+
+<div class="final">
+  <h3>✅ Checklist de saída — não fechar sem isto</h3>
+  <ul>
+    <li><span class="cb">✓</span><span>Ação + data para destravar Prospecção Ativa</span></li>
+    <li><span class="cb">✓</span><span>Ação + data para destravar Social Selling</span></li>
+    <li><span class="cb">✓</span><span>Documento canônico validado (ou marcado o que ajustar)</span></li>
+    <li><span class="cb">✓</span><span>Posição sobre a Raquel definida</span></li>
+    <li><span class="cb">✓</span><span>Registrar resultado no <b>RETOMADA.md</b> e <b>historico-acoes.md</b></span></li>
+  </ul>
+</div>
+
+<button class="reset" onclick="resetar()">↺ Zerar checklist</button>
+
+<footer>
+  SST Card · Bairro da Paz — Consultoria Mayko Rodrigues<br>
+  Pauta completa (Markdown): <a href="./pauta-aquisicao-competencia-10-08-2026.md">pauta-aquisicao-competencia-10-08-2026.md</a> · progresso salvo neste navegador
+</footer>
+
+<script>
+  const KEY='sst-pauta-aquisicao-competencia-10-08-2026';
+  const itens=document.querySelectorAll('li:has(.cb)');
+  function salvar(){
+    const estado=[...itens].map(li=>li.classList.contains('done'));
+    localStorage.setItem(KEY,JSON.stringify(estado));
+    atualizar();
+  }
+  function atualizar(){
+    const feitos=[...itens].filter(li=>li.classList.contains('done')).length;
+    const pct=itens.length?Math.round(feitos/itens.length*100):0;
+    document.getElementById('pct').textContent=pct+'%';
+    document.getElementById('fill').style.width=pct+'%';
+  }
+  function carregar(){
+    const salvo=JSON.parse(localStorage.getItem(KEY)||'[]');
+    itens.forEach((li,i)=>{ if(salvo[i]) li.classList.add('done'); });
+    atualizar();
+  }
+  function resetar(){
+    if(confirm('Zerar todo o checklist?')){ localStorage.removeItem(KEY); itens.forEach(li=>li.classList.remove('done')); atualizar(); }
+  }
+  itens.forEach(li=>li.addEventListener('click',()=>{ li.classList.toggle('done'); salvar(); }));
+  carregar();
+</script>
+</body>
+</html>
