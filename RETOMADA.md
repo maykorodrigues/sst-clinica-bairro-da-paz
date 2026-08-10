@@ -4,7 +4,136 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 06/07/2026 — **Faixas de rua do lançamento + Proposta de Sala de Odontologia (revisão de planta) + retomada da automatização dos processos**
+> Última atualização: 10/08/2026 — **Raquel de licença-maternidade (semanas) · Karine/Lucas/Sabrina encabeçam · prioridade máxima: prospecção ativa no E-Chat + Atendente de IA no WhatsApp oficial**
+
+---
+
+## 🟡 AO RETOMAR (10/08/2026) — Reorganização de equipe: Raquel de licença-maternidade
+
+**Raquel teve o nascimento do filho** e não participa **hoje nem nas próximas semanas** do processo comercial. Decisão do Rogério (via Mayko): **Karine, Lucas e Sabrina encabeçam** a partir de agora, sem matinal conjunta — sessões **individuais** de acompanhamento com cada um.
+
+**Redistribuição:**
+- **Social Selling** (era da Raquel) → passa para a **Karine**, cobrindo o gap
+- **Cobrança** (era da Karine) → Karine repassa **gradualmente para a Sabrina**
+- **Blog/GMB** (combinado 05/08) → segue com a **Sabrina**
+
+**Prioridade máxima da semana (à frente de tudo o mais):**
+1. **Prospecção Ativa dentro do E-Chat** — disparos ativos rodando pela ferramenta (substitui a ideia de montar Typebot à parte, que travou 2 sessões seguidas)
+2. **Atendente de IA no WhatsApp oficial da clínica** — Léia respondendo pela API oficial (ver `atendimento-ia-clinica/CLAUDE.md`), com apoio do Lucas
+
+**Karine + Lucas cobram o Elieser (EAS Systems)** para deixar ativos: WhatsApp oficial da Clínica, WhatsApp oficial do SST Card, Instagram da Clínica, Instagram do SST Card — cada um com CRM e Typebot próprios de setor.
+
+**Rogério:** em viagem até sexta-feira — decisões que dependem dele (verba do Google Ads, etc.) ficam represadas até o retorno.
+
+**Pauta enviada ao grupo:** `pauta-aquisicao-competencia-10-08-2026.html` (publicada em https://playbook.ssfcard.ia.br/pauta-aquisicao-competencia-10-08-2026.html).
+
+**Observação:** Karine está absorvendo 3 frentes de uma vez (Social Selling + repasse de cobrança + cobrança do Elieser) — observar se não vira gargalo novo nas próximas sessões.
+
+---
+
+## 🟡 AO RETOMAR (05/08/2026) — Aquisição de Competência MKT & Vendas (checkpoint)
+
+> **Transcrição:** `C:\Users\mayko\Downloads\Aquisição de Competência - MKT & Vendas SSF CARD.txt` (Tactiq, 63min). **Raquel não veio** — reunião coberta por **Lucas Cardoso e Sabrina** (verificar se é troca de responsabilidade ou ausência pontual).
+
+**Canal "Blog" definido** (pergunta que ficou aberta na sessão anterior): é **Google Meu Negócio + SEO do site + blogagem com IA**, não extensão do conteúdo social. GMB teve 3.500 visualizações no mês, nota 4,3 sem resposta às avaliações; concorrentes (Doutor Consulta, Clínica Fares) já pagam Google Ads na região. Ação: Lucas/Sabrina atualizam GMB + logo + criam blog com IA (SEO). **Proposta em aberto:** somar Google Ads ao orçamento de tráfego pago (hoje só R$30/dia Meta) — decisão de verba pendente do Rogério.
+
+**Checkpoint dos 4 canais combinados em 27/07:**
+
+| Canal | Status |
+|---|---|
+| Tráfego pago → CRM | ✅ Feito |
+| Prospecção Ativa (funil Typebot) | ❌ Não feito — Mayko precisa ensinar a construir |
+| Social Selling (remarketing 255 engajados) | ❌ Não feito — confundiram com "engajar posts"; é remarketing/visualização no Meta Business |
+| Documentar fluxo (prints/scripts) | 🟡 Parcial — feito no Canva, precisa virar **documento canônico** (processo real, não idealizado — conceito recalibrado nesta call para resolver o RCF do Rogério) |
+
+**Decisão do E-Chat (04/08) operacionalizada:** quadros dentro do CRM do E-Chat + Typebot dele, sem ferramenta nova. Instagram e tráfego pago ainda não estão plugados no CRM do E-Chat — Lucas/Sabrina vão verificar com o Elieser. 2º número oficial (SST Card, protocolo 3028061) **ainda aguardando autorização da Meta**; chat template em uso como ponte.
+
+**Sinal de negócio (Rogério):** agenda do Dr. Sérgio — 33 marcados, 19 particulares (>50%, subiu) — quer entender se veio do marketing ou da demanda orgânica antes de escalar investimento.
+
+---
+
+## 🔴 AO RETOMAR (04/08/2026) — Reunião E-Chat · Elieser (EAS Systems)
+
+> **Handoff de decisão:** `squad-echat-overclock/handoffs/H0-decisao-pos-reuniao.md` · **Recon técnico:** `handoffs/H1-recon-echat.md` · **Mensagens de follow-up:** `squad-echat-overclock/mensagens-pos-reuniao-04-08-2026.md` · **Transcrição:** Notion `3b2ad3c003738175b788ec990381518e`
+
+**A premissa virou.** O E-Chat **já está contratado pelo Rogério** e hoje roda **só o WhatsApp da API oficial da clínica**. A plataforma também entrega — e está parado — **IA de atendimento com prompt configurável · sugestão de resposta comercial para a atendente · formulários de qualificação por especialidade (aceita import de JSON) · CRM com múltiplos quadros · disparo ativo por template**. Testado ao vivo na call: consulta com psiquiatra → convênio ou particular → nome e telefone → agendamento confirmado. Funcionou.
+
+**Decisão declarada na call:** *"a gente vai tocar a partir da tua ferramenta, não tem nada que mudar ou acrescentar agora."* **Sem migração para Chatwoot/Evolution.**
+
+**🎉 O maior ganho:** o **WABA da API oficial está na BM do Rogério** — o número não é refém do fornecedor. E as atendentes, que disparavam por WhatsApp Web e tomavam bloqueio (o que travou a Karine), passam para a API oficial.
+
+**🏗️ Arquitetura em duas camadas — o E-Chat não substitui o OpenClaw:**
+
+| Camada | O quê | Papel |
+|---|---|---|
+| **E-Chat** (contratado) | canal WhatsApp oficial · CRM operacional · templates · tela da equipe | **corpo** — Fase 1, roda já |
+| **OpenClaw** na VPS CX33 `ssf-card-clinica` (62.238.33.111) | SDR · cobrança · CS · gestor semi-autônomos 24/7 | **cérebro** — Fase 2 |
+
+Ponte: **webhook de saída do E-Chat → n8n → `chatCompletions`** (Caminho B, validado em 19/07). ⚠️ **A VPS CX33 não está órfã — é a casa do OpenClaw do SST.**
+
+**🔴 O que ficou em aberto (cobrar do Elieser até sexta 08/08):**
+1. Os módulos parados estão no contrato atual ou têm custo adicional? E quanto dá o consumo de API (BYOK)?
+2. **Webhook de saída + endpoint de envio** — 🔴 requisito crítico da Fase 2, sem ele o OpenClaw não alcança o canal oficial
+3. Acesso do Mayko ao painel, com perfil de relatórios
+4. Leitura de imagem (guia de exame) e envio de imagem (peças do clube)
+5. **Áudio: hoje não transcreve** — é roadmap? tem previsão?
+6. Como funciona a implantação e o treinamento da equipe
+
+**Também pendente:** LGPD do fluxo com imagem de exame passando por LLM (não foi tocado na call) · Raquel conectar o Instagram e confirmar o número na BM · treinamento da equipe (o gargalo que o próprio Mayko apontou: *"a ponta solta é o gargalo ser humano"*).
+
+**Grupo novo:** "SST x EAS Systems" (14 membros, criado por Elieser Júnior) — **Mayko entrou como administrador** em 04/08 17h33.
+
+---
+
+## 🖥️ AO RETOMAR (20/07/2026 · 17h) — VPS nova + Typebot + fábrica de quiz
+
+> Sessão de automação de marketing com a Raquel (15h). Prioridade invertida a pedido do Mayko: **antes** do manual de marca e do exercício de fluxo do RCF-002, subir a infra.
+
+**✅ Servidor provisionado:** Hetzner **CX33 `ssf-card-clinica`** — 4 vCPU · **8 GB RAM** · 80 GB · €8,99/mês · Helsinki · IP `62.238.33.111` · projeto SST CARD.
+
+> ⚠️ **Foi criado do zero, não redimensionado.** O runbook do Time 1 assume *resize* — precisa virar plano de **migração**: reinstalar Chatwoot + Evolution API + n8n no EasyPanel do novo host, reconectar as instâncias de WhatsApp, reimportar os workflows n8n. **Confirmar o que ainda roda na máquina antiga antes de desligá-la.**
+
+**A tese que move tudo:** hoje o paciente pergunta "quanto é o psiquiatra?", recebe "R$ 270" e some (69 levantadas de mão perdidas num dia). O quiz Typebot qualifica com SPIN, mostra **particular × com cartão lado a lado**, e o desconto de 30–50% vira o argumento de venda do SSF Card. Lead quente vai em tempo real para a **Karine**.
+
+**13 documentos entregues** pelos 3 times Overclock, em `C:\Users\mayko\cerebros-clientes\sst\entregas\`:
+
+| Time | Onde | O que |
+|---|---|---|
+| T1 · Infra | `infraestrutura/runbook-resize-vps-typebot-20-07-2026.md` | Runbook resize + instalação Typebot no EasyPanel (adaptar para migração) |
+| T2 · Quiz | `processo-comercial-7dias/02-cadencias/` (7 docs) | Fluxo mestre nó a nó · copy · scoring/roteamento · spec Typebot→n8n→Notion · red team 15 casos · prioridade de especialidades · sumário executivo |
+| T3 · Disparo | `processo-comercial-7dias/07-maquina-quiz-disparo/` (5 docs) | Anti-bloqueio · campanha Meta R$11/dia · régua de disparo na base parada · painel + rotina semanal da Raquel · visão geral |
+
+Prompts que geraram isso: `processo-comercial-7dias/03-agentamento/prompts-overclock-typebot-vps-20-07-2026.md`.
+
+**Go-live planejado dos quizzes:** **psiquiatra 20–26/07** (primeiro) · clínico+pediatra 27/07–02/08 · cardio 03–09/08 · gineco+exames 10/08+.
+
+**🔴 O que trava o próximo passo:**
+- **Preços por especialidade + régua de desconto 30/40/50%** — só o Rogério crava. Pendente desde 02/07. Sem isso o Typebot não é configurado (3–4 dias de setup depois do OK).
+- **Migrar a stack** para o servidor novo antes de qualquer publicação.
+- **BM da Meta em validação** — sem ela, disparo só por Evolution em base morna.
+- **Chip da Karine bloqueado** por disparo; 2º chip em cadastro. Protocolo anti-bloqueio do T3 é obrigatório antes de qualquer volume.
+- **Instância Evolution** estava com o Lucas — prometida para 21/07.
+
+**Pendências da Raquel que ficaram para depois:** manual de marca do SSF Card (em andamento, travou no Canva por exigir conta própria) e o exercício de fluxo do RCF-002 para **quarta 22/07**.
+
+---
+
+## 🔴 AO RETOMAR (20/07/2026) — Reunião Estratégica Rogério
+
+> **Ata completa:** `reuniao-estrategica-rogerio-20-07-2026.md`. Espelho Notion: `3a3ad3c00373811c899cfad7ab0b8d0d`.
+
+**O que rolou:** Rogério entregou os **4 RCFs assinados** (Closer, Marketing, CS, Cobrança — R$ 1.650 cada, CLT 44h, emissão 03/07). Decisão: **cada colaborador desenha o próprio fluxo de trabalho e comparamos na quarta 22/07** contra o gabarito. Mayko gerou o fluxograma dos 4 cargos ao vivo (`processo-comercial-7dias/rcf-fluxogramas-cargos.html`).
+
+**Achado forte (clínica/Débora):** **69 levantadas de mão não respondidas.** Atendimento só passa preço, não responde áudio, raramente liga de volta. Proposta: mandar demanda de agendamento clínico para a **Karine (closer)** — vira consulta + pacote + SSF Card.
+
+**🔴 PENDENTE AO RETOMAR:**
+- **Enviar o fluxograma em PDF ao Rogério** — ele não conseguiu abrir o artifact (exige conta Claude) e pediu refino ("prompt melhor", referência Miniorbit). **Antes de quarta.**
+- **Cobrar Débora** (via Rogério) pelas APIs eChat + Gringo e senhas — prometido para **quarta de manhã**.
+- **Karine — Agente Kanban de Dívidas** (conversa era 14h30 de 20/07).
+- **19 automações com Raquel.**
+- 🔴 **Financeiro NÃO foi aberto por falta de tempo** — aporte semana 1, salários, GO reajuste, régua de desconto seguem pendentes desde 02/07. Ver `checklist-semana1-julho-2026.md`.
+
+**Também na mesa:** expansão para **4 andares** (recomendação: um andar por vez, cuidar do IPTU/embargo, cravar garantias contratuais) · **RH por produtividade** com a Amanda · CLT × PJ vai aos advogados do Rogério.
 
 ---
 
