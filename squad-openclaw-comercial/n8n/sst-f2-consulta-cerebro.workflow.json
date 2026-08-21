@@ -1,0 +1,160 @@
+{
+  "name": "SST · F2 Consulta ao Cérebro",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-openclaw/f2-consulta-cerebro",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "f2-consulta-webhook",
+      "name": "Webhook evento minimizado da F1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-860, 300],
+      "webhookId": "sst-openclaw-f2-consulta-cerebro",
+      "notes": "Recebe somente payload minimizado. Nao recebe texto bruto, CPF, telefone, laudo, exame ou anexo."
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\nconst body = input.body || input;\nconst killSwitch = $env.PAUSAR_DIRETOR_COMERCIAL === 'true';\nconst endpoint = $env.OPENCLAW_INTENT_ENDPOINT;\nconst tokenConfigured = Boolean($env.OPENCLAW_INTERNAL_TOKEN);\nconst eventId = String(body.event_id || body.minimized?.event_id || '');\nconst errors = [];\n\nif (killSwitch) errors.push('kill_switch_ativo');\nif (!eventId) errors.push('event_id_ausente');\nif (!endpoint) errors.push('openclaw_intent_endpoint_nao_configurado');\nif (!tokenConfigured) errors.push('openclaw_internal_token_nao_configurado');\n\nconst payloadMinimo = {\n  event_id: eventId,\n  event_type: String(body.event_type || body.minimized?.event_type || 'desconhecido'),\n  channel: String(body.channel || body.minimized?.channel || 'desconhecido'),\n  conversation_id: String(body.conversation_id || body.minimized?.conversation_id || ''),\n  message_id: String(body.message_id || body.minimized?.message_id || ''),\n  occurred_at: String(body.occurred_at || body.minimized?.occurred_at || new Date().toISOString()),\n  raw_text_sha256: body.raw_text_sha256 || body.minimized?.raw_text_sha256 || null,\n  raw_text_length: Number(body.raw_text_length || body.minimized?.raw_text_length || 0),\n  has_attachment: Boolean(body.has_attachment || body.minimized?.has_attachment),\n  source_system: 'e-chat',\n  mirror_mode: true\n};\n\nreturn [{ json: {\n  status_pre_consulta: errors.length ? 'fila_humana' : 'consultar_cerebro',\n  route_pre_consulta: errors.length ? 'fila_humana' : 'openclaw_interno',\n  errors,\n  payload_minimo: payloadMinimo,\n  execute_external_message: false,\n  sends_external_message: false,\n  retry_automatico: false\n} }];"
+      },
+      "id": "f2-preflight",
+      "name": "Preflight sem dado sensível",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-620, 300],
+      "notes": "Se faltar endpoint interno ou token no cofre, cai para fila humana e nao tenta improvisar."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "cond-consultar",
+              "leftValue": "={{ $json.status_pre_consulta }}",
+              "rightValue": "consultar_cerebro",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f2-if-consultar",
+      "name": "Pode consultar OpenClaw?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-380, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.OPENCLAW_INTENT_ENDPOINT }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $env.OPENCLAW_INTERNAL_TOKEN }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ mode: 'mirror', source: 'SST · F2 Consulta ao Cérebro', payload: $json.payload_minimo }) }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "f2-http-openclaw",
+      "name": "OpenClaw interno · gerar intenção",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-120, 180],
+      "continueOnFail": true,
+      "notes": "URL inteira vem de OPENCLAW_INTENT_ENDPOINT. Nenhuma rota do E-Chat e nenhum endpoint inventado."
+    },
+    {
+      "parameters": {
+        "jsCode": "const pre = $('Preflight sem dado sensível').first().json;\nconst response = $input.first().json;\nconst failed = Boolean(response.error || response.message?.includes?.('ECONN') || response.statusCode >= 400);\n\nif (failed) {\n  return [{ json: {\n    workflow: 'SST · F2 Consulta ao Cérebro',\n    status: 'fila_humana',\n    reason: 'openclaw_indisponivel_ou_timeout',\n    retry_automatico: false,\n    sends_external_message: false,\n    execute: false,\n    payload_minimo: pre.payload_minimo\n  } }];\n}\n\nreturn [{ json: {\n  workflow: 'SST · F2 Consulta ao Cérebro',\n  status: 'intencao_recebida_modo_espelho',\n  next: 'SST · F3 Política',\n  retry_automatico: false,\n  sends_external_message: false,\n  execute: false,\n  intent: response.intent || response,\n  source_event: pre.payload_minimo\n} }];"
+      },
+      "id": "f2-normalizar-intencao",
+      "name": "Normalizar intenção ou fila humana",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [160, 180]
+    },
+    {
+      "parameters": {
+        "jsCode": "const pre = $('Preflight sem dado sensível').first().json;\nreturn [{ json: {\n  workflow: 'SST · F2 Consulta ao Cérebro',\n  status: 'fila_humana',\n  reason: pre.errors.join(','),\n  retry_automatico: false,\n  sends_external_message: false,\n  execute: false,\n  payload_minimo: pre.payload_minimo\n} }];"
+      },
+      "id": "f2-fila-humana",
+      "name": "Fila humana sem retry",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-120, 420]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "f2-responder-webhook",
+      "name": "Responder consulta (espelho)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [440, 300],
+      "notes": "ACK tecnico. Nao responde ao paciente."
+    }
+  ],
+  "connections": {
+    "Webhook evento minimizado da F1": {
+      "main": [[{ "node": "Preflight sem dado sensível", "type": "main", "index": 0 }]]
+    },
+    "Preflight sem dado sensível": {
+      "main": [[{ "node": "Pode consultar OpenClaw?", "type": "main", "index": 0 }]]
+    },
+    "Pode consultar OpenClaw?": {
+      "main": [
+        [{ "node": "OpenClaw interno · gerar intenção", "type": "main", "index": 0 }],
+        [{ "node": "Fila humana sem retry", "type": "main", "index": 0 }]
+      ]
+    },
+    "OpenClaw interno · gerar intenção": {
+      "main": [[{ "node": "Normalizar intenção ou fila humana", "type": "main", "index": 0 }]]
+    },
+    "Normalizar intenção ou fila humana": {
+      "main": [[{ "node": "Responder consulta (espelho)", "type": "main", "index": 0 }]]
+    },
+    "Fila humana sem retry": {
+      "main": [[{ "node": "Responder consulta (espelho)", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": ["sst", "openclaw", "n8n", "f2", "consulta-cerebro", "modo-espelho", "sem-envio"],
+  "triggerCount": 1,
+  "updatedAt": "2026-08-21T00:00:00.000Z",
+  "versionId": "f2000000-0000-4000-8000-000000000002"
+}

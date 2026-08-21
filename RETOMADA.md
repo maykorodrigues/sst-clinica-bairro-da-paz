@@ -4,13 +4,279 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 10/08/2026 — **Raquel de licença-maternidade (semanas) · Karine/Lucas/Sabrina encabeçam · prioridade máxima: prospecção ativa no E-Chat + Atendente de IA no WhatsApp oficial**
+> Última atualização: 21/08/2026 — **Pacote `squad-openclaw-comercial/` criado: Diretor Comercial OpenClaw + 8 agentes de IA, 3 schemas JSON validados, contratos de webhook/endpoint para a EAS e 12 casos de teste. Nada ativado — tudo em L0.**
 
 ---
 
-## 🟡 AO RETOMAR (10/08/2026) — Reorganização de equipe: Raquel de licença-maternidade
+## 🧭 AO RETOMAR (21/08/2026, tarde) — Estrutura CÉU/TERRA criada + entrevista do Denílson
 
-**Raquel teve o nascimento do filho** e não participa **hoje nem nas próximas semanas** do processo comercial. Decisão do Rogério (via Mayko): **Karine, Lucas e Sabrina encabeçam** a partir de agora, sem matinal conjunta — sessões **individuais** de acompanhamento com cada um.
+> **Registro da entrevista:** `entrevista-denilson-gestor-21-08-2026.md` · **Transcrição Notion:** `3c3ad3c003738066b1adccb4964013b6`
+
+### Plataforma de consultoria — par CÉU/TERRA por projeto
+
+Modelo replicado do projeto Montes Claros (Cartão de Todos): **CÉU = fonte de verdade interna** (bastidor, leitura crítica, financeiro, dados pessoais) · **TERRA = execução assistida** (página compartilhável com o cliente). O par foi criado para os **dois projetos separadamente**:
+
+| Projeto | CÉU (interno) | TERRA (cliente) |
+|---|---|---|
+| **SSF Card** | [CÉU · SSF Card](https://app.notion.com/p/3c3ad3c0037381b2a0d2f3deb60b9d74) | [Execução Assistida · SSF Card](https://app.notion.com/p/3c3ad3c0037381d887b2e5207ba25291) |
+| **SSF Clínica** | [CÉU · SSF Clínica](https://app.notion.com/p/3c3ad3c00373814c9917e2e097c132c7) | [Execução Assistida · SSF Clínica](https://app.notion.com/p/3c3ad3c0037381d6abdff4dd19f798bb) |
+
+As duas reuniões de hoje já entraram: **Sucesso do Paciente (10h15)** no par SSF Card · **entrevista do Denílson (tarde)** no par SSF Clínica.
+
+⚠️ **Nenhuma TERRA foi compartilhada ainda** — rodar o checklist de publicação do CÉU antes de dar acesso ao Rogério.
+
+### Entrevista Denílson Ferreira Silva — gestor / sócio de unidade
+
+Dinâmica comportamental de 4 perguntas conduzida pelo Mayko; Rogério fecha a negociação. **Não foi entrevista de colaborador** — a oferta feita foi de **percentual sem aporte financeiro**, no contexto de **10 unidades até agosto/2027** (uma já em construção, sai em outubro).
+
+**Descoberta central:** o sonho dele é **ter a própria clínica** e não tem capital — *"não tem um real para montar uma clínica. Tenho diversos contatos de vários médicos."* A oferta encaixa exatamente no buraco. **É a âncora motivacional dele.**
+
+| Dado | Confirmado |
+|---|---|
+| Nome / idade | **Denílson Ferreira Silva**, **42 anos** (não "cinquentão" — era piada de futebol) |
+| Família | Casado, **3 filhos** · âncora pessoal: tempo com a família |
+| Cargo real | **Coordenador administrativo** (o registro de 14/08 dizia "gerente de 3–5 unidades") |
+| Bagagem | **Implantou 4 unidades** · treinou recepção, portaria, ECG · **regulatório ANS** |
+| Visão de gestão | **Custo + acolhimento** (paciente *e* colaborador) |
+
+🔴 **Tensão a resolver:** disse que faz bem *"tudo o que é **apresentado para eu executar**"* (executor) mas trouxe a fala da ex-gestora *"você tem **olhar de dono**"* (protagonista). O plano do Rogério exige a segunda — diagnosticar unidade sozinho e virar regional. Pergunta que fecha: *"me conta uma vez em que ninguém te pediu nada e você foi lá e fez."*
+
+⚠️ **Risco espelhado:** se a sociedade não for cravada como unidade **dentro da rede**, a SST vira escola — ele aprende o modelo, leva a rede de médicos e abre sozinho.
+
+**Em aberto:** motivo da saída da operadora · nome da operadora (ruído de ASR nas duas sessões) · titularidade da rede de médicos + não-concorrência · gap salarial (ganhava ~R$4k) · o que mediria na 1ª semana no BP.
+
+### Também hoje
+
+- **Guia de Entrevista de Capacidades da Letícia** entregue para a **Aline** conduzir — `rh-clinica/guia-capacidades-leticia-aline-21-08-2026.html` / `.pdf`. Etapa 2 da seleção da recepção BP.
+- **Trilha Sucesso do Paciente (10h15)** — auditoria dos 10 compromissos de 07/08: ~70–80% de execução. 8 ligações de cobrança → 3 pagamentos (38%). Ata em `pauta-aquisicao-competencias-sucesso-paciente-21-08-2026.md`.
+
+---
+
+## 🎛️ AO RETOMAR (21/08/2026) — Fonte de governança da comunicação comercial criada
+
+> **Pasta nova:** `squad-openclaw-comercial/` (30 arquivos). Ponto de entrada: `squad-openclaw-comercial/README.md`.
+
+**O que é:** a camada que faltava entre "temos E-Chat, GPTMaker e n8n" e "a comunicação comercial da SST é governada". Um **Diretor Comercial OpenClaw** que prioriza e emite intenção, **oito agentes** com fronteira escrita (receptivo, SDR, closer, suporte, CS, cobrança, guardião LGPD, escriba), **três schemas JSON** validados em Draft 2020-12, e **quatro fases de autonomia com gate** (L0 → L1 → L2 → L3).
+
+**Status: L0 para todos.** Nada foi ativado, nenhuma mensagem enviada, nenhuma credencial tocada, nenhum workflow JSON gerado.
+
+**Decisões arquiteturais fixadas no pacote:**
+
+| Camada | Papel | Regra dura |
+|---|---|---|
+| **E-Chat** | corpo — canal, CRM, cards, histórico | Canal oficial de paciente; Chatwoot/Evolution não voltam sem nova decisão |
+| **n8n** | mãos — cofre, política, idempotência, log, kill switch | **Nenhuma ação externa sai sem passar por aqui** |
+| **OpenClaw** | cérebro — raciocina e emite intenção | Nunca fala com paciente; fala com o n8n |
+| **GPTMaker** | camada de agentes que já responde (Léia = A1, MÉDINA = A2) | Governar, não ignorar. Toda intenção aponta para o n8n |
+| **Humano** | preço, desconto, campanha, risco clínico | Sempre, em qualquer nível de autonomia |
+
+**Três achados que o pacote deixa explícitos:**
+
+1. **A régua de desconto e a tabela de preço por especialidade (C15, desde 02/07) são o que mantém A2 e A3 em meia potência.** Não é limitação técnica — é uma decisão parada há mais de um mês. Enquanto não sair, todo agente responde "vou confirmar", nunca um número.
+2. **O webhook + endpoint do E-Chat (C21) é o gargalo único da Fase 2.** Contratos técnicos prontos para entregar à EAS em `n8n/contrato-webhook-echat.md` e `n8n/contrato-retorno-echat.md`, escritos como proposta ajustável e com tudo marcado **INFERIDO**. Nenhum endpoint foi inventado.
+3. **Dá para avançar sem a EAS.** Seis passos independentes do C21: levantar o estado real do GPTMaker (`audit_agent`), rodar `monitor_channel_health` (candidato a explicar as conversas sumidas), atualizar treinamentos de Léia e MÉDINA, aplicar os prompts revisados, revisar as configurações e construir a intenção `sinalizar_risco` (só alerta interno).
+
+**Correção aplicada ao prompt da MÉDINA:** o prompt de 06/05 prometia **"até 75% de desconto"** — número que não está em régua aprovada nenhuma —, agendava com uma estrutura de equipe que não existe mais e trazia preços de consulta fixos. Tudo corrigido em `gptmaker/prompt-medina-sdr-revisado.md`.
+
+**🔴 Pendências que este pacote NÃO resolve (e dependem de gente):**
+
+| # | O que falta | Dono | Critério de pronto |
+|---|---|---|---|
+| 1 | Tabela de preço por especialidade + régua de desconto (C15) | Rogério | Valores escritos e aprovados |
+| 2 | Webhook de saída + endpoint de retorno do E-Chat (C21) | Elieser + Lucas | Evento chega ao n8n e retorno volta pelo E-Chat |
+| 3 | Explicação das conversas sumidas (C23) | Elieser + Karine | Causa + recuperação sim/não + relatório de inatividade |
+| 4 | Cobrança 100% dentro do E-Chat, fora do número reserva (C33) | Lucas | Toda cobrança em card do CRM |
+| 5 | Chave da API nomeada, com validade e teto, entregue ao Lucas | Mayko | Lucas confirma repasse à EAS |
+| 6 | Levantar IDs e configuração reais dos agentes no GPTMaker | Mayko | `audit_agent` rodado, mapa preenchido |
+
+---
+
+## ✅ AO RETOMAR (19/08/2026, ~12h12) — Ata final: Aquisição de Competências Financeiro
+
+> **Ata completa, decisões e pendências geradas pelo Claude a partir da transcrição Notion:** ver histórico deste dia mais abaixo (bloco 10h00) e `pauta-aquisicao-competencias-financeiro-19-08-2026.md`. Registrado também em `02-areas/historico-acoes.md` e `squad-echat-overclock/historico-acoes.md`.
+
+**Decisões fechadas na reunião:**
+- **Bug do BOOM identificado e resolvido ao vivo:** cobrança duplicada de **R$28,00** num cliente já no padrão R$39,90 (duas faturas geradas no mesmo mês) — decisão: **cancelar** a cobrança de R$28. Não era R$24,90 residual em massa, foi um caso pontual de bug de sistema.
+- **Sabrina formalizada como auditora da cobrança** — olha padrão no BOOM, detecta anomalia, corrige antes de qualquer disparo.
+- **Proibido o modelo "Olá, bom dia + link"** — Rogério classificou como "terminantemente proibido" ao vivo, vendo Karine/Sabrina praticarem esse padrão.
+- **Modelo validado — cobrança preventiva no atendimento receptivo:** quando o cliente liga pra usar o benefício (ex.: agendar cardiologista), a equipe verifica o vencimento na hora e manda o link no mesmo contato, sem soar como cobrança.
+- **Caso Dona Sílvia:** Rogério ligou ao vivo, usou histórico (Pilates + acupuntura, filha/dependente Lorena), ofereceu novidade (odontologia), mandou link e pediu comprovante. **Rogério acompanha o pagamento ainda hoje.**
+- **Gravação de ligações vira obrigatória a partir de hoje** — plugin Audio Recorder (Chrome), todas as chamadas de cobrança gravadas e transcritas para alimentar o "cérebro" do processo.
+- **Cobrança segue parcialmente fora do E-Chat** — o CRM de cobrança da Sabrina só foi ativado ontem à tarde (18/08); parte das cobranças ainda roda pelo número Meta "reserva", fora do card/CRM oficial. Decisão: migrar 100% para dentro do E-Chat.
+- **Regra nova para toda reunião prática futura:** começar com tela, sistema, internet, computador e ligação já prontos — cobrada diretamente por Rogério a Lucas/Railane.
+
+**⚠️ Não confundir:** esta reunião tratou de financeiro/cobrança/infra — **não tratou** dos gates C19 (IA ativa), C20 (funis/cards por especialidade) e C21 (webhook + endpoint) do pós-ativação E-Chat. Esses seguem exatamente como estavam em 18/08: 🔴 abertos, sem resposta nova.
+
+**Pendências com dono/prazo/critério de pronto (ver ata completa mais abaixo e `openclaw-sst/COMPROMISSOS-ATIVOS.md`):**
+
+| # | O que falta | Dono | Prazo | Critério de pronto |
+|---|---|---|---|---|
+| 1 | Cancelar cobrança duplicada de R$28,00 | Sabrina | Hoje 19/08 | Cobrança cancelada no BOOM, com print |
+| 2 | Resolver fone/microfone para ligar pelo computador/E-Chat | Lucas | Hoje 19/08 | Ligação funcionando pelo E-Chat |
+| 3 | Instalar plugin Audio Recorder em todos os PCs da equipe | Lucas | Hoje 19/08 | Plugin ativo e testado em cada máquina |
+| 4 | Fazer as 8 ligações de cobrança de vencidos de ontem, gravando | Sabrina + Karine | Hoje 19/08 | 8 ligações feitas, gravadas, resultado registrado |
+| 5 | Acompanhar pagamento da Dona Sílvia | Rogério | Hoje 19/08 | Comprovante recebido ou não-pagamento com motivo registrado |
+| 6 | Conversar com Aline sobre cancelamento de médicos por falta de agenda | Rogério | Hoje 19/08 | Conversa realizada, decisão registrada |
+| 7 | Refinar e enviar formulário Typebot de cadastro de dependentes | Lucas | `[FALTA: data não cravada]` | Formulário revisado, enviado a todos os funcionários |
+| 8 | Enviar lista de nomes de familiares para cadastro no benefício | Mayko | Hoje 19/08 (se possível) | Lista enviada ao grupo/Lucas |
+| 9 | Verificar se computadores da clínica têm SSD | Lucas | `[FALTA: sem data]` | SSD confirmado ou manutenção feita |
+| 10 | Conectar número de WhatsApp correto ao E-Chat, unificar fluxo | Lucas | `[FALTA: sem data, urgente]` | 100% da cobrança passa pelo card/CRM do E-Chat, sem número reserva |
+| 11 | Financeiro maior: aporte/caixa, salários definitivos, régua de desconto oficial, verba Google Ads | Rogério | Aberto desde 02/07 | GO/NO-GO explícito registrado — **não avançou nesta reunião** |
+| 12 | Gates C19 (IA)/C20 (funis)/C21 (webhook+endpoint) | Lucas + Elieser | `[FALTA: sem data]` | Ver `openclaw-sst/COMPROMISSOS-ATIVOS.md` |
+
+---
+
+## 🟡 AO RETOMAR (19/08/2026, 10h00) — Aquisição de Competências Financeiro
+
+> **Documento de apoio:** `pauta-aquisicao-competencias-financeiro-19-08-2026.md` · **Notion:** `3c1ad3c0037381c890bcdfb0fb0144fc`
+
+**Contexto lido:** a página do Notion da reunião de hoje está com notas manuais vazias e transcrição automática. A abertura capturada é longa, com alinhamento espiritual, reconhecimento do esforço da equipe, tema família/benefícios e chamado para protagonismo. Na atualização das 11h01 BRT, já aparecem fatos operacionais: segundo número ativo e em uso, CRM ativo, Typebots a criar dentro do E-Chat, formulário de beneficiários/dependentes criado como demonstração, base confirmada em R$ 39,90 e discussão de inadimplência.
+
+**Tese da reunião:** aproveitar a energia positiva pós-ativação para fechar decisões objetivas. O E-Chat saiu da fase de "ativar canal" (número novo, Instagram e CRM funcionando), mas isso ainda não prova **IA ativa**, **webhook**, **endpoint de retorno**, **funis por especialidade** nem **rotina de disparo/card**.
+
+**Financeiro que precisa voltar à mesa:** pendências de 02/07 e 20/07 continuam abertas, mas o reajuste mudou de status na fala da Karine: toda a base estaria em R$ 39,90. Validar evidência em sistema/relatório. Seguem como pauta: inadimplência M1/M2/M3, cobrança real, aporte/caixa, salários definitivos, régua de desconto e verba de Google Ads. Ver `checklist-semana1-julho-2026.md` e `reuniao-estrategica-rogerio-20-07-2026.md`.
+
+
+**Atualização Notion 11h40 BRT:** a reunião avançou para auditoria ao vivo. No BOOM (`financeiro > contas a receber`) apareceu cobrança residual/duplicada de R$ 24,90 em cliente já no padrão R$ 39,90, então o reajuste não deve ser tratado como “zero exceções” até haver relatório limpo. Rogério posicionou Sabrina como auditora da cobrança. Também ficou claro que parte da cobrança ainda roda pelo Meta/WhatsApp Business reserva, fora do E-Chat/CRM; o CRM de cobrança da Sabrina foi criado hoje e precisa virar rotina. O modelo correto validado foi cobrança preventiva no uso/agendamento: cliente SST Card chamou para cardiologista, equipe verificou vencimento, agendou e enviou link no contexto. Caso Dona Sílvia: pedido de acupuntura de 06/08 respondido só em 17/08, cliente já usa Pilates/acupuntura, vencimento em aberto de ontem e Rogério decidiu ligar ao vivo usando histórico. Lucas deve fechar infraestrutura: máquina lenta, SSD/manutenção, backup/formatação, Wi-Fi/repetidor, duas internets e ligação pelo E-Chat.
+**Saída obrigatória:** cada item deve sair com **o que falta · dono · prazo · critério de pronto**. Se o Rogério não decidir algo hoje, registrar explicitamente a próxima data de decisão.
+
+**Observação operacional:** a skill de matinal automática não foi executada com KPIs de Notion/Chatwoot porque `NOTION_DATABASE_ID`, `NOTION_TOKEN`, `CHATWOOT_API_TOKEN` e `CHATWOOT_API_URL` não estão configurados no ambiente atual. Não inventar números das últimas 24h.
+
+---
+
+## ✅ AO RETOMAR (18/08/2026, 12h23) — Pós-ativação E-Chat/CRM
+
+> Origem: print do grupo **SST × EAS Systems** anexado no atendimento de 18/08 e áudio enviado por Mayko ao grupo de ativação. Registrar também em `squad-echat-overclock/historico-acoes.md`.
+
+**Marco técnico confirmado no grupo:**
+- Número novo do WhatsApp em produção no E-Chat.
+- Instagram da clínica **@ssfclinica** conectado/linkado.
+- CRM em produção com teste realizado.
+- Confirmação operacional no grupo: **"Funcionando"**.
+
+**Mudança de fase:** a conversa deixou de ser "ativar canal" e passou a ser **conferência pós-ativação para automação comercial**. O áudio enviado por Mayko reconhece o avanço e pede respostas binárias sobre o que falta para sair da ativação e entrar em execução recorrente.
+
+**Checklist cobrado no áudio/mensagem de apoio:**
+1. **IA de atendimento:** está ativa nesse número ou ainda falta chave/configuração/liberação?
+2. **CRM/funis:** os leads já entram como card com origem, interesse e próxima ação, ou falta criar/ajustar funis por especialidade?
+3. **Webhook de saída + endpoint de retorno:** o E-Chat já expõe evento para n8n/OpenClaw e retorno de mensagem, ou ainda precisa desenvolvimento?
+4. **Operação Karine/Sabrina:** falta lista, disparo, cards, permissão, treinamento ou regra operacional para usar na rotina?
+5. **Conversas sumidas:** houve explicação, possibilidade de recuperação dos contatos e relatório de conversas fechadas por inatividade?
+
+**Regra de fechamento daqui para frente:** cada resposta deve trazer **o que falta · dono · prazo · critério de pronto**. Sem isso, o item continua aberto.
+
+**Não confundir com concluído:** número/Instagram/CRM funcionando não prova, sozinho, que a **IA de atendimento**, o **webhook**, o **endpoint de retorno**, os **funis por especialidade** e a **rotina operacional de disparo/card** estejam prontos. Esses são os próximos gates.
+
+---
+
+## 🕯️ CORREÇÃO DE REGISTRO (14/08/2026) — leia antes de escrever qualquer coisa sobre a Raquel
+
+**O registro de 10/08 estava errado.** Ficou escrito aqui "Raquel teve o nascimento do filho" e "licença-maternidade". Na reunião de 14/08 ficou claro que **o bebê não sobreviveu** — a reunião abriu com oração pela perda, e Mayko falou em velório e luto. A Raquel está **afastada por luto**, não em licença-maternidade.
+
+**Regras a partir daqui:**
+- Nunca escrever "licença-maternidade", "nascimento" ou qualquer felicitação em mensagem, pauta, documento ou prompt que envolva a Raquel.
+- Não atribuir tarefas nem prazos a ela; não cobrar retorno.
+- Qualquer comunicação que a mencione passa por revisão humana do Mayko antes de sair.
+- O nome do bebê aparece na transcrição ora como "Ravi", ora como "Javi" — **não usar o nome** até o Mayko confirmar.
+- Documentos históricos de 10/08 (`pauta-aquisicao-competencia-10-08-2026.md/.html`) foram escritos sob a informação errada. O HTML já está publicado em `playbook.ssfcard.ia.br` — avaliar se vale corrigir ou deixar como registro da época.
+
+---
+
+## 👤 AO RETOMAR (14/08/2026, tarde) — Entrevistas da recepção BP + call com Rogério
+
+> **Ata da call (15h52):** `reuniao-rogerio-14-08-2026.md` · **Registro das entrevistas:** `rh-clinica/registro-entrevistas-recepcao-14-08-2026.md` · **Transcrições Notion:** entrevista `3bcad3c00373807c8c87e6d9d3a07e86` · call `3bcad3c003738074ac55ebd0399aa543`
+
+**Duas candidatas à recepção do Bairro da Paz, as duas aprovadas na fase comportamental — ninguém eliminado.** A decisão passa para a **entrevista de capacidades** (testar prática, não discurso). Só há **uma vaga**.
+
+| Candidata | Leitura | Risco |
+|---|---|---|
+| **Letícia de Santana França** (21) — Enfermagem UniFTC 6º sem. | Energia **executora**, inovação/IA, **à frente na cultura de agentização**. Sonho não ficou claro | Grade da faculdade × 44h presencial · sai ao se formar (~1,5 ano) |
+| **Deise Freitas de Oliveira** (41) — recepção Promédica + Curativo | **Comunicadora/relacionamento**, superpoder conexão, motor financeiro explícito, sonho da **casa própria**. *"Uma Aline do passado vendendo muito cartão"* | Rotatividade recente (3 empresas / ~11 meses cada) |
+
+**Documentos criados:** roteiros de entrevista impressos (HTML + PDF) para o Rogério conduzir sozinho, em `rh-clinica/entrevista-comportamental-{leticia,deise}-14-08-2026.{html,pdf}` — blocos, ficha de nota 0–3 e campo de decisão assinada.
+
+**🔴 Divergência a fechar antes de contratar:** o parecer da RAABE atribui à Deise **10 anos de Promédica (2013–2022)**, curso técnico e CRM — nada disso está no currículo entregue, que cobre só os últimos 3 anos. Hipótese provável: **currículo enxuto** (o parecer fala em "retorno posterior", que bate com jul/2023–ago/2024). O parecer, porém, **se contradiz sozinho** (Técnico em Enfermagem × Gestão Hospitalar), o que reduz seu peso como fonte. **Confirmar com a Edenice.**
+
+**Decisões da call com Rogério:**
+- **Perfil comercial vira exigência em todo recrutamento futuro** — pedido à Edenice/RAABE. *"Até quem for limpar o chão tem que ter visão comercial."*
+- **Denilson** (ex-gestor de 3–5 unidades de operadora de saúde, ~200 médicos parceiros, desempregado) entra para **administrar a clínica do Bairro da Paz** e depois virar regional. Remuneração a negociar — não dá para pagar os ~R$4–5k anteriores agora. Rogério quer **distribuição de lucro mensal**, não anual.
+- Rogério cogita a **Letícia para a clínica de odontologia** (2 recepcionistas, com componente de IA).
+- **Tese de execução** trazida do treinamento de franquia (dono de ~1.000 unidades): o gargalo é execução, logo o recrutamento tem que entregar **padrão executivo**. O franqueador **não acredita em IA** — é onde a SST tem vantagem.
+
+⚠️ **Confidencialidade:** os arquivos de `rh-clinica/` desta data contêm dados pessoais das candidatas e a pasta publica em `playbook.ssfcard.ia.br`. Tratar no `.gitignore` antes de qualquer push.
+
+---
+
+## 🔴 AO RETOMAR (14/08/2026) — Reunião relâmpago com Karine, Lucas e Sabrina
+
+> **Transcrição:** Notion `3bcad3c0037381f8be49dadee3e5caa8` · **Protocolo do dia (artifact):** https://claude.ai/code/artifact/4a9ae830-abb8-4620-a9dd-8c561e9e34f1 · **Mensagens:** `squad-echat-overclock/cobranca-elieser-14-08-2026.md`
+
+**🔴 Achado mais grave — levantado pela Karine, não por nós:** conversas **desapareceram do E-Chat**, dois dias seguidos. Não eram só tickets encerrados: eram negociações em andamento, cards prestes a fechar — *"as mensagens desapareceram, os números também, não tenho nem como entrar em contato com essas pessoas."* Perda de contato comercial, não higiene de fila. Exigir explicação e reversão antes de qualquer disparo novo.
+
+**Elieser respondeu 2 das 6 pendências (por áudio, na manhã de 14/08):**
+- **Custo:** só **IA de atendimento** e **e-mail marketing** exigem contratação nova. CRM, quadros, automações do CRM e disparo por template **já estão no contrato**.
+- **Encerramento automático:** já existe mensagem padrão avisando o cliente, e ela é **customizável** — a EAS altera ou ensina a alterar. → Transformar em toque de reengajamento, não em despedida.
+- **Janela de 24h:** ele afirma que não se perde, mas completou *"de uma forma ou de outra você vai ter que enviar um template"* — **contradição a fechar por escrito**.
+
+**Trava da IA é bilateral:** o Elieser acredita que a SST ainda precisa criar conta na Anthropic e cadastrar cartão. **A conta, o cartão e o saldo já existem e estão ociosos.** Falta gerar uma API key nomeada, com validade e teto, e entregá-la ao Lucas. Era para ter rodado na sexta anterior.
+
+**Risco de segurança em aberto:** a EAS pede a senha do Instagram **dentro do grupo** (política deles: nada no privado). São ~3.154 seguidores na clínica e ~3.500 no cartão, num grupo com ex-funcionários não mapeados. Caminho preferido: conectar pela **BM do Rogério** (validada, com CNPJ). Se não houver alternativa, entregar **com responsabilidade registrada por escrito**.
+
+**Estrutura decidida:** **Lucas** é o interlocutor único com o Elieser · **Karine** assume todos os disparos (cobrança + o que era da Raquel) · **Sabrina** move a base para card no CRM · toda conversa vira card **no E-Chat, não mais no Notion** · os três instalam Claude Code com a pasta versionada do cérebro SST.
+
+**Meta declarada da semana:** IA ativa · número do SST Card ativo · Instagram conectado · funil dentro do CRM.
+
+### 🎧 Respostas do Elieser aos 6 pontos (8 áudios, 10h51–10h58 · transcritos com Whisper)
+
+> Transcrições em `squad-echat-overclock/` — origem: `C:\Users\mayko\Downloads\WhatsApp Ptt 2026-08-14 at 10.*.ogg`
+
+| # | Pergunta | Resposta |
+|---|---|---|
+| 1 | Custo dos módulos | ✅ **Só IA e e-mail marketing** têm custo extra. CRM, automações do CRM **e automação com Instagram** já estão inclusos — *"sem um centavo de aumento"* |
+| 2 | Webhook de saída | 🔴 **Não existe pronto.** *"Talvez precise um pequeno desenvolvimento."* Pede que o Mayko **desenhe o fluxo** e abra call técnica separada |
+| 3 | Acesso ao painel | ✅ Mandou a equipe criar na hora, envio no privado, perfil admin com relatórios e indicadores |
+| 4 | Imagem | 🔴 **A IA não lê nem envia imagem** — trata só texto. Só com desenvolvimento. ⚠️ Não confundir com o envio manual pela atendente, que funciona |
+| 5 | Áudio | 🔴 Não transcreve. Desenvolvimento + consumo extra de token; proposta é botão "transcrever" manual. Não priorizou porque *"tudo que envolve custo, o cliente quer correr"* |
+| 6 | Implantação/treinamento | **Inverteu a ordem:** Instagram → 2º número na API oficial → CRM/funil/automações → treinamento conjunto. Recomenda **1–2 pessoas dedicadas só ao digital**, não a mesma equipe do atendimento |
+
+**🔑 A trava da IA é bilateral e mais simples do que ele pensa.** Ele afirmou depender do Rogério para *"acessar a console da Anthropic, contratar o serviço, cadastrar o cartão da SST e gerar o token"*. **A conta, o cartão e o saldo já existem e estão ociosos** — basta gerar uma chave nomeada com validade e entregar ao Lucas. Isso tira o Rogério do caminho crítico.
+
+### ✅ Instagram resolvido sem entregar senha (Lucas, 12h15)
+
+O risco de circular a senha do Instagram no grupo **não se concretizou**: o Lucas liberou **acesso total pelo Meta Business** ao Junior. Falta o Elieser confirmar se a liberação basta para linkar as redes ao E-Chat. Elieser havia informado que pedia desde a semana anterior e mandou para a Raquel, sem retorno — a bola estava do nosso lado.
+
+### 💳 2º número (71 98193-9519) — cartão individual por número
+
+Elieser (13h02): *"O cartão está cadastrado no primeiro número; como será ativado um segundo número, precisa cadastrar o cartão no segundo número. Cadastro individual por número na Meta."* Railane confirmou que já existe um cartão cadastrado — **falta cadastrar no segundo número**. Pergunta aberta: os dois números estão na mesma conta do WhatsApp Business? Se estiverem, o meio de pagamento pode já cobrir ambos.
+
+### 📬 Mensagens enviadas ao grupo SST × EAS em 14/08
+
+- **12h59** — mensagem 1: os 7 pontos (IA/chave, Instagram via BM, 2º número, webhook, áudio, imagem, ordem de implantação).
+- **13h+** — mensagem 2: cartão encaminhado à Railane + **conversas sumidas (3 exigências)** + copy da mensagem de encerramento + confirmação sobre template dentro da janela de 24h.
+
+Rascunhos e histórico: `squad-echat-overclock/cobranca-elieser-14-08-2026.md`. Compromissos com dono e prazo: `openclaw-sst/COMPROMISSOS-ATIVOS.md`. Checkpoints no Google Calendar (14/08 14h, 15h, 17h30 · 17/08 09h).
+
+---
+
+## 🖥️ AO RETOMAR (12/08/2026) — Funcionário OpenClaw SST em pré-voo
+
+**Pacote canônico criado:** `openclaw-sst/` — plano mestre, contexto operacional curado, identidade da **MarcIA SST**, contrato de autonomia, heartbeat e diagnóstico read-only da VPS.
+
+**Cópia segura para a VPS:** `C:\Users\mayko\cerebros-clientes\sst\entregas\infraestrutura\openclaw-sst\`. Esta é a fonte que pode ser sincronizada pelo GitHub. **Não clonar o `meu-cerebro` inteiro no servidor.**
+
+**Arquitetura preservada:** E-Chat = canal/CRM · n8n = execução/cofre · OpenClaw = raciocínio/intenção. Chatwoot/Evolution não voltam como caminho principal.
+
+**Estado:** nenhuma mudança feita na VPS. GO depende de: (1) validar fingerprint/acesso SSH; (2) rodar `deploy/preflight-readonly.sh`; (3) snapshot + exports; (4) confirmar webhook de saída e endpoint de envio do E-Chat; (5) autenticar runtime sem segredo no Git.
+
+**Autenticação proposta:** Claude Code Pro do Rogério no Warp para operação · ChatGPT Plus via OAuth/provider `openai` como runtime primário · API OpenAI `gpt-5.6-luna` como fallback com teto exclusivo da SST. Claude Pro dentro do runtime fica opcional, após smoke test.
+
+---
+
+## 🟡 AO RETOMAR (10/08/2026) — Reorganização de equipe: Raquel afastada
+
+> ⚠️ **Registro retificado em 14/08** — ver bloco "Correção de registro" no topo. O texto original dizia "nascimento do filho" e "licença-maternidade"; o bebê não sobreviveu e a Raquel está afastada por luto.
+
+**Raquel está afastada** e não participa **hoje nem nas próximas semanas** do processo comercial. Decisão do Rogério (via Mayko): **Karine, Lucas e Sabrina encabeçam** a partir de agora, sem matinal conjunta — sessões **individuais** de acompanhamento com cada um.
 
 **Redistribuição:**
 - **Social Selling** (era da Raquel) → passa para a **Karine**, cobrindo o gap

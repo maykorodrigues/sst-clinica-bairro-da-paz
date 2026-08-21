@@ -1,0 +1,183 @@
+{
+  "name": "SST · F3 Política",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-openclaw/f3-politica",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "f3-politica-webhook",
+      "name": "Webhook intenção do cérebro (espelho)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -820,
+        260
+      ],
+      "webhookId": "sst-openclaw-f3-politica",
+      "notes": "Recebe a intenção JSON gerada pelo OpenClaw/F2. Nesta fase registra e decide; não executa F5."
+    },
+    {
+      "parameters": {
+        "jsCode": "const UUID_V4 = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;\nconst CPF_FORMATADO = /\\b\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}\\b/;\nconst ALLOWLIST = new Set([\n  'responder_conversa', 'criar_card_echat', 'atualizar_card_echat', 'mover_card_estagio',\n  'registrar_nota_interna', 'transferir_para_humano', 'agendar_followup', 'enviar_template_aprovado',\n  'solicitar_segunda_via', 'notificar_equipe_interna', 'registrar_no_vault', 'espelhar_no_notion',\n  'consultar_status_leitura', 'abrir_chamado_interno', 'sinalizar_risco', 'bloquear_execucao'\n]);\n\nfunction expired(value) {\n  const date = new Date(value);\n  return Number.isNaN(date.getTime()) || date.getTime() <= Date.now();\n}\n\nfunction hasSensitivePayload(intent) {\n  const message = String(intent?.payload?.mensagem || '');\n  return CPF_FORMATADO.test(message) || /\\bcpf\\b/i.test(message);\n}\n\nconst input = $input.first().json;\nconst intent = input.body || input;\nconst errors = [];\nconst divergences = [];\nconst alerts = [];\nconst tetoDiario = Number($env.TETO_MENSAGENS_DIA || 20);\nconst mensagensHoje = Number(input.mensagens_automaticas_hoje || intent.mensagens_automaticas_hoje || 0);\n\nconst required = ['intent_id', 'created_at', 'actor', 'agent', 'action', 'dry_run', 'target', 'reason', 'source_paths', 'approval', 'payload', 'expires_at'];\nfor (const key of required) {\n  if (!(key in intent)) errors.push(`campo_obrigatorio_ausente:${key}`);\n}\nif (!UUID_V4.test(String(intent.intent_id || ''))) errors.push('intent_id_invalido');\nif (!ALLOWLIST.has(intent.action)) errors.push('acao_fora_da_allowlist');\nif (!Array.isArray(intent.source_paths) || intent.source_paths.length === 0) errors.push('source_paths_ausente');\nif (typeof intent.dry_run !== 'boolean') errors.push('dry_run_invalido');\nif (!intent.approval || typeof intent.approval.required !== 'boolean') errors.push('approval_required_invalido');\nif (!intent.target || typeof intent.target.system !== 'string') errors.push('target_system_ausente');\nif (typeof intent.reason !== 'string' || intent.reason.length < 20) errors.push('reason_curto_ou_ausente');\nif (expired(intent.expires_at)) errors.push('expires_at_vencido');\nif (hasSensitivePayload(intent)) errors.push('payload_com_dado_sensivel');\n\nlet effectiveIntent = { ...intent };\nlet status = 'registrado';\nlet route = 'dry_run';\nlet reason = 'intencao_valida_modo_espelho';\nlet keyType = 'intent';\nlet keyValue = UUID_V4.test(String(intent.intent_id || '')) ? intent.intent_id : `intent-invalida-${$execution.id}`;\n\nif ($env.PAUSAR_DIRETOR_COMERCIAL === 'true') {\n  status = 'bloqueado';\n  route = 'bloqueado';\n  reason = 'kill_switch_ativo';\n  alerts.push('alerta_interno_kill_switch');\n  keyType = 'policy_log';\n} else if (errors.length > 0) {\n  status = 'rejeitado';\n  route = 'rejeitado';\n  reason = errors.join(',');\n  keyType = 'policy_log';\n} else if (mensagensHoje >= tetoDiario) {\n  status = 'bloqueado';\n  route = 'bloqueado';\n  reason = 'teto_diario_estourado';\n  alerts.push('alerta_teto_diario');\n  keyType = 'policy_log';\n} else if ((intent.autonomy_level === 'L0' || intent.autonomy_level === 'L1' || !intent.autonomy_level) && intent.dry_run === false) {\n  effectiveIntent.dry_run = true;\n  status = 'registrado_com_divergencia';\n  reason = 'dry_run_false_forcado_para_true_em_L0_L1';\n  divergences.push(reason);\n}\n\nreturn [{ json: {\n  workflow: 'SST · F3 Política',\n  status_pre_banco: status,\n  route_pre_banco: route,\n  reason_pre_banco: reason,\n  errors,\n  divergences,\n  alerts,\n  intent: effectiveIntent,\n  idempotency_key_type: keyType,\n  idempotency_key_value: keyValue,\n  metadata: {\n    status,\n    route,\n    reason,\n    errors,\n    divergences,\n    alerts,\n    intent_id: intent.intent_id || null,\n    action: intent.action || null,\n    autonomy_level: intent.autonomy_level || 'L0',\n    dry_run: effectiveIntent.dry_run !== false,\n    teto_diario: tetoDiario,\n    mensagens_automaticas_hoje: mensagensHoje,\n    sends_external_message: false,\n    mirror_mode: true\n  }\n} }];"
+      },
+      "id": "f3-validar-politica",
+      "name": "Function · validar schema e política",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -580,
+        260
+      ],
+      "notes": "Valida o contrato de schemas/intent.schema.json por regras determinísticas e força dry_run em L0/L1."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH entrada AS (\n  SELECT\n    '{{ $json.idempotency_key_type }}'::text AS key_type,\n    '{{ $json.idempotency_key_value }}'::text AS key_value,\n    {{ JSON.stringify($json.metadata || $json.log_payload).replace(/'/g, \"''\") }}::jsonb AS metadata\n), inserido AS (\n  INSERT INTO sst_openclaw_idempotencia (key_type, key_value, expires_at, status, metadata)\n  SELECT key_type, key_value, CASE WHEN key_type = 'intent' THEN now() + interval '7 days' ELSE now() + interval '24 hours' END, '{{ $json.status_pre_banco }}', metadata\n  FROM entrada\n  ON CONFLICT (key_type, key_value) DO NOTHING\n  RETURNING true AS inserted, key_type, key_value, status, hit_count, metadata\n), atualizado AS (\n  UPDATE sst_openclaw_idempotencia t\n  SET last_seen_at = now(), hit_count = t.hit_count + 1\n  FROM entrada e\n  WHERE t.key_type = e.key_type\n    AND t.key_value = e.key_value\n    AND NOT EXISTS (SELECT 1 FROM inserido)\n  RETURNING false AS inserted, t.key_type, t.key_value, t.status, t.hit_count, t.metadata\n), resultado AS (\n  SELECT * FROM inserido\n  UNION ALL\n  SELECT * FROM atualizado\n)\nSELECT * FROM resultado\nUNION ALL\nSELECT false AS inserted, e.key_type, e.key_value, 'fallback_sem_linha'::text AS status, 0 AS hit_count, e.metadata\nFROM entrada e\nWHERE NOT EXISTS (SELECT 1 FROM resultado);",
+        "options": {}
+      },
+      "id": "f3-postgres-idempotencia",
+      "name": "Postgres · registrar idempotência da intenção",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -320,
+        260
+      ],
+      "notes": "A intenção válida usa key_type=intent por 7 dias. Rejeições viram policy_log para auditoria.",
+      "onError": "continueErrorOutput",
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const banco = $input.first().json || {};\nconst pre = $('Function · validar schema e política').first().json;\nlet status = pre.status_pre_banco;\nlet route = pre.route_pre_banco;\nlet reason = pre.reason_pre_banco;\nconst duplicate = banco.key_type === 'intent' && banco.inserted !== true;\n\nif (duplicate) {\n  status = 'rejeitado';\n  route = 'rejeitado';\n  reason = 'intent_id_duplicado';\n}\n\nlet approvalRequired = Boolean(pre.intent?.approval?.required);\nif (approvalRequired && status === 'registrado') {\n  status = 'fila_humana';\n  route = 'fila_aprovacao';\n  reason = 'aprovacao_humana_pendente';\n}\n\nreturn [{ json: {\n  workflow: 'SST · F3 Política',\n  status,\n  route,\n  reason,\n  execute: false,\n  sends_external_message: false,\n  f5_enabled: false,\n  mirror_mode: true,\n  dry_run: pre.intent?.dry_run !== false,\n  duplicate,\n  errors: pre.errors,\n  divergences: pre.divergences,\n  alerts: pre.alerts,\n  idempotency: {\n    key_type: banco.key_type,\n    key_value: banco.key_value,\n    inserted: banco.inserted === true,\n    hit_count: banco.hit_count || 0\n  },\n  intent: pre.intent\n} }];"
+      },
+      "id": "f3-decisao-final",
+      "name": "Decisão final sem F5",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -60,
+        260
+      ],
+      "notes": "Nenhum caminho chama endpoint externo. F5 permanece desabilitado."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "f3-responder-webhook",
+      "name": "Responder política (espelho)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        200,
+        260
+      ],
+      "notes": "Resposta técnica para o chamador interno; não é mensagem para paciente."
+    },
+    {
+      "parameters": {
+        "jsCode": "const pre = $('Function · validar schema e política').first().json;\nreturn [{ json: {\n  workflow: 'SST · F3 Política',\n  status: 'fila_humana',\n  route: 'fila_humana',\n  reason: 'falha_persistencia_idempotencia',\n  execute: false,\n  sends_external_message: false,\n  f5_enabled: false,\n  mirror_mode: true,\n  retry_automatico: false,\n  dry_run: true,\n  errors: pre.errors || [],\n  divergences: pre.divergences || [],\n  alerts: ['alerta_falha_banco_idempotencia'],\n  idempotency: {\n    key_type: pre.idempotency_key_type,\n    key_value: pre.idempotency_key_value,\n    inserted: false,\n    hit_count: 0\n  },\n  intent: pre.intent\n} }];"
+      },
+      "id": "f3-falha-banco-fila-humana",
+      "name": "Fila humana por falha de banco",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -60,
+        460
+      ],
+      "notes": "Falha de persistência é fail-closed: alerta, fila humana e nenhum retry automático."
+    }
+  ],
+  "connections": {
+    "Webhook intenção do cérebro (espelho)": {
+      "main": [
+        [
+          {
+            "node": "Function · validar schema e política",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Function · validar schema e política": {
+      "main": [
+        [
+          {
+            "node": "Postgres · registrar idempotência da intenção",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres · registrar idempotência da intenção": {
+      "main": [
+        [
+          {
+            "node": "Decisão final sem F5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fila humana por falha de banco",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decisão final sem F5": {
+      "main": [
+        [
+          {
+            "node": "Responder política (espelho)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fila humana por falha de banco": {
+      "main": [
+        [
+          {
+            "node": "Responder política (espelho)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    "sst",
+    "openclaw",
+    "n8n",
+    "f3",
+    "politica",
+    "modo-espelho",
+    "sem-envio"
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-08-21T00:00:00.000Z",
+  "versionId": "f3000000-0000-4000-8000-000000000003"
+}

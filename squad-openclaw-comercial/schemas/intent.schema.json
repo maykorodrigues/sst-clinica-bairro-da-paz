@@ -1,0 +1,313 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://playbook.ssfcard.ia.br/schemas/intent.schema.json",
+  "title": "Intencao do Squad OpenClaw Comercial - SST",
+  "description": "Contrato unico entre o cerebro (OpenClaw) e as maos (n8n). Nenhuma acao externa da SST pode ser executada sem uma intencao valida contra este schema. O padrao e dry_run=true; acoes de risco exigem approval.required=true.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "intent_id",
+    "created_at",
+    "actor",
+    "agent",
+    "action",
+    "dry_run",
+    "target",
+    "reason",
+    "source_paths",
+    "approval",
+    "payload",
+    "expires_at"
+  ],
+  "properties": {
+    "intent_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID v4. Chave de idempotencia. Reemitir a mesma acao com id novo para contornar rejeicao e violacao de contrato.",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 com fuso. A operacao roda em America/Sao_Paulo."
+    },
+    "actor": {
+      "type": "string",
+      "description": "Quem emitiu a intencao.",
+      "enum": [
+        "diretor-comercial-openclaw",
+        "marcia-sst",
+        "n8n-rotina",
+        "humano"
+      ]
+    },
+    "agent": {
+      "type": "string",
+      "description": "Agente do squad responsavel pela intencao.",
+      "enum": ["A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"]
+    },
+    "action": {
+      "type": "string",
+      "description": "Acao da allowlist. O n8n rejeita qualquer valor fora desta lista.",
+      "enum": [
+        "responder_conversa",
+        "criar_card_echat",
+        "atualizar_card_echat",
+        "mover_card_estagio",
+        "registrar_nota_interna",
+        "transferir_para_humano",
+        "agendar_followup",
+        "enviar_template_aprovado",
+        "solicitar_segunda_via",
+        "notificar_equipe_interna",
+        "registrar_no_vault",
+        "espelhar_no_notion",
+        "consultar_status_leitura",
+        "abrir_chamado_interno",
+        "sinalizar_risco",
+        "bloquear_execucao"
+      ]
+    },
+    "dry_run": {
+      "type": "boolean",
+      "default": true,
+      "description": "true = o n8n valida, registra e NAO executa. Padrao do sistema. Em L0 e L1 sempre true."
+    },
+    "autonomy_level": {
+      "type": "string",
+      "description": "Nivel de autonomia sob o qual a intencao foi emitida.",
+      "enum": ["L0", "L1", "L2", "L3"],
+      "default": "L0"
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system"],
+      "description": "Onde a acao seria executada. Somente identificadores tecnicos - nunca nome, CPF ou telefone.",
+      "properties": {
+        "system": {
+          "type": "string",
+          "enum": ["e-chat", "n8n", "notion", "obsidian", "gptmaker", "interno"]
+        },
+        "record_id": {
+          "type": "string",
+          "description": "ID tecnico do card, conversa ou registro. Nao usar dado pessoal como identificador.",
+          "maxLength": 128
+        },
+        "channel": {
+          "type": "string",
+          "enum": ["whatsapp_oficial", "instagram", "widget", "interno", "nenhum"]
+        },
+        "queue": {
+          "type": "string",
+          "description": "Fila ou quadro de destino no CRM do E-Chat.",
+          "maxLength": 64
+        }
+      }
+    },
+    "reason": {
+      "type": "string",
+      "description": "Por que esta acao, agora. Deve citar o sinal que a motivou. 'Porque faz sentido' nao e motivo.",
+      "minLength": 20,
+      "maxLength": 600
+    },
+    "source_paths": {
+      "type": "array",
+      "description": "Caminhos no vault ou sistemas consultados que sustentam a decisao. Intencao sem fonte e rejeitada.",
+      "minItems": 1,
+      "items": { "type": "string", "maxLength": 300 }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required"],
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "description": "true obrigatorio quando a acao envolve preco, desconto, campanha, disparo em massa, alteracao de CRM, dado de paciente ou agenda."
+        },
+        "reason_required": {
+          "type": "string",
+          "description": "Qual gatilho tornou a aprovacao obrigatoria.",
+          "enum": [
+            "preco",
+            "desconto",
+            "campanha",
+            "disparo_em_massa",
+            "alteracao_crm",
+            "dado_de_paciente",
+            "agenda",
+            "dado_sensivel",
+            "template_novo",
+            "fora_de_horario",
+            "nenhum"
+          ]
+        },
+        "approved_by": {
+          "type": ["string", "null"],
+          "description": "Nome da pessoa que aprovou. null enquanto pendente.",
+          "default": null
+        },
+        "approved_at": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "default": null
+        }
+      }
+    },
+    "payload": {
+      "type": "object",
+      "description": "Conteudo minimo necessario para a acao. Proibido incluir CPF, laudo, exame, queixa clinica, credencial ou dado de terceiro.",
+      "additionalProperties": true,
+      "properties": {
+        "mensagem": {
+          "type": "string",
+          "description": "Texto proposto. Passa pelo A7 antes de qualquer envio.",
+          "maxLength": 4000
+        },
+        "template_id": {
+          "type": "string",
+          "description": "Identificador do template aprovado. Obrigatorio para enviar_template_aprovado.",
+          "maxLength": 128
+        },
+        "campos_card": {
+          "type": "object",
+          "description": "Os tres campos minimos de todo card no E-Chat.",
+          "additionalProperties": false,
+          "properties": {
+            "origem": { "type": "string", "maxLength": 120 },
+            "interesse": { "type": "string", "maxLength": 200 },
+            "proxima_acao": { "type": "string", "maxLength": 200 }
+          }
+        },
+        "estagio": {
+          "type": "string",
+          "enum": [
+            "novo",
+            "qualificando",
+            "qualificado",
+            "negociando",
+            "agendado",
+            "convertido",
+            "perdido",
+            "suporte",
+            "cobranca",
+            "escalado_humano"
+          ]
+        },
+        "motivo_perda": { "type": "string", "maxLength": 300 },
+        "followup_em": { "type": "string", "format": "date-time" }
+      }
+    },
+    "guardrails": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Verificacoes que o emissor declara ter feito. O n8n confere de novo - declaracao nao substitui validacao.",
+      "properties": {
+        "sem_dado_sensivel": { "type": "boolean", "default": true },
+        "sem_preco_nao_aprovado": { "type": "boolean", "default": true },
+        "sem_promessa_clinica": { "type": "boolean", "default": true },
+        "opt_out_verificado": { "type": "boolean", "default": true },
+        "dentro_do_horario_comercial": { "type": "boolean" },
+        "toques_no_dia": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Maximo de um toque por pessoa por dia. Valor 1 significa que este e o toque do dia."
+        }
+      }
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Depois deste instante o n8n rejeita a intencao. Evita que decisao velha seja executada em contexto novo. Recomendado: 2h para conversa ativa, 24h para rotina."
+    },
+    "kill_switch_checked": {
+      "type": "boolean",
+      "default": false,
+      "description": "O emissor confirmou que PAUSAR_DIRETOR_COMERCIAL nao esta ativo."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "action": { "const": "enviar_template_aprovado" } },
+        "required": ["action"]
+      },
+      "then": {
+        "properties": {
+          "approval": {
+            "properties": { "required": { "const": true } }
+          },
+          "payload": { "required": ["template_id"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "action": { "const": "criar_card_echat" } },
+        "required": ["action"]
+      },
+      "then": {
+        "properties": {
+          "payload": { "required": ["campos_card"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "autonomy_level": { "enum": ["L0", "L1"] } },
+        "required": ["autonomy_level"]
+      },
+      "then": {
+        "properties": { "dry_run": { "const": true } }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "intent_id": "3f2a9c1e-7b4d-4e88-9a01-5c6d7e8f9a0b",
+      "created_at": "2026-08-21T09:14:00-03:00",
+      "actor": "diretor-comercial-openclaw",
+      "agent": "A2",
+      "action": "criar_card_echat",
+      "dry_run": true,
+      "autonomy_level": "L0",
+      "target": {
+        "system": "e-chat",
+        "record_id": "conv-000-exemplo-ficticio",
+        "channel": "whatsapp_oficial",
+        "queue": "pre-vendas"
+      },
+      "reason": "Contato ficticio de demonstracao perguntou sobre consulta e nao houve resposta em 40 minutos; card precisa existir antes de qualquer toque.",
+      "source_paths": [
+        "squad-openclaw-comercial/agents/A2-pre-vendas-sdr.md",
+        "squad-openclaw-comercial/playbooks/qualificacao-consultas-exames.md"
+      ],
+      "approval": {
+        "required": true,
+        "reason_required": "alteracao_crm",
+        "approved_by": null,
+        "approved_at": null
+      },
+      "payload": {
+        "campos_card": {
+          "origem": "instagram_organico",
+          "interesse": "consulta_especialidade_a_confirmar",
+          "proxima_acao": "qualificar_spin_por_humano"
+        },
+        "estagio": "qualificando"
+      },
+      "guardrails": {
+        "sem_dado_sensivel": true,
+        "sem_preco_nao_aprovado": true,
+        "sem_promessa_clinica": true,
+        "opt_out_verificado": true,
+        "dentro_do_horario_comercial": true,
+        "toques_no_dia": 0
+      },
+      "expires_at": "2026-08-21T11:14:00-03:00",
+      "kill_switch_checked": true
+    }
+  ]
+}

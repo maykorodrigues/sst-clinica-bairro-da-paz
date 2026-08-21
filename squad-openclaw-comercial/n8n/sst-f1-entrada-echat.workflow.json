@@ -1,0 +1,183 @@
+{
+  "name": "SST · F1 Entrada E-Chat",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sst-openclaw/f1-entrada-echat",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "id": "f1-entrada-webhook",
+      "name": "Webhook E-Chat (INFERIDO)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        220
+      ],
+      "webhookId": "sst-openclaw-f1-entrada-echat",
+      "notes": "Rota placeholder ate a EAS confirmar o contrato real. Nao chama OpenClaw e nao envia resposta externa."
+    },
+    {
+      "parameters": {
+        "jsCode": "const crypto = require('crypto');\n\nfunction sha256(value) {\n  return crypto.createHash('sha256').update(String(value || '')).digest('hex');\n}\n\nfunction headerValue(headers, name) {\n  if (!name) return undefined;\n  return headers[name] || headers[String(name).toLowerCase()];\n}\n\nconst input = $input.first().json;\nconst body = input.body || input;\nconst headers = input.headers || {};\nconst rawBody = typeof input.rawBody === 'string' ? input.rawBody : JSON.stringify(body);\n\nconst signatureHeaderName = $env.ECHAT_SIGNATURE_HEADER;\nconst secret = $env.ECHAT_WEBHOOK_SECRET;\nlet assinaturaOk = false;\nlet assinaturaMotivo = 'assinatura_nao_configurada_placeholder_eas';\n\nif (signatureHeaderName && secret) {\n  const received = headerValue(headers, signatureHeaderName);\n  if (!received) {\n    assinaturaMotivo = 'assinatura_ausente';\n  } else {\n    const expected = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');\n    const normalized = String(received).replace(/^sha256=/, '');\n    assinaturaOk = normalized.length === expected.length && crypto.timingSafeEqual(Buffer.from(normalized), Buffer.from(expected));\n    assinaturaMotivo = assinaturaOk ? 'assinatura_valida' : 'assinatura_invalida';\n  }\n}\n\nconst rawText = String(body.message || body.text || body.content || '');\nconst eventId = String(body.event_id || body.id || '');\nconst rejeitado = !assinaturaOk || !eventId;\nconst now = new Date();\nconst keyType = rejeitado ? 'event_rejeitado' : 'event';\nconst keyValue = eventId || `sem-event-id-${$execution.id}`;\n\nconst payloadMinimo = {\n  event_id: eventId,\n  event_type: String(body.event_type || body.type || body.event || 'desconhecido'),\n  channel: String(body.channel || body.canal || 'desconhecido'),\n  conversation_id: String(body.conversation_id || body.conversation?.id || ''),\n  message_id: String(body.message_id || body.message?.id || ''),\n  occurred_at: String(body.occurred_at || body.timestamp || now.toISOString()),\n  raw_text_sha256: rawText ? sha256(rawText) : null,\n  raw_text_length: rawText.length,\n  has_attachment: Boolean(body.attachment || body.attachments?.length),\n  source_system: 'e-chat',\n  modo: 'espelho',\n  assinatura: assinaturaMotivo\n};\n\nreturn [{ json: {\n  status_pre_banco: rejeitado ? 'rejeitado' : 'validado',\n  http_status_pre_banco: !assinaturaOk ? 401 : (!eventId ? 400 : 200),\n  motivo_pre_banco: !assinaturaOk ? assinaturaMotivo : (!eventId ? 'event_id_ausente' : 'evento_valido'),\n  idempotency_key_type: keyType,\n  idempotency_key_value: keyValue,\n  expires_at_sql: rejeitado ? \"now() + interval '24 hours'\" : \"now() + interval '24 hours'\",\n  log_payload: payloadMinimo,\n  process_brain: false,\n  sends_external_message: false\n} }];"
+      },
+      "id": "f1-validar-minimizar",
+      "name": "Validar assinatura e minimizar payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -500,
+        220
+      ],
+      "notes": "Nao guarda texto bruto. Guarda hash e tamanho para auditoria."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH entrada AS (\n  SELECT\n    '{{ $json.idempotency_key_type }}'::text AS key_type,\n    '{{ $json.idempotency_key_value }}'::text AS key_value,\n    {{ JSON.stringify($json.metadata || $json.log_payload).replace(/'/g, \"''\") }}::jsonb AS metadata\n), inserido AS (\n  INSERT INTO sst_openclaw_idempotencia (key_type, key_value, expires_at, status, metadata)\n  SELECT key_type, key_value, now() + interval '24 hours', '{{ $json.status_pre_banco }}', metadata\n  FROM entrada\n  ON CONFLICT (key_type, key_value) DO NOTHING\n  RETURNING true AS inserted, key_type, key_value, status, hit_count, metadata\n), atualizado AS (\n  UPDATE sst_openclaw_idempotencia t\n  SET last_seen_at = now(), hit_count = t.hit_count + 1\n  FROM entrada e\n  WHERE t.key_type = e.key_type\n    AND t.key_value = e.key_value\n    AND NOT EXISTS (SELECT 1 FROM inserido)\n  RETURNING false AS inserted, t.key_type, t.key_value, t.status, t.hit_count, t.metadata\n), resultado AS (\n  SELECT * FROM inserido\n  UNION ALL\n  SELECT * FROM atualizado\n)\nSELECT * FROM resultado\nUNION ALL\nSELECT false AS inserted, e.key_type, e.key_value, 'fallback_sem_linha'::text AS status, 0 AS hit_count, e.metadata\nFROM entrada e\nWHERE NOT EXISTS (SELECT 1 FROM resultado);",
+        "options": {}
+      },
+      "id": "f1-postgres-idempotencia",
+      "name": "Postgres · registrar idempotência do evento",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -260,
+        220
+      ],
+      "notes": "Credencial fica no cofre do n8n. Tabela: sst_openclaw_idempotencia.",
+      "onError": "continueErrorOutput",
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const banco = $input.first().json || {};\nconst pre = $('Validar assinatura e minimizar payload').first().json;\nconst duplicado = pre.idempotency_key_type === 'event' && banco.inserted !== true;\n\nlet status = pre.status_pre_banco;\nlet httpStatus = pre.http_status_pre_banco;\nlet motivo = pre.motivo_pre_banco;\n\nif (duplicado) {\n  status = 'duplicado';\n  httpStatus = 200;\n  motivo = 'event_id_duplicado_24h';\n}\n\nif (status === 'validado') {\n  status = 'registrado_modo_espelho';\n  motivo = 'f1_nao_chama_cerebro_nesta_fase';\n}\n\nreturn [{ json: {\n  workflow: 'SST · F1 Entrada E-Chat',\n  status,\n  motivo,\n  http_status: httpStatus,\n  process_brain: false,\n  sends_external_message: false,\n  duplicate: duplicado,\n  idempotency: {\n    key_type: banco.key_type,\n    key_value: banco.key_value,\n    inserted: banco.inserted === true,\n    hit_count: banco.hit_count || 0\n  },\n  mirror_mode: true\n} }];"
+      },
+      "id": "f1-log-espelho",
+      "name": "Log espelho sem chamar cérebro",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseCode": "={{ $json.http_status }}"
+        }
+      },
+      "id": "f1-responder-webhook",
+      "name": "Responder ao E-Chat (somente ACK)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        220,
+        220
+      ],
+      "notes": "ACK técnico. Não é resposta ao paciente."
+    },
+    {
+      "parameters": {
+        "jsCode": "const pre = $('Validar assinatura e minimizar payload').first().json;\nreturn [{ json: {\n  workflow: 'SST · F1 Entrada E-Chat',\n  status: 'fila_humana',\n  motivo: 'falha_persistencia_idempotencia',\n  http_status: 200,\n  process_brain: false,\n  sends_external_message: false,\n  retry_automatico: false,\n  alerts: ['alerta_falha_banco_idempotencia'],\n  idempotency: {\n    key_type: pre.idempotency_key_type,\n    key_value: pre.idempotency_key_value,\n    inserted: false,\n    hit_count: 0\n  },\n  mirror_mode: true\n} }];"
+      },
+      "id": "f1-falha-banco-fila-humana",
+      "name": "Fila humana por falha de banco",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -20,
+        420
+      ],
+      "notes": "Falha de persistência é fail-closed: registra alerta e não reprocessa automaticamente."
+    }
+  ],
+  "connections": {
+    "Webhook E-Chat (INFERIDO)": {
+      "main": [
+        [
+          {
+            "node": "Validar assinatura e minimizar payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar assinatura e minimizar payload": {
+      "main": [
+        [
+          {
+            "node": "Postgres · registrar idempotência do evento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres · registrar idempotência do evento": {
+      "main": [
+        [
+          {
+            "node": "Log espelho sem chamar cérebro",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fila humana por falha de banco",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log espelho sem chamar cérebro": {
+      "main": [
+        [
+          {
+            "node": "Responder ao E-Chat (somente ACK)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fila humana por falha de banco": {
+      "main": [
+        [
+          {
+            "node": "Responder ao E-Chat (somente ACK)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    "sst",
+    "openclaw",
+    "echat",
+    "f1",
+    "modo-espelho",
+    "sem-envio"
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-08-21T00:00:00.000Z",
+  "versionId": "f1000000-0000-4000-8000-000000000001"
+}

@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://playbook.ssfcard.ia.br/schemas/conversation-health.schema.json",
+  "title": "Saude da conversa - Squad OpenClaw Comercial SST",
+  "description": "Medicao dos cinco eixos de saude da comunicacao (cuidado, produtividade, integracao, rastreabilidade, escala) para uma conversa ou para um recorte agregado do dia. Preenchido pelo n8n a partir do E-Chat e auditado pelo A7. Nao carrega conteudo de conversa nem dado pessoal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["escopo", "referencia", "gerado_em", "eixos", "veredito"],
+  "properties": {
+    "escopo": {
+      "type": "string",
+      "description": "conversa = um atendimento. diario/semanal = agregado da operacao.",
+      "enum": ["conversa", "diario", "semanal"]
+    },
+    "referencia": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["periodo_inicio", "periodo_fim"],
+      "properties": {
+        "record_id": {
+          "type": ["string", "null"],
+          "description": "ID tecnico da conversa quando escopo = conversa. null nos agregados.",
+          "maxLength": 128,
+          "default": null
+        },
+        "canal": {
+          "type": "string",
+          "enum": ["whatsapp_oficial", "instagram", "widget", "todos"],
+          "default": "todos"
+        },
+        "unidade": {
+          "type": "string",
+          "description": "Unidade da SST. Preparado para expansao alem de Simoes Filho e Bairro da Paz.",
+          "enum": ["simoes_filho", "bairro_da_paz", "todas"],
+          "default": "todas"
+        },
+        "periodo_inicio": { "type": "string", "format": "date-time" },
+        "periodo_fim": { "type": "string", "format": "date-time" }
+      }
+    },
+    "gerado_em": { "type": "string", "format": "date-time" },
+    "eixos": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cuidado", "produtividade", "integracao", "rastreabilidade", "escala"],
+      "properties": {
+        "cuidado": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nota"],
+          "properties": {
+            "nota": { "type": "number", "minimum": 0, "maximum": 10 },
+            "tempo_primeira_resposta_min": {
+              "type": ["number", "null"],
+              "minimum": 0,
+              "description": "Meta: menor ou igual a 5 minutos em horario comercial."
+            },
+            "conversas_sem_resposta_24h": { "type": "integer", "minimum": 0, "default": 0 },
+            "canal_espelhado": {
+              "type": ["boolean", "null"],
+              "description": "Audio respondido com audio. null quando a plataforma nao transcreve audio - limitacao conhecida do E-Chat.",
+              "default": null
+            },
+            "toques_no_periodo": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Maximo de 1 por pessoa por dia. Acima disso reprova o eixo."
+            },
+            "padrao_banido_detectado": {
+              "type": "boolean",
+              "default": false,
+              "description": "true quando aparece o formato 'Ola, bom dia' + link de pagamento. Proibido desde 19/08/2026."
+            },
+            "tom_reprovado": { "type": "boolean", "default": false },
+            "pedido_de_humano_atendido": { "type": ["boolean", "null"], "default": null }
+          }
+        },
+        "produtividade": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nota"],
+          "properties": {
+            "nota": { "type": "number", "minimum": 0, "maximum": 10 },
+            "estado_final": {
+              "type": "string",
+              "description": "Os quatro unicos finais saudaveis. 'aberta_sem_avanco' e divida operacional.",
+              "enum": ["avancou", "agendou", "escalada", "fechada_com_motivo", "aberta_sem_avanco"]
+            },
+            "estagio_inicial": { "type": ["string", "null"], "default": null },
+            "estagio_final": { "type": ["string", "null"], "default": null },
+            "horas_em_aberto": { "type": ["number", "null"], "minimum": 0, "default": null },
+            "motivo_registrado": {
+              "type": "boolean",
+              "default": false,
+              "description": "Obrigatorio quando estado_final = fechada_com_motivo."
+            }
+          }
+        },
+        "integracao": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nota"],
+          "properties": {
+            "nota": { "type": "number", "minimum": 0, "maximum": 10 },
+            "card_existe": { "type": "boolean", "default": false },
+            "campos_minimos_preenchidos": {
+              "type": "boolean",
+              "default": false,
+              "description": "origem, interesse e proxima acao - os tres, nao dois."
+            },
+            "fora_do_canal_oficial": {
+              "type": "boolean",
+              "default": false,
+              "description": "true quando o atendimento ocorreu em numero reserva ou WhatsApp pessoal. Anomalia a corrigir - ver C33."
+            },
+            "duplicidade_de_registro": { "type": "boolean", "default": false }
+          }
+        },
+        "rastreabilidade": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nota"],
+          "properties": {
+            "nota": { "type": "number", "minimum": 0, "maximum": 10 },
+            "intent_ids": {
+              "type": "array",
+              "items": { "type": "string" },
+              "default": [],
+              "description": "Toda acao automatizada da conversa. Vazio em conversa 100% humana e aceitavel."
+            },
+            "fonte_citada": { "type": "boolean", "default": false },
+            "dono_humano": { "type": ["string", "null"], "default": null },
+            "log_completo": { "type": "boolean", "default": false },
+            "gravacao_disponivel": {
+              "type": ["boolean", "null"],
+              "default": null,
+              "description": "Ligacoes de cobranca sao gravadas desde 19/08/2026."
+            }
+          }
+        },
+        "escala": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nota"],
+          "properties": {
+            "nota": { "type": "number", "minimum": 0, "maximum": 10 },
+            "assunto_recorrente": {
+              "type": ["string", "null"],
+              "maxLength": 200,
+              "default": null,
+              "description": "Tema que se repetiu. Tres ocorrencias na semana viram treinamento ou playbook."
+            },
+            "ocorrencias_na_semana": { "type": "integer", "minimum": 0, "default": 0 },
+            "candidato_a_automacao": { "type": "boolean", "default": false },
+            "deve_permanecer_humano": {
+              "type": "boolean",
+              "default": false,
+              "description": "Excecao que exige julgamento. Forcar automacao aqui quebra a confianca da equipe."
+            }
+          }
+        }
+      }
+    },
+    "achados": {
+      "type": "array",
+      "description": "Problemas encontrados pelo A7. Severidade CRITICO aciona kill switch e alerta imediato.",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["severidade", "eixo", "descricao"],
+        "properties": {
+          "severidade": {
+            "type": "string",
+            "enum": ["CRITICO", "ALTO", "MEDIO", "BAIXO"]
+          },
+          "eixo": {
+            "type": "string",
+            "enum": ["cuidado", "produtividade", "integracao", "rastreabilidade", "escala"]
+          },
+          "descricao": { "type": "string", "minLength": 10, "maxLength": 500 },
+          "acao_tomada": {
+            "type": "string",
+            "enum": ["bloqueado", "corrigido", "registrado", "escalado", "nenhuma"],
+            "default": "registrado"
+          },
+          "virou_caso_eval": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "veredito": {
+      "type": "string",
+      "description": "SAUDAVEL: todos os eixos >= 7 e nenhum achado ALTO/CRITICO. ATENCAO: algum eixo entre 5 e 7, ou achado MEDIO. DOENTE: eixo abaixo de 5 ou achado ALTO. INCIDENTE: qualquer achado CRITICO.",
+      "enum": ["SAUDAVEL", "ATENCAO", "DOENTE", "INCIDENTE"]
+    },
+    "nota_geral": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 10,
+      "default": null,
+      "description": "Media simples dos cinco eixos. Informativa - o veredito manda, porque uma media boa pode esconder um eixo critico."
+    }
+  },
+  "examples": [
+    {
+      "escopo": "diario",
+      "referencia": {
+        "record_id": null,
+        "canal": "todos",
+        "unidade": "todas",
+        "periodo_inicio": "2026-08-21T00:00:00-03:00",
+        "periodo_fim": "2026-08-21T23:59:59-03:00"
+      },
+      "gerado_em": "2026-08-21T18:05:00-03:00",
+      "eixos": {
+        "cuidado": {
+          "nota": 6.0,
+          "tempo_primeira_resposta_min": 42,
+          "conversas_sem_resposta_24h": 11,
+          "canal_espelhado": null,
+          "toques_no_periodo": 1,
+          "padrao_banido_detectado": false,
+          "tom_reprovado": false,
+          "pedido_de_humano_atendido": true
+        },
+        "produtividade": {
+          "nota": 5.5,
+          "estado_final": "aberta_sem_avanco",
+          "estagio_inicial": "novo",
+          "estagio_final": "qualificando",
+          "horas_em_aberto": 26,
+          "motivo_registrado": false
+        },
+        "integracao": {
+          "nota": 4.0,
+          "card_existe": true,
+          "campos_minimos_preenchidos": false,
+          "fora_do_canal_oficial": true,
+          "duplicidade_de_registro": false
+        },
+        "rastreabilidade": {
+          "nota": 3.0,
+          "intent_ids": [],
+          "fonte_citada": false,
+          "dono_humano": null,
+          "log_completo": false,
+          "gravacao_disponivel": null
+        },
+        "escala": {
+          "nota": 7.0,
+          "assunto_recorrente": "pergunta de preco por especialidade sem tabela publicada",
+          "ocorrencias_na_semana": 9,
+          "candidato_a_automacao": false,
+          "deve_permanecer_humano": true
+        }
+      },
+      "achados": [
+        {
+          "severidade": "ALTO",
+          "eixo": "integracao",
+          "descricao": "Parte do atendimento de cobranca ocorreu fora do CRM do E-Chat, em numero reserva - sem card e sem rastreabilidade (C33).",
+          "acao_tomada": "escalado",
+          "virou_caso_eval": true
+        },
+        {
+          "severidade": "MEDIO",
+          "eixo": "escala",
+          "descricao": "Nove perguntas de preco por especialidade sem tabela aprovada. Segue como escalada humana ate o sponsor cravar os valores (C15).",
+          "acao_tomada": "registrado",
+          "virou_caso_eval": false
+        }
+      ],
+      "veredito": "DOENTE",
+      "nota_geral": 5.1
+    }
+  ]
+}
