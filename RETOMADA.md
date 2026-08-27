@@ -4,7 +4,47 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 21/08/2026 — **Pacote `squad-openclaw-comercial/` criado: Diretor Comercial OpenClaw + 8 agentes de IA, 3 schemas JSON validados, contratos de webhook/endpoint para a EAS e 12 casos de teste. Nada ativado — tudo em L0.**
+> Última atualização: 27/08/2026 — **PRD criado para readaptar o `smart-repeat-chat` (GitHub) e implementar Casa Cuidada + Família Cuida de Família.**
+
+---
+
+## 💻 AO RETOMAR (27/08/2026) — Sistema escolhido: `smart-repeat-chat` (GitHub) + PRD
+
+> **PRD completo:** `prd-casa-cuidada-familia-cuida-familia-smart-repeat-chat.md`
+
+**Sistema:** [`maykorodrigues/smart-repeat-chat`](https://github.com/maykorodrigues/smart-repeat-chat) — repositório privado, projeto Lovable existente ("Viver de IA — Plataforma de Recorrências e Clube de Assinaturas"). Stack: React 18 + Vite + TypeScript + Tailwind no front, Supabase (Postgres/Auth/Edge Functions/Vault) no back, WhatsApp via Evolution API. Já multitenant, já com cadastro de clientes + LGPD (consent/opt-in/opt-out), motor de cadências e templates de copy, cupons de desconto, dashboard de KPIs e cron de disparo automático.
+
+**Decisão de produto:** **readaptar (remix), não construir do zero.** A maior parte do backend de mensageria, cupom, consentimento e dashboard já serve para as duas camadas do projeto:
+- **Casa Cuidada** (campanha tática de comissionamento) → precisa de: papéis de equipe (recepção/coordenadora/gestor), vínculo familiar (household), Registro Diário digital, motor de bônus configurável (nunca hardcoded — valores ainda em disputa com Rogério), Painel Semanal.
+- **Família Cuida de Família** (motor estratégico de leads) → precisa de: cadeia de indicação família→família, handoff de lead para o Close (Notion/PipeRun), métricas de conversão do funil.
+
+**Gaps identificados (não existem hoje no repo, ver PRD para lista completa com prioridade):** tabela de funcionários/papéis, household, Registro Diário digital, motor de bônus parametrizável, cadeia de indicação, QR Code físico de reconhecimento (diferente do QR de pareamento do WhatsApp que já existe), handoff de leads para o CRM comercial.
+
+**Fora de escopo explícito:** não substitui a cobrança/mensalidade do SST Card (BOOM/Asaas), não substitui o CRM comercial (Notion/PipeRun — só alimenta leads nele), não reativa pagamento (Stripe foi removido do projeto de propósito).
+
+**🔴 Pendências de Rogério que bloqueiam o MVP:** valores de bônus, denominador/período da meta 70%/90%, percentual de desconto na 1ª consulta indicada, condições da telemedicina grátis — mesmas pendências já registradas no bloco Família Cuida de Família × Casa Cuidada abaixo.
+
+**PRD expandido (mesmo dia):** adicionadas as "Premissas do projeto" (7 regras não-negociáveis vindas da reunião), "Telas por persona" e um **plano de construção sessão a sessão no Lovable** (8 prompts prontos, MVP fechado nas 4 primeiras sessões — papéis de equipe, household, Registro Diário, motor de bônus, Painel Semanal). Escopo fechado do MVP listado como checklist demonstrável.
+
+**HTML criado para o Rogério:** `proposta-sistema-casa-cuidada-27-08-2026.html` — proposta visual não-técnica (ciclo de 3 movimentos, o que o sistema entrega, tabela de decisões financeiras pendentes, fases MVP/V1/V2). **Ainda não enviado** — falta decidir o canal de envio.
+
+---
+
+## 👨‍👩‍👧‍👦 AO RETOMAR (27/08/2026) — Família Cuida de Família × Casa Cuidada
+
+> **Documento completo:** `familia-cuida-de-familia-triagem-nova-unidade.md` · **Notion:** página CÉU · SSF Clínica (`3c3ad3c00373814c9917e2e097c132c7`)
+
+**Relação entre os nomes, esclarecida pelo Mayko:**
+- **Família Cuida de Família** = sistema estratégico a construir no Notion, que cruza dados de cada família atendida na clínica para que colaboradores identifiquem oportunidades de cuidado **e** de indicação de outra família — objetivo comercial explícito: **gerar leads para a equipe de vendas fechar**. Ainda não existe como estrutura no Notion — é objetivo declarado.
+- **Casa Cuidada** = campanha tática de comissionamento (bônus, QR Code, formulário, Planilha V4, reunião de sexta) que existe para fazer a equipe **aderir** ao sistema acima. Condição de sucesso: a cultura do time da SST Clínica **e** do SST Card precisa incorporar "cuidar de si mesmo primeiro, depois de todas as famílias".
+
+**Planilha V4 + roteiro de reunião lidos (27/08):** confirmam o ciclo de 3 movimentos (empresa cuida do funcionário → funcionário cuida do cliente/família → cliente indica até 3 famílias, sempre voluntário) e o indicador "Cuidou da Casa? SIM/NÃO" com recuperação obrigatória em caso de NÃO (não é punição automática).
+
+**🔴 Valores financeiros conflitantes a confirmar com Rogério antes de imprimir o cartaz ou pagar qualquer bônus:** cartaz (R$70/R$10 no material vs. R$0,70/R$0,30 na fala — provável erro de casa decimal), bônus por registro (R$0,70 funcionário + R$0,30 coordenadora), bônus por contrato fechado (funcionário R$10 ou R$8; Aline R$5, valor não fechado), denominador/período da meta 70% e sentido do teto 90%, percentual de desconto na 1ª consulta indicada (30–50%), condições da telemedicina grátis. Ver tabela completa no documento.
+
+**✅ Correção importante:** a regra dos "3 meses abaixo de 70%" **não automatiza corte de bonificação nem desligamento** — qualquer medida passa por RH/contabilidade/jurídico antes de executar. Isso substitui o registro inicial de 26/08.
+
+**⚠️ Confirmar:** se a "Aline" coordenadora da Casa Cuidada é a mesma Aline Souza do Lab MADIP.
 
 ---
 

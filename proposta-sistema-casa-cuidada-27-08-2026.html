@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta · Sistema Casa Cuidada + Família Cuida de Família</title>
+<style>
+  :root{
+    --azul:#1987c3; --azul-esc:#0f5d8a; --azul-claro:#e8f4fb;
+    --verde:#27ae60; --verde-bg:#e8f8f0;
+    --vermelho:#e74c3c; --vermelho-bg:#fdeceb;
+    --amarelo:#f39c12; --amarelo-bg:#fef6e7;
+    --roxo:#8e5ce6; --roxo-bg:#f2ecfc;
+    --cinza:#5a6675; --cinza-claro:#f4f6f8; --borda:#dce3ea;
+    --texto:#1f2b38;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'Barlow','Segoe UI',system-ui,sans-serif;
+    background:#eef2f6;color:var(--texto);line-height:1.6;
+    padding:0 0 70px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+
+  header{
+    background:linear-gradient(135deg,var(--azul) 0%,var(--azul-esc) 100%);
+    color:#fff;padding:34px 20px 36px;text-align:center;
+    border-radius:0 0 26px 26px;box-shadow:0 6px 22px rgba(15,93,138,.28);
+  }
+  header .tag{display:inline-block;background:rgba(255,255,255,.18);
+    padding:5px 16px;border-radius:30px;font-size:12px;font-weight:700;
+    letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px}
+  header h1{font-size:28px;font-weight:800;line-height:1.28;max-width:640px;margin:0 auto}
+  header h1 span{color:#ffe08a}
+  header .sub{font-size:15px;opacity:.94;margin-top:12px;max-width:560px;margin-left:auto;margin-right:auto}
+  header .meta{margin-top:18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  header .meta div{background:rgba(255,255,255,.14);padding:7px 14px;border-radius:10px;font-size:12.5px;font-weight:600}
+
+  section{margin:26px 0}
+  .eyebrow{font-size:12px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;
+    color:var(--azul);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .eyebrow::before{content:'';width:18px;height:3px;background:var(--azul);border-radius:2px}
+  h2.titulo{font-size:21px;font-weight:800;color:var(--texto);margin-bottom:6px}
+  p.lead{font-size:15px;color:var(--cinza);max-width:640px}
+
+  .card{background:#fff;border-radius:16px;padding:20px 20px 22px;margin:14px 0;
+    box-shadow:0 2px 12px rgba(31,43,56,.06);border:1px solid var(--borda)}
+
+  /* resumo do que é */
+  .resumo{display:flex;flex-direction:column;gap:10px}
+  .resumo .linha{display:flex;gap:12px;align-items:flex-start;font-size:14.5px}
+  .resumo .linha .ico{flex-shrink:0;width:30px;height:30px;border-radius:9px;background:var(--azul-claro);
+    color:var(--azul-esc);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+
+  /* ciclo em 3 passos */
+  .ciclo{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:640px){.ciclo{grid-template-columns:1fr}}
+  .passo{background:#fff;border:1px solid var(--borda);border-radius:14px;padding:16px;
+    position:relative;box-shadow:0 2px 10px rgba(31,43,56,.05)}
+  .passo .n{width:30px;height:30px;border-radius:50%;background:var(--azul);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;margin-bottom:10px}
+  .passo h3{font-size:15px;font-weight:800;color:var(--azul-esc);margin-bottom:6px}
+  .passo p{font-size:13.5px;color:var(--cinza)}
+  .seta{display:none}
+  @media(min-width:641px){
+    .passo:not(:last-child)::after{content:'→';position:absolute;right:-19px;top:16px;
+      font-size:20px;font-weight:800;color:var(--azul);z-index:2}
+  }
+
+  /* por que nao do zero */
+  .porque{display:flex;gap:14px;align-items:flex-start;background:var(--verde-bg);
+    border-left:4px solid var(--verde);border-radius:0 14px 14px 0;padding:16px 18px}
+  .porque .ico{font-size:22px}
+  .porque strong{color:#1c6b3f}
+
+  /* lista de entregas */
+  .entregas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.entregas{grid-template-columns:1fr}}
+  .entrega{background:var(--cinza-claro);border-radius:12px;padding:14px 16px;font-size:14px;
+    display:flex;gap:10px;align-items:flex-start}
+  .entrega .ic{color:var(--verde);font-weight:900;flex-shrink:0}
+
+  /* tabela de decisoes */
+  table.decisoes{width:100%;border-collapse:collapse;font-size:13.5px}
+  table.decisoes th{background:var(--azul-esc);color:#fff;text-align:left;padding:10px 12px;
+    font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:800}
+  table.decisoes th:first-child{border-radius:8px 0 0 0}
+  table.decisoes th:last-child{border-radius:0 8px 0 0}
+  table.decisoes td{padding:11px 12px;border-bottom:1px solid var(--borda);vertical-align:top}
+  table.decisoes tr:last-child td{border-bottom:none}
+  table.decisoes tr:nth-child(even) td{background:#fafbfc}
+  .conflito{color:var(--vermelho);font-weight:700}
+  .badge-pendente{display:inline-block;background:var(--amarelo-bg);color:#9a6300;
+    font-size:11px;font-weight:800;padding:3px 9px;border-radius:20px;white-space:nowrap}
+
+  /* fases */
+  .fases{display:flex;flex-direction:column;gap:0;position:relative;padding-left:28px;margin-top:6px}
+  .fases::before{content:'';position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:var(--borda)}
+  .fase{position:relative;padding-bottom:22px}
+  .fase:last-child{padding-bottom:0}
+  .fase::before{content:'';position:absolute;left:-28px;top:2px;width:20px;height:20px;border-radius:50%;
+    background:#fff;border:3px solid var(--azul)}
+  .fase.done::before{background:var(--verde);border-color:var(--verde)}
+  .fase.next::before{background:var(--amarelo);border-color:var(--amarelo)}
+  .fase h3{font-size:15.5px;font-weight:800;color:var(--texto);margin-bottom:4px}
+  .fase h3 small{display:block;font-size:11.5px;font-weight:700;letter-spacing:.6px;
+    text-transform:uppercase;color:var(--azul);margin-bottom:3px}
+  .fase p{font-size:13.5px;color:var(--cinza)}
+
+  /* fora de escopo */
+  .fora{background:var(--roxo-bg);border-left:4px solid var(--roxo);border-radius:0 14px 14px 0;
+    padding:14px 18px;font-size:13.5px;color:#4a3577}
+  .fora strong{color:#5b3a9e}
+
+  /* cta */
+  .cta{background:linear-gradient(135deg,var(--azul-esc),var(--azul));color:#fff;border-radius:18px;
+    padding:24px 22px;text-align:center;margin-top:28px}
+  .cta h2{font-size:19px;font-weight:800;margin-bottom:8px}
+  .cta p{font-size:14px;opacity:.92;max-width:520px;margin:0 auto}
+  .cta .passos{margin-top:16px;display:flex;flex-direction:column;gap:8px;text-align:left;
+    max-width:440px;margin-left:auto;margin-right:auto}
+  .cta .passos div{background:rgba(255,255,255,.14);border-radius:10px;padding:10px 14px;
+    font-size:13.5px;display:flex;gap:10px;align-items:flex-start}
+  .cta .passos b{background:#fff;color:var(--azul-esc);width:22px;height:22px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+
+  footer{text-align:center;font-size:12px;color:var(--cinza);margin-top:30px;padding:0 16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="tag">Casa Cuidada · Família Cuida de Família</div>
+    <h1>Transformar a Planilha V4 num <span>sistema de verdade</span></h1>
+    <div class="sub">Proposta de como vamos construir isso — reaproveitando uma plataforma que já existe, pronta pra ser adaptada.</div>
+    <div class="meta">
+      <div>📅 27/08/2026</div>
+      <div>👤 Gestor: Rogério</div>
+      <div>👤 Coordenação: Aline</div>
+    </div>
+  </header>
+
+  <section>
+    <div class="eyebrow">O que é</div>
+    <h2 class="titulo">Duas camadas, um único esforço</h2>
+    <p class="lead">A campanha e o sistema de leads que vocês desenharam na reunião não são duas coisas separadas — são duas camadas do mesmo projeto.</p>
+    <div class="card resumo">
+      <div class="linha">
+        <div class="ico">1</div>
+        <div><strong>Casa Cuidada</strong> — a campanha que faz a equipe aderir: reconhecimento, registro do atendimento, bônus por cuidar bem.</div>
+      </div>
+      <div class="linha">
+        <div class="ico">2</div>
+        <div><strong>Família Cuida de Família</strong> — o objetivo por trás dela: cruzar quem já é atendido com quem pode ser indicado, gerando leads reais para a equipe de vendas fechar.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Como o ciclo funciona</div>
+    <h2 class="titulo">A ordem não muda</h2>
+    <p class="lead">Antes de indicar, cuidar. É a regra que sustenta tudo — o sistema vai reforçar essa ordem em cada tela.</p>
+    <div class="ciclo" style="margin-top:14px">
+      <div class="passo">
+        <div class="n">1</div>
+        <h3>A empresa cuida do funcionário</h3>
+        <p>Salário, alimentação e benefícios já ampliados — a base que dá legitimidade pro resto do ciclo.</p>
+      </div>
+      <div class="passo">
+        <div class="n">2</div>
+        <h3>O funcionário cuida da família</h3>
+        <p>Atende, oferece cuidado ao cliente e, com consentimento, à família dele. Registra o que foi feito.</p>
+      </div>
+      <div class="passo">
+        <div class="n">3</div>
+        <h3>A família indica outra família</h3>
+        <p>Só depois do cuidado confirmado — e sempre por opção do cliente, nunca por pressão da equipe.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="porque">
+      <div class="ico">💡</div>
+      <div><strong>Por que não começar do zero:</strong> já existe uma plataforma pronta e funcionando (cadastro de cliente, disparo de WhatsApp automático, cupom de desconto, painel de indicadores) construída no Lovable. A proposta é adaptar essa plataforma para o universo da Casa Cuidada, em vez de gastar meses construindo tudo de novo.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">O que o sistema vai fazer</div>
+    <h2 class="titulo">Sai da planilha, vira ferramenta do dia a dia</h2>
+    <div class="entregas" style="margin-top:14px">
+      <div class="entrega"><span class="ic">✓</span><span>Recepção registra o atendimento em menos de 1 minuto, pelo celular — sem planilha compartilhada.</span></div>
+      <div class="entrega"><span class="ic">✓</span><span>Bônus calculado sozinho, a partir dos valores que você mesmo configura na tela — sem depender de cálculo manual.</span></div>
+      <div class="entrega"><span class="ic">✓</span><span>Painel semanal automático para você e a Aline: cobertura, cuidado concluído, pendências, bônus da semana.</span></div>
+      <div class="entrega"><span class="ic">✓</span><span>Toda indicação vira um lead rastreável, com origem identificada, chegando pronto pra equipe de vendas fechar.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">O que só você pode decidir</div>
+    <h2 class="titulo">Antes de qualquer coisa ir pro ar</h2>
+    <p class="lead">O sistema vai deixar tudo isso configurável — mas os valores em si só saem da sua boca.</p>
+    <div class="card" style="overflow-x:auto">
+      <table class="decisoes">
+        <tr><th>Item</th><th>O que está em aberto</th><th></th></tr>
+        <tr><td>Cartaz</td><td>Valor é R$0,70 por registro ou R$70,00? <span class="conflito">material e fala não batem</span></td><td><span class="badge-pendente">pendente</span></td></tr>
+        <tr><td>Bônus por registro</td><td>R$0,70 ao funcionário + R$0,30 à coordenadora — falta confirmar o critério</td><td><span class="badge-pendente">pendente</span></td></tr>
+        <tr><td>Bônus por contrato fechado</td><td>Funcionário: R$10 ou R$8? Aline: R$5?</td><td><span class="badge-pendente">pendente</span></td></tr>
+        <tr><td>Meta mínima</td><td>70% de quê, exatamente — e sobre qual período?</td><td><span class="badge-pendente">pendente</span></td></tr>
+        <tr><td>Referência de 90%</td><td>É teto de pagamento, meta máxima ou só um alerta?</td><td><span class="badge-pendente">pendente</span></td></tr>
+        <tr><td>Desconto 1ª consulta</td><td>Entre 30% e 50% — qual percentual fica valendo?</td><td><span class="badge-pendente">pendente</span></td></tr>
+        <tr><td>Telemedicina grátis</td><td>Condições, prazo e forma de agendamento</td><td><span class="badge-pendente">pendente</span></td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Como vamos construir</div>
+    <h2 class="titulo">Em fases, com entrega demonstrável em cada uma</h2>
+    <div class="card">
+      <div class="fases">
+        <div class="fase done">
+          <h3><small>Feito</small>Diagnóstico e desenho</h3>
+          <p>Planilha V4 e roteiro de reunião lidos, regras mapeadas, plataforma-base escolhida (reaproveitar o que já existe).</p>
+        </div>
+        <div class="fase next">
+          <h3><small>Próxima</small>MVP — Casa Cuidada roda sozinha</h3>
+          <p>Registro digital de atendimento, cálculo automático de bônus (com seus valores), painel semanal. Já demonstrável pra você no fim desta fase.</p>
+        </div>
+        <div class="fase">
+          <h3><small>Depois</small>V1 — liga ao Família Cuida de Família</h3>
+          <p>Indicação família→família, cupom automático de desconto, entrega do lead pronto pra equipe de vendas.</p>
+        </div>
+        <div class="fase">
+          <h3><small>Maturidade</small>V2 — métricas do funil completo</h3>
+          <p>Quanto da indicação virou lead, quanto do lead virou contrato — pra saber se a cultura está gerando negócio de verdade.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="fora"><strong>Fora do escopo por enquanto:</strong> o sistema não cobra mensalidade do cartão (isso continua no financeiro atual) e não substitui o CRM comercial — só entrega o lead pronto pra ele.</div>
+  </section>
+
+  <div class="cta">
+    <h2>Próximo passo é seu</h2>
+    <p>Assim que os valores da tabela acima estiverem fechados, a primeira fase (MVP) já pode começar a ser construída.</p>
+    <div class="passos">
+      <div><b>1</b> Confirmar os valores de bônus, meta e desconto pendentes.</div>
+      <div><b>2</b> Confirmar quem exerce o papel de coordenadora em cada unidade.</div>
+      <div><b>3</b> Dar sinal verde para iniciar a primeira fase de construção.</div>
+    </div>
+  </div>
+
+  <footer>Sistema Casa Cuidada + Família Cuida de Família — SST Clínica · preparado por Mayko Rodrigues · 27/08/2026</footer>
+</div>
+</body>
+</html>

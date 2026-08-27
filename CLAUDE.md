@@ -1,4 +1,4 @@
-# CLAUDE.md
+﻿# CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -8,7 +8,10 @@ Consultoria comercial ativa para **Rogério Ferreira** (SST Clínica / SST Card)
 
 O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório em Markdown, espelhado no Notion e executado via WhatsApp + n8n.
 
-**Status do Projeto (08/07/2026):**
+**Status do Projeto (05/08/2026 — ver `RETOMADA.md` para o estado vivo, este bloco é só orientação rápida):**
+- 🎛️ **E-Chat (EAS Systems) virou o canal oficial de atendimento** — já contratado pelo Rogério, roda o WhatsApp API oficial da clínica com CRM, IA de sugestão de resposta e formulários de qualificação parados. Decisão da reunião 04/08 com Elieser: **tocar a partir do E-Chat, sem migrar para Chatwoot/Evolution**. Squad de orquestração (Overclock, panes Claude+Codex) em `squad-echat-overclock/`
+- 🖥️ **VPS OpenClaw `ssf-card-clinica` (Hetzner CX33, 62.238.33.111)** é a camada "cérebro" (SDR/cobrança/CS semi-autônomos) por trás do E-Chat "corpo" — ponte via webhook E-Chat → n8n → `chatCompletions`. Ver memory `vps-ssf-card-typebot-quiz-20-07-2026`
+- 🤖 **Projeto Atendimento IA Clínica** (kickoff Débora 20/07) — transformar a Léia (GPT Maker) em atendente de agendamento via Klingo/E-Chat/Vidas; gargalo identificado é comercial, não técnico (145 chamadas/dia, ~16 atendidas). Ver `atendimento-ia-clinica/CLAUDE.md`
 - ✅ **Advisory assinado** em 01/05/2026 (contrato R$30k validado)
 - ✅ **Bairro da Paz — 2ª filial INAUGURADA em 01/07/2026** — foco migrou de abrir para operar/vender. Faixas de rua de lançamento pedidas pelo Rogério em 06/07 (ver `05-bairro-da-paz/faixas-lancamento-06-07-2026.md`) e proposta de Sala de Odontologia (fusão Clínica 03+04, revisão de planta) em `05-bairro-da-paz/proposta-sala-odontologia-06-07-2026.md`
 - ✅ **Reunião Mensal 02/07 concluída** (ata: `reuniao-mensal-02-07-2026.md`) — descobriu que **o cartão já se paga** (produção mai+jun R$22.270 > aporte R$11.943). Produção real jun **R$12.144**; adimplência recorrente **54,4%** = R$7,9k/mês parados. **Decisões:** reajuste R$24,90→R$39,90 (julho, +R$13,5–29,5k/ano) · unificar contas · **Karine promovida a Closer Senior** + estrutura (2 juniores + 1 cobrança) · meta julho **56 Prata + 24 Ouro**
@@ -27,11 +30,77 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 
 **Leia sempre `RETOMADA.md` antes de agir** — é o "estado do projeto": decisões tomadas, documentos criados e próximos passos. Não repita o que já está lá.
 
+
+## Registro Operacional — Reuniao Elieser/Rogerio 26/08/2026
+
+Fonte detalhada: `reuniao-elieser-rogerio.md`.
+
+**Contexto:** conversa com Elieser e Rogerio sobre EAS, mudancas da Meta, WhatsApp API oficial, WhatsApp de coexistencia e viabilidade de uma operacao hibrida para a Clinica Bairro da Paz / Clinica Lucrativa IA.
+
+**Tese de trabalho:** usar automacao de forma enxuta para iniciar, aquecer e qualificar conversas pela API oficial da Meta, transferindo para atendimento humano via WhatsApp Business/Web quando fizer sentido economico. O objetivo e preservar margem, reduzir desperdicio de lead e evitar funis longos impagaveis via API.
+
+**Leitura tecnica de Elieser:** a coexistencia, pelo entendimento preliminar dele e discussoes em grupo de CIOs, nao necessariamente muda a cobranca da Meta. A vantagem aparente e reduzir friccao de onboarding para pequenas empresas que precisam entrar no ecossistema oficial: BM validada, site, politica de privacidade, CNPJ, razao social, endereco, dados de pagamento e numero elegivel antes da migracao.
+
+**Prioridades a cobrar do Elieser:**
+1. Validar se o fluxo API + coexistencia permite iniciar/qualificar via API e continuar atendimento humano no WhatsApp Business/Web.
+2. Confirmar regras de cobranca da Meta: o que cobra, quando cobra, por categoria de conversa e janela.
+3. Mapear limites e riscos: bloqueio, qualidade do numero, templates, opt-in, spam, volume e handoff para humano.
+4. Entregar checklist fechado de BM/API/WhatsApp para a Clinica Bairro da Paz.
+5. Desenhar arquitetura operacional: entrada do lead, disparo, qualificacao, passagem para humano, registro e retorno para automacao.
+6. Simular custo comparando 100% API, API + coexistencia e humano sem automacao.
+7. Dizer se ha piloto viavel, quais acessos precisa e prazo para validar.
+
+**Cautela obrigatoria:** nao prometer reducao de custo, reducao de imposto ou contorno de regra antes da validacao de Elieser e da documentacao oficial da Meta. Posicionar a solucao como eficiencia comercial, automacao, organizacao de funil e aumento de conversao.
+
+## Projeto Família Cuida de Família × Campanha Casa Cuidada — status 27/08/2026
+
+Fonte detalhada: `familia-cuida-de-familia-triagem-nova-unidade.md`. Fontes: (1) transcrição Notion "Triagem de Nova Unidade" (26/08); (2) `Projeto_Casa_Cuidada_Planilha_V4.xlsx` (5 abas) + `Projeto_Casa_Cuidada_Reuniao_Sexta.pdf` (roteiro de reunião), lidos 27/08; (3) esclarecimento direto do Mayko em 27/08 sobre a relação entre os dois nomes.
+
+**✅ Nomes esclarecidos pelo Mayko (27/08) — duas camadas, não dois nomes do mesmo projeto:**
+- **"Família Cuida de Família"** = o **sistema/objetivo estratégico maior**: uma camada de acompanhamento a construir no Notion que cruza informações de cada cliente/família atendida na clínica, para que cada colaborador identifique — dentro da família de quem já é paciente — a possibilidade de (a) estender o cuidado a essa família e (b) usar isso como instrumento de indicação de **outra** família para a SST Clínica. Objetivo comercial explícito: **gerar leads para a equipe de vendas fechar.** O mecanismo social é "famílias indicando famílias", criando consenso cultural de "cuidar da própria família e da família do próximo".
+- **"Casa Cuidada"** = a **campanha tática de comissionamento** que existe para fazer a equipe **aderir** a esse sistema — bônus, QR Code, formulário, Planilha V4, reunião de sexta. Rogério tratou isso como "prolongar uma campanha de comissionamento de cuidar dos colaboradores", mas o **pano de fundo que mede o sucesso é o Família Cuida de Família**.
+- **Condição de sucesso (dita pelo Mayko):** só funciona se a equipe aderir — a cultura do time da SST Clínica **e** do SST Card precisa incorporar "cuidar de si mesmo primeiro, depois de todas as famílias". Sem adesão da equipe, a campanha Casa Cuidada não sustenta o sistema Família Cuida de Família.
+- **Ainda não construído:** o sistema de acompanhamento/cruzamento de dados no Notion (o "Família Cuida de Família" propriamente dito) é um **objetivo declarado**, não algo que já existe — a Planilha V4 e o roteiro de sexta são a camada tática (Casa Cuidada) que roda primeiro.
+
+**O que é a campanha Casa Cuidada (mecânica, confirmada pelos 2 documentos):** ciclo de 3 movimentos — a empresa cuida do funcionário → o funcionário cuida do cliente e da família dele (com consentimento) → só depois o cliente pode indicar até 3 famílias (indicação é sempre voluntária, nunca pressionada — "antes de indicar, cuidar"). Indicador central: **"Cuidou da Casa? SIM/NÃO"** — um NÃO abre recuperação obrigatória (causa + responsável + prazo), não é punição automática.
+
+**Decisões já tomadas (Casa Cuidada):**
+- Benefício de alimentação **já estendido** da equipe para toda a casa do colaborador (feito ~1 mês antes).
+- Régua de entrega mínima de **70%** por setor, começando pela recepção (40 atendimentos × 70% = 28 formulários; mínimo 2 famílias captadas).
+- **Correção importante (27/08) sobre os "3 meses abaixo de 70%":** a Planilha V4 **não automatiza desligamento nem corte de bonificação** — trata primeiro como revisão de desempenho/treinamento/feedback, e qualquer medida precisa passar por **RH/contabilidade/jurídico** antes de executar. Isso substitui o registro de 26/08, que soava como corte automático.
+
+**🔴 Valores financeiros conflitantes — bater o martelo antes de imprimir cartaz ou pagar qualquer bônus:**
+| Item | Conflito |
+|---|---|
+| Cartaz | "R$70"/"R$10" no material vs. R$0,70/R$0,30 na fala — provável erro de casa decimal |
+| Bônus por registro elegível | R$0,70 funcionário + R$0,30 coordenadora = R$1,00 total; falta coluna de pagamento da coordenadora na planilha |
+| Bônus por contrato fechado (funcionário) | R$10 num trecho, R$8 em outro |
+| Bônus por contrato fechado (Aline) | R$5 citado, mas contas conflitantes no áudio original |
+| Meta 70% / referência 90% | Denominador, período e se 90% é teto de pagamento ou só faixa de controle — tudo a definir |
+| Desconto 1ª consulta (indicado) | Entre 30% e 50%, percentual não escolhido |
+| Telemedicina grátis (quem preenche formulário) | Condições, prazo e agendamento não definidos |
+
+**Papéis confirmados:** Gestor responsável = **Rogério**. Coordenadora = **Aline** (⚠️ confirmar se é a mesma Aline Souza do Lab MADIP ou outra pessoa). Período de teste = primeiro mês de implantação.
+
+**Prioridades a cobrar do Rogério:**
+1. Confirmar os valores financeiros da tabela acima (cartaz, bônus por registro, bônus por contrato — funcionário e Aline) antes de qualquer impressão/pagamento.
+2. Definir denominador/período da meta 70% e o sentido do teto de 90%.
+3. Confirmar se "Aline" da Casa Cuidada é a mesma do Lab MADIP.
+4. Estender a régua de 70% para call center, closer e marketing.
+5. Alinhar como o sistema "Família Cuida de Família" (cruzamento de dados no Notion, geração de leads família→família) vai ser efetivamente construído — hoje é objetivo declarado, sem página/estrutura própria no Notion ainda.
+
+**Próximos passos:** aguardar as respostas de Rogério à tabela de valores conflitantes antes de imprimir o cartaz definitivo ou rodar o primeiro pagamento de bônus; desenhar com o Rogério a estrutura do sistema de acompanhamento Família Cuida de Família no Notion (ainda não existe).
+
+**Notion espelhado:** página CÉU · SSF Clínica (`3c3ad3c00373814c9917e2e097c132c7`) — seções "📥 Inbox" e "🕐 Histórico operacional" atualizadas em 26/08 e 27/08. Conteúdo fica interno (não sobe para Execução Assistida) até valores confirmados e avaliação individual de desempenho removida/anonimizada.
+
 ## Mapa dos documentos
 
 | Arquivo / Pasta | Para que serve |
 |---|---|
 | `RETOMADA.md` | Estado atual, decisões tomadas, próximos passos — **ler primeiro** |
+| `familia-cuida-de-familia-triagem-nova-unidade.md` | Sistema **Família Cuida de Família** (objetivo estratégico: gerar leads via indicação família→família) × campanha **Casa Cuidada** (comissionamento tático, Planilha V4 + reunião de sexta) — valores financeiros a confirmar |
+| `prd-casa-cuidada-familia-cuida-familia-smart-repeat-chat.md` | PRD para readaptar o repositório GitHub `smart-repeat-chat` (SaaS Lovable existente) e implementar as duas camadas — premissas da reunião, gaps, modelo de dados, telas por persona, plano de construção sessão a sessão no Lovable, fases MVP/V1/V2 |
+| `proposta-sistema-casa-cuidada-27-08-2026.html` | Proposta visual para o Rogério (não-técnica) explicando o sistema, o ciclo de 3 movimentos, a tabela de decisões financeiras pendentes e as fases de construção |
 | `contexto_projeto.md` | Visão estratégica completa (diagnóstico, fases, riscos) |
 | `reuniao-10-04-2026.md` | Ata da reunião-chave com Rogério (deal R$30k) |
 | `CONTRATO-ADVISORY-ROGERIO-01-2026.md` | Contrato de advisory assinado (versão .html para impressão) |
@@ -81,6 +150,11 @@ O consultor é **Mayko Rodrigues**. O trabalho é documentado neste diretório e
 | `Matinais-Maio/` | PDFs das matinais de maio impressas/enviadas (cartão bolso, roteiro, script perdão dívida) |
 | `WhatsApp Ptt *.srt/.txt` | Transcrições de áudios de Rogério (Whisper CLI `--language Portuguese --model turbo`) — arquivo mais recente: 08/06/2026 |
 | `aline-laboratorio/audio-rogerio-crise-aline-08-06-2026.md` | Transcrição do áudio de Rogério sobre crise na MADIP (08/06) — ver contexto em `aline-laboratorio/CLAUDE.md` |
+| `reuniao-estrategica-rogerio-20-07-2026.md` | Ata 20/07 — 4 RCFs assinados (Closer/Marketing/CS/Cobrança), achado das 69 levantadas de mão perdidas na clínica, financeiro ainda não reaberto |
+| `reuniao-sucesso-paciente-29-07-2026.md` | Ata Reunião Sucesso do Paciente 29/07 — cross-sell, recuperação de base |
+| `processo-comercial-7dias/03-agentamento/documento-canonico-processos-mkt-vendas-05-08-2026.html` | Documento canônico dos processos de MKT & Vendas (checkpoint dos 4 canais, publicado no playbook) |
+| `processo-comercial-7dias/03-agentamento/prompts-overclock-typebot-vps-20-07-2026.md` | 3 prompts Overclock da sessão Raquel 20/07 — upgrade VPS 8GB, Typebot no EasyPanel, quiz de qualificação por especialidade |
+| `processo-comercial-7dias/rcf-fluxogramas-cargos.html` | Fluxogramas-gabarito dos RCFs (Closer/Marketing/CS/Cobrança) gerados na reunião 20/07 |
 
 ## Personas-chave
 
@@ -156,6 +230,9 @@ Usar sempre português. Datas no formato DD/MM/AAAA.
 | **Blingo** | Sistema de membros atual | Mencionado nos perfis |
 | **Tenex** | Sistema legado com 761 contas a recuperar | `sessao-agentamento-karine-17-04-2026.md` |
 | **Meta Business Suite** | Agendamento Instagram/Facebook (pendente setup) | `perfil-raquel-agentamento.md` |
+| **E-Chat (EAS Systems)** | Canal WhatsApp oficial da clínica (CRM, IA de sugestão, formulários) — decisão 04/08 de operar por dentro dele em vez de migrar para Chatwoot | `squad-echat-overclock/README.md` |
+| **VPS OpenClaw `ssf-card-clinica`** | Hetzner CX33 (62.238.33.111) — camada "cérebro" de SDR/cobrança/CS semi-autônomos, ponte via webhook E-Chat → n8n | memory `vps-ssf-card-typebot-quiz-20-07-2026` |
+| **Klingo / Vidas** | Agenda de consultas/exames (Klingo) e agendamento laboratorial (Vidas) da clínica — credenciais e docs de API pendentes com a Débora | `atendimento-ia-clinica/02-integracoes-api.md` |
 
 ## Ao criar novos documentos
 
@@ -504,6 +581,8 @@ Referência completa: `.claude/skills/cerebro-ia-clinica-lucrativa/SKILL.md`.
 | `rh-closer/` | Processo seletivo closer PJ Bairro da Paz (Typebot + kit entrevista + scoring) | `rh-closer/CLAUDE.md` |
 | `rh-clinica/` | Processo seletivo coordenadora clínica (formulário abertura vaga + qualificação HTML + Typebot JSON) | `rh-clinica/CLAUDE.md` |
 | `aline-laboratorio/` | Consultoria laboratório MADIP (Aline Souza) — sessões mensais + Funil 1 anti-noshow | `aline-laboratorio/CLAUDE.md` |
+| `atendimento-ia-clinica/` | Transformar a Léia (GPT Maker) em atendente de agendamento — stack Klingo + E-Chat + Vidas, kickoff Débora 20/07 | `atendimento-ia-clinica/CLAUDE.md` |
+| `squad-echat-overclock/` | Squad de agentes (Overclock: panes Claude Opus/Sonnet/Haiku + Codex) que destrava a integração E-Chat/EAS Systems — orquestrador + handoffs em arquivo, não em chat | `squad-echat-overclock/README.md` (sem CLAUDE.md, o README cumpre esse papel) |
 | `05-agentamento-karine-ia/` | Agentização da Karine (cobrança/vendas com IA) — roadmap, prompts WhatsApp, workflow n8n cobrança, dashboard, integrações Chatwoot/Notion, **Agente Kanban de Dívidas (07-...)** + script `importar-csv-kanban.py` | — |
 | `Coaching-Emocional/` | Material de apoio do programa de coaching (Método CIS, ferramentas de identidade/metas) — usado nas sessões de coaching (ver `aline-laboratorio/`); só PDFs/imagem, sem notas | — |
 | `pesquisa-satisfacao-sponsor/` | Pesquisa de satisfação do Rogério (Typebot JSON + n8n semáforo); sem CLAUDE.md local | — |
@@ -514,6 +593,8 @@ Referência completa: `.claude/skills/cerebro-ia-clinica-lucrativa/SKILL.md`.
 | `analise_mercado/` · `docs/` | Anexos de referência (checklist arquiteta; PPTX original RMAR fev/2025) — só arquivos, não notas | — |
 
 Leia o CLAUDE.md local antes de trabalhar em qualquer subprojeto.
+
+> **Diretórios de ferramentas (não são notas do vault):** `.agents/skills/` (skill local `cerebro-ia-clinica-lucrativa`), `.codex/` (config/hooks do Codex CLI) e `.overclock-app/` (estado de runtime do harness Overclock — `messages.db`, `panes.json`, `session.json`). Não editar manualmente; `.overclock-app/` contém apenas estado de sessão e é candidato a entrar no `.gitignore` se ainda não commitado por engano.
 
 ---
 
@@ -573,3 +654,5 @@ vercel deploy --prod  # Requer confirmação
 3. **WhatsApp grupo é canal oficial:** Matinais, parciais, decisões são comunicadas ali. Manter histórico organizado.
 4. **Notion é auditoria:** Todos os leads devem estar em https://www.notion.so/33ead3c0037381b093b3d0c0a41d3c4b (hub SST Clínica) com status e owner.
 5. **Playbook Vercel = broadcast:** Qualquer mudança em HTML/JSON faz deploy automático. Validar antes de push.
+
+
