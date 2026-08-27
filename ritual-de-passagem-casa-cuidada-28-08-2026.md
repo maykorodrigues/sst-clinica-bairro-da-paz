@@ -7,41 +7,59 @@ criado: 2026-08-27
 atualizado: 2026-08-27
 ---
 
-# Ritual de Passagem — Lançamento da Cultura Casa Cuidada (28/08/2026, 13h, na clínica)
+# Ritual de Passagem — Lançamento da Cultura Casa Cuidada (28/08/2026, 13h–17h, na clínica)
 
 ## Resumo executivo (60s)
 
-Amanhã (28/08) Rogério para a clínica por ~4 horas (13h–17h) para um evento de virada cultural com toda a equipe — ele mesmo chamou de "ritual de passagem" no WhatsApp. É o lançamento oficial da cultura Casa Cuidada para todo mundo, não um piloto restrito. Estrutura pedida por ele: abertura com oração, Mayko abre com mentalidade/visão (20–30 min), falas convidadas (Josi, Denilson, possivelmente Dra. Marília e o contador Moisés), Rogério fecha com a cultura e a régua dos 70% — com coffee break de 20 min perto do fim.
+Amanhã (28/08) Rogério para a clínica **13h–17h (4h, confirmado)** para um evento de virada cultural com toda a equipe — ele mesmo chamou de "ritual de passagem" no WhatsApp, e o Notion já registra esse evento com esse nome oficial: estabelecer formalmente a nova cultura, como "mandamentos" que definem a identidade do negócio daqui pra frente. Estrutura confirmada: Rogério abre oficialmente → **Josi traz a oração/palavra de abertura** → Mayko abre com mentalidade/visão (20–30 min) → apresentações com slides (Rogério) → depoimentos em vídeo de pacientes → falas convidadas (Denilson confirmado; Dra. Marília e Moisés contador ainda a convidar) → coffee break de 20 min → encerramento. **Sandra (técnica de laboratório) também estará presente.**
 
 ## Fonte e como isso foi capturado
 
-Notion: mesma página "Triagem de Nova Unidade" (`3c8ad3c00373815cb0a4e0a661befe70`) — que já continha a transcrição de 26/08 sobre o desenho do projeto Casa Cuidada, ganhou um **segundo bloco de reunião, datado de 27/08**, especificamente sobre como estruturar o evento de amanhã. Transcrição automática, sem notas manuais. Lida integralmente em 27/08.
+Notion: mesma página "Triagem de Nova Unidade" (`3c8ad3c00373815cb0a4e0a661befe70`) — que já continha a transcrição de 26/08 sobre o desenho do projeto Casa Cuidada, ganhou um bloco de reunião de planejamento do evento, **agora titulado "Planejamento da Reunião Interna e Estratégia SST Clínica" (27/08), com resumo estruturado pelo Notion** (a reunião foi concluída — lida integralmente em 27/08, à noite). Isto substitui a leitura anterior, que era da mesma conversa ainda em andamento.
 
-## O que Rogério já decidiu sobre o evento (fatos, direto da transcrição)
+## O que Rogério já decidiu sobre o evento (fatos, confirmados nesta reunião concluída)
 
-- **Vai parar a clínica** durante a tarde inteira — "quatro horas paradas" (bate com o horário que você confirmou: 13h).
-- **Não é reunião fechada de gestão** — é o evento de lançamento da cultura para toda a equipe, comparado por ele mesmo a Moisés entregando as tábuas da lei: um marco fundacional, não uma reunião de rotina.
-- **Objetivo declarado:** trazer consciência do cuidado, mostrando de forma concreta (não só dizendo) que a empresa já cuida — ex.: o benefício de alimentação, comparado em slide com o valor da convenção coletiva, para a equipe ver o tamanho real do investimento.
+- **Clínica paralisada das 13h às 17h (4 horas), confirmado** — para realizar o evento com todos os colaboradores.
+- **É oficialmente um "ritual de passagem"** — o próprio Notion já registra esse nome: estabelecer formalmente a nova cultura, como "mandamentos" que definem a identidade do negócio daqui pra frente. Comparação dele mesmo com Moisés entregando as tábuas da lei.
+- **Objetivo declarado:** trazer consciência do cuidado, mostrando de forma concreta (não só dizendo) que a empresa já cuida — ex.: benefício de alimentação e **auxílio-creche**, comparados em slide com o valor da convenção coletiva.
 - **Vai chamar todos de "sócios"** — cada um "até onde puder".
 - **Quer trocar a linguagem de venda por linguagem de cuidado:** não é "reconhecimento por produzir", é "o quanto você recebe porque cuida". Trocar "vendi um cartão" por "cuidei de uma família".
 - **Vai trazer a visão de escala:** da clínica atual para a visão de 10 clínicas — onde cada um quer chegar junto com a empresa.
-- **Vai fechar com a régua dos 70% de forma dura e explícita:** quem não entrega 70% pra si mesmo "não faz parte dessa cultura" — mas oferece ajuda antes de cobrar (dele mesmo, do Mayko, do Denilson, do RH, de alguém que ele chama de "Divulgar"). A intenção dele é não deixar margem para "poxa, Rogério, não consigo" depois.
-- **Coffee break de ~20 min**, posicionado perto do final do evento.
+- **Vai fechar com a régua dos 70% de forma dura e explícita:** quem não atingir o mínimo de comprometimento de 70% "não se encaixa na equipe" — mas oferece ajuda antes de cobrar (dele mesmo, do Mayko, do Denilson, do RH, de alguém que ele chama de "Divulgar"). A intenção dele é não deixar margem para "poxa, Rogério, não consigo" depois.
+- **NOVO — vai usar vídeos de depoimentos de pacientes** e **exemplos de ex-estagiários que cresceram** como parte do conteúdo dos slides.
+- **NOVO — Sandra (técnica de laboratório) estará presente.** Ela teve um desacordo com a equipe meses atrás e Rogério se reconciliou com ela recentemente; ela está retornando. Tratar como informação sensível — não expor detalhes do conflito publicamente no evento nem em materiais compartilhados.
+- **Coffee break de 20 min**, posicionado perto do final do evento.
 
-## Estrutura do evento (proposta por Rogério — ordem e conteúdo, horários ainda a fechar com ele)
+## Estrutura do evento (agora confirmada — só faltam nomes/horários finais)
 
 | # | Bloco | Quem | Conteúdo (conforme dito por Rogério) | Duração sugerida |
 |---|---|---|---|---|
-| 1 | Abertura / oração | A confirmar — Rogério cogitou você (Mayko) **ou** "Jus" | Palavra de abertura baseada na fé, antes de começar | 5–10 min |
-| 2 | Mentalidade e visão | **Você (Mayko)** | Liberdade total — "como você vende o sonho". Ver rascunho de conteúdo abaixo. | 20–30 min |
-| 3 | Contribuição de RH/processo | Josi (assistente) | Participação **voluntária, sem custo** — algo sobre cultura de treinamento, cuidado, compromisso e processo | 10–15 min (a confirmar com ela) |
-| 4 | Perspectiva externa | Denilson | Fala sobre a experiência dele num grande convênio — contraste: lá não existia essa cultura de cuidado | 10–15 min |
-| 5 | Convidados possíveis | Dra. Marília / Moisés (contador) | Rogério cogitou convidar, ainda não confirmado | A definir |
-| 6 | Fechamento — a cultura Casa Cuidada | **Rogério** | Cuidado de dentro pra fora (benefício alimentação vs. convenção coletiva em slide) → reconhecimento ≠ prêmio por produzir → visão de escala (10 clínicas) → régua dos 70% com oferta de ajuda → cobrança clara, sem espaço para desculpa depois | Maior bloco do evento |
-| 7 | Coffee break | — | Intervalo | 20 min |
-| 8 | Encerramento | Rogério | Fechar o evento | — |
+| 1 | Abertura oficial | **Rogério** | Boas-vindas, abre oficialmente o evento | — |
+| 2 | Oração / palavra | **Josi — confirmada** | Palavra de abertura baseada na fé | 5–10 min |
+| 3 | Mentalidade e visão | **Você (Mayko)** | Liberdade total — "como você vende o sonho". Texto completo abaixo. | 20–30 min |
+| 4 | Apresentação com slides | **Rogério** | Benefícios (vale-almoço, auxílio-creche etc.) + **vídeos de depoimentos de pacientes** + exemplos de ex-estagiários que cresceram + a Cultura do Cuidado | — |
+| 5 | Perspectiva externa | Denilson — confirmado | Fala sobre a experiência dele num grande convênio — contraste: lá não existia essa cultura de cuidado | 10–15 min |
+| 6 | Convidados a confirmar | Dra. Marília / Moisés (contador) | Ainda precisam ser **formalmente convidados** (ação pendente do Rogério) | A definir |
+| 7 | Fechamento — a cultura Casa Cuidada | **Rogério** | Cuidado de dentro pra fora → reconhecimento ≠ prêmio por produzir → visão de escala (10 clínicas) → régua dos 70% com oferta de ajuda → cobrança clara, sem espaço para desculpa depois | Maior bloco do evento |
+| 8 | Coffee break | — | Intervalo | 20 min |
+| 9 | Encerramento | Rogério | Fechar o evento | — |
 
-⚠️ **Rogério disse que ele mesmo vai definir os horários de cada bloco** — a tabela acima é uma proposta de esqueleto para adiantar o trabalho, não uma decisão fechada. Confirmar com ele antes de imprimir/publicar.
+⚠️ **Ainda falta:** ordem exata dos apresentadores e horário de cada fala (ação pendente do Rogério — ver seção de pendências abaixo). Confirmar com ele antes de imprimir/publicar a versão final.
+
+## 🔴 Ações pendentes registradas nesta reunião
+
+**Do Rogério:**
+- [ ] Montar os slides (benefícios, vídeos de depoimentos de pacientes, exemplos de ex-estagiários, Cultura do Cuidado).
+- [ ] Definir a ordem final dos apresentadores e o horário de cada fala.
+- [ ] Convidar formalmente Dra. Marília, Denilson, Josi e Moisés (contador).
+- [ ] Testar os clubes de saúde da região (Royal City, Amor Saúde) para benchmarking — contexto estratégico, não é conteúdo do evento de amanhã.
+- [ ] Explorar parcerias B2B com empresários de Simões Filho para o SST Card — idem, contexto estratégico posterior.
+
+**Suas (Mayko):**
+- [ ] Enviar o resumo desta conversa, PDFs e materiais para o Rogério acessar por e-mail.
+- [ ] Compartilhar o link/artefato de IA (Claude Code) com o Rogério.
+
+> Não executei essas duas últimas ações — envio de e-mail e compartilhamento de link são ações que afetam terceiros, então ficam para você decidir o quê exatamente mandar e quando. Posso preparar o conteúdo se você quiser.
 
 ## ⚠️ Ponto a esclarecer antes do evento (não decidir sozinho)
 
@@ -129,17 +147,19 @@ Antes de eu sentar: se vocês não guardarem mais nada do que eu falei hoje, gua
 
 ## Checklist de preparação (hoje, antes do evento)
 
-- [ ] Confirmar com Rogério: quem abre com a oração (você ou Jus).
-- [ ] Confirmar se Josi, Denilson, Dra. Marília e Moisés (contador) de fato vão falar — e o tempo de cada um.
-- [ ] Confirmar horário exato de início/fim e a posição do coffee break.
-- [ ] Rogério disse que vai montar "vários slides" — perguntar se ele quer que você monte os slides do cuidado/benefício de alimentação (comparação com convenção coletiva) ou se isso é só dele.
-- [ ] Preparar seu bloco de mentalidade/visão (20–30 min) com base no esqueleto acima.
+- [x] ~~Confirmar com Rogério: quem abre com a oração~~ — **resolvido: Josi.**
+- [x] ~~Confirmar horário exato de início/fim e a posição do coffee break~~ — **resolvido: 13h–17h, coffee break de 20min perto do fim.**
+- [ ] Rogério ainda precisa: convidar formalmente Dra. Marília, Denilson, Josi e Moisés (contador), e definir ordem/horário final de cada fala.
+- [ ] Enviar a ele o resumo desta conversa + PDFs/materiais por e-mail (ação registrada como sua).
+- [ ] Compartilhar o link do artefato/Claude Code com o Rogério (ação registrada como sua).
+- [ ] Preparar seu bloco de mentalidade/visão (20–30 min) — texto completo já pronto acima.
 - [ ] Não confirmar publicamente a data de inauguração de 1º de outubro sem checar com Rogério o que exatamente está sendo inaugurado.
-- [ ] Levar/ imprimir o roteiro do evento (ver HTML `roteiro-ritual-de-passagem-28-08-2026.html`).
+- [ ] Levar/imprimir o roteiro do evento (ver HTML `roteiro-ritual-de-passagem-28-08-2026.html`, já atualizado).
+- [ ] Tratar a presença da Sandra com discrição — não repisar publicamente o conflito anterior.
 
 ## Fonte
 
-- Notion: página "Triagem de Nova Unidade" (`3c8ad3c00373815cb0a4e0a661befe70`) — bloco de reunião de 27/08/2026, transcrição automática.
+- Notion: página "Triagem de Nova Unidade" (`3c8ad3c00373815cb0a4e0a661befe70`) — bloco "Planejamento da Reunião Interna e Estratégia SST Clínica" (27/08/2026), reunião concluída, transcrição automática + resumo estruturado do Notion.
 - Conecta diretamente com `familia-cuida-de-familia-triagem-nova-unidade.md` e `prd-casa-cuidada-familia-cuida-familia-smart-repeat-chat.md` — este evento é o lançamento cultural da mesma campanha Casa Cuidada que o sistema vai operacionalizar depois.
 
 Voltar para [[RETOMADA]]
