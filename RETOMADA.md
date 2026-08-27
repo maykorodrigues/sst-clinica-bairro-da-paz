@@ -4,7 +4,21 @@ tags: [em-progresso]
 # RETOMADA DO PROJETO — SST Clínica | Bairro da Paz
 
 > Leia este arquivo primeiro ao retomar o projeto. Contém estado atual, decisões tomadas e próximos passos.  
-> Última atualização: 27/08/2026 — **PRD criado para readaptar o `smart-repeat-chat` (GitHub) e implementar Casa Cuidada + Família Cuida de Família.**
+> Última atualização: 27/08/2026 — **🔴 URGENTE: Ritual de Passagem (lançamento da cultura Casa Cuidada para toda a equipe) amanhã 28/08, 13h, na clínica. Roteiro pronto.**
+
+---
+
+## 🔴 AO RETOMAR (27/08/2026, urgente) — Ritual de Passagem 28/08, 13h
+
+> **Planejamento completo:** `ritual-de-passagem-casa-cuidada-28-08-2026.md` · **Roteiro para imprimir/usar ao vivo:** `roteiro-ritual-de-passagem-28-08-2026.html`
+
+Achado na mesma página Notion da "Triagem de Nova Unidade": um **segundo bloco de reunião (27/08, Mayko + Rogério)** planejando o evento que o próprio Rogério chamou de "ritual de passagem" no WhatsApp — lançamento oficial da cultura Casa Cuidada pra **toda a equipe**, clínica parada ~4h (13h–17h).
+
+**Estrutura pedida por Rogério:** abertura com oração (Mayko ou Jus, a confirmar) → **Mayko abre com 20–30min de mentalidade/visão** → Josi (RH/processo, voluntário) → Denilson (perspectiva de fora, ex-convênio) → possíveis Dra. Marília / Moisés contador → **Rogério fecha** com cuidado-de-dentro-pra-fora, reconhecimento≠prêmio, visão de 10 clínicas, régua dos 70% e cobrança dura (mas com ajuda oferecida antes) → coffee break 20min → encerramento.
+
+**⚠️ Confirmar com Rogério antes de falar em datas amanhã:** ele mencionou "inauguração 1º de outubro" e "vendendo a partir de 1º de setembro" — pode ser sobre a Sala de Odontologia (Hailani foi citada na mesma fala), não uma reinauguração do Bairro da Paz (já inaugurado 01/07/2026). Não confirmar publicamente sem checar.
+
+**Pendente hoje:** confirmar quem abre a oração, presença/tempo dos convidados, horário exato de cada bloco, se o Rogério quer que Mayko monte os slides do benefício/convenção coletiva, e preparar o bloco de mentalidade do Mayko.
 
 ---
 

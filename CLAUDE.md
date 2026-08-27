@@ -101,6 +101,8 @@ Fonte detalhada: `familia-cuida-de-familia-triagem-nova-unidade.md`. Fontes: (1)
 | `familia-cuida-de-familia-triagem-nova-unidade.md` | Sistema **Família Cuida de Família** (objetivo estratégico: gerar leads via indicação família→família) × campanha **Casa Cuidada** (comissionamento tático, Planilha V4 + reunião de sexta) — valores financeiros a confirmar |
 | `prd-casa-cuidada-familia-cuida-familia-smart-repeat-chat.md` | PRD para readaptar o repositório GitHub `smart-repeat-chat` (SaaS Lovable existente) e implementar as duas camadas — premissas da reunião, gaps, modelo de dados, telas por persona, plano de construção sessão a sessão no Lovable, fases MVP/V1/V2 |
 | `proposta-sistema-casa-cuidada-27-08-2026.html` | Proposta visual para o Rogério (não-técnica) explicando o sistema, o ciclo de 3 movimentos, a tabela de decisões financeiras pendentes e as fases de construção |
+| `ritual-de-passagem-casa-cuidada-28-08-2026.md` | Planejamento do evento de lançamento da cultura Casa Cuidada para toda a equipe (28/08, 13h) — estrutura, pilares do fechamento do Rogério, rascunho do bloco de abertura do Mayko |
+| `roteiro-ritual-de-passagem-28-08-2026.html` | Roteiro imprimível do evento — blocos, horários, checklist de preparação |
 | `contexto_projeto.md` | Visão estratégica completa (diagnóstico, fases, riscos) |
 | `reuniao-10-04-2026.md` | Ata da reunião-chave com Rogério (deal R$30k) |
 | `CONTRATO-ADVISORY-ROGERIO-01-2026.md` | Contrato de advisory assinado (versão .html para impressão) |
